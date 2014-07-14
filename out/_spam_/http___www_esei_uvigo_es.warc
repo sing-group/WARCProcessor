@@ -1,0 +1,329 @@
+WARC/1.0
+WARC-Type: warcinfo
+WARC-Date: 2014-07-14T09:42:30Z
+WARC-Filename: http://www.esei.uvigo.es/index.php?id=187
+Content-Description: <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="gl-GL" lang="gl">
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <!-- 
+ This website is powered by TYPO3 - inspiring people to share!
+ TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
+ TYPO3 is copyright 1998-2011 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+ Information and contribution at http://typo3.com/ and http://typo3.org/
+ -->
+ <title>Escuela Superior de Ingeniería Informática - Universidade de Vigo: Ofertas de emprego e prácticas</title>
+ <meta name="generator" content="TYPO3 4.5 CMS">
+ <link rel="stylesheet" type="text/css" href="typo3temp/stylesheet_a6b3c70ab6.css?1310025756" media="all">
+ <script src="typo3temp/javascript_0b12553063.js?1306134080" type="text/javascript"></script>
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+ <meta http-equiv="Content-Language" content="es-es" />
+ <link rel="stylesheet" type="text/css" href="fileadmin/templates/css/css.css" />
+ <script type="text/javascript" src="fileadmin/templates/js/funciones.js">   </script>
+ </head>
+ <body>
+ <div id="paxina">
+ <div id="cabeceira">
+ <div id="idiomas">
+ <!--
+ BEGIN: Content of extension "sr_language_menu", plugin "tx_srlanguagemenu_pi1"
+ -->
+ <div class="tx-srlanguagemenu-pi1">
+ <div class="CUR"><img src="typo3/gfx/content_client.gif"  alt="" style="width:7px; height:10px;" />GL</div>
+ <div class="SPC"> &nbsp; </div> <div class="NO"><a href="index.php?id=187&amp;L=2">ES</a></div>
+ </div>
+ <!-- END: Content of extension "sr_language_menu", plugin "tx_srlanguagemenu_pi1" -->
+ </div>
+ <div id="logo_esei" class="iz">
+ <!--  CONTENT ELEMENT, uid:457/html [begin] -->
+ <div id="c457" class="csc-default" >
+ <!--  Raw HTML content: [begin] -->
+ <a href="/index.php"><img src="fileadmin/templates/img/nombreESEI.png" alt="ESEI" title="ESEI"/></a>
+ <!--  Raw HTML content: [end] -->
+ </div>
+ <!--  CONTENT ELEMENT, uid:457/html [end] -->
+ </div> 
+ <div id="logo_uvigo" class="de">
+ <a href="http://www.uvigo.es/"><img src="fileadmin/templates/img/logouniversidadedevigo.jpg" alt="Universidade de Vigo" title="Universidade de Vigo" /></a>
+ </div>
+ <p class="clear">&nbsp;</p>
+ </div>
+ <!-- fin cabeceira-->
+ <div id="menu">
+ <ul><li><a href="index.php?id=22" onfocus="blurLink(this);"  >A ESEI</a></li><li><a href="index.php?id=cetest_firstpage" onfocus="blurLink(this);"  >ESTUDOS</a></li><li><a href="index.php?id=7" onfocus="blurLink(this);"  >ESTUDANTES</a></li><li><a href="index.php?id=6" onfocus="blurLink(this);"  >NORMATIVAS E FORMULARIOS</a></li><li class="current_page_item"><a href="index.php?id=3" onfocus="blurLink(this);"  >I+D E EMPRESAS</a></li><li><a href="index.php?id=647" onfocus="blurLink(this);"  >CALIDADE</a></li></ul>
+ </div>
+ <!-- fin menu-->
+ <div id="contido_ppal">
+ <div id="zona_es" class="iz">
+ <!-- submenu-->
+ <div id="submenu">
+ <p class="label b">Empresa / Investigaci&Oacute;n</p>
+ <ul><ul><li><a href="index.php?id=180" onfocus="blurLink(this);"  >¿Cómo colaborar?</a></li><li><a href="index.php?id=181" onfocus="blurLink(this);"  >Empresas e institucións colaboradoras</a></li><li><a href="index.php?id=182" onfocus="blurLink(this);"  >Investigación</a></li><li><a href="index.php?id=187" onfocus="blurLink(this);"  >Ofertas de emprego e prácticas</a></li></ul></ul>
+ </div>
+ <!-- fin submenu -->
+ </div>
+ <div id="zona_de" class="de">
+ <!--<div style=" "><img src="fileadmin/templates/img/org_acad.jpg" alt="BIENVENIDOS a la web de la E.S. en Ingenier�a Inform�tica en Ourense" title="BIENVENIDOS a la web de la E.S. en Ingenier�a Inform�tica en Ourense" /></div>-->
+ <div class="txtgral" style="margin:10px;">
+ <!--  CONTENT ELEMENT, uid:274/text [begin] -->
+ <div id="c274" class="csc-default" >
+ <!--  Header: [begin] -->
+ <div class="csc-header csc-header-n1"><h2 class="csc-firstHeader">Ofertas de emprego e prácticas</h2></div>
+ <!--  Header: [end] -->
+ <!--  Text: [begin] -->
+ <p class="bodytext">&nbsp;</p>
+ <h3>Prácticas en empresas</h3>
+ <p class="bodytext">As prácticas académicas externas do alumnado&nbsp;están reguladas pola <a href="http://secxeral.uvigo.es/opencms/export/sites/secxeral/sites/default/microsites/sxeral/Normativa/Uvigo/reg_pract_externas.pdf" target="_blank" >normativa</a> da Universidade de Vigo e a <a href="index.php?id=449" class="internal-link" >normativa específica da ESEI</a>. As empresas que desexen ofertar este tipo de prácticas para calquera titulación deben realizar os seguintes trámites:
+ </p>
+ <p class="bodytext"><br /> 
+ </p>
+ <h3>PRÁCTICAS EXTRACURRICULARES</h3>
+ <p class="bodytext">Xestiónanse directamente coa FUVI. Contacto:
+ </p>
+ <p class="bodytext">Sandra Morales Lloves<br />Fundación Universidade de Vigo<br />Edificio Administrativo, Campus As Lagoas s/n<br />32004 Ourense
+ </p>
+ <p class="bodytext">Email: <a href="javascript:linkTo_UnCryptMailto('nbjmup+tboesbAgvoebdjpovwjhp/ft');" >sandra(at)fundacionuvigo.es</a>
+ </p>
+ <p class="bodytext">Tel: 988 368 898
+ </p>
+ <h2>&nbsp;</h2>
+ <h3>PRÁCTICAS CURRICULARES</h3>
+ <p class="bodytext">Ofertaranse nos períodos establecidos para cada curso académico. É necesario poñerse en contacto coa coordinadora de prácticas da ESEI:</p><div></div><p class="bodytext"><a href="index.php?id=365" class="internal-link" >Silvana Gómez Meire</a><br />Correo electrónico: <a href="javascript:linkTo_UnCryptMailto('nbjmup+thnfjsfAvwjhp/ft');" class="mail" >sgmeire(at)uvigo.es</a><br />Tel: 988 387 017 / 647 343 415
+ </p>
+ <h3>&nbsp;</h3>
+ <h3>Ofertas de emprego</h3>
+ <p class="bodytext">A <a href="http://fundacionuvigo.es" target="_blank" class="external-link-new-window" >Fundación Universidade de Vigo</a> (FUVI) é a responsable de publicar as ofertas de emprego que as empresas fan chegar á Universidade.
+ </p>
+ <p class="bodytext">Podes obter información na <a href="http://areaemprego.uvigo.es/" target="_blank" class="external-link-new-window" >área de emprego</a> da Universidade de Vigo, e tamén podes consultar as ofertas que chegan á ESEI dende o <a href="https://www.facebook.com/pages/Escola-Superior-de-Enxe%C3%B1er%C3%ADa-Inform%C3%A1tica-ESEI/104335300756?sk=app_142583772444750" target="_blank" class="external-link-new-window" >apartado de ofertas de emprego</a> da nosa páxina de <a href="https://www.facebook.com/pages/Escola-Superior-de-Enxe%C3%B1er%C3%ADa-Inform%C3%A1tica-ESEI/104335300756" target="_blank" class="external-link-new-window" >Facebook</a>.
+ </p>
+ <p class="bodytext">Ante calquera dúbida podes poñerte en contacto coa coordinadora de  prácticas da ESEI.
+ </p>
+ <p class="bodytext"><a href="javascript:linkTo_UnCryptMailto('nbjmup+fnqsfhpAftfj/vwjhp/ft');" class="mail" >emprego(at)esei.uvigo.es</a></p>
+ <!--  Text: [end] -->
+ </div>
+ <!--  CONTENT ELEMENT, uid:274/text [end] -->
+ </div>
+ <!--<div style="border-top:1px solid #e0e0e0; padding:5px 0 10px 4px; margin:20px 4px 10px 4px; ">
+ </div>-->
+ </div>
+ <!-- fin zona_de -->
+ <p class="clear">&nbsp;</p>
+ </div>
+ <!-- fin contido principal-->
+ <p class="separadorMapa">&nbsp;</p>
+ <div id="mapa">
+ <div class="contenido iz">
+ <p class="label b">+ Sobre ESEI</p>
+ <ul class="listg">
+ <li><a href="#">� Gobierno</a></li>
+ <li><a href="#">� Administraci�n</a></li>
+ <li><a href="#">� Normativas</a></li>
+ <li><a href="#">� Formularios</a></li>
+ <li><a href="#">� Calidad</a></li>
+ <li><a href="#">� Programas de Intercambio</a></li>
+ <li><a href="#">� Planeta ESEI</a></li>
+ </ul>
+ </div>
+ <div class="contenido iz">
+ <p class="label b">+ Estudios</p>
+ <ul class="listg">
+ <li><a href="#">� Grado</a></li>
+ <li><a href="#">� Postgrado</a></li>
+ <li><a href="#">� Ingenier�a T�cnica en Inform�tica de Gesti�n</a></li>
+ <li><a href="#">� Ingenier�a Inform�tica</a></li>
+ <li><a href="#">� Cursos, Conferencias y Eventos</a></li>
+ </ul>
+ </div>
+ <div class="contenido iz">
+ <p class="label b">+ Alumnos</p>
+ <ul class="listg">
+ <li><a href="#">� Horarios</a></li>
+ <li><a href="#">� Asignaturas</a></li>
+ <li><a href="#">� Ex�menes</a></li>
+ <li><a href="#">� Profesores</a></li>
+ <li><a href="#">� Departamentos y �reas</a></li>
+ <li><a href="#">� Programas de Intercambio</a></li>
+ <li><a href="#">� Pr�cticas en Empresas</a></li>
+ </ul>
+ </div>
+ <p class="clear">&nbsp;</p>
+ </div> <!-- fin mapa -->
+ <p class="separadorMapa2">&nbsp;</p>
+ <div style="height:40px;">
+ <!--<a href="#"><img src="fileadmin/templates/img/logo_esei_2.jpg" alt="ESEI" title="ESEI" /></a>-->
+ <div id="pie">
+ <b>Escuela Superior de Ingenier&iacute;a Inform&aacute;tica</b><br />
+ Campus de Ourense - Edificio Polit&eacute;cnico - 32004 OURENSE<br />
+ Tel: +34 988 387 000<br />
+ <a href="mailto:info@esei.uvigo.es">info@esei.uvigo.es</a>
+ </div>
+ </div>	
+ </div>
+ </body>
+ </html>
+WARC-Record-ID: <urn:uuid:f319eb0a-e1f8-4387-9857-f252c9b688e8>
+Content-Length: 0
+
+
+WARC/1.0
+WARC-Type: warcinfo
+WARC-Date: 2014-07-14T09:43:11Z
+WARC-Filename: http://www.esei.uvigo.es/index.php?id=7
+Content-Description: <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="gl-GL" lang="gl">
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <!-- 
+ This website is powered by TYPO3 - inspiring people to share!
+ TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
+ TYPO3 is copyright 1998-2011 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+ Information and contribution at http://typo3.com/ and http://typo3.org/
+ -->
+ <title>Escuela Superior de Ingeniería Informática - Universidade de Vigo: ESTUDANTES</title>
+ <meta name="generator" content="TYPO3 4.5 CMS">
+ <link rel="stylesheet" type="text/css" href="typo3temp/stylesheet_a6b3c70ab6.css?1310025756" media="all">
+ <script src="typo3temp/javascript_0b12553063.js?1306134080" type="text/javascript"></script>
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+ <meta http-equiv="Content-Language" content="es-es" />
+ <link rel="stylesheet" type="text/css" href="fileadmin/templates/css/css.css" />
+ <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+ <script type="text/javascript">   
+ $(document).ready(function(){  
+ $('.acc_container').hide();  
+ $('.acc_trigger:first') .addClass('active') .next() ;  
+ $('.acc_trigger').click(function(){  
+ if( $(this).next().is(':hidden') ) {  
+ $('.acc_trigger') .removeClass('active') .next() .slideUp();  
+ $(this).toggleClass('active') .next() .slideDown();  
+ }  else{
+ $('.acc_trigger') .removeClass('active') .next() .slideUp(); 
+ }
+ return false;  
+ });  
+ });  
+ </script>
+ </head>
+ <body>
+ <div id="paxina">
+ <div id="cabeceira">
+ <div id="idiomas">
+ <!--
+ BEGIN: Content of extension "sr_language_menu", plugin "tx_srlanguagemenu_pi1"
+ -->
+ <div class="tx-srlanguagemenu-pi1">
+ <div class="CUR"><img src="typo3/gfx/content_client.gif"  alt="" style="width:7px; height:10px;" />GL</div>
+ <div class="SPC"> &nbsp; </div> <div class="NO"><a href="index.php?id=7&amp;L=2">ES</a></div>
+ </div>
+ <!-- END: Content of extension "sr_language_menu", plugin "tx_srlanguagemenu_pi1" -->
+ </div>
+ <div id="logo_esei" class="iz">
+ <!--  CONTENT ELEMENT, uid:457/html [begin] -->
+ <div id="c457" class="csc-default" >
+ <!--  Raw HTML content: [begin] -->
+ <a href="/index.php"><img src="fileadmin/templates/img/nombreESEI.png" alt="ESEI" title="ESEI"/></a>
+ <!--  Raw HTML content: [end] -->
+ </div>
+ <!--  CONTENT ELEMENT, uid:457/html [end] -->
+ </div> 
+ <div id="logo_uvigo" class="de">
+ <a href="http://www.uvigo.es/"><img src="fileadmin/templates/img/logouniversidadedevigo.jpg" alt="Universidade de Vigo" title="Universidade de Vigo" /></a>
+ </div>
+ <p class="clear">&nbsp;</p>
+ </div>
+ <!-- fin cabeceira-->
+ <div id="menu">
+ <ul><li><a href="index.php?id=22" onfocus="blurLink(this);"  >A ESEI</a></li><li><a href="index.php?id=cetest_firstpage" onfocus="blurLink(this);"  >ESTUDOS</a></li><li class="current_page_item"><a href="index.php?id=7" onfocus="blurLink(this);"  >ESTUDANTES</a></li><li><a href="index.php?id=6" onfocus="blurLink(this);"  >NORMATIVAS E FORMULARIOS</a></li><li><a href="index.php?id=3" onfocus="blurLink(this);"  >I+D E EMPRESAS</a></li><li><a href="index.php?id=647" onfocus="blurLink(this);"  >CALIDADE</a></li></ul>
+ </div>
+ <!-- fin menu-->
+ <div id="contido_ppal">
+ <div id="zona_es" class="iz">
+ <!-- submenu-->
+ <div id="submenu">
+ <p class="label b">Alumnos</p>
+ <ul><ul><li><a href="index.php?id=275" onfocus="blurLink(this);"  >Avaliación Curricular</a></li><li><a href="index.php?id=87" onfocus="blurLink(this);"  >Biblioteca</a></li><li><a href="index.php?id=89" onfocus="blurLink(this);"  >Calendario Académico</a></li><li><a href="index.php?id=285" onfocus="blurLink(this);"  >Centro de Linguas</a></li><li><a href="index.php?id=85" onfocus="blurLink(this);"  >Delegación de Estudantes</a></li><li><a href="index.php?id=73" onfocus="blurLink(this);"  >Grupos Reducidos</a></li><li><a href="index.php?id=69" onfocus="blurLink(this);"  >Horarios</a></li><li><a href="index.php?id=323" onfocus="blurLink(this);"  >Exames</a></li><li><a href="index.php?id=274" onfocus="blurLink(this);"  >Matrícula</a></li><li><a href="index.php?id=84" onfocus="blurLink(this);"  >Ofertas de Emprego</a></li><li><a href="index.php?id=72" onfocus="blurLink(this);"  >PAT (Plan de Acción Titorial)</a></li><li><a href="index.php?id=83" onfocus="blurLink(this);"  >Prácticas en Empresas</a></li><li><a href="index.php?id=82" onfocus="blurLink(this);"  >Programas de Mobilidade</a></li><li><a href="index.php?id=86" onfocus="blurLink(this);"  >Residencia Universitaria</a></li><li><a href="index.php?id=78" onfocus="blurLink(this);"  >Traballos Académicamente Dirixidos (TAD)</a></li><li><a href="index.php?id=77" onfocus="blurLink(this);"  >Traballos Fin de Carreira</a></li><li><a href="index.php?id=79" onfocus="blurLink(this);"  >Tribunais</a></li></ul></ul>
+ </div>
+ <!-- fin submenu -->
+ </div>
+ <div id="zona_de" class="de">
+ <!--<div style=" "><img src="fileadmin/templates/img/alumnos.jpg" alt="BIENVENIDOS a la web de la E.S. en Ingenier�a Inform�tica en Ourense" title="BIENVENIDOS a la web de la E.S. en Ingenier�a Inform�tica en Ourense" /></div>-->
+ <div class="txtgral" style="margin:10px;">
+ <!--  CONTENT ELEMENT, uid:269/textpic [begin] -->
+ <div id="c269" class="csc-default" >
+ <!--  Header: [begin] -->
+ <div class="csc-header csc-header-n1"><h1 class="csc-firstHeader">Estudantes</h1></div>
+ <!--  Header: [end] -->
+ <!--  Image block: [begin] -->
+ <div class="csc-textpic-text">
+ <!--  Text: [begin] -->
+ <p class="bodytext">Neste apartado atoparás a maior parte da información que necesitas coñecer como estudante da ESEI: horarios, exámenes, calendario escolar, grupos de aula e prácticas, reclamacións e suxerencias, programas de mobilidade, traballos fin de carreira, etc.
+ </p>
+ <p class="bodytext">Se non atopas o que buscas,&nbsp;en función da natureza do tema podes acudir a diferentes responsables da Escola:</p><ul><li><b>Cuestións relativas a matrícula, bolsas, traslados de expediente, e en xeral calquera asunto de natureza administrativa</b>: nestos casos debes dirixirte aos servizos administrativos&nbsp;da Escola (<a href="index.php?id=40" class="internal-link" >ver información de contacto</a>).</li></ul><ul><li><b>Outro tipo de cuestións</b>: podes consultar no <a href="index.php?id=53" class="internal-link" >apartado de equipo directivo</a> a persoa que pode respostar a túa dúbida. Se non tes claro a quen debes dirixirte, o máis aconsellable é contactar coa <a href="index.php?id=54" class="internal-link" >Secretaría de Dirección</a>, onde estarán encantados de atenderte. Tamén podes dirixirte á <a href="index.php?id=85" class="internal-link" >Delegación de Estudantes</a>.</li></ul><p class="bodytext">&nbsp;</p>
+ <p class="bodytext">&nbsp;</p>
+ <!--  Text: [end] -->
+ </div>
+ <!--  Image block: [end] -->
+ </div>
+ <!--  CONTENT ELEMENT, uid:269/textpic [end] -->
+ </div>
+ <!--<div style="border-top:1px solid #e0e0e0; padding:5px 0 10px 4px; margin:20px 4px 10px 4px; ">
+ </div>-->
+ </div>
+ <!-- fin zona_de -->
+ <p class="clear">&nbsp;</p>
+ </div>
+ <!-- fin contido principal-->
+ <p class="separadorMapa">&nbsp;</p>
+ <div id="mapa">
+ <div class="contenido iz">
+ <p class="label b">+ Sobre ESEI</p>
+ <ul class="listg">
+ <li><a href="#">� Gobierno</a></li>
+ <li><a href="#">� Administraci�n</a></li>
+ <li><a href="#">� Normativas</a></li>
+ <li><a href="#">� Formularios</a></li>
+ <li><a href="#">� Calidad</a></li>
+ <li><a href="#">� Programas de Intercambio</a></li>
+ <li><a href="#">� Planeta ESEI</a></li>
+ </ul>
+ </div>
+ <div class="contenido iz">
+ <p class="label b">+ Estudios</p>
+ <ul class="listg">
+ <li><a href="#">� Grado</a></li>
+ <li><a href="#">� Postgrado</a></li>
+ <li><a href="#">� Ingenier�a T�cnica en Inform�tica de Gesti�n</a></li>
+ <li><a href="#">� Ingenier�a Inform�tica</a></li>
+ <li><a href="#">� Cursos, Conferencias y Eventos</a></li>
+ </ul>
+ </div>
+ <div class="contenido iz">
+ <p class="label b">+ Alumnos</p>
+ <ul class="listg">
+ <li><a href="#">� Horarios</a></li>
+ <li><a href="#">� Asignaturas</a></li>
+ <li><a href="#">� Ex�menes</a></li>
+ <li><a href="#">� Profesores</a></li>
+ <li><a href="#">� Departamentos y �reas</a></li>
+ <li><a href="#">� Programas de Intercambio</a></li>
+ <li><a href="#">� Pr�cticas en Empresas</a></li>
+ </ul>
+ </div>
+ <p class="clear">&nbsp;</p>
+ </div> <!-- fin mapa -->
+ <p class="separadorMapa2">&nbsp;</p>
+ <div style="height:40px;">
+ <!--<a href="#"><img src="fileadmin/templates/img/logo_esei_2.jpg" alt="ESEI" title="ESEI" /></a>-->
+ <div id="pie">
+ <b>Escuela Superior de Ingenier&iacute;a Inform&aacute;tica</b><br />
+ Campus de Ourense - Edificio Polit&eacute;cnico - 32004 OURENSE<br />
+ Tel: +34 988 387 000<br />
+ <a href="mailto:info@esei.uvigo.es">info@esei.uvigo.es</a>
+ </div>
+ </div>	
+ </div>
+ </body>
+ </html>
+WARC-Record-ID: <urn:uuid:f22db721-9029-4d81-ac19-214f23e84032>
+Content-Length: 0
+
+

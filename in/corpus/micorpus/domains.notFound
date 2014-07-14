@@ -1,0 +1,5 @@
+Non success status for link: http://twitter.com/eseiuvigo, status code: 301, description: Moved Permanently
+Non success status for link: https://twitter.com/eseiuvigo, status code: 1005, description: Fatal transport error
+Non success status for link: https://www.google.com/a/esei.uvigo.es/ServiceLogin?continue=https%3A%2F%2Fmail.google.com%2Fa%2Fesei.uvigo.es%2F&ltmpl=default&ltmplcache=2&passive=true&rm=false&service=mail&ss=1, status code: 1005, description: Fatal transport error
+Non success status for link: http://youtu.be/bKm-0VdTwA8, status code: 302, description: Moved Temporarily
+Non success status for link: http://www.noexistelapagina.com/, status code: 1005, description: Fatal transport error

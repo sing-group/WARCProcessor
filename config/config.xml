@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<configuration>
+	 <!-- Corpus configuration  -->
+	 <corpusDirPath>.\\out</corpusDirPath> 
+	 <spamDirName>_spam_</spamDirName>
+	 <hamDirName>_ham_</hamDirName>
+	 <domainsLabeledFileName>domains.labelled</domainsLabeledFileName>
+	 <domainsNotFoundFileName>domains.notFound</domainsNotFoundFileName>
+	 <!--  Data sources dirs -->
+	 <!-- <entry key="WHITELISTS_DIR_PATH">.\\in\\plain\whitelists</entry>
+	 <entry key="BLACKLISTS_DIR_PATH">.\\in\\plain\blacklists</entry>
+	 <entry key="SRC_ARFF_DIR_PATH">.\\in\\arff</entry>
+	 <entry key="SRC_CORPUS_DIR_PATH">.\\in\\corpus</entry> -->
+	 <!-- <entry key="SRC_CSV_DIR_PATH">.\\in\\csv</entry> -->
+	 
+	 <!--  Others -->
+	 <maxDepthOfCrawling>1</maxDepthOfCrawling>
+	 <webCrawlerDirTmpStorePath>.</webCrawlerDirTmpStorePath>
+	 
+	 <!--  Data sources -->
+	 <dataSources>
+	 	<dataSource class="com.warcgenerator.datasources.CorpusDS">
+	 		<srcDirPath>.\\in\\corpus</srcDirPath>
+	 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
+	 	</dataSource>
+	 	<!-- <dataSource class="com.warcgenerator.datasources.ArffDS">
+	 		<srcDirPath>.\\in\\arff</srcDirPath>
+	 		<handler>com.warcgenerator.datasources.handler.ArffDSHandler</handler>
+	 	</dataSource>
+	 	<dataSource class="com.warcgenerator.datasources.FileDS">
+	 		<srcDirPath>.\\in\\plain\whitelists</srcDirPath>
+	 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
+	 	</dataSource>
+	 	<dataSource class="com.warcgenerator.datasources.CSVDS">
+	 		<srcDirPath>.\\in\\csv</srcDirPath>
+	 		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
+	 	</dataSource> -->
+	 </dataSources>
+</configuration>
