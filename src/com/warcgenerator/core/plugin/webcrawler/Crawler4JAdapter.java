@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import com.warcgenerator.core.config.WebCrawlerConfig;
 import com.warcgenerator.core.exception.plugin.PluginException;
+import com.warcgenerator.core.helper.FileHelper;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
@@ -23,7 +24,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	private CrawlController controller;
-	private IWebCrawlerHandler handler;
+	private Map<String, IWebCrawlerHandler> handlers;
 	private int numberOfCrawlers;
 	private Map<String, com.warcgenerator.core.plugin.webcrawler.HtmlParseData> parseDataMap;
 	
@@ -43,9 +44,9 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	}
 
 	public Crawler4JAdapter(WebCrawlerConfig configWC,
-			IWebCrawlerHandler handler) throws PluginException {
+			Map<String, IWebCrawlerHandler> handlers) throws PluginException {
 		super();
-		this.handler = handler;
+		this.handlers = handlers;
 		String crawlStorageFolder = configWC.getStorePath();
 		numberOfCrawlers = configWC.getNumberOfCrawlers();
 
@@ -81,7 +82,9 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		// controller.addSeed("http://www.ics.uci.edu/~welling/");
 		// controller.addSeed("http://www.ics.uci.edu/~lopes/");
 		
-		controller.addSeed(configWC.getUrl());
+		for (String url:configWC.getUrls()) {
+			controller.addSeed(url);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -97,6 +100,18 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 			if (localData instanceof Collection<?>) {
 				for (com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData : 
 						(Collection<com.warcgenerator.core.plugin.webcrawler.HtmlParseData>) localData) {
+					
+					for(String str:handlers.keySet()) {
+						System.out.println("clave es: " + str);
+					
+						System.out.println("");
+					}
+					
+					IWebCrawlerHandler handler = handlers.get(
+							FileHelper.getDomainNameFromURL(parseData.getUrl()));
+					System.out.println("Handler para " + parseData.getUrl() + " es " +
+							handler);
+					
 					handler.handle(parseData);
 				}
 			}

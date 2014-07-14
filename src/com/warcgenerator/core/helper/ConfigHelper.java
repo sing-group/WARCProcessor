@@ -55,6 +55,7 @@ public class ConfigHelper {
 					// String
 					DataSourceConfig specificDsConfig = new
 							 DataSourceConfig(f.getPath());
+					specificDsConfig.setSpamOrHam(ds.isSpam());
 					
 					Class<?> cArgs[] = { DataSourceConfig.class };
 					Class<?> clazz = Class.forName(ds.getDsClassName());

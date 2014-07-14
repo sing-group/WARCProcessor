@@ -53,6 +53,22 @@ public class XMLConfigHelper {
 				if (dataSourceNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setDsClassName(dataSourceElement.getAttribute("class"));
+			
+					// Check if isSpam parameter exists
+					ds.setSpamOrHam(false);
+					if (dataSourceElement.getAttribute("isSpam") != null) {
+						System.out.println("isSpam no es nulo");
+						String isSpam = dataSourceElement.getAttribute("isSpam");
+						
+						System.out.println("isSpam es " + isSpam);
+						if (isSpam.toLowerCase().equals("true")) {
+							ds.setSpamOrHam(true);
+							
+							System.out.println("isSpam1!!!" + ds.isSpam());
+						} 
+					} 
+					
+					
 					
 					//NodeList nodeList = dataSourceElement.getChildNodes();
 					NodeList dataSourceInfoNode = dataSourceNode.getChildNodes();

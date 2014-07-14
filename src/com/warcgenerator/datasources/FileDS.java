@@ -13,6 +13,7 @@ import com.warcgenerator.core.exception.datasource.CloseException;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.ReadException;
+import com.warcgenerator.core.helper.FileHelper;
 
 /**
  * DataSource to read blacklist and whitelist in plain text format
@@ -38,7 +39,17 @@ public class FileDS extends DataSource implements IDataSource {
 			line = buffer.readLine();
 			if (line != null) {
 				dataBean = this.parseLine(line);
-			} 
+			
+				System.out.println("dataBean.getUrl()) es : " + dataBean.getUrl());
+				
+				System.out.println("es spam!!! " + this.getDataSourceConfig().isSpam());
+				
+				// Turn the outfile to the warc file name
+				this.getDataSourceConfig().setFilePath(
+						FileHelper.getFileNameFromURL(
+								FileHelper.getDomainNameFromURL(dataBean.getUrl())) + 
+						".warc");
+			}
 		} catch (IOException e) {
 			throw new ReadException(e);
 		}
