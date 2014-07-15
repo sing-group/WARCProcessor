@@ -1,25 +1,20 @@
 package com.warcgenerator.core.datasource.handler;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
-import com.warcgenerator.core.config.WebCrawlerConfig;
-import com.warcgenerator.core.datasource.DataBean;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.GenericDS;
 import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.WarcDS;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.FileHelper;
-import com.warcgenerator.core.plugin.webcrawler.Crawler4JAdapter;
-import com.warcgenerator.core.plugin.webcrawler.IWebCrawler;
 import com.warcgenerator.core.plugin.webcrawler.IWebCrawlerHandler;
 import com.warcgenerator.core.plugin.webcrawler.WebCrawlerHandler;
 
@@ -46,23 +41,14 @@ public abstract class DSHandler implements IDSHandler {
 
 	public abstract void handle(DataBean data);
 	
-	public void toHandle() {
+	public void toHandle(Set<String> urls,
+			Map<String, IWebCrawlerHandler> webCrawlerHandlers,
+			Map<String, DataSource> outputDS, 
+			IDataSource labeledDS,
+			IDataSource notFoundDS) {
 		DataBean data = null;
 		// Config of ds
 
-		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
-				outputCorpusConfig.getDomainsLabeledFilePath()));
-		IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
-				outputCorpusConfig.getDomainsNotFoundFilePath()));
-		
-		// Save references to the datasource output files
-		Map<String, DataSource> outputDS =
-				new HashMap<String, DataSource>();
-		List<String> urls = new ArrayList<String>();
-		
-		Map<String, IWebCrawlerHandler> webCrawlerHandlers = 
-				new HashMap<String, IWebCrawlerHandler>();
-		
 		// Read a block from datasource
 		while ((data = ds.read()) != null) {
 			urls.add(data.getUrl());
@@ -95,16 +81,6 @@ public abstract class DSHandler implements IDSHandler {
 			webCrawlerHandlers.put(FileHelper.getDomainNameFromURL(data.getUrl()), 
 					webCrawlerHandler);
 		}
-			
-			
-		startWebCrawling(urls, webCrawlerHandlers);
-	
-		// Close all output datasources
-		for(DataSource aux:outputDS.values()) {
-			aux.close();
-		}
-		labeledDS.close();
-		notFoundDS.close();
 	}
 
 	protected OutputWarcConfig getOutputWarcPath(boolean isSpam) {
@@ -126,20 +102,5 @@ public abstract class DSHandler implements IDSHandler {
 		// Initialize output Warc config
 		return new OutputWarcConfig(ds.getDataSourceConfig()
 				.isSpam(), warcFileName.toString());
-	}
-	
-	private void startWebCrawling(List<String> urls,
-			Map<String, IWebCrawlerHandler> webCrawlerHandlers) {
-		config.getWebCrawlerCfgTemplate().setMaxDepthOfCrawling(0);
-
-		// Initialize web crawler
-		WebCrawlerConfig webCrawlerConfig = new WebCrawlerConfig(
-				config.getWebCrawlerCfgTemplate());
-		webCrawlerConfig.setUrls(urls);
-		IWebCrawler webCrawler = new Crawler4JAdapter(webCrawlerConfig,
-				webCrawlerHandlers);
-
-		// Start crawler
-		webCrawler.start();
 	}
 }

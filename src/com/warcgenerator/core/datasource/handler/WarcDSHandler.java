@@ -1,14 +1,8 @@
 package com.warcgenerator.core.datasource.handler;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.warcgenerator.core.config.AppConfig;
-import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.DataBean;
 import com.warcgenerator.core.datasource.IDataSource;
-import com.warcgenerator.datasources.bean.CorpusFile;
+import com.warcgenerator.core.datasource.bean.DataBean;
 
 public class WarcDSHandler extends DSHandler implements IDSHandler {
 	//private List<CorpusFile> corpuses;

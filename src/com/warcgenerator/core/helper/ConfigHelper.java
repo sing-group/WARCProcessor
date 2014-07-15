@@ -51,8 +51,6 @@ public class ConfigHelper {
 			for (DataSourceConfig ds : config.getDataSourceConfigs()) {
 				File dirSrc = new File(ds.getFilePath());
 				for (File f : dirSrc.listFiles()) {
-					// obtengo el constructor que recibe (en este caso) un
-					// String
 					DataSourceConfig specificDsConfig = new
 							 DataSourceConfig(f.getPath());
 					specificDsConfig.setSpamOrHam(ds.isSpam());
@@ -63,8 +61,6 @@ public class ConfigHelper {
 					IDataSource dsSource = (DataSource) ctor.newInstance(
 							specificDsConfig);
 
-					System.out.println("reconstruyendo: " + ds.getHandlerClassName());
-					
 					Class<?> cArgs2[] = { IDataSource.class, AppConfig.class };
 					Class<?> clazz2 = Class.forName(ds.getHandlerClassName());
 					Constructor<?> ctor2 = clazz2.getConstructor(cArgs2);
@@ -94,68 +90,7 @@ public class ConfigHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		// Read CSV dir
-		/*
-		 * File dirSrcCSV = new File(config.getSrcCSVDirPath()); for (File f:
-		 * dirSrcCSV.listFiles()) { DataSourceConfig dsConfig = new
-		 * DataSourceConfig(f.getPath()); IDataSource dataSource = new CSVDS(
-		 * dsConfig); dSHandlerList.add(new CSVDSHandler( dataSource, config));
-		 * }
-		 */
-
-		/*
-		 * File dirSrcCSV = new File(config.getPropertyByGroup("ds")); for (File
-		 * f: dirSrcCSV.listFiles()) { DataSourceConfig dsConfig = new
-		 * DataSourceConfig(f.getPath()); IDataSource dataSource = new CSVDS(
-		 * dsConfig); dSHandlerList.add(new CSVDSHandler( dataSource, config));
-		 * }
-		 */
-
-		// Read Arff dir
-		/*
-		 * File dirSrcArff = new File(config.getSrcArffDirPath()); for (File f:
-		 * dirSrcArff.listFiles()) { DataSourceConfig dsConfig = new
-		 * DataSourceConfig(f.getPath()); IDataSource dataSource = new ArffDS(
-		 * dsConfig); dSHandlerList.add(new ArffDSHandler( dataSource, config));
-		 * }
-		 * 
-		 * // Read whitelist dir File dirWhiteList = new
-		 * File(config.getWhiteListsDirPath()); for (File f :
-		 * dirWhiteList.listFiles()) { DataSourceConfig dsConfig = new
-		 * DataSourceConfig( DataSourceConfig.IS_HAM, f.getPath()); IDataSource
-		 * dataSource = new FileDS(dsConfig); dSHandlerList.add(new
-		 * FileDSHandler( dataSource, config)); } // Read blacklist dir File
-		 * dirBlackList = new File(config.getBlackListsDirPath()); for (File f :
-		 * dirBlackList.listFiles()) { DataSourceConfig dsConfig = new
-		 * DataSourceConfig( DataSourceConfig.IS_SPAM, f.getPath()); IDataSource
-		 * dataSource = new FileDS(dsConfig); dSHandlerList.add(new
-		 * FileDSHandler( dataSource, config)); }
-		 */
-		// Read warc dir
-		/*
-		 * File dirSrcCorpus = new File(config.getSrcCorpusDirPath()); // Each
-		 * directory is a corpus for (File corpus : dirSrcCorpus.listFiles()) {
-		 * StringBuilder sb = new StringBuilder(dirSrcCorpus.getPath());
-		 * sb.append(File.separator); sb.append(corpus.getName());
-		 * sb.append(File.separator); // TODO Customize this StringBuilder path
-		 * = new StringBuilder(sb.toString()); path.append("_ham_");
-		 * 
-		 * System.out.println("path es " + path.toString());
-		 * 
-		 * File dirHAM = new File(path.toString()); for (File f :
-		 * dirHAM.listFiles()) { System.out.println("get path: " + f.getPath());
-		 * DataSourceConfig dataSource = new DataSourceConfig(
-		 * DataSourceConfig.IS_HAM, DataSourceConfig.WARC_DS, f.getPath());
-		 * dataSourceList.add(dataSource); } path = new
-		 * StringBuilder(sb.toString()); path.append("_spam_");
-		 * 
-		 * File dirSPAM = new File(path.toString()); for (File f :
-		 * dirSPAM.listFiles()) { DataSourceConfig dataSource = new
-		 * DataSourceConfig( DataSourceConfig.IS_SPAM, DataSourceConfig.WARC_DS,
-		 * f.getPath()); dataSourceList.add(dataSource); } }
-		 */
-
+		
 		return dSHandlerList;
 	}
 

@@ -11,9 +11,9 @@ import weka.core.Instances;
 import weka.core.converters.ArffLoader.ArffReader;
 
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.DataBean;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.CloseException;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;

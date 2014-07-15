@@ -21,6 +21,7 @@ import org.archive.uid.UUIDGenerator;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.CloseException;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
@@ -45,26 +46,10 @@ public class WarcDS extends DataSource implements IDataSource {
 	public WarcDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);
 		try {
-			System.out.println("abriendo fichero: " + dsConfig.getFilePath());
-			//create a temp file
-	    	/*File temp = File.createTempFile("prueba", ".tmp"); 
-			
-	    	try {
-				(new Warc2Arc()).transform(new File(path),
-						  temp, "WARC2ARC", null, false);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-	    	
-			/*(new Arc2Warc()).transform(new File(path),
-				  temp, true);*/
-			
-			//System.out.println("temp file: " + temp.getAbsolutePath());		
-	    	reader = WARCReaderFactory.get(dsConfig.getFilePath());
+			logger.info("Openning file: " + dsConfig.getFilePath());
+			reader = WARCReaderFactory.get(dsConfig.getFilePath());
 	
 			archIt = reader.iterator();
-
 		} catch (IOException e) {
 			System.out.println("excepcion " + e);
 
@@ -98,8 +83,6 @@ public class WarcDS extends DataSource implements IDataSource {
 			// If you want to write something in the head of warc
 			// writer.writeWarcinfoRecord(warc.getName(), "toConfigure");
 		} catch (IOException e) {
-			System.out.println("excepcion " + e);
-
 			throw new OpenException(e);
 		}
 

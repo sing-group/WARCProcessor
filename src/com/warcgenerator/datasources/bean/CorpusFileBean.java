@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CorpusFile {
+/**
+ * Bean to store data about a Corpus file
+ * @author Miguel Callon
+ */
+public class CorpusFileBean {
 	private Iterator<File> spamFiles;
 	private Iterator<File> hamFiles;
 	private Spam spam;
 	private Ham ham;
 
-	public CorpusFile(String filePath) {
+	public CorpusFileBean(String filePath) {
 		String spamPath = filePath + File.separator + "_spam_";
 		String hamPath = filePath + File.separator + "_ham_";
 		spam = new Spam();

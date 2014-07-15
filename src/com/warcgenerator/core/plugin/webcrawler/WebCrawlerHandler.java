@@ -2,8 +2,8 @@ package com.warcgenerator.core.plugin.webcrawler;
 
 import org.apache.http.HttpStatus;
 
-import com.warcgenerator.core.datasource.DataBean;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.bean.DataBean;
 
 public class WebCrawlerHandler implements IWebCrawlerHandler {
 	private IDataSource warcDS;

@@ -6,9 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.DataBean;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.CloseException;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
@@ -22,6 +22,11 @@ import com.warcgenerator.core.helper.FileHelper;
 public class FileDS extends DataSource implements IDataSource {
 	private BufferedReader buffer = null;
 	
+	/**
+	 * Main constructor to instance a FileDS class
+	 * @param dsConfig @type of DataSourceConfig
+	 * @throws DSException
+	 */
 	public FileDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);
 		try {
@@ -32,6 +37,10 @@ public class FileDS extends DataSource implements IDataSource {
 		}
 	}
 
+	/**
+	 * Read a DataBean from the datasource
+	 * @return DataBean
+	 */
 	public DataBean read() throws DSException {
 		DataBean dataBean = null;
 		try {
@@ -39,13 +48,9 @@ public class FileDS extends DataSource implements IDataSource {
 			line = buffer.readLine();
 			if (line != null) {
 				dataBean = this.parseLine(line);
-			
-				System.out.println("dataBean.getUrl()) es : " + dataBean.getUrl());
 				
-				System.out.println("es spam!!! " + this.getDataSourceConfig().isSpam());
-				
-				// Turn the outfile to the warc file name
-				this.getDataSourceConfig().setFilePath(
+				// Turn the out file to the warc file name
+				this.setOutputFilePath(
 						FileHelper.getFileNameFromURL(
 								FileHelper.getDomainNameFromURL(dataBean.getUrl())) + 
 						".warc");
@@ -56,9 +61,16 @@ public class FileDS extends DataSource implements IDataSource {
 		return dataBean;
 	}
 
+	/**
+	 * Write a DataBean
+	 */
 	public void write(DataBean data) {
+		// Not implemented
 	}
 
+	/**
+	 * Close datasource
+	 */
 	public void close() throws DSException {
 		try {
 			buffer.close();
@@ -67,6 +79,11 @@ public class FileDS extends DataSource implements IDataSource {
 		}
 	}
 
+	/**
+	 * Parse the content of a single line in datasource
+	 * @param line String with the content of a single line
+	 * @return DataBean
+	 */
 	protected DataBean parseLine(String line) {
 		DataBean data = new DataBean();
 		String[] array = line.split(" ");

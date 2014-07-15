@@ -4,8 +4,8 @@ import java.io.File;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
-import com.warcgenerator.core.datasource.DataBean;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.datasource.handler.DSHandler;
 import com.warcgenerator.core.datasource.handler.IDSHandler;
 import com.warcgenerator.core.helper.FileHelper;

@@ -10,9 +10,9 @@ import weka.core.Instances;
 import weka.core.converters.CSVLoader;
 
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.DataBean;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 
@@ -43,8 +43,10 @@ public class CSVDS extends DataSource implements IDataSource {
 			loader.setOptions(options);
 			
 			loader.setSource(new File(this.getDataSourceConfig().getFilePath()));
-			
+				
 			data = loader.getDataSet();
+			
+			System.out.println("data es " + data);
 			
 			// setting class attribute if the data format does not provide this
 			// information
@@ -62,9 +64,11 @@ public class CSVDS extends DataSource implements IDataSource {
 
 		Instance inst;
 		inst = data.firstInstance();
+		System.out.println("primera instancia: " + inst);
+			
 		
 		if (inst != null) {
-			data.add(inst);
+			//data.add(inst);
 
 			boolean isSpam = false;
 			// TODO Customize this, How can I know if this is spam or ham ?
@@ -78,8 +82,10 @@ public class CSVDS extends DataSource implements IDataSource {
 			dataBean = new DataBean();
 			dataBean.setUrl(url);
 			dataBean.setSpam(isSpam);
+		
+			data.delete(0);
 		}
-
+		
 		/*
 		 * if (ar != null) { dataBean = new WarcBean(ar); //
 		 * System.out.println("databean: " + dataBean.getData()); }

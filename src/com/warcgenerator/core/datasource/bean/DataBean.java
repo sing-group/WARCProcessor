@@ -1,4 +1,4 @@
-package com.warcgenerator.core.datasource;
+package com.warcgenerator.core.datasource.bean;
 
 public class DataBean {
 	private String data;

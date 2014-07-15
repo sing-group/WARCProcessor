@@ -18,4 +18,12 @@ public abstract class DataSource implements IDataSource {
 	public void setDataSourceConfig(DataSourceConfig dataSourceConfig) {
 		this.dataSourceConfig = dataSourceConfig;
 	}
+	
+	/**
+	 * Used to set the output file path
+	 * @param filePath
+	 */
+	public void setOutputFilePath(String filePath) {
+		this.getDataSourceConfig().setFilePath(filePath);
+	}
 }

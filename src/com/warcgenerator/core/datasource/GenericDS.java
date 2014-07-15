@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.CloseException;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;

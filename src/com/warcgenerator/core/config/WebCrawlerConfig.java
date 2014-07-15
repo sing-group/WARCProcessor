@@ -1,7 +1,6 @@
 package com.warcgenerator.core.config;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 /**
  * File with the web crawler config
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public class WebCrawlerConfig {
 	private String storePath;
-	private List<String> urls;
+	private Set<String> urls;
 	private int numberOfCrawlers;
 	private int maxDepthOfCrawling;
 	
@@ -25,11 +24,11 @@ public class WebCrawlerConfig {
 		this.storePath = template.getStorePath();
 	}
 
-	public List<String> getUrls() {
+	public Set<String> getUrls() {
 		return urls;
 	}
 
-	public void setUrls(List<String> urls) {
+	public void setUrls(Set<String> urls) {
 		this.urls = urls;
 	}
 
