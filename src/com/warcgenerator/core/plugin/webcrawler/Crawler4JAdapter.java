@@ -100,18 +100,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 			if (localData instanceof Collection<?>) {
 				for (com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData : 
 						(Collection<com.warcgenerator.core.plugin.webcrawler.HtmlParseData>) localData) {
-					
-					for(String str:handlers.keySet()) {
-						System.out.println("clave es: " + str);
-					
-						System.out.println("");
-					}
-					
 					IWebCrawlerHandler handler = handlers.get(
 							FileHelper.getDomainNameFromURL(parseData.getUrl()));
-					System.out.println("Handler para " + parseData.getUrl() + " es " +
-							handler);
-					
 					handler.handle(parseData);
 				}
 			}

@@ -9,7 +9,6 @@ import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.datasource.DataSource;
-import com.warcgenerator.core.datasource.GenericDS;
 import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.WarcDS;
 import com.warcgenerator.core.datasource.bean.DataBean;
@@ -47,8 +46,6 @@ public abstract class DSHandler implements IDSHandler {
 			IDataSource labeledDS,
 			IDataSource notFoundDS) {
 		DataBean data = null;
-		// Config of ds
-
 		// Read a block from datasource
 		while ((data = ds.read()) != null) {
 			urls.add(data.getUrl());
@@ -62,21 +59,16 @@ public abstract class DSHandler implements IDSHandler {
 			
 			// Open an output datasource
 			DataSource warcDS = outputDS.get(outputWarcConfig.getFileName());
-			
-			System.out.println("Escribiendo en: " + outputWarcConfig.getFileName());
+
 			if (warcDS == null) {
 				warcDS = new WarcDS(outputWarcConfig);
 				outputDS.put(outputWarcConfig.getFileName(), warcDS);
 			}
-
-			System.out.println("Handle!!-->" + outputWarcConfig.getFileName() );
 			
 			// Read specific web
 			IWebCrawlerHandler webCrawlerHandler = new WebCrawlerHandler(
 					data.isSpam(), notFoundDS, labeledDS,
 					warcDS);
-			
-			System.out.println("Insertando: " + data.getUrl());
 			
 			webCrawlerHandlers.put(FileHelper.getDomainNameFromURL(data.getUrl()), 
 					webCrawlerHandler);

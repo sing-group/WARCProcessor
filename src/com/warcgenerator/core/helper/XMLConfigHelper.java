@@ -57,18 +57,18 @@ public class XMLConfigHelper {
 					// Check if isSpam parameter exists
 					ds.setSpamOrHam(false);
 					if (dataSourceElement.getAttribute("isSpam") != null) {
-						System.out.println("isSpam no es nulo");
 						String isSpam = dataSourceElement.getAttribute("isSpam");
-						
-						System.out.println("isSpam es " + isSpam);
 						if (isSpam.toLowerCase().equals("true")) {
 							ds.setSpamOrHam(true);
-							
-							System.out.println("isSpam1!!!" + ds.isSpam());
 						} 
 					} 
 					
-					
+					if (dataSourceElement.getAttribute("maxElements") != null) {
+						String maxElements = dataSourceElement.getAttribute("maxElements");
+						int maxElementsInt = Integer.valueOf(maxElements);
+						// TODO Test if maxElementsInt is a number
+						ds.setSpamOrHam(true);
+					}
 					
 					//NodeList nodeList = dataSourceElement.getChildNodes();
 					NodeList dataSourceInfoNode = dataSourceNode.getChildNodes();

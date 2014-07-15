@@ -24,7 +24,6 @@ public class FileHelper {
 		if (urlTmp.indexOf("/") != -1) {
 			urlTmp = urlTmp.substring(0, urlTmp.indexOf("/"));
 		}
-		System.out.println("Cambiando la url a " + urlTmp);
 		return urlTmp;
 	}
 	

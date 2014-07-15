@@ -14,6 +14,6 @@ public class CorpusDSHandler extends DSHandler implements IDSHandler {
 	}
 
 	public void handle(DataBean data) {
-		System.out.println("Reading a CorpusDS");
+		System.out.println("Reading a CorpusDS...");
 	}
 }

@@ -36,58 +36,57 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
 		dsHandlers = ConfigHelper.getDSHandlers(config);
-		
+
 		// Create a output corpus with config
 		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
 			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
 		} else {
 			throw new OutCorpusCfgNotFoundException();
 		}
-		
+
 		// Corpus Path dirs
 		String dirs[] = { outputCorpusConfig.getOutputDir(),
 				outputCorpusConfig.getSpamDir(), outputCorpusConfig.getHamDir() };
 		System.out.println("Directorios:");
-		for(String dir:dirs) {
+		for (String dir : dirs) {
 			System.out.println(dir);
 		}
-		
+
 		FileHelper.createDirs(dirs);
 	}
 
-	public void generateCorpus() throws LogicException {		
-		// Generate wars
-		// Read sources
+	public void generateCorpus() throws LogicException {
+		// Init data structures
+		Set<String> urls = new HashSet<String>();
+		Map<String, IWebCrawlerHandler> webCrawlerHandlers = 
+				new HashMap<String, IWebCrawlerHandler>();
+		Map<String, DataSource> outputDS = 
+				new HashMap<String, DataSource>();
 
+		// Generate wars
 		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
 				outputCorpusConfig.getDomainsLabeledFilePath()));
 		IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
 				outputCorpusConfig.getDomainsNotFoundFilePath()));
-		
-		// Save 
-		Map<String, IWebCrawlerHandler> webCrawlerHandlers = 
-				new HashMap<String, IWebCrawlerHandler>();
-		Map<String, DataSource> outputDS =
-				new HashMap<String, DataSource>();
-		// Save references to the datasource output files
-		Set<String> urls = new HashSet<String>();
-		
+
+		// Get all DSHandlers for each DS
 		for (IDSHandler dsHandler : dsHandlers) {
-			dsHandler.toHandle(urls, webCrawlerHandlers, outputDS,
-					labeledDS, notFoundDS);
+			dsHandler.toHandle(urls, webCrawlerHandlers, outputDS, labeledDS,
+					notFoundDS);
 		}
-		
+
+		// Start crawling urls in batch
 		startWebCrawling(urls, webCrawlerHandlers);
-		
+
 		// Close all output datasources
-		for(DataSource aux:outputDS.values()) {
+		for (DataSource aux : outputDS.values()) {
 			aux.close();
 		}
-		
+
 		labeledDS.close();
 		notFoundDS.close();
 	}
-	
+
 	private void startWebCrawling(Set<String> urls,
 			Map<String, IWebCrawlerHandler> webCrawlerHandlers) {
 		config.getWebCrawlerCfgTemplate().setMaxDepthOfCrawling(0);
@@ -102,5 +101,5 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		// Start crawler
 		webCrawler.start();
 	}
-	
+
 }
