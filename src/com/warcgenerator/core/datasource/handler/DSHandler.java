@@ -38,17 +38,31 @@ public abstract class DSHandler implements IDSHandler {
 
 	}
 
+	public DataSourceConfig getDSConfig() {
+		return dsConfig;
+	}
+	
 	public abstract void handle(DataBean data);
 	
-	public void toHandle(Set<String> urls,
-			Map<String, IWebCrawlerHandler> webCrawlerHandlers,
+	public void toHandle(Set<String> urlsSpam,
+			Set<String> urlsHam,
+			Map<String, IWebCrawlerHandler> webCrawlerHandlersSpam,
+			Map<String, IWebCrawlerHandler> webCrawlerHandlersHam,
 			Map<String, DataSource> outputDS, 
 			IDataSource labeledDS,
 			IDataSource notFoundDS) {
 		DataBean data = null;
+		boolean stop = false;
+		Integer maxElements = dsConfig.getMaxElements();
+		
 		// Read a block from datasource
-		while ((data = ds.read()) != null) {
-			urls.add(data.getUrl());
+		while ((data = ds.read()) != null
+				&& !stop) {
+			// Check if there is a limit
+			if (maxElements != null) {
+				stop = maxElements == 0?true:false;
+				maxElements--;
+			}
 			
 			// Method to implement
 			handle(data);
@@ -69,9 +83,22 @@ public abstract class DSHandler implements IDSHandler {
 			IWebCrawlerHandler webCrawlerHandler = new WebCrawlerHandler(
 					data.isSpam(), notFoundDS, labeledDS,
 					warcDS);
-			
-			webCrawlerHandlers.put(FileHelper.getDomainNameFromURL(data.getUrl()), 
+
+			if (data.isSpam()) {
+				System.out.println("Saving handler spam: " + 
+						data.getUrl());
+				
+				urlsSpam.add(data.getUrl());
+				webCrawlerHandlersSpam.put(FileHelper.getDomainNameFromURL(data.getUrl()), 
+						webCrawlerHandler);
+			} else {
+				System.out.println("Saving handler ham: " + 
+						data.getUrl());
+				
+				urlsHam.add(data.getUrl());
+				webCrawlerHandlersHam.put(FileHelper.getDomainNameFromURL(data.getUrl()), 
 					webCrawlerHandler);
+			}
 		}
 	}
 

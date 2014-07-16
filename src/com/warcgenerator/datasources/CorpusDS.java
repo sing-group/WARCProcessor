@@ -51,6 +51,8 @@ public class CorpusDS extends DataSource implements IDataSource {
 				dsConfig.setSpamOrHam(DataSourceConfig.IS_SPAM);
 				currentDS = new WarcDS(dsConfig);
 				
+				System.out.println("leyendo spam!!");
+				
 				// Turn the outfile to the warc file name
 				this.getDataSourceConfig().setFilePath(f.getPath());
 			} else if (corpus.getHam().hasNext()) {

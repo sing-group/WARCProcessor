@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -94,12 +95,18 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		 * will reach the line after this only when crawling is finished.
 		 */
 		controller.start(Crawler4JAdapter.class, numberOfCrawlers);
-
+		
 		List<Object> crawlersLocalData = controller.getCrawlersLocalData();
 		for (Object localData : crawlersLocalData) {
 			if (localData instanceof Collection<?>) {
 				for (com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData : 
 						(Collection<com.warcgenerator.core.plugin.webcrawler.HtmlParseData>) localData) {
+					System.out.println("Parse data es: " + parseData.getUrl());
+					
+					for(String key:handlers.keySet()) {
+						System.out.println("key es :" + key);
+					}
+					
 					IWebCrawlerHandler handler = handlers.get(
 							FileHelper.getDomainNameFromURL(parseData.getUrl()));
 					handler.handle(parseData);
@@ -141,6 +148,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	 */
 	@Override
 	public void visit(Page page) {
+		
+		
 		String url = page.getWebURL().getURL();
 		logger.info("URL: " + url);
 		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData =

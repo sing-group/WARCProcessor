@@ -63,11 +63,15 @@ public class XMLConfigHelper {
 						} 
 					} 
 					
-					if (dataSourceElement.getAttribute("maxElements") != null) {
+					if (dataSourceElement.getAttribute("maxElements") != null
+							&& !dataSourceElement.getAttribute("maxElements").equals("")) {
+						
+						System.out.println("Max elements es: ..." + 
+								dataSourceElement.getAttribute("maxElements"));
+						
 						String maxElements = dataSourceElement.getAttribute("maxElements");
-						int maxElementsInt = Integer.valueOf(maxElements);
-						// TODO Test if maxElementsInt is a number
-						ds.setSpamOrHam(true);
+						// TODO Test if maxElements is a int number
+						ds.setMaxElements(Integer.valueOf(maxElements));
 					}
 					
 					//NodeList nodeList = dataSourceElement.getChildNodes();

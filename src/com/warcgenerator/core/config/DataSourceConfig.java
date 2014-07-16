@@ -14,6 +14,8 @@ public class DataSourceConfig {
 	private String filePath;
 	private String dsClassName;
 	private String handlerClassName;
+	// Max number of elements to get from datasource
+	private Integer maxElements;
 	
 	public DataSourceConfig() {}
 	
@@ -56,5 +58,13 @@ public class DataSourceConfig {
 
 	public void setHandlerClassName(String handlerClassName) {
 		this.handlerClassName = handlerClassName;
+	}
+
+	public Integer getMaxElements() {
+		return maxElements;
+	}
+
+	public void setMaxElements(Integer maxElements) {
+		this.maxElements = maxElements;
 	}
 }

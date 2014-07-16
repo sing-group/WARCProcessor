@@ -51,9 +51,12 @@ public class ConfigHelper {
 			for (DataSourceConfig ds : config.getDataSourceConfigs()) {
 				File dirSrc = new File(ds.getFilePath());
 				for (File f : dirSrc.listFiles()) {
+					System.out.println("Fichero es: " + f.getPath());
+					
 					DataSourceConfig specificDsConfig = new
 							 DataSourceConfig(f.getPath());
 					specificDsConfig.setSpamOrHam(ds.isSpam());
+					specificDsConfig.setMaxElements(ds.getMaxElements());
 					
 					Class<?> cArgs[] = { DataSourceConfig.class };
 					Class<?> clazz = Class.forName(ds.getDsClassName());

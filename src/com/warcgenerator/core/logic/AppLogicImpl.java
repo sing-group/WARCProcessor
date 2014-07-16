@@ -56,33 +56,78 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	}
 
 	public void generateCorpus() throws LogicException {
-		// Init data structures
-		Set<String> urls = new HashSet<String>();
-		Map<String, IWebCrawlerHandler> webCrawlerHandlers = 
-				new HashMap<String, IWebCrawlerHandler>();
-		Map<String, DataSource> outputDS = 
-				new HashMap<String, DataSource>();
-
 		// Generate wars
 		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
 				outputCorpusConfig.getDomainsLabeledFilePath()));
 		IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
-				outputCorpusConfig.getDomainsNotFoundFilePath()));
+				outputCorpusConfig.getDomainsNotFoundFilePath()));		
+		
+		// Init data structures
+		Set<String> urlsSpam = new HashSet<String>();
+		Set<String> urlsHam = new HashSet<String>();
+		Map<String, IWebCrawlerHandler> webCrawlerHandlersSpam = 
+				new HashMap<String, IWebCrawlerHandler>();
+		Map<String, IWebCrawlerHandler> webCrawlerHandlersHam = 
+				new HashMap<String, IWebCrawlerHandler>();
+		Map<String, DataSource> outputDS = 
+				new HashMap<String, DataSource>();
 
 		// Get all DSHandlers for each DS
+		// First the ham
 		for (IDSHandler dsHandler : dsHandlers) {
-			dsHandler.toHandle(urls, webCrawlerHandlers, outputDS, labeledDS,
-					notFoundDS);
+			System.out.println("dsHandler: " + dsHandler.getDSConfig().isSpam());
+			//if (dsHandler.getDSConfig().isSpam()) {
+				dsHandler.toHandle(urlsSpam,
+						urlsHam,
+						webCrawlerHandlersSpam,
+						webCrawlerHandlersHam,
+						outputDS, labeledDS,
+						notFoundDS);
+			//}
 		}
-
 		// Start crawling urls in batch
-		startWebCrawling(urls, webCrawlerHandlers);
+		for(String url:urlsSpam) {
+			System.out.println("URL SPAM: " + url);
+		}
+		startWebCrawling(urlsSpam, webCrawlerHandlersSpam);
+		// Start crawling urls in batch
+		for(String url:urlsHam) {
+			System.out.println("URL HAM: " + url);
+		}
+		startWebCrawling(urlsHam, webCrawlerHandlersHam);
 
 		// Close all output datasources
 		for (DataSource aux : outputDS.values()) {
 			aux.close();
 		}
 
+		
+		// Init data structures
+		/*urls = new HashSet<String>();
+		webCrawlerHandlers = new HashMap<String, IWebCrawlerHandler>();
+		outputDS = new HashMap<String, DataSource>();
+
+		// Get all DSHandlers for each DS
+		// First the ham
+		for (IDSHandler dsHandler : dsHandlers) {
+		
+			System.out.println("dsHandler2: " + dsHandler.getDSConfig().isSpam());
+			if (!dsHandler.getDSConfig().isSpam()) {
+				dsHandler.toHandle(urls, webCrawlerHandlers, outputDS, labeledDS,
+						notFoundDS);
+			}
+		}
+		// Start crawling urls in batch
+		startWebCrawling(urls, webCrawlerHandlers);
+
+		// Close all output datasources
+		for (DataSource aux : outputDS.values()) {
+			aux.close();
+		}*/
+
+		
+		
+		
 		labeledDS.close();
 		notFoundDS.close();
 	}
