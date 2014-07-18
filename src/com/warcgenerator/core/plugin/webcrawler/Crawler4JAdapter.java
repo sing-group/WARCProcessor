@@ -126,9 +126,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 						
 						StringBuilder warcFileName = new StringBuilder();
 						warcFileName.append(outputWarcPath.toString()).append(
-								FileHelper.getFileNameFromURL(
-										FileHelper.getDomainNameFromURL(parseData.getUrl())
-										)).append(".warc");
+								FileHelper.getOutputFileName(parseData.getUrl()));
 						
 						warcDS = new WarcDS(
 								new OutputWarcConfig(webCrawlerBean.isSpam(),

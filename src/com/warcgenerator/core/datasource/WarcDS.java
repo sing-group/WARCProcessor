@@ -158,9 +158,7 @@ public class WarcDS extends DataSource implements IDataSource {
 				
 					// Turn the out file to the warc file name
 					this.setOutputFilePath(
-							FileHelper.getFileNameFromURL(
-									FileHelper.getDomainNameFromURL(dataBean.getUrl())) + 
-							".warc");
+							FileHelper.getOutputFileName(dataBean.getUrl()));
 				}
 			}
 		} while (skip != false);

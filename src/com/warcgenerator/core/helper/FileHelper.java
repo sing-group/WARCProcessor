@@ -1,14 +1,19 @@
 package com.warcgenerator.core.helper;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
+
 import com.google.common.net.InternetDomainName;
+import com.warcgenerator.core.config.Constants;
 
 public class FileHelper {
 	/**
 	 * Create directories from an input array
+	 * @param dirs to create
 	 */
 	public static void createDirs(String[] dirs) {
 		for (String dir:dirs) {
@@ -16,6 +21,24 @@ public class FileHelper {
 			f.mkdirs();
 		}
 	}
+	
+	/**
+	 * Remove dirs from an input array
+	 * @param dirs to remove
+	 */
+	public static void removeDirsIfExist(String[] dirs) {
+		for (String dir:dirs) {
+			File f = new File(dir);
+			System.out.println("Deleting dir: " + dir);
+			try {
+				FileUtils.deleteDirectory(f);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	/**
 	 * Get the DomainName from a URL
 	 * @param url
@@ -59,5 +82,19 @@ public class FileHelper {
 		fileName = fileName.replace(":", "_");
 		fileName = fileName.replace(".", "_");
 		return fileName;
+	}
+	
+	/**
+	 * Get a file output name from a url domain 
+	 * @param url Domain
+	 * @return filename with url domain and output file extension
+	 */
+	public static String getOutputFileName(String url) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(FileHelper.getFileNameFromURL(
+				FileHelper.getDomainNameFromURL(url)))
+		.append(".")
+		.append(Constants.outputCorpusFileExtension);
+		return sb.toString();
 	}
 }

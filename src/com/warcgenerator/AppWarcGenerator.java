@@ -38,7 +38,7 @@ public class AppWarcGenerator {
 		} catch (WriteException e) {
 			System.out.println("Is not posible write in data source. Check permission.");
 		} catch (ConfigException e) {
-			System.out.println("Is not posible read configuration. Check config.xml"+e);
+			System.out.println("Is not posible read configuration. Check config.xml :"+e);
 		} catch (WarcException e) {
 			System.out.println(e);
 		}

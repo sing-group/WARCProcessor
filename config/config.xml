@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<configuration>
+<configuration
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="config.xsd"
+>
 	 <!-- Corpus configuration  -->
-	 <corpusDirPath>.\\out</corpusDirPath> 
+	 <corpusDirPath>.\\out</corpusDirPath>
 	 <spamDirName>_spam_</spamDirName>
 	 <hamDirName>_ham_</hamDirName>
 	 <domainsLabeledFileName>domains.labelled</domainsLabeledFileName>
 	 <domainsNotFoundFileName>domains.notFound</domainsNotFoundFileName>
 	 
 	 <!--  Others -->
+	 <flushOutputDir>true</flushOutputDir>
 	 <maxDepthOfCrawling>0</maxDepthOfCrawling>
+	 <numCrawlers>2</numCrawlers>
 	 <webCrawlerDirTmpStorePath>.</webCrawlerDirTmpStorePath>
 	 
 	 <!--  Data sources -->
@@ -29,7 +34,7 @@
 	 		<srcDirPath>.\\in\\corpus2</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
 	 	</dataSource>
-	 	<dataSource class="com.warcgenerator.datasources.ArffDS"
+	 	<!--  <dataSource class="com.warcgenerator.datasources.ArffDS"
 	 		maxElements="10" >
 	 		<customParams>
 	 			<spamTag>LABEL</spamTag>
@@ -53,6 +58,6 @@
 	 		</customParams>
 	 		<srcDirPath>.\\in\\csv</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
-	 	</dataSource>
+	 	</dataSource>-->
 	 </dataSources>
 </configuration>

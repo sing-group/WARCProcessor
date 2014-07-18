@@ -12,15 +12,6 @@ import java.util.List;
  * @author Miguel Callon
  */
 public class AppConfig {
-	// Default values
-	private final String CORPUS_DIR_PATH_DEFAULT = ".\\out";
-	private final String SPAM_DIR_NAME_DEFAULT = "_spam_";
-	private final String HAM_DIR_NAME_DEFAULT = "_ham_";
-	private final String DOMAINS_LABELED_FILE_NAME_DEFAULT = "domains.labelled";
-	private final String DOMAINS_NOTFOUND_FILE_NAME_DEFAULT = "domains.notFound";
-	private final String MAX_DEPTH_OF_CRAWLING_DEFAULT = "2";
-	private final String WEB_CRAWLER_DIR_TMP_STORE_PATH_DEFAULT = ".";
-
 	private OutputConfig outputConfig;
 	private List<DataSourceConfig> dataSourceConfigs;
 	private WebCrawlerConfig webCrawlerCfgTemplate;
@@ -29,7 +20,10 @@ public class AppConfig {
 	private String hamDirName;
 	private String domainsLabeledFileName;
 	private String domainsNotFoundFileName;
+	private Boolean flushOutputDir;
 	private String maxDepthOfCrawling;
+	private String numCrawlers;
+
 	private String webCrawlerTmpStorePath;
 
 	public AppConfig() {
@@ -37,17 +31,28 @@ public class AppConfig {
 	}
 
 	public void init() {
-		corpusDirPath = corpusDirPath.equals("")?CORPUS_DIR_PATH_DEFAULT:corpusDirPath;
-		spamDirName = spamDirName.equals("")?SPAM_DIR_NAME_DEFAULT:spamDirName;
-		hamDirName = hamDirName.equals("")?HAM_DIR_NAME_DEFAULT:hamDirName;
+		corpusDirPath = corpusDirPath.equals("")?
+				Constants.AppConfigConstants.CORPUS_DIR_PATH_DEFAULT:corpusDirPath;
+		spamDirName = spamDirName.equals("")?
+				Constants.AppConfigConstants.SPAM_DIR_NAME_DEFAULT:spamDirName;
+		hamDirName = hamDirName.equals("")?
+				Constants.AppConfigConstants.HAM_DIR_NAME_DEFAULT:hamDirName;
 		domainsLabeledFileName = domainsLabeledFileName.equals("")?
-				DOMAINS_LABELED_FILE_NAME_DEFAULT:domainsLabeledFileName;
+				Constants.AppConfigConstants.DOMAINS_LABELED_FILE_NAME_DEFAULT
+					:domainsLabeledFileName;
 		domainsNotFoundFileName = domainsNotFoundFileName.equals("")?
-				DOMAINS_NOTFOUND_FILE_NAME_DEFAULT:domainsNotFoundFileName;
+				Constants.AppConfigConstants.DOMAINS_NOTFOUND_FILE_NAME_DEFAULT
+				:domainsNotFoundFileName;
+		flushOutputDir = flushOutputDir.equals("")?
+				Constants.AppConfigConstants.FLASH_OUTPUT_DIR_DEFAULT: flushOutputDir;
 		maxDepthOfCrawling = maxDepthOfCrawling.equals("")?
-				MAX_DEPTH_OF_CRAWLING_DEFAULT:maxDepthOfCrawling;
+				Constants.AppConfigConstants.MAX_DEPTH_OF_CRAWLING_DEFAULT
+				:maxDepthOfCrawling;
+		numCrawlers = numCrawlers.equals("")?
+				Constants.AppConfigConstants.NUM_CRAWLERS_DEFAULT:numCrawlers;
 		webCrawlerTmpStorePath = webCrawlerTmpStorePath.equals("")?
-				WEB_CRAWLER_DIR_TMP_STORE_PATH_DEFAULT:webCrawlerTmpStorePath;		
+				Constants.AppConfigConstants.WEB_CRAWLER_DIR_TMP_STORE_PATH_DEFAULT
+				:webCrawlerTmpStorePath;		
 		
 		// Configure filepaths
 		String pathCorpus = corpusDirPath;
@@ -63,15 +68,24 @@ public class AppConfig {
 		// Web crawler template config
 		webCrawlerCfgTemplate = new WebCrawlerConfig();
 		// Set number of crawlers
-		// At the moment it is a fixed value
-		webCrawlerCfgTemplate.setNumberOfCrawlers(2);
+		Integer numCrawlersToInt = null;
+		try {
+			numCrawlersToInt = Integer.parseInt(numCrawlers);
+		} catch (NumberFormatException ex) {
+			numCrawlersToInt = Integer
+					.parseInt(Constants.AppConfigConstants.
+								MAX_DEPTH_OF_CRAWLING_DEFAULT);
+		}
+		webCrawlerCfgTemplate.setNumberOfCrawlers(numCrawlersToInt);
+		
 		// Set max depth of crawling
 		Integer maxDepthOfCrawlingToInt = null;
 		try {
 			maxDepthOfCrawlingToInt = Integer.parseInt(maxDepthOfCrawling);
 		} catch (NumberFormatException ex) {
 			maxDepthOfCrawlingToInt = Integer
-					.parseInt(MAX_DEPTH_OF_CRAWLING_DEFAULT);
+					.parseInt(Constants.AppConfigConstants.
+								MAX_DEPTH_OF_CRAWLING_DEFAULT);
 		}
 		
 		webCrawlerCfgTemplate.setMaxDepthOfCrawling(maxDepthOfCrawlingToInt);
@@ -158,6 +172,22 @@ public class AppConfig {
 		this.corpusDirPath = corpusDirPath;
 	}
 
+	public Boolean getFlushOutputDir() {
+		return flushOutputDir;
+	}
+
+	public void setFlushOutputDir(Boolean flushOutputDir) {
+		this.flushOutputDir = flushOutputDir;
+	}
+	
+	public String getNumCrawlers() {
+		return numCrawlers;
+	}
+
+	public void setNumCrawlers(String numCrawlers) {
+		this.numCrawlers = numCrawlers;
+	}
+	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("spamDirName:  ").append(spamDirName).append("\n");
@@ -166,8 +196,12 @@ public class AppConfig {
 				.append("\n");
 		sb.append("domainsNotFoundFileName:  ").append(domainsNotFoundFileName)
 				.append("\n");
+		sb.append("flushOutputDir:  ").append(flushOutputDir)
+				.append("\n");
 		sb.append("maxDepthOfCrawling:  ").append(maxDepthOfCrawling)
 				.append("\n");
+		sb.append("numCrawlers:  ").append(numCrawlers)
+		.append("\n");
 		sb.append("webCrawlerDirTmpStorePath:  ")
 				.append(webCrawlerTmpStorePath).append("\n");
 		return sb.toString();

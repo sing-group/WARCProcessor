@@ -45,6 +45,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		String dirs[] = { outputCorpusConfig.getOutputDir(),
 				outputCorpusConfig.getSpamDir(), outputCorpusConfig.getHamDir() };
 
+		// Delete directories
+		if (config.getFlushOutputDir()) {
+			FileHelper.removeDirsIfExist(dirs);
+		}
+		
 		FileHelper.createDirs(dirs);
 	}
 

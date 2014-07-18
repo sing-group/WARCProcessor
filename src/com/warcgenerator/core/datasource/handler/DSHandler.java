@@ -11,7 +11,8 @@ import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 
 /**
- *  
+ * Read the urls from the input datasources and
+ * get the information about urls to crawl. 
  * 
  * @author Miguel Callon
  *

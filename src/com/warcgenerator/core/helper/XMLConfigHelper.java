@@ -1,9 +1,17 @@
 package com.warcgenerator.core.helper;
 
 import java.io.File;
+import java.io.IOException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -14,11 +22,46 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.warcgenerator.core.config.AppConfig;
+import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.WarcDS;
+import com.warcgenerator.core.exception.config.ConfigException;
+import com.warcgenerator.core.exception.config.ValidateXMLSchemaException;
 
+/**
+ * Read the app configuration from xml config
+ * 
+ * @author Miguel Callon
+ *
+ */
 public class XMLConfigHelper {
 	private static Logger logger = Logger.getLogger(XMLConfigHelper.class);
+	
+	private static void validateSchema(Document document, String schemaFilePath) 
+			throws ValidateXMLSchemaException {
+		 // create a SchemaFactory capable of understanding WXS schemas
+	    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+	    // load a WXS schema, represented by a Schema instance
+	    Source schemaFile = new StreamSource(new File(schemaFilePath));
+	    Schema schema;
+		try {
+			schema = factory.newSchema(schemaFile);
+		} catch (SAXException e) {
+			throw new ValidateXMLSchemaException(e);
+		}
+
+	    // create a Validator instance, which can be used to validate an instance document
+	    Validator validator = schema.newValidator();
+
+	    // validate the DOM tree
+	    try {
+			validator.validate(new DOMSource(document));
+		} catch (SAXException e) {
+			throw new ValidateXMLSchemaException(e);
+		} catch (IOException e) {
+			throw new ValidateXMLSchemaException(e);
+		}
+	}
 	
 	public static void configure(String path, AppConfig config) {
 		try {
@@ -26,7 +69,10 @@ public class XMLConfigHelper {
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse(new File(path));
-
+			
+			// At the moment we are not to validate Scheme
+			validateSchema(doc, Constants.configSchemaFilePath);
+			
 			// normalize text representation
 			doc.getDocumentElement().normalize();
 			
@@ -37,8 +83,14 @@ public class XMLConfigHelper {
 					getValueFromElement(doc, "domainsLabeledFileName"));
 			config.setDomainsNotFoundFileName(
 					getValueFromElement(doc, "domainsNotFoundFileName"));
+			String flushOutputDir = getValueFromElement(doc, "flushOutputDir");
+			if (flushOutputDir != null) {
+				config.setFlushOutputDir(Boolean.valueOf(flushOutputDir));
+			}
 			config.setMaxDepthOfCrawling(
 					getValueFromElement(doc, "maxDepthOfCrawling"));
+			config.setNumCrawlers(
+					getValueFromElement(doc, "numCrawlers"));
 			config.setWebCrawlerTmpStorePath(
 					getValueFromElement(doc, "webCrawlerDirTmpStorePath"));
 			
@@ -99,19 +151,24 @@ public class XMLConfigHelper {
 			logger.error("** Parsing error" + ", line "
 					+ err.getLineNumber() + ", uri " + err.getSystemId());
 			logger.error(" " + err.getMessage());
+			throw new ConfigException(err);
 
 		} catch (SAXException e) {
-			Exception x = e.getException();
-			((x == null) ? e : x).printStackTrace();
-
+			throw new ConfigException(e);
 		} catch (Throwable t) {
-			t.printStackTrace();
+			throw new ConfigException(t);
 		}
 		// System.exit (0);
 
 	}// end of main
 	
 	
+	/**
+	 * Get value from first child node element
+	 * @param doc XML document
+	 * @param field Field to read
+	 * @return Value from the first child node element
+	 */
 	public static String getValueFromElement(Document doc, String field) {	
 		Element element = (Element) doc.getElementsByTagName(field).item(0);
 		NodeList textLNList = element.getChildNodes();

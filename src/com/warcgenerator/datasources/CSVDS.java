@@ -1,6 +1,5 @@
 package com.warcgenerator.datasources;
 
-import java.io.BufferedReader;
 import java.io.File;
 
 import org.apache.log4j.Logger;
@@ -21,7 +20,6 @@ public class CSVDS extends DataSource implements IDataSource {
 	
 	private CSVLoader loader;
 	private Instances data;
-	private BufferedReader reader;
 
 	private static Logger logger = Logger.getLogger(CSVDS.class);
 
