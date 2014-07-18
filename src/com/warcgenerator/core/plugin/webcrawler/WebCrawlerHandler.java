@@ -21,7 +21,6 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 	}
 
 	public void handle(HtmlParseData htmlParseData) {
-		// System.out.println("html es:" + htmlParseData.getHtml());
 		if (htmlParseData.getUrl() != null && 
 				htmlParseData.getHttpStatus() == HttpStatus.SC_OK) {
 			DataBean bean = new DataBean();

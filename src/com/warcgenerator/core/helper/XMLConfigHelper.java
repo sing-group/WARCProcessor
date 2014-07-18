@@ -5,6 +5,7 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,21 +15,21 @@ import org.xml.sax.SAXParseException;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.core.datasource.WarcDS;
 
 public class XMLConfigHelper {
+	private static Logger logger = Logger.getLogger(XMLConfigHelper.class);
+	
 	public static void configure(String path, AppConfig config) {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-			System.out.println("Parse xml: " + path);
 			Document doc = docBuilder.parse(new File(path));
 
 			// normalize text representation
 			doc.getDocumentElement().normalize();
-			System.out.println("Root element of the doc is "
-					+ doc.getDocumentElement().getNodeName());
-
+			
 			config.setCorpusDirPath(getValueFromElement(doc, "corpusDirPath"));
 			config.setSpamDirName(getValueFromElement(doc, "spamDirName"));
 			config.setHamDirName(getValueFromElement(doc, "hamDirName"));
@@ -44,7 +45,7 @@ public class XMLConfigHelper {
 			// Read datasources
 			NodeList listOfDS = doc.getElementsByTagName("dataSource");
 			int totalDS = listOfDS.getLength();
-			System.out.println("Total no of datasouces : " + totalDS);
+			logger.info("Total no of datasouces : " + totalDS);
 
 			for (int s = 0; s < listOfDS.getLength(); s++) {
 				Node dataSourceNode = listOfDS.item(s);
@@ -65,10 +66,6 @@ public class XMLConfigHelper {
 					
 					if (dataSourceElement.getAttribute("maxElements") != null
 							&& !dataSourceElement.getAttribute("maxElements").equals("")) {
-						
-						System.out.println("Max elements es: ..." + 
-								dataSourceElement.getAttribute("maxElements"));
-						
 						String maxElements = dataSourceElement.getAttribute("maxElements");
 						// TODO Test if maxElements is a int number
 						ds.setMaxElements(Integer.valueOf(maxElements));
@@ -76,19 +73,32 @@ public class XMLConfigHelper {
 					
 					//NodeList nodeList = dataSourceElement.getChildNodes();
 					NodeList dataSourceInfoNode = dataSourceNode.getChildNodes();
-					ds.setFilePath(((Node)dataSourceInfoNode.item(1)).getTextContent().trim());
-					ds.setHandlerClassName(((Node)dataSourceInfoNode.item(3)).getTextContent().trim());
 					
-					System.out.println("FilePath is " + ds.getFilePath());
-					System.out.println("Handler is " + ds.getHandlerClassName());
+					for (int i=0; i < dataSourceInfoNode.getLength(); i++) {
+						Node nodeAux = (Node)dataSourceInfoNode.item(i);
+						if (nodeAux.getNodeName().equals("customParams")) {
+							NodeList customParamsInfoNode = nodeAux.getChildNodes();
+							for(int j=0; j < customParamsInfoNode.getLength(); j++) {
+								Node nodeCustomParamAux = (Node)customParamsInfoNode.item(j);
+								ds.getCustomParams().put(nodeCustomParamAux.getNodeName(),
+										nodeCustomParamAux.getTextContent().trim());
+							}
+						} else if (nodeAux.getNodeName().equals("srcDirPath")) {
+							ds.setFilePath(nodeAux.getTextContent().trim());
+						} else if (nodeAux.getNodeName().equals("handler")) {
+							ds.setHandlerClassName(nodeAux.getTextContent().trim());
+						}
+					}
+					
+					logger.info(ds);
 					
 					config.getDataSourceConfigs().add(ds);
 				}
 			}
 		} catch (SAXParseException err) {
-			System.out.println("** Parsing error" + ", line "
+			logger.error("** Parsing error" + ", line "
 					+ err.getLineNumber() + ", uri " + err.getSystemId());
-			System.out.println(" " + err.getMessage());
+			logger.error(" " + err.getMessage());
 
 		} catch (SAXException e) {
 			Exception x = e.getException();

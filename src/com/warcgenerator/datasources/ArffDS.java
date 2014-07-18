@@ -19,6 +19,9 @@ import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 
 public class ArffDS extends DataSource implements IDataSource {
+	private static final String LABEL_TAG = "spamTag";
+	private static final String URL_TAG = "urlTag";
+	
 	private ArffReader arff;
 	private Instances data;
 	private BufferedReader reader;
@@ -35,7 +38,7 @@ public class ArffDS extends DataSource implements IDataSource {
 		super(dsConfig);
 
 		try {
-			logger.info("Openning Arff file: "
+			logger.info("Opening Arff file: "
 					+ this.getDataSourceConfig().getFilePath());
 
 			reader = new BufferedReader(new FileReader(this
@@ -56,7 +59,6 @@ public class ArffDS extends DataSource implements IDataSource {
 	}
 
 	public DataBean read() throws DSException {
-		logger.info("Reading datasource...");
 		DataBean dataBean = null;
 
 		Instance inst;
@@ -67,13 +69,15 @@ public class ArffDS extends DataSource implements IDataSource {
 
 				boolean isSpam = false;
 				String label = inst.stringValue(inst.dataset().attribute(
-						"LABEL"));
+						this.getDataSourceConfig().getCustomParams().
+						get(LABEL_TAG)));
 				if (label.toLowerCase().equals("spam")) {
 					isSpam = true;
 				}
 
 				String url = inst.stringValue(inst.dataset()
-						.attribute("URL"));
+						.attribute(this.getDataSourceConfig().getCustomParams().
+						get(URL_TAG)));
 				// Removing the string URL_ before the useful data
 				if (url.matches("URL_(.*)")) {
 					url = url.substring(4, url.length());
@@ -86,11 +90,6 @@ public class ArffDS extends DataSource implements IDataSource {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		/*
-		 * if (ar != null) { dataBean = new WarcBean(ar); //
-		 * System.out.println("databean: " + dataBean.getData()); }
-		 */
 
 		return dataBean;
 	}

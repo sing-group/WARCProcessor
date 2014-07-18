@@ -17,6 +17,8 @@ import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 
 public class CSVDS extends DataSource implements IDataSource {
+	private static final String URL_COL_NUM = "urlColNum";
+	
 	private CSVLoader loader;
 	private Instances data;
 	private BufferedReader reader;
@@ -46,8 +48,6 @@ public class CSVDS extends DataSource implements IDataSource {
 				
 			data = loader.getDataSet();
 			
-			System.out.println("data es " + data);
-			
 			// setting class attribute if the data format does not provide this
 			// information
 			// For example, the XRFF format saves the class attribute
@@ -59,13 +59,10 @@ public class CSVDS extends DataSource implements IDataSource {
 	}
 
 	public DataBean read() throws DSException {
-		System.out.println("Leyendo datasource!!");
 		DataBean dataBean = null;
 
 		Instance inst;
 		inst = data.firstInstance();
-		System.out.println("primera instancia: " + inst);
-			
 		
 		if (inst != null) {
 			//data.add(inst);
@@ -77,7 +74,10 @@ public class CSVDS extends DataSource implements IDataSource {
 				isSpam = true;
 			}*/
 
-			String url = inst.stringValue(inst.dataset().attribute(0));
+			int urlColNum = Integer.valueOf(this.getDataSourceConfig().
+						getCustomParams().get(URL_COL_NUM));
+			
+			String url = inst.stringValue(inst.dataset().attribute(urlColNum));
 
 			dataBean = new DataBean();
 			dataBean.setUrl(url);
@@ -85,11 +85,6 @@ public class CSVDS extends DataSource implements IDataSource {
 		
 			data.delete(0);
 		}
-		
-		/*
-		 * if (ar != null) { dataBean = new WarcBean(ar); //
-		 * System.out.println("databean: " + dataBean.getData()); }
-		 */
 
 		return dataBean;
 	}

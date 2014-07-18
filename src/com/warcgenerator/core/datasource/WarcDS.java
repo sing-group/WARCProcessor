@@ -26,8 +26,11 @@ import com.warcgenerator.core.exception.datasource.CloseException;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.WriteException;
+import com.warcgenerator.core.helper.FileHelper;
 
 public class WarcDS extends DataSource implements IDataSource {
+	private static final String URL_TAG = "urlTag";
+	
 	@SuppressWarnings("unused")
 	private OutputWarcConfig config;
 	private WARCWriter writer;
@@ -51,8 +54,6 @@ public class WarcDS extends DataSource implements IDataSource {
 	
 			archIt = reader.iterator();
 		} catch (IOException e) {
-			System.out.println("excepcion " + e);
-
 			throw new OpenException(e);
 		}
 	}
@@ -132,22 +133,38 @@ public class WarcDS extends DataSource implements IDataSource {
 	}
 
 	public DataBean read() throws DSException {
-		System.out.println("Leyendo datasource!!");
 		DataBean dataBean = null;
 		ArchiveRecord ar = null;
-		if (archIt.hasNext()) {
-			ar = archIt.next();
-		}
-		if (ar != null) {
-			// Get the filename
-			String url = (String) ar.getHeader()
-					.getHeaderFields().get("WARC-Filename");
-			dataBean = new DataBean();
-			dataBean.setUrl(url);
-			dataBean.setSpam(this.getDataSourceConfig().isSpam());
-			//System.out.println("databean: " + dataBean.getData());
-		}
+		boolean skip = false;
 		
+		do {
+			skip = false;
+			if (archIt.hasNext()) {
+				ar = archIt.next();
+			}
+			if (ar != null) {
+				// Get the filename
+				String url = (String) ar.getHeader()
+						.getHeaderFields().get(this.getDataSourceConfig().getCustomParams()
+								.get(URL_TAG));
+				if (url == null || url.equals("")) {
+					skip = true;
+				}
+				
+				if (skip == false) {
+					dataBean = new DataBean();
+					dataBean.setUrl(url);
+					dataBean.setSpam(this.getDataSourceConfig().isSpam());
+				
+					// Turn the out file to the warc file name
+					this.setOutputFilePath(
+							FileHelper.getFileNameFromURL(
+									FileHelper.getDomainNameFromURL(dataBean.getUrl())) + 
+							".warc");
+				}
+			}
+		} while (skip != false);
+			
 		return dataBean;
 	}
 

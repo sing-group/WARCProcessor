@@ -39,7 +39,6 @@ public class CorpusDS extends DataSource implements IDataSource {
 	}
 
 	public DataBean read() throws DSException {
-		logger.info("Reading datasource...");
 		DataBean dataBean = null;
 		DataSourceConfig dsConfig = null;
 
@@ -49,21 +48,23 @@ public class CorpusDS extends DataSource implements IDataSource {
 				File f = corpus.getSpam().next();
 				dsConfig.setFilePath(f.getPath());
 				dsConfig.setSpamOrHam(DataSourceConfig.IS_SPAM);
+				dsConfig.setCustomParams(this.getDataSourceConfig().getCustomParams());
 				currentDS = new WarcDS(dsConfig);
 				
-				System.out.println("leyendo spam!!");
-				
 				// Turn the outfile to the warc file name
-				this.getDataSourceConfig().setFilePath(f.getPath());
+				// this.getDataSourceConfig().setFilePath(currentDS.getDataSourceConfig().
+				//		getFilePath());
 			} else if (corpus.getHam().hasNext()) {
 				dsConfig = new DataSourceConfig();
 				File f = corpus.getHam().next();
 				dsConfig.setFilePath(f.getPath());
 				dsConfig.setSpamOrHam(DataSourceConfig.IS_HAM);
+				dsConfig.setCustomParams(this.getDataSourceConfig().getCustomParams());
 				currentDS = new WarcDS(dsConfig);
 				
 				// Turn the outfile to the warc file name
-				this.getDataSourceConfig().setFilePath(f.getPath());
+				// this.getDataSourceConfig().setFilePath(currentDS.getDataSourceConfig().
+				//		getFilePath());
 			}
 		}
 

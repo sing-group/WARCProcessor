@@ -26,7 +26,6 @@ public class CorpusFileBean {
 
 		File f = new File(spamPath);
 		for (File faux : f.listFiles()) {
-			System.out.println("spam: " + faux.toString());
 			spamFilesList.add(faux);
 		}
 		f = new File(hamPath);
@@ -35,9 +34,6 @@ public class CorpusFileBean {
 		}
 		spamFiles = spamFilesList.iterator();
 		hamFiles = hamFilesList.iterator();
-		
-		System.out.println("spam file: " + spamPath + "\n");
-		System.out.println("ham file: " + hamPath + "\n");
 	}
 
 	public Spam getSpam() {

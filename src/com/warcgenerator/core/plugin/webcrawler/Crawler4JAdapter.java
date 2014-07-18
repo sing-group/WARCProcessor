@@ -1,15 +1,18 @@
 package com.warcgenerator.core.plugin.webcrawler;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.config.WebCrawlerConfig;
+import com.warcgenerator.core.datasource.DataSource;
+import com.warcgenerator.core.datasource.WarcDS;
 import com.warcgenerator.core.exception.plugin.PluginException;
 import com.warcgenerator.core.helper.FileHelper;
 
@@ -26,6 +29,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	private CrawlController controller;
 	private Map<String, IWebCrawlerHandler> handlers;
+	private WebCrawlerBean webCrawlerBean;
 	private int numberOfCrawlers;
 	private Map<String, com.warcgenerator.core.plugin.webcrawler.HtmlParseData> parseDataMap;
 	
@@ -42,12 +46,15 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	public Crawler4JAdapter() {
 		parseDataMap = new HashMap<String, 
 				com.warcgenerator.core.plugin.webcrawler.HtmlParseData>();
+		handlers = new HashMap<String, IWebCrawlerHandler>();
 	}
 
 	public Crawler4JAdapter(WebCrawlerConfig configWC,
-			Map<String, IWebCrawlerHandler> handlers) throws PluginException {
+			WebCrawlerBean webCrawlerBean
+			) throws PluginException {
 		super();
-		this.handlers = handlers;
+		this.handlers = new HashMap<String, IWebCrawlerHandler>();
+		this.webCrawlerBean = webCrawlerBean;
 		String crawlStorageFolder = configWC.getStorePath();
 		numberOfCrawlers = configWC.getNumberOfCrawlers();
 
@@ -59,7 +66,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		 * unlimited depth
 		 */
 		config.setMaxDepthOfCrawling(configWC.getMaxDepthOfCrawling());
-
+		
 		/*
 		 * Instantiate the controller for this crawl.
 		 */
@@ -80,9 +87,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		 * URLs that are fetched and then the crawler starts following links
 		 * which are found in these pages
 		 */
-		// controller.addSeed("http://www.ics.uci.edu/~welling/");
-		// controller.addSeed("http://www.ics.uci.edu/~lopes/");
-		
 		for (String url:configWC.getUrls()) {
 			controller.addSeed(url);
 		}
@@ -96,22 +100,63 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		 */
 		controller.start(Crawler4JAdapter.class, numberOfCrawlers);
 		
+		Map<String, DataSource> outputDS = 
+				new HashMap<String, DataSource>();
+		
 		List<Object> crawlersLocalData = controller.getCrawlersLocalData();
 		for (Object localData : crawlersLocalData) {
 			if (localData instanceof Collection<?>) {
 				for (com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData : 
 						(Collection<com.warcgenerator.core.plugin.webcrawler.HtmlParseData>) localData) {
-					System.out.println("Parse data es: " + parseData.getUrl());
-					
-					for(String key:handlers.keySet()) {
-						System.out.println("key es :" + key);
-					}
-					
 					IWebCrawlerHandler handler = handlers.get(
 							FileHelper.getDomainNameFromURL(parseData.getUrl()));
+					
+					DataSource warcDS = 
+							outputDS.get(FileHelper.getDomainNameFromURL(parseData.getUrl()));
+					if (warcDS == null) {
+						StringBuilder outputWarcPath = new StringBuilder();
+						if (webCrawlerBean.isSpam()) {
+							outputWarcPath.append(webCrawlerBean.
+									getOutputCorpusConfig().getSpamDir());
+						} else {
+							outputWarcPath.append(webCrawlerBean.
+									getOutputCorpusConfig().getHamDir());
+						}
+						outputWarcPath.append(File.separator);
+						
+						StringBuilder warcFileName = new StringBuilder();
+						warcFileName.append(outputWarcPath.toString()).append(
+								FileHelper.getFileNameFromURL(
+										FileHelper.getDomainNameFromURL(parseData.getUrl())
+										)).append(".warc");
+						
+						warcDS = new WarcDS(
+								new OutputWarcConfig(webCrawlerBean.isSpam(),
+										warcFileName.toString()));
+						
+						outputDS.put(FileHelper.getDomainNameFromURL(parseData.getUrl()),
+								warcDS);
+					}
+					
+					if (handler == null) {
+						handler = new WebCrawlerHandler(
+							webCrawlerBean.isSpam(),
+							webCrawlerBean.getDomainsNotFoundDS(), 
+							webCrawlerBean.getDomainsLabeledDS(),
+							warcDS);
+						
+						handlers.put(FileHelper.getDomainNameFromURL(parseData.getUrl()),
+									handler);
+					}
+					
 					handler.handle(parseData);
 				}
 			}
+		}
+		
+		// Close all output datasources
+		for (DataSource aux : outputDS.values()) {
+					aux.close();
 		}
 	}
 

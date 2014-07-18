@@ -51,13 +51,9 @@ class AppWarc {
 		// Using XML config instead of properties
 		XMLConfigHelper.configure(pathConfig, config);
 		config.init();
-		System.out.println("config es: " + config);
 		
-		// Get data sources
-		/*config.setDataSourceConfigs(
-				ConfigHelper.getDataSources(config));*/
+		logger.info("-- AppConfig --\n" + config);
 		logger.info("Configuration loaded successfully");
-
 		logic = new AppLogicImpl(config);
 	}
 
