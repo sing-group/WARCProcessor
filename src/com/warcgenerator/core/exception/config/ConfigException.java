@@ -22,4 +22,8 @@ public class ConfigException extends WarcException {
 		super(e);
 	}
 	
+	public ConfigException(String message) {
+		super(message);
+	}
+	
 }

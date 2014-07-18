@@ -25,24 +25,28 @@ public class ConfigHelper {
 		try {
 			for (DataSourceConfig ds : config.getDataSourceConfigs()) {
 				File dirSrc = new File(ds.getFilePath());
-				for (File f : dirSrc.listFiles()) {
-					DataSourceConfig specificDsConfig = new
-							 DataSourceConfig(f.getPath());
-					specificDsConfig.setSpamOrHam(ds.isSpam());
-					specificDsConfig.setMaxElements(ds.getMaxElements());
-					specificDsConfig.setCustomParams(ds.getCustomParams());
-					
-					Class<?> cArgs[] = { DataSourceConfig.class };
-					Class<?> clazz = Class.forName(ds.getDsClassName());
-					Constructor<?> ctor = clazz.getConstructor(cArgs);
-					IDataSource dsSource = (DataSource) ctor.newInstance(
-							specificDsConfig);
-
-					Class<?> cArgs2[] = { IDataSource.class, AppConfig.class };
-					Class<?> clazz2 = Class.forName(ds.getHandlerClassName());
-					Constructor<?> ctor2 = clazz2.getConstructor(cArgs2);
-					dSHandlerList.add((IDSHandler) ctor2.newInstance(dsSource,
-							config));
+				if (dirSrc.exists()) {
+					for (File f : dirSrc.listFiles()) {
+						DataSourceConfig specificDsConfig = new
+								 DataSourceConfig(f.getPath());
+						specificDsConfig.setSpamOrHam(ds.isSpam());
+						specificDsConfig.setMaxElements(ds.getMaxElements());
+						specificDsConfig.setCustomParams(ds.getCustomParams());
+						
+						Class<?> cArgs[] = { DataSourceConfig.class };
+						Class<?> clazz = Class.forName(ds.getDsClassName());
+						Constructor<?> ctor = clazz.getConstructor(cArgs);
+						IDataSource dsSource = (DataSource) ctor.newInstance(
+								specificDsConfig);
+	
+						Class<?> cArgs2[] = { IDataSource.class, AppConfig.class };
+						Class<?> clazz2 = Class.forName(ds.getHandlerClassName());
+						Constructor<?> ctor2 = clazz2.getConstructor(cArgs2);
+						dSHandlerList.add((IDSHandler) ctor2.newInstance(dsSource,
+								config));
+					}
+				} else {
+					throw new LoadDataSourceException("Path not found: " + dirSrc);
 				}
 			}
 		} catch (ClassNotFoundException e) {

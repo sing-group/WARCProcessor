@@ -1,3 +1,11 @@
+--> Version 2
+
+- Añadido soporte para nuevos formatos de entrada: Arff, CSV, Corpus Warc
+- Modificado el fichero de configuracion de la aplicacion para personalizar los
+  origenes de datos
+
+Dependencias
+-------------------------------------------------------------------------------
 # Dependencias crawler4j
 httpcore-4.2.2.jar
 commons-logging-1.1.1.jar

@@ -19,22 +19,15 @@
 	 
 	 <!--  Data sources -->
 	 <dataSources>
-	 	<!--  <dataSource class="com.warcgenerator.datasources.CorpusDS">
-	 		<customParams>
-	 			<urlTag>WARC-Filename</urlTag>
-	 		</customParams>
-	 		<srcDirPath>.\\in\\corpus</srcDirPath>
-	 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
-	 	</dataSource> -->
-	 	<dataSource class="com.warcgenerator.datasources.CorpusDS" 
+	 	 <dataSource class="com.warcgenerator.datasources.CorpusDS" 
 	 		maxElements="10" >
 	 		<customParams>
 	 			<urlTag>WARC-Target-URI</urlTag>
 	 		</customParams>
-	 		<srcDirPath>.\\in\\corpus2</srcDirPath>
+	 		<srcDirPath>.\\in\\corpus</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
 	 	</dataSource>
-	 	<!--  <dataSource class="com.warcgenerator.datasources.ArffDS"
+	 	<dataSource class="com.warcgenerator.datasources.ArffDS"
 	 		maxElements="10" >
 	 		<customParams>
 	 			<spamTag>LABEL</spamTag>
@@ -58,6 +51,6 @@
 	 		</customParams>
 	 		<srcDirPath>.\\in\\csv</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
-	 	</dataSource>-->
+	 	</dataSource>
 	 </dataSources>
 </configuration>

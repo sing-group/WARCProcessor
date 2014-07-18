@@ -14,4 +14,8 @@ public class WarcException extends RuntimeException{
 	public WarcException(Throwable e) {
 		super(e);
 	}
+	
+	public WarcException(String message) {
+		super(message);
+	}
 }

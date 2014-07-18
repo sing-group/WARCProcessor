@@ -19,4 +19,8 @@ public class LoadDataSourceException extends ConfigException {
 	public LoadDataSourceException(Throwable e) {
 		super(e);
 	}
+	
+	public LoadDataSourceException(String message) {
+		super(message);
+	}
 }

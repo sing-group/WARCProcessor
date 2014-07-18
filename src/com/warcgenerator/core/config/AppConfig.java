@@ -71,6 +71,11 @@ public class AppConfig {
 		Integer numCrawlersToInt = null;
 		try {
 			numCrawlersToInt = Integer.parseInt(numCrawlers);
+			if (numCrawlersToInt < 1) {
+				numCrawlersToInt = Integer
+					.parseInt(Constants.AppConfigConstants.
+								MAX_DEPTH_OF_CRAWLING_DEFAULT);
+			}
 		} catch (NumberFormatException ex) {
 			numCrawlersToInt = Integer
 					.parseInt(Constants.AppConfigConstants.
@@ -82,6 +87,11 @@ public class AppConfig {
 		Integer maxDepthOfCrawlingToInt = null;
 		try {
 			maxDepthOfCrawlingToInt = Integer.parseInt(maxDepthOfCrawling);
+			if (maxDepthOfCrawlingToInt < -1) {
+				maxDepthOfCrawlingToInt = Integer
+						.parseInt(Constants.AppConfigConstants.
+						MAX_DEPTH_OF_CRAWLING_DEFAULT);
+			}
 		} catch (NumberFormatException ex) {
 			maxDepthOfCrawlingToInt = Integer
 					.parseInt(Constants.AppConfigConstants.

@@ -1,9 +1,11 @@
 package com.warcgenerator.core.datasource;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +20,10 @@ import org.archive.io.warc.WARCWriter;
 import org.archive.io.warc.WARCWriterPoolSettings;
 import org.archive.uid.RecordIDGenerator;
 import org.archive.uid.UUIDGenerator;
+import org.archive.util.ArchiveUtils;
+import org.archive.util.anvl.ANVLRecord;
 
+import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.datasource.bean.DataBean;
@@ -170,8 +175,16 @@ public class WarcDS extends DataSource implements IDataSource {
 			// Write a warcinfo record with description about how this WARC
 			// was made.
 			try {
-				writer.writeWarcinfoRecord(bean.getUrl(),
-						bean.getData());
+				InputStream is = new ByteArrayInputStream(bean.getData().
+		            		getBytes(Constants.outputEnconding));
+				
+				ANVLRecord headers = new ANVLRecord(1);
+			    //headers.addLabelValue("mietiqueta", "127.0.0.1");
+			    writer.writeResourceRecord(bean.getUrl(),
+			                ArchiveUtils.get14DigitDate(), Constants.outputContentType,
+			                headers, is, is.available());
+			
+			    is.close();
 			} catch (IOException e) {
 				throw new WriteException(e);
 			}
