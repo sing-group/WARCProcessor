@@ -12,7 +12,7 @@
 	 <domainsNotFoundFileName>domains.notFound</domainsNotFoundFileName>
 	 
 	 <!--  Others -->
-	 <flushOutputDir>true</flushOutputDir>
+	 <flushOutputDir>false</flushOutputDir>
 	 <maxDepthOfCrawling>0</maxDepthOfCrawling>
 	 <numCrawlers>2</numCrawlers>
 	 <webCrawlerDirTmpStorePath>.</webCrawlerDirTmpStorePath>
@@ -23,6 +23,8 @@
 	 		maxElements="10" >
 	 		<customParams>
 	 			<urlTag>WARC-Target-URI</urlTag>
+	 			<spamDir>_spam_</spamDir>
+	 			<hamDir>_ham_</hamDir>
 	 		</customParams>
 	 		<srcDirPath>.\\in\\corpus</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>

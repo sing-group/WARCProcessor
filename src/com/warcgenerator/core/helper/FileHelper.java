@@ -1,6 +1,7 @@
 package com.warcgenerator.core.helper;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -11,6 +12,8 @@ import com.google.common.net.InternetDomainName;
 import com.warcgenerator.core.config.Constants;
 
 public class FileHelper {
+	private static FileFilter generalFileFilter; 
+	
 	/**
 	 * Create directories from an input array
 	 * @param dirs to create
@@ -96,5 +99,23 @@ public class FileHelper {
 		.append(".")
 		.append(Constants.outputCorpusFileExtension);
 		return sb.toString();
+	}
+	
+	public static FileFilter getGeneralFileFilter() {
+		if (generalFileFilter == null) {
+			generalFileFilter = new FileFilter() {
+			    @Override
+			    public boolean accept(File file) {
+			        return !file.isHidden();
+			    }};
+		}
+		
+		return generalFileFilter;
+		
+		/*return new FileFilter() {
+		    @Override
+		    public boolean accept(File file) {
+		        return !file.isHidden();
+		    }};*/
 	}
 }

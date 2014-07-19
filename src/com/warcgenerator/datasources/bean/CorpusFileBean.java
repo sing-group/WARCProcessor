@@ -5,31 +5,43 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.core.helper.FileHelper;
+
 /**
  * Bean to store data about a Corpus file
  * @author Miguel Callon
  */
 public class CorpusFileBean {
+	private final String SPAM_DIR = "spamDir";
+	private final String HAM_DIR = "hamDir";
+	
 	private Iterator<File> spamFiles;
 	private Iterator<File> hamFiles;
 	private Spam spam;
 	private Ham ham;
 
-	public CorpusFileBean(String filePath) {
-		String spamPath = filePath + File.separator + "_spam_";
-		String hamPath = filePath + File.separator + "_ham_";
+	public CorpusFileBean(String filePath, DataSourceConfig dsConfig) {
+		StringBuilder spamPath = new StringBuilder(filePath).
+				append(File.separator).
+				append(dsConfig.getCustomParams().get(SPAM_DIR));
+		StringBuilder hamPath = new StringBuilder(filePath).
+				append(File.separator).
+				append(dsConfig.getCustomParams().get(HAM_DIR));
 		spam = new Spam();
 		ham = new Ham();
 		
 		List<File> spamFilesList = new ArrayList<File>();
 		List<File> hamFilesList = new ArrayList<File>();
 
-		File f = new File(spamPath);
-		for (File faux : f.listFiles()) {
+		File f = new File(spamPath.toString());
+		for (File faux : f.listFiles(
+				FileHelper.getGeneralFileFilter())) {
 			spamFilesList.add(faux);
 		}
-		f = new File(hamPath);
-		for (File faux : f.listFiles()) {
+		f = new File(hamPath.toString());
+		for (File faux : f.listFiles(
+				FileHelper.getGeneralFileFilter())) {
 			hamFilesList.add(faux);
 		}
 		spamFiles = spamFilesList.iterator();

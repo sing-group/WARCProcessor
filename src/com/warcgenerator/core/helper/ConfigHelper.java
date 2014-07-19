@@ -26,7 +26,8 @@ public class ConfigHelper {
 			for (DataSourceConfig ds : config.getDataSourceConfigs()) {
 				File dirSrc = new File(ds.getFilePath());
 				if (dirSrc.exists()) {
-					for (File f : dirSrc.listFiles()) {
+					for (File f : dirSrc.listFiles(
+							FileHelper.getGeneralFileFilter())) {
 						DataSourceConfig specificDsConfig = new
 								 DataSourceConfig(f.getPath());
 						specificDsConfig.setSpamOrHam(ds.isSpam());
@@ -38,7 +39,7 @@ public class ConfigHelper {
 						Constructor<?> ctor = clazz.getConstructor(cArgs);
 						IDataSource dsSource = (DataSource) ctor.newInstance(
 								specificDsConfig);
-	
+						
 						Class<?> cArgs2[] = { IDataSource.class, AppConfig.class };
 						Class<?> clazz2 = Class.forName(ds.getHandlerClassName());
 						Constructor<?> ctor2 = clazz2.getConstructor(cArgs2);
@@ -62,6 +63,7 @@ public class ConfigHelper {
 		} catch (IllegalArgumentException e) {
 			throw new LoadDataSourceException(e);
 		} catch (InvocationTargetException e) {
+			e.printStackTrace();
 			throw new LoadDataSourceException(e);
 		}
 		
