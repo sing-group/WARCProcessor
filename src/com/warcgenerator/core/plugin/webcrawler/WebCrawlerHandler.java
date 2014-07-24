@@ -23,10 +23,15 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 	public void handle(HtmlParseData htmlParseData) {
 		if (htmlParseData.getUrl() != null && 
 				htmlParseData.getHttpStatus() == HttpStatus.SC_OK) {
+			// Es un fichero de tipo warc
+			// Busca el fichero warc al que pertenece la url
+			
+			
 			DataBean bean = new DataBean();
 			bean.setData(htmlParseData.getHtml());
 			bean.setUrl(htmlParseData.getUrl());
 			bean.setSpam(this.isSpam);
+			
 			warcDS.write(bean);
 			writeLabeled(htmlParseData.getUrl(), this.isSpam);
 		} else {

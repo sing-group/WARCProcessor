@@ -19,7 +19,8 @@
 	 
 	 <!--  Data sources -->
 	 <dataSources>
-	 	 <dataSource class="com.warcgenerator.datasources.CorpusDS" 
+	 	 <dataSource name="CorpusDS" 
+	 	 	class="com.warcgenerator.datasources.CorpusDS" 
 	 		maxElements="10" >
 	 		<customParams>
 	 			<urlTag>WARC-Target-URI</urlTag>
@@ -29,7 +30,8 @@
 	 		<srcDirPath>.\\in\\corpus</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
 	 	</dataSource>
-	 	<dataSource class="com.warcgenerator.datasources.ArffDS"
+	 	<dataSource name="ArffDS"
+	 		class="com.warcgenerator.datasources.ArffDS"
 	 		maxElements="10" >
 	 		<customParams>
 	 			<spamTag>LABEL</spamTag>
@@ -38,16 +40,19 @@
 	 		<srcDirPath>.\\in\\arff</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.ArffDSHandler</handler>
 	 	</dataSource>
-	 	<dataSource class="com.warcgenerator.datasources.FileDS">
+	 	<dataSource name="WhitelistDS" 
+	 		class="com.warcgenerator.datasources.FileDS">
 	 		<srcDirPath>.\\in\\plain\whitelists</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
 	 	</dataSource>
-	 	<dataSource class="com.warcgenerator.datasources.FileDS"
+	 	<dataSource name="BlacklistDS" 
+	 		class="com.warcgenerator.datasources.FileDS"
 	 		isSpam="true" >
 	 		<srcDirPath>.\\in\\plain\blacklists</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
 	 	</dataSource>
-	 	<dataSource class="com.warcgenerator.datasources.CSVDS">
+	 	<dataSource name="CSVDS" 
+	 		class="com.warcgenerator.datasources.CSVDS">
 	 		<customParams>
 	 			<urlColNum>0</urlColNum>
 	 		</customParams>

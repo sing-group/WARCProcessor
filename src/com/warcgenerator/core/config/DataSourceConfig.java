@@ -1,7 +1,11 @@
 package com.warcgenerator.core.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.warcgenerator.core.datasource.handler.IDSHandler;
 
 /**
  * File with data source configuration
@@ -13,6 +17,7 @@ public class DataSourceConfig {
 	public static final boolean IS_SPAM = true;
 	public static final boolean IS_HAM = false;
 	
+	private String name;
 	private boolean spam;
 	private String filePath;
 	private String dsClassName;
@@ -21,19 +26,28 @@ public class DataSourceConfig {
 	private Integer maxElements;
 	private Map<String, String> customParams;
 	
+	// Parent datasource reference
+	private DataSourceConfig parent;
+	private List<DataSourceConfig> children;
+	
+	private IDSHandler handler;
+	
 	public DataSourceConfig() {
 		this.customParams = new HashMap<String, String>();
+		this.children = new ArrayList<DataSourceConfig>();
 	}
 	
 	public DataSourceConfig(String filePath) {
 		this.filePath = filePath;
 		this.customParams = new HashMap<String, String>();
+		this.children = new ArrayList<DataSourceConfig>();
 	}
 	
 	public DataSourceConfig(boolean spamOrHam, String filePath) {
 		this.spam = spamOrHam;
 		this.filePath = filePath;
 		this.customParams = new HashMap<String, String>();
+		this.children = new ArrayList<DataSourceConfig>();
 	}
 	
 	public boolean isSpam() {
@@ -105,5 +119,37 @@ public class DataSourceConfig {
 			}
 		}
 		return sb.toString();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public DataSourceConfig getParent() {
+		return parent;
+	}
+
+	public void setParent(DataSourceConfig parent) {
+		this.parent = parent;
+	}
+
+	public IDSHandler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(IDSHandler handler) {
+		this.handler = handler;
+	}
+
+	public List<DataSourceConfig> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<DataSourceConfig> children) {
+		this.children = children;
 	}
 }

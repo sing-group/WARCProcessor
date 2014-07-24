@@ -3,8 +3,6 @@ package com.warcgenerator.core.helper;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -19,37 +17,47 @@ import com.warcgenerator.core.exception.config.LoadDataSourceException;
  */
 
 public class ConfigHelper {
-	public static List<IDSHandler> getDSHandlers(AppConfig config) {
-		List<IDSHandler> dSHandlerList = new ArrayList<IDSHandler>();
+	// Add DSHandlers to each configuration data source
+	public static void getDSHandlers(AppConfig config) 
+		throws LoadDataSourceException {
+		for (DataSourceConfig ds : config.getDataSourceConfigs().values()) {
+			getDSHandler(ds, config);
+		}
+	}
 
+	public static void getDSHandler(DataSourceConfig ds, AppConfig config) 
+					throws LoadDataSourceException {
 		try {
-			for (DataSourceConfig ds : config.getDataSourceConfigs()) {
-				File dirSrc = new File(ds.getFilePath());
-				if (dirSrc.exists()) {
-					for (File f : dirSrc.listFiles(
-							FileHelper.getGeneralFileFilter())) {
-						DataSourceConfig specificDsConfig = new
-								 DataSourceConfig(f.getPath());
-						specificDsConfig.setSpamOrHam(ds.isSpam());
-						specificDsConfig.setMaxElements(ds.getMaxElements());
-						specificDsConfig.setCustomParams(ds.getCustomParams());
-						
-						Class<?> cArgs[] = { DataSourceConfig.class };
-						Class<?> clazz = Class.forName(ds.getDsClassName());
-						Constructor<?> ctor = clazz.getConstructor(cArgs);
-						IDataSource dsSource = (DataSource) ctor.newInstance(
-								specificDsConfig);
-						
-						Class<?> cArgs2[] = { IDataSource.class, AppConfig.class };
-						Class<?> clazz2 = Class.forName(ds.getHandlerClassName());
-						Constructor<?> ctor2 = clazz2.getConstructor(cArgs2);
-						dSHandlerList.add((IDSHandler) ctor2.newInstance(dsSource,
-								config));
-					}
-				} else {
-					throw new LoadDataSourceException("Path not found: " + dirSrc);
+			File dirSrc = new File(ds.getFilePath());
+			if (dirSrc.exists()) {
+				for (File f : dirSrc.listFiles(FileHelper
+						.getGeneralFileFilter())) {
+					DataSourceConfig specificDsConfig = new DataSourceConfig(
+							f.getPath());
+					specificDsConfig.setSpamOrHam(ds.isSpam());
+					specificDsConfig.setMaxElements(ds.getMaxElements());
+					specificDsConfig.setCustomParams(ds.getCustomParams());
+					specificDsConfig.setParent(ds);
+					
+					Class<?> cArgs[] = { DataSourceConfig.class };
+					Class<?> clazz = Class.forName(ds.getDsClassName());
+					Constructor<?> ctor = clazz.getConstructor(cArgs);
+					IDataSource dsSource = (DataSource) ctor
+							.newInstance(specificDsConfig);
+
+					Class<?> cArgs2[] = { IDataSource.class, AppConfig.class };
+					Class<?> clazz2 = Class.forName(ds.getHandlerClassName());
+					Constructor<?> ctor2 = clazz2.getConstructor(cArgs2);
+					
+					specificDsConfig.setHandler((IDSHandler) ctor2.newInstance(dsSource,
+							config));
+					
+					ds.getChildren().add(specificDsConfig);
 				}
+			} else {
+				throw new LoadDataSourceException("Path not found: " + dirSrc);
 			}
+
 		} catch (ClassNotFoundException e) {
 			throw new LoadDataSourceException(e);
 		} catch (InstantiationException e) {
@@ -66,8 +74,5 @@ public class ConfigHelper {
 			e.printStackTrace();
 			throw new LoadDataSourceException(e);
 		}
-		
-		return dSHandlerList;
 	}
-
 }

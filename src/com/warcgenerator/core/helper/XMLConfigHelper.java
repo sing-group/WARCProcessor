@@ -105,6 +105,7 @@ public class XMLConfigHelper {
 				
 				if (dataSourceNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element dataSourceElement = (Element) dataSourceNode;
+					ds.setName(dataSourceElement.getAttribute("name"));
 					ds.setDsClassName(dataSourceElement.getAttribute("class"));
 			
 					// Check if isSpam parameter exists
@@ -144,7 +145,7 @@ public class XMLConfigHelper {
 					
 					logger.info(ds);
 					
-					config.getDataSourceConfigs().add(ds);
+					config.getDataSourceConfigs().put(ds.getName(), ds);
 				}
 			}
 		} catch (SAXParseException err) {

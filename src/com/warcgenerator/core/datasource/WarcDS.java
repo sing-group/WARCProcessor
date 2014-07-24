@@ -160,10 +160,34 @@ public class WarcDS extends DataSource implements IDataSource {
 					dataBean = new DataBean();
 					dataBean.setUrl(url);
 					dataBean.setSpam(this.getDataSourceConfig().isSpam());
+					
+					StringBuffer sb = new StringBuffer();
+					
+					/*try {
+						for (byte[] buffer = new byte[1024];
+								ar.read(buffer) != -1;) {
+							sb.append(new String(buffer));
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					dataBean.setData(sb.toString());
+					
+					System.out.println("data es :" + dataBean.getData());
+					*/
+					
 				
 					// Turn the out file to the warc file name
 					this.setOutputFilePath(
 							FileHelper.getOutputFileName(dataBean.getUrl()));
+					
+					try {
+						ar.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		} while (skip != false);

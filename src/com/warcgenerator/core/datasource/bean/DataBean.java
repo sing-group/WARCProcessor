@@ -1,6 +1,7 @@
 package com.warcgenerator.core.datasource.bean;
 
 public class DataBean {
+	private String filePath;
 	private String data;
 	private String url;
 	private boolean spam;
@@ -33,5 +34,13 @@ public class DataBean {
 
 	public void setSpam(boolean spam) {
 		this.spam = spam;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 }

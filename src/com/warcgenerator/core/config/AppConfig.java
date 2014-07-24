@@ -1,8 +1,8 @@
 package com.warcgenerator.core.config;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * General configuration.
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class AppConfig {
 	private OutputConfig outputConfig;
-	private List<DataSourceConfig> dataSourceConfigs;
+	private Map<String, DataSourceConfig> dataSourceConfigs;
 	private WebCrawlerConfig webCrawlerCfgTemplate;
 	private String corpusDirPath;
 	private String spamDirName;
@@ -27,7 +27,7 @@ public class AppConfig {
 	private String webCrawlerTmpStorePath;
 
 	public AppConfig() {
-		dataSourceConfigs = new ArrayList<DataSourceConfig>();
+		setDataSourceConfigs(new HashMap<String, DataSourceConfig>());
 	}
 
 	public void init() {
@@ -100,14 +100,6 @@ public class AppConfig {
 		
 		webCrawlerCfgTemplate.setMaxDepthOfCrawling(maxDepthOfCrawlingToInt);
 		webCrawlerCfgTemplate.setStorePath(webCrawlerTmpStorePath);
-	}
-
-	public List<DataSourceConfig> getDataSourceConfigs() {
-		return dataSourceConfigs;
-	}
-
-	public void setDataSourceConfigs(List<DataSourceConfig> dataSourceConfigs) {
-		this.dataSourceConfigs = dataSourceConfigs;
 	}
 
 	public OutputConfig getOutputConfig() {
@@ -215,5 +207,13 @@ public class AppConfig {
 		sb.append("webCrawlerDirTmpStorePath:  ")
 				.append(webCrawlerTmpStorePath).append("\n");
 		return sb.toString();
+	}
+
+	public Map<String, DataSourceConfig> getDataSourceConfigs() {
+		return dataSourceConfigs;
+	}
+
+	public void setDataSourceConfigs(Map<String, DataSourceConfig> dataSourceConfigs) {
+		this.dataSourceConfigs = dataSourceConfigs;
 	}
 }
