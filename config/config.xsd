@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+Schema for WarcGenerator XML Configuration
+@author Miguel Callon
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="configuration">
+	  <xs:complexType>
+	    <xs:sequence>
+	      <!-- Output folder -->
+	      <xs:element name="corpusDirPath" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	      <!-- Output folder to save warc files with spam contents  -->
+	      <xs:element name="spamDirName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	      <!-- Output folder to save warc files with ham contents  -->
+	      <xs:element name="hamDirName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	      <!-- Output file where the urls crawled succesfully are stored -->
+	      <xs:element name="domainsLabeledFileName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	      <!-- Output file where the urls crawled without succesfully are stored -->
+	      <xs:element name="domainsNotFoundFileName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	      <!-- Remove old files from the output folders -->
+	      <xs:element name="flushOutputDir" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+	      <!-- Depth of crawling for each url crawled -->
+	      <xs:element name="maxDepthOfCrawling" type="xs:integer" minOccurs="1" maxOccurs="1"/>
+	      <!-- Number of crawlers to scanner the urls -->
+	      <xs:element name="numCrawlers" type="xs:integer" minOccurs="1" maxOccurs="1"/>
+	      <!-- Folder to store temporary crawler data -->
+	      <xs:element name="webCrawlerDirTmpStorePath" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	      
+	      <!-- Datasource definitions -->
+	      <xs:element name="dataSources" minOccurs="1" maxOccurs="1">
+	        <xs:complexType>
+		      <xs:sequence>
+		         
+		      	 <xs:element name="dataSource" maxOccurs="unbounded">
+			        <xs:complexType>
+			          <xs:sequence>
+			            <!-- This tag allow to add new parameters in a customized datasource -->
+			            <xs:element name="customParams" 
+			            	minOccurs="0" maxOccurs="1" />
+			            <!-- Input folder to get files with source urls -->
+			            <xs:element name="srcDirPath" type="xs:string" minOccurs="1" maxOccurs="1" />
+			            <!-- Fully qualified name of the class used for preprocesing source urls -->
+			            <xs:element name="handler" type="xs:string" minOccurs="0" maxOccurs="1" />
+			          </xs:sequence>
+			          <!-- Name identifier -->
+			          <xs:attribute name="name" type="xs:string" use="required" />
+			          <!-- Fully qualified name of the class that implements this datasource -->
+			          <xs:attribute name="class" type="xs:string" use="required" />
+			          <!-- Max number of url to read from this datasource -->
+			          <xs:attribute name="maxElements" type="xs:integer" use="optional" />
+			          <!-- Used for specify if all urls from this datasource are spam or ham -->
+			          <xs:attribute name="isSpam" type="xs:boolean" use="optional" />
+			        </xs:complexType>
+			      </xs:element>
+		      </xs:sequence>
+		    </xs:complexType>
+		  </xs:element>
+	    </xs:sequence>
+	    <!-- Tag to specify an schema -->
+	    <xs:attribute name="noNamespaceSchemaLocation" type="xs:string" use="optional" />
+	  </xs:complexType>
+	</xs:element>
+</xs:schema>

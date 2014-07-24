@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
 import com.warcgenerator.core.config.AppConfig;
+import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.exception.WarcException;
 import com.warcgenerator.core.helper.XMLConfigHelper;
 import com.warcgenerator.core.logic.AppLogicImpl;
@@ -20,7 +21,7 @@ class AppWarc {
 	private static AppWarc singleton = null; 
 	private AppConfig config = null;
 	private IAppLogic logic = null;
-	
+
 	private static Logger logger = Logger.getLogger
             (AppWarc.class);
 	
@@ -37,11 +38,29 @@ class AppWarc {
 		return singleton;
 	}
 
+	public void init() {
+		// Configure Log4j.xml
+		DOMConfigurator.configure("config" + File.separator + "log4j.xml");
+		
+		//Properties properties = ConfigHelper.loadParams(pathConfig);
+		logger.info("Loading default configuration...");
+		config = new AppConfig();
+		
+		// Using XML config instead of properties
+		XMLConfigHelper.configure(Constants.defaultConfigXML,
+				config);
+		config.init();
+		
+		logger.info("-- AppConfig --\n" + config);
+		logger.info("Configuration loaded successfully");
+		logic = new AppLogicImpl(config);
+	}
+	
 	/**
 	 * Load configurations
 	 * @param pathConfig path to Xml properties config
 	 */
-	private void init(String pathConfig) throws WarcException {
+	public void init(String pathConfig) throws WarcException {
 		// Configure Log4j.xml
 		DOMConfigurator.configure("config" + File.separator + "log4j.xml");
 		
@@ -56,16 +75,23 @@ class AppWarc {
 		logger.info("Configuration loaded successfully");
 		logic = new AppLogicImpl(config);
 	}
-
+	
 	/**
 	 * Execute logic
 	 * @param pathConfig path XML configuration file
 	 */
-	public void execute(String pathConfig) throws WarcException {
-		init(pathConfig);
+	public void execute() throws WarcException {
 		// Start
 		logger.info("Generating corpus...");
 		logic.generateCorpus();
 		logger.info("Corpus generated successfully ...");
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public IAppLogic getAppLogic() {
+		return logic;
 	}
 }

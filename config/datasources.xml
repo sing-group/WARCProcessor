@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<!-- 
+	Available datasources
+ -->
+<dataSources
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
+ 	 <dataSource name="CorpusDS" 
+ 	 	class="com.warcgenerator.datasources.CorpusDS" >
+ 		<customParams>
+ 			<urlTag>WARC-Target-URI</urlTag>
+ 			<spamDir>_spam_</spamDir>
+ 			<hamDir>_ham_</hamDir>
+ 		</customParams>
+ 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
+ 	</dataSource>
+ 	<dataSource name="ArffDS"
+ 		class="com.warcgenerator.datasources.ArffDS" >
+ 		<customParams>
+ 			<spamTag>LABEL</spamTag>
+ 			<urlTag>URL</urlTag>
+ 		</customParams>
+ 		<handler>com.warcgenerator.datasources.handler.ArffDSHandler</handler>
+ 	</dataSource>
+ 	<dataSource name="FileDS" 
+ 		class="com.warcgenerator.datasources.FileDS">
+ 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
+ 	</dataSource>
+ 	<dataSource name="CSVDS" 
+ 		class="com.warcgenerator.datasources.CSVDS">
+ 		<customParams>
+ 			<urlColNum>0</urlColNum>
+ 		</customParams>
+ 		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
+ 	</dataSource>
+ </dataSources>

@@ -1,5 +1,7 @@
 package com.warcgenerator.core.logic;
 
+import java.util.List;
+
 import com.warcgenerator.core.config.DataSourceConfig;
 
 /**
@@ -9,6 +11,7 @@ import com.warcgenerator.core.config.DataSourceConfig;
  *
  */
 public interface IAppLogic {
+	public List<DataSourceConfig> getDataSourceTypesList();
 	public void updateDataSourceConfig(String name,
 			DataSourceConfig dsConfig);
 	public void addDataSourceConfig(DataSourceConfig dsConfig);

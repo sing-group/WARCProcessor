@@ -21,6 +21,7 @@ import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
+import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2CancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2ContinueAction;
@@ -37,13 +38,14 @@ public class DSAssistantStep2Panel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public DSAssistantStep2Panel(WarcGeneratorGUI view) {
+	public DSAssistantStep2Panel(IAppLogic logic, 
+			WarcGeneratorGUI view) {
 		dsAssistantStep2BackAction =
-				new DSAsisstantStep2BackAction(view);
+				new DSAsisstantStep2BackAction(logic, view);
 		dsAssistantStep2CancelAction =
 				new DSAsisstantStep2CancelAction(view);
 		dsAssistantStep2ContinueAction =
-				new DSAsisstantStep2ContinueAction(view);
+				new DSAsisstantStep2ContinueAction(logic, view);
 		
 		setBackground(new Color(230, 230, 250));
 		

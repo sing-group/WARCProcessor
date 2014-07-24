@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAssistantCreateNewDSAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
@@ -24,8 +25,9 @@ public class DSAssistantCreatePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public DSAssistantCreatePanel(WarcGeneratorGUI view) {
-		dsAssistantCreateNewDSAction = new DSAssistantCreateNewDSAction(view);
+	public DSAssistantCreatePanel(IAppLogic logic, WarcGeneratorGUI view) {
+		dsAssistantCreateNewDSAction = new DSAssistantCreateNewDSAction(logic,
+				view);
 		
 		setBackground(new Color(230, 230, 250));
 		

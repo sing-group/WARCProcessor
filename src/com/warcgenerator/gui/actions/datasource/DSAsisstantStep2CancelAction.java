@@ -6,6 +6,7 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 
+import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantCreatePanel;
 
@@ -16,15 +17,18 @@ public class DSAsisstantStep2CancelAction
 	 */
 	private static final long serialVersionUID = 1L;
 	private WarcGeneratorGUI view;
+	private IAppLogic logic;
 	
 	public DSAsisstantStep2CancelAction(WarcGeneratorGUI view
 			) {
 		this.view = view;
+		this.logic = logic;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		view.loadMainPanel(new DSAssistantCreatePanel(view));
+		view.loadMainPanel(new DSAssistantCreatePanel(logic,
+				view));
 	}
 
 	@Override

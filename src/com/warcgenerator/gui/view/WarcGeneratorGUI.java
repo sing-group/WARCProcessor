@@ -20,6 +20,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCreateAction;
 
 public class WarcGeneratorGUI {
@@ -29,6 +30,8 @@ public class WarcGeneratorGUI {
 	private JFrame frmWarcgenerator;
 	private JPanel mainPanel;
 	private JSplitPane splitPane; 
+	
+	private IAppLogic logic;
 
 	/**
 	 * Launch the application.
@@ -37,7 +40,7 @@ public class WarcGeneratorGUI {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WarcGeneratorGUI window = new WarcGeneratorGUI();
+					WarcGeneratorGUI window = new WarcGeneratorGUI(null);
 					window.frmWarcgenerator.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,8 +52,11 @@ public class WarcGeneratorGUI {
 	/**
 	 * Create the application.
 	 */
-	public WarcGeneratorGUI() {
-		assistantCreateDSAction = new DSAsisstantCreateAction(this);
+	public WarcGeneratorGUI(IAppLogic logic) {
+		System.out.println("logic1 es --->: " + logic);
+		
+		assistantCreateDSAction = new DSAsisstantCreateAction(logic, 
+				this);
 		initialize();
 	}
 	
@@ -146,6 +152,10 @@ public class WarcGeneratorGUI {
 		splitPane.revalidate();
 		splitPane.updateUI();
 		splitPane.repaint();
+	}
+	
+	public void setVisible(boolean visible) {
+		frmWarcgenerator.setVisible(visible);
 	}
 
 }

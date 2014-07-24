@@ -5,6 +5,8 @@ public interface Constants {
 	String outputEnconding = "UTF-8";
 	String outputContentType = "text/html";
 	String configSchemaFilePath = ".//config//config.xsd";
+	String defaultConfigXML= ".//config//config.xml";
+	String dataSourcesTypesXML= ".//config//datasources.xml";
 	
 	public interface AppConfigConstants {
 		// Default values

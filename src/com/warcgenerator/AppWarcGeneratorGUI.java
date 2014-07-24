@@ -1,17 +1,20 @@
 package com.warcgenerator;
 
+import java.awt.EventQueue;
+
 import com.warcgenerator.core.exception.WarcException;
 import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.ReadException;
 import com.warcgenerator.core.exception.datasource.WriteException;
+import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 /**
  * AppWarcGenerator
  * 
  * @author Miguel Callon
  */
-public class AppWarcGenerator {
+public class AppWarcGeneratorGUI {
 	/**
 	 * Main method
 	 * @param args
@@ -27,11 +30,24 @@ public class AppWarcGenerator {
 			System.out.println("Load default configuration");
 		}
 		
-		AppWarc app = AppWarc.getInstance();
-
+		final AppWarc app = AppWarc.getInstance();
+		
 		try {
-			app.init(confFilePath);
-			app.execute();
+			app.init();
+			
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						WarcGeneratorGUI window = new WarcGeneratorGUI(
+								app.getAppLogic());
+						window.setVisible(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+			//app.execute(confFilePath);
 		} catch (OpenException e) {
 			System.out.println("Is not posible open data source. Check config.xml");
 		} catch (ReadException e) {

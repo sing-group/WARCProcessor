@@ -16,26 +16,28 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2BackAction;
-import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2CancelAction;
-import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2ContinueAction;
+import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3BackAction;
+import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3CancelAction;
+import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3FinishAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class DSAssistantStep3Panel extends JPanel {
 	private Action dsAssistantStep3BackAction;
 	private Action dsAssistantStep3CancelAction;
-	private Action dsAssistantStep3ContinueAction;
+	private Action dsAssistantStep3FinishAction;
 
 	/**
 	 * Create the panel.
 	 */
-	public DSAssistantStep3Panel(WarcGeneratorGUI view) {
+	public DSAssistantStep3Panel(IAppLogic logic,
+			WarcGeneratorGUI view) {
 		dsAssistantStep3BackAction =
-				new DSAsisstantStep2BackAction(view);
+				new DSAsisstantStep3BackAction(logic, view);
 		dsAssistantStep3CancelAction =
-				new DSAsisstantStep2CancelAction(view);
-		dsAssistantStep3ContinueAction =
-				new DSAsisstantStep2ContinueAction(view);
+				new DSAsisstantStep3CancelAction(view);
+		dsAssistantStep3FinishAction =
+				new DSAsisstantStep3FinishAction(logic, view);
 		
 		setBackground(new Color(230, 230, 250));
 		
@@ -48,10 +50,10 @@ public class DSAssistantStep3Panel extends JPanel {
 		txtpnunOrigenDe.setBackground(new Color(230, 230, 250));
 		txtpnunOrigenDe.setText("Asegure que la informaci\u00F3n es correcta.");
 		
-		JButton btnNuevoOrigen = new JButton("Continuar");
+		JButton btnNuevoOrigen = new JButton("Finalizar");
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dsAssistantStep3ContinueAction.actionPerformed(e);
+				dsAssistantStep3FinishAction.actionPerformed(e);
 			}
 		});
 		

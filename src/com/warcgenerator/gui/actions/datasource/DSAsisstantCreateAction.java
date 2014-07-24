@@ -6,21 +6,24 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 
+import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantCreatePanel;
 
 public class DSAsisstantCreateAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
+	private IAppLogic logic;
 	
-	public DSAsisstantCreateAction(WarcGeneratorGUI view
+	public DSAsisstantCreateAction(IAppLogic logic, WarcGeneratorGUI view
 			) {
+		this.logic = logic;
 		this.view = view;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		view.loadMainPanel(new DSAssistantCreatePanel(view));
+		view.loadMainPanel(new DSAssistantCreatePanel(logic, view));
 	}
 
 	@Override

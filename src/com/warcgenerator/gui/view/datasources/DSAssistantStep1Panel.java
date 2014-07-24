@@ -7,15 +7,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep1CancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep1ContinueAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
@@ -28,17 +31,20 @@ public class DSAssistantStep1Panel extends JPanel {
 	private Action dsAssistantStep1ContinueAction;
 	private Action dsAssistantStep1CancelAction;
 	
-	private JTextField textField;
-	private JTextField textField_1;
-
+	private JTextField nombreJTField;
+	private JTextField carpetaJTField;
+	private JComboBox tipoDSCBox;
+	
 	/**
 	 * Create the panel.
 	 */
-	public DSAssistantStep1Panel(WarcGeneratorGUI view) {
+	public DSAssistantStep1Panel(IAppLogic logic, 
+			WarcGeneratorGUI view) {
 		dsAssistantStep1ContinueAction = 
-				new DSAsisstantStep1ContinueAction(view);
+				new DSAsisstantStep1ContinueAction(logic, view);
 		dsAssistantStep1CancelAction =
-				new DSAsisstantStep1CancelAction(view);
+				new DSAsisstantStep1CancelAction(logic,
+						view);
 		
 		setBackground(new Color(230, 230, 250));
 		
@@ -64,11 +70,11 @@ public class DSAssistantStep1Panel extends JPanel {
 		
 		JLabel lblNewLabel_3 = new JLabel("Tipo:");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		nombreJTField = new JTextField();
+		nombreJTField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		carpetaJTField = new JTextField();
+		carpetaJTField.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Cancelar");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -78,6 +84,8 @@ public class DSAssistantStep1Panel extends JPanel {
 		});
 		
 		JLabel lblPasoDe = new JLabel("Paso 1 de 3");
+		
+		tipoDSCBox = new JComboBox();
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -90,10 +98,15 @@ public class DSAssistantStep1Panel extends JPanel {
 								.addComponent(lblNewLabel_1)
 								.addComponent(lblNewLabel_3)
 								.addComponent(lblNewLabel_2))
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(textField_1)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, 284, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(18)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(carpetaJTField)
+										.addComponent(nombreJTField, GroupLayout.PREFERRED_SIZE, 284, GroupLayout.PREFERRED_SIZE)))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(18)
+									.addComponent(tipoDSCBox, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE))))
 						.addComponent(lblNewLabel)
 						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 							.addGroup(groupLayout.createSequentialGroup()
@@ -115,14 +128,19 @@ public class DSAssistantStep1Panel extends JPanel {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_1)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(nombreJTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(11)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(carpetaJTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_2))
-					.addGap(18)
-					.addComponent(lblNewLabel_3)
-					.addPreferredGap(ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(18)
+							.addComponent(lblNewLabel_3))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(tipoDSCBox)))
+					.addPreferredGap(ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNuevoOrigen)
 						.addComponent(lblPasoDe)
@@ -132,4 +150,10 @@ public class DSAssistantStep1Panel extends JPanel {
 		setLayout(groupLayout);
 
 	}
+	
+	public void setTipoDSCBoxValues(String[] values) {
+		tipoDSCBox.setModel(new DefaultComboBoxModel(values));
+	}
+	
+	
 }

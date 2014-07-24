@@ -2,9 +2,11 @@ package com.warcgenerator.core.logic;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.warcgenerator.core.config.AppConfig;
+import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.config.WebCrawlerConfig;
@@ -15,6 +17,7 @@ import com.warcgenerator.core.exception.logic.LogicException;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.helper.XMLConfigHelper;
 import com.warcgenerator.core.plugin.webcrawler.Crawler4JAdapter;
 import com.warcgenerator.core.plugin.webcrawler.IWebCrawler;
 import com.warcgenerator.core.plugin.webcrawler.WebCrawlerBean;
@@ -28,12 +31,15 @@ import com.warcgenerator.core.plugin.webcrawler.WebCrawlerBean;
 public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private AppConfig config;
 	private OutputCorpusConfig outputCorpusConfig;
-
+	private List<DataSourceConfig> dataSourcesTypes;
+	
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
 		
 		ConfigHelper.getDSHandlers(config);
-
+		XMLConfigHelper.getDataSources(Constants.dataSourcesTypesXML,
+				dataSourcesTypes);
+		
 		// Create a output corpus with config
 		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
 			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
@@ -51,6 +57,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 		
 		FileHelper.createDirs(dirs);
+	}
+	
+	public List<DataSourceConfig> getDataSourceTypesList() {
+		return dataSourcesTypes;
 	}
 	
 	public Collection<DataSourceConfig> getDataSourceConfigList() {
