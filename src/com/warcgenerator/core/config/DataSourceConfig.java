@@ -24,7 +24,7 @@ public class DataSourceConfig {
 	private String handlerClassName;
 	// Max number of elements to get from datasource
 	private Integer maxElements;
-	private Map<String, String> customParams;
+	private Map<String, CustomParamConfig> customParams;
 	
 	// Parent datasource reference
 	private DataSourceConfig parent;
@@ -33,20 +33,20 @@ public class DataSourceConfig {
 	private IDSHandler handler;
 	
 	public DataSourceConfig() {
-		this.customParams = new HashMap<String, String>();
+		this.customParams = new HashMap<String, CustomParamConfig>();
 		this.children = new ArrayList<DataSourceConfig>();
 	}
 	
 	public DataSourceConfig(String filePath) {
 		this.filePath = filePath;
-		this.customParams = new HashMap<String, String>();
+		this.customParams = new HashMap<String, CustomParamConfig>();
 		this.children = new ArrayList<DataSourceConfig>();
 	}
 	
 	public DataSourceConfig(boolean spamOrHam, String filePath) {
 		this.spam = spamOrHam;
 		this.filePath = filePath;
-		this.customParams = new HashMap<String, String>();
+		this.customParams = new HashMap<String, CustomParamConfig>();
 		this.children = new ArrayList<DataSourceConfig>();
 	}
 	
@@ -90,11 +90,12 @@ public class DataSourceConfig {
 		this.maxElements = maxElements;
 	}
 
-	public Map<String, String> getCustomParams() {
+	public Map<String, CustomParamConfig> getCustomParams() {
 		return customParams;
 	}
 
-	public void setCustomParams(Map<String, String> customParams) {
+	public void setCustomParams(Map<String,
+			CustomParamConfig> customParams) {
 		this.customParams = customParams;
 	}
 	
@@ -112,9 +113,11 @@ public class DataSourceConfig {
 		if (!customParams.isEmpty()) {
 			sb.append("Custom params: ");
 			for (String key: customParams.keySet()) {
-				String value = customParams.get(key);
+				CustomParamConfig customParam = 
+							customParams.get(key);
+				String value = customParam.getValue();
 				if (value != null && !value.equals("")) {
-					sb.append(key).append(": ").append(customParams.get(key)).append("\n");
+					sb.append(key).append(": ").append(value).append("\n");
 				}
 			}
 		}

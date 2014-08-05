@@ -2,7 +2,7 @@ package com.warcgenerator.core.helper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +24,7 @@ import org.xml.sax.SAXParseException;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
+import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.ValidateXMLSchemaException;
@@ -78,6 +79,31 @@ public class XMLConfigHelper {
 
 			// normalize text representation
 			doc.getDocumentElement().normalize();
+
+			config.setNumSites(getValueFromElement(doc, "numSites"));
+			config.setOnlyActiveSites(Boolean.valueOf(
+					getAttributeFromElement(doc, "numSites",
+					"onlyActiveSites")));
+			config.setDownloadAgain(Boolean.valueOf(
+					getAttributeFromElement(doc, "numSites",
+					"downloadAgain")));
+			config.setRatioIsPercentage(Boolean.valueOf(
+					getAttributeFromElement(doc, "ratio",
+					"isPercentage")));
+			NodeList listRatio = doc.getElementsByTagName("ratio").
+					item(0).getChildNodes();
+			
+			for (int s = 0; s < listRatio.getLength(); s++) {
+				Node nodeAux = listRatio.item(s);
+				if (nodeAux.getNodeType() == Node.ELEMENT_NODE) {
+					System.out.println("nodename es " + nodeAux.getNodeName());
+					if (nodeAux.getNodeName().equals("spam")) {
+						config.setRatioSpam(nodeAux.getTextContent().trim());
+					} else if (nodeAux.getNodeName().equals("ham")) {
+						config.setRatioHam(nodeAux.getTextContent().trim());
+					}
+				}
+			}
 
 			config.setCorpusDirPath(getValueFromElement(doc, "corpusDirPath"));
 			config.setSpamDirName(getValueFromElement(doc, "spamDirName"));
@@ -142,10 +168,18 @@ public class XMLConfigHelper {
 									.getLength(); j++) {
 								Node nodeCustomParamAux = (Node) customParamsInfoNode
 										.item(j);
+								
+								CustomParamConfig customParam =
+										new CustomParamConfig();
+								customParam.setName(nodeCustomParamAux.getNodeName());
+								customParam.setValue(nodeCustomParamAux.getTextContent()
+												.trim());
+								// Caution!! We are not getting the defaultValue
+								// and type because already know it of datasources.xml
+			
 								ds.getCustomParams().put(
 										nodeCustomParamAux.getNodeName(),
-										nodeCustomParamAux.getTextContent()
-												.trim());
+										customParam);
 							}
 						} else if (nodeAux.getNodeName().equals("srcDirPath")) {
 							ds.setFilePath(nodeAux.getTextContent().trim());
@@ -182,7 +216,7 @@ public class XMLConfigHelper {
 	 * @param config
 	 */
 	public static void getDataSources(String path,
-			List<DataSourceConfig> dataSourcesTypes)
+			Map<String, DataSourceConfig> dataSourcesTypes)
 			throws ConfigException {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
@@ -200,6 +234,8 @@ public class XMLConfigHelper {
 			
 			System.out.println("total ds: " + totalDS);
 			
+			System.out.println("dataSourcesTypes es: " + dataSourcesTypes);
+			
 			for (int s = 0; s < listOfDS.getLength(); s++) {
 				Node dataSourceNode = listOfDS.item(s);
 				DataSourceConfig ds = new DataSourceConfig();
@@ -209,6 +245,9 @@ public class XMLConfigHelper {
 					ds.setName(dataSourceElement.getAttribute("name"));
 					ds.setDsClassName(dataSourceElement.getAttribute("class"));
 
+					System.out.println("name es " + ds.getName());
+					System.out.println("class " + ds.getDsClassName());
+					
 					// NodeList nodeList = dataSourceElement.getChildNodes();
 					NodeList dataSourceInfoNode = dataSourceNode
 							.getChildNodes();
@@ -222,22 +261,35 @@ public class XMLConfigHelper {
 									.getLength(); j++) {
 								Node nodeCustomParamAux = (Node) customParamsInfoNode
 										.item(j);
-								ds.getCustomParams().put(
-										nodeCustomParamAux.getNodeName(),
-										nodeCustomParamAux.getTextContent()
-												.trim());
+								
+								if (nodeCustomParamAux.getNodeType() == Node.ELEMENT_NODE) {
+									// Extract the type of the parameter
+									Element nodeElement = (Element) nodeCustomParamAux;
+									
+									
+									CustomParamConfig customParam =
+											new CustomParamConfig();
+									customParam.setName(nodeCustomParamAux.getNodeName());
+									customParam.setType(nodeElement.getAttribute("type"));
+									customParam.setValue(nodeCustomParamAux.getTextContent()
+													.trim());
+									customParam.setDefaultValue(nodeCustomParamAux.
+											getTextContent().trim());
+									
+									ds.getCustomParams().put(
+											nodeCustomParamAux.getNodeName(),
+											customParam);
+								}
 							}
 						} else if (nodeAux.getNodeName().equals("handler")) {
 							ds.setHandlerClassName(nodeAux.getTextContent()
 									.trim());
 						}
 					}
-					
-					dataSourcesTypes.add(ds);
-
-					logger.info("Reading data source types");
-					logger.info(ds);
 				}
+				dataSourcesTypes.put(ds.getName(), ds);
+				logger.info("Reading data source types");
+				logger.info(ds);
 			}
 
 		} catch (SAXParseException err) {
@@ -249,6 +301,8 @@ public class XMLConfigHelper {
 		} catch (SAXException e) {
 			throw new ConfigException(e);
 		} catch (Throwable t) {
+			
+			t.printStackTrace();
 			throw new ConfigException(t);
 		}
 	}
@@ -266,5 +320,18 @@ public class XMLConfigHelper {
 		Element element = (Element) doc.getElementsByTagName(field).item(0);
 		NodeList textLNList = element.getChildNodes();
 		return ((Node) textLNList.item(0)).getNodeValue().trim();
+	}
+	
+	/**
+	 * Get value from an attribute of a field
+	 * @param doc
+	 * @param field
+	 * @param attrName
+	 * @return
+	 */
+	public static String getAttributeFromElement(Document doc, 
+			String field, String attrName) {
+		Element element = (Element) doc.getElementsByTagName(field).item(0);
+		return element.getAttribute(attrName);
 	}
 }

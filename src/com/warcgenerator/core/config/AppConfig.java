@@ -23,8 +23,13 @@ public class AppConfig {
 	private Boolean flushOutputDir;
 	private String maxDepthOfCrawling;
 	private String numCrawlers;
-
 	private String webCrawlerTmpStorePath;
+	private String numSites;
+	private Boolean onlyActiveSites;
+	private Boolean downloadAgain;
+	private Boolean ratioIsPercentage;
+	private String ratioSpam;
+	private String ratioHam;
 
 	public AppConfig() {
 		setDataSourceConfigs(new HashMap<String, DataSourceConfig>());
@@ -53,6 +58,24 @@ public class AppConfig {
 		webCrawlerTmpStorePath = webCrawlerTmpStorePath.equals("")?
 				Constants.AppConfigConstants.WEB_CRAWLER_DIR_TMP_STORE_PATH_DEFAULT
 				:webCrawlerTmpStorePath;		
+		numSites = numSites.equals("")?
+				Constants.AppConfigConstants.NUM_SITES_DEFAULT
+				:numSites;
+		onlyActiveSites = onlyActiveSites.equals("")?
+				Constants.AppConfigConstants.ONLY_ACTIVE_SITES_DEFAULT:
+					onlyActiveSites;
+		downloadAgain = downloadAgain.equals("")?
+				Constants.AppConfigConstants.DOWNLOAD_AGAIN_DEFAULT:
+					downloadAgain;
+		ratioIsPercentage = ratioIsPercentage.equals("")?
+				Constants.AppConfigConstants.RATIO_IS_PERCENTAGE_DEFAULT:
+					ratioIsPercentage;
+		ratioSpam = ratioSpam.equals("")?
+				Constants.AppConfigConstants.RATIO_SPAM_DEFAULT:
+					ratioSpam;
+		ratioHam = ratioHam.equals("")?
+				Constants.AppConfigConstants.RATIO_HAM_DEFAULT:
+					ratioHam;
 		
 		// Configure filepaths
 		String pathCorpus = corpusDirPath;
@@ -190,6 +213,54 @@ public class AppConfig {
 		this.numCrawlers = numCrawlers;
 	}
 	
+	public String getNumSites() {
+		return numSites;
+	}
+
+	public void setNumSites(String numSites) {
+		this.numSites = numSites;
+	}
+
+	public Boolean getOnlyActiveSites() {
+		return onlyActiveSites;
+	}
+
+	public void setOnlyActiveSites(Boolean onlyActiveSites) {
+		this.onlyActiveSites = onlyActiveSites;
+	}
+
+	public Boolean getDownloadAgain() {
+		return downloadAgain;
+	}
+
+	public void setDownloadAgain(Boolean downloadAgain) {
+		this.downloadAgain = downloadAgain;
+	}
+
+	public Boolean getRatioIsPercentage() {
+		return ratioIsPercentage;
+	}
+
+	public void setRatioIsPercentage(Boolean ratioIsPercentage) {
+		this.ratioIsPercentage = ratioIsPercentage;
+	}
+
+	public String getRatioSpam() {
+		return ratioSpam;
+	}
+
+	public void setRatioSpam(String ratioSpam) {
+		this.ratioSpam = ratioSpam;
+	}
+
+	public String getRatioHam() {
+		return ratioHam;
+	}
+
+	public void setRatioHam(String ratioHam) {
+		this.ratioHam = ratioHam;
+	}
+	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("spamDirName:  ").append(spamDirName).append("\n");
@@ -217,3 +288,5 @@ public class AppConfig {
 		this.dataSourceConfigs = dataSourceConfigs;
 	}
 }
+
+

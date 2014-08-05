@@ -5,8 +5,12 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -21,6 +25,7 @@ import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
+import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2CancelAction;
@@ -32,9 +37,17 @@ public class DSAssistantStep2Panel extends JPanel {
 	private Action dsAssistantStep2CancelAction;
 	private Action dsAssistantStep2ContinueAction;
 	
-	private JTextField textField;
-	private JTable table;
+	private JTable paramsTable;
+	public JTable getParamsTable() {
+		return paramsTable;
+	}
 
+	private JTextField quantityMaxElemsTField;
+	private JCheckBox spamEnabledCBox;
+	private JCheckBox maxElementsEnabledCBox;
+	private JRadioButton spamRButtom;
+	private JRadioButton hamRButtom;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -45,7 +58,7 @@ public class DSAssistantStep2Panel extends JPanel {
 		dsAssistantStep2CancelAction =
 				new DSAsisstantStep2CancelAction(view);
 		dsAssistantStep2ContinueAction =
-				new DSAsisstantStep2ContinueAction(logic, view);
+				new DSAsisstantStep2ContinueAction(logic, view, this);
 		
 		setBackground(new Color(230, 230, 250));
 		
@@ -80,16 +93,49 @@ public class DSAssistantStep2Panel extends JPanel {
 		
 		JLabel lblPasoDe = new JLabel("Paso 2 de 3");
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Habilitado");
+		 //Group the radio buttons.
+	    ButtonGroup group = new ButtonGroup();
+	    spamRButtom = new JRadioButton("S\u00ED");
+	    spamRButtom.setSelected(true);
+		hamRButtom = new JRadioButton("No");
 		
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Habilitado");
+		spamEnabledCBox = new JCheckBox("Habilitado");
+		spamEnabledCBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (spamEnabledCBox.isSelected()) {
+					spamRButtom.setEnabled(true);
+					hamRButtom.setEnabled(true);
+				} else {
+					spamRButtom.setEnabled(false);
+					hamRButtom.setEnabled(false);
+				}
+			}
+		});
+		maxElementsEnabledCBox = new JCheckBox("Habilitado");
+		maxElementsEnabledCBox.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (maxElementsEnabledCBox.isSelected()) {
+					quantityMaxElemsTField.setEnabled(true);
+				} else {
+					quantityMaxElemsTField.setEnabled(false);
+				}
+			}
+		});
 		
-		JRadioButton rdbtnSpam = new JRadioButton("S\u00ED");
+		// Disabled buttoms
+		spamRButtom.setEnabled(false);
+		hamRButtom.setEnabled(false);
 		
-		JRadioButton rdbtnNo = new JRadioButton("No");
+	    group.add(spamRButtom);
+	    group.add(hamRButtom);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		quantityMaxElemsTField = new JTextField();
+		quantityMaxElemsTField.setColumns(10);
+		
+		// Disabled quantity
+		quantityMaxElemsTField.setEnabled(false);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
@@ -101,8 +147,8 @@ public class DSAssistantStep2Panel extends JPanel {
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(23)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -114,15 +160,15 @@ public class DSAssistantStep2Panel extends JPanel {
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(chckbxNewCheckBox_1)
+									.addComponent(maxElementsEnabledCBox)
 									.addGap(18)
-									.addComponent(textField, GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
+									.addComponent(quantityMaxElemsTField, GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(chckbxNewCheckBox)
+									.addComponent(spamEnabledCBox)
 									.addGap(18)
-									.addComponent(rdbtnSpam)
+									.addComponent(spamRButtom)
 									.addGap(18)
-									.addComponent(rdbtnNo))))
+									.addComponent(hamRButtom))))
 						.addComponent(lblNewLabel)
 						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 							.addGroup(groupLayout.createSequentialGroup()
@@ -145,20 +191,20 @@ public class DSAssistantStep2Panel extends JPanel {
 					.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(chckbxNewCheckBox)
+						.addComponent(spamEnabledCBox)
 						.addComponent(lblNewLabel_1)
-						.addComponent(rdbtnSpam)
-						.addComponent(rdbtnNo))
+						.addComponent(spamRButtom)
+						.addComponent(hamRButtom))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_2)
-						.addComponent(chckbxNewCheckBox_1)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(maxElementsEnabledCBox)
+						.addComponent(quantityMaxElemsTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNewLabel_3)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNuevoOrigen)
 						.addComponent(lblPasoDe)
@@ -167,18 +213,77 @@ public class DSAssistantStep2Panel extends JPanel {
 					.addGap(21))
 		);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null},
-				{null, null},
-			},
-			new String[] {
-				"Nombre", "Valor"
+		paramsTable = new JTable();
+		paramsTable.setModel(new DefaultTableModel(
+				new Object[0][0],
+				new String[] {
+					"Nombre", "Valor"
+				}
+			) {
+				boolean[] columnEditables = new boolean[] {
+					false, true
+				};
+				public boolean isCellEditable(int row, int column) {
+					return columnEditables[column];
+				}
+				/*public void setValueAt(Object value, int row, int col) {
+					 super.setValueAt(value, row, col);
+					 fireTableCellUpdated(row, col);
+				}*/
+
 			}
-		));
-		scrollPane.setViewportView(table);
+		);
+		
+		scrollPane.setViewportView(paramsTable);
 		setLayout(groupLayout);
 
+	}
+
+	public void setTableModel(Map<String, CustomParamConfig> map) {
+		DefaultTableModel model = (DefaultTableModel)paramsTable.getModel();
+
+		for(String key:map.keySet()) {
+			model.addRow(new Object[]{key, map.get(key).getValue()});
+		}	
+	}
+	
+	public JTextField getQuantityMaxElemsTField() {
+		return quantityMaxElemsTField;
+	}
+
+	public void setQuantityMaxElemsTField(JTextField quantityMaxElemsTField) {
+		this.quantityMaxElemsTField = quantityMaxElemsTField;
+	}
+
+	public JCheckBox getSpamEnabledCBox() {
+		return spamEnabledCBox;
+	}
+
+	public void setSpamEnabledCBox(JCheckBox spamEnabledCBox) {
+		this.spamEnabledCBox = spamEnabledCBox;
+	}
+
+	public JCheckBox getMaxElementsEnabledCBox() {
+		return maxElementsEnabledCBox;
+	}
+
+	public void setMaxElementsEnabledCBox(JCheckBox maxElementsEnabledCBox) {
+		this.maxElementsEnabledCBox = maxElementsEnabledCBox;
+	}
+
+	public JRadioButton getSpamRButtom() {
+		return spamRButtom;
+	}
+
+	public void setSpamRButtom(JRadioButton spamRButtom) {
+		this.spamRButtom = spamRButtom;
+	}
+
+	public JRadioButton getHamRButtom() {
+		return hamRButtom;
+	}
+
+	public void setHamRButtom(JRadioButton hamRButtom) {
+		this.hamRButtom = hamRButtom;
 	}
 }

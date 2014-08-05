@@ -1,6 +1,7 @@
 package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,7 +12,6 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import com.warcgenerator.gui.view.datasources.DSAssistantStep3Panel;
 
 public class DSAsisstantStep3FinishAction 
 	extends AbstractAction implements Observer {	
@@ -31,8 +31,18 @@ public class DSAsisstantStep3FinishAction
 				(DataSourceConfig)Session.get(
 						Constants.DATASOURCE_FORM_SESSION_KEY);
 		
-		view.loadMainPanel(new DSAssistantStep3Panel(logic, 
-				view));
+		logic.addDataSourceConfig(dsConfig);
+		
+		Collection<DataSourceConfig> dsConfigList =
+				logic.getDataSourceConfigList();
+		System.out.println("Nuevos datasources: -------------");
+		for(DataSourceConfig key: dsConfigList) {
+			System.out.println(key);
+		}
+		
+		// Load modify panel
+		//view.loadMainPanel(new DSCreateStep3Panel(logic, 
+		//		view));
 	}
 
 	@Override

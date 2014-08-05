@@ -70,14 +70,14 @@ public class ArffDS extends DataSource implements IDataSource {
 				boolean isSpam = false;
 				String label = inst.stringValue(inst.dataset().attribute(
 						this.getDataSourceConfig().getCustomParams().
-						get(LABEL_TAG)));
+						get(LABEL_TAG).getValue()));
 				if (label.toLowerCase().equals("spam")) {
 					isSpam = true;
 				}
 
 				String url = inst.stringValue(inst.dataset()
 						.attribute(this.getDataSourceConfig().getCustomParams().
-						get(URL_TAG)));
+						get(URL_TAG).getValue()));
 				// Removing the string URL_ before the useful data
 				if (url.matches("URL_(.*)")) {
 					url = url.substring(4, url.length());

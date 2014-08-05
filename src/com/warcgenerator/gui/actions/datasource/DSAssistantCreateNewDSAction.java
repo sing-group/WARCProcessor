@@ -1,7 +1,7 @@
 package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
+import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -37,7 +37,7 @@ public class DSAssistantCreateNewDSAction
 		
 		System.out.println("logic es :" + logic);
 		
-		List<DataSourceConfig> dataSourceTypeList = 
+		Collection<DataSourceConfig> dataSourceTypeList = 
 				logic.getDataSourceTypesList();
 		
 		System.out.println("dataSourceTypeList es: " + 

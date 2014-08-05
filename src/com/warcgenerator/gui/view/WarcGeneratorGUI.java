@@ -19,9 +19,14 @@ import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
+import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCreateAction;
+import com.warcgenerator.gui.actions.general.GeneralConfigAction;
+import com.warcgenerator.gui.components.CustomTreeNode;
+import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 
 public class WarcGeneratorGUI {
 
@@ -53,8 +58,7 @@ public class WarcGeneratorGUI {
 	 * Create the application.
 	 */
 	public WarcGeneratorGUI(IAppLogic logic) {
-		System.out.println("logic1 es --->: " + logic);
-		
+		this.logic = logic;
 		assistantCreateDSAction = new DSAsisstantCreateAction(logic, 
 				this);
 		initialize();
@@ -125,19 +129,32 @@ public class WarcGeneratorGUI {
 			        int row = tree.getClosestRowForLocation(e.getX(), e.getY());
 			        tree.setSelectionRow(row);
 			        popup.show(e.getComponent(), e.getX(), e.getY());
+			    } else {
+			    	TreePath tp = tree.getPathForLocation(e.getX(), e.getY());
+			    	CustomTreeNode itemSelected = (CustomTreeNode)tp.getLastPathComponent();
+			    	if (itemSelected != null) 
+			    		System.out.println(itemSelected.toString());
+			    	itemSelected.getAction().actionPerformed(null);
 			    }
-
 			}
 		});
+		
+		final GeneralConfigPanel configPanel = new GeneralConfigPanel(logic, this);
+		final GeneralConfigAction generalConfigAction = new
+				GeneralConfigAction(logic, this);
+		
 		tree.setModel(new DefaultTreeModel(
 			new DefaultMutableTreeNode("Configuracion") {
 				{
-					DefaultMutableTreeNode node_1;
-					add(new DefaultMutableTreeNode("General"));
-					node_1 = new DefaultMutableTreeNode("Origenes");
-						node_1.add(new DefaultMutableTreeNode("WarcDS"));
+					CustomTreeNode node_1;
+					CustomTreeNode general = new CustomTreeNode("General");
+					general.setAction(generalConfigAction);
+					add(general);
+					
+					node_1 = new CustomTreeNode("Origenes");
+					loadDS(node_1);
 					add(node_1);
-					add(new DefaultMutableTreeNode("Salida"));
+					add(new CustomTreeNode("Salida"));
 				}
 			}
 		));
@@ -147,7 +164,17 @@ public class WarcGeneratorGUI {
 		splitPane.setRightComponent(mainPanel);
 	}
 	
+	private void loadDS(DefaultMutableTreeNode treeNode) {
+		for (DataSourceConfig config:logic.getDataSourceConfigList()) {
+			CustomTreeNode treeNodeDS = new CustomTreeNode(
+					config.getName());
+			treeNode.add(treeNodeDS);
+		}
+	}
+	
 	public void loadMainPanel(JPanel newPanel) {
+		System.out.println("Cambiando el panel a: " + newPanel);
+		
 		splitPane.setRightComponent(newPanel);
 		splitPane.revalidate();
 		splitPane.updateUI();

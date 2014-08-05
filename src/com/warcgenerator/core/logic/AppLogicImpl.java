@@ -1,9 +1,14 @@
 package com.warcgenerator.core.logic;
 
-import java.util.Collection;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
@@ -31,12 +36,14 @@ import com.warcgenerator.core.plugin.webcrawler.WebCrawlerBean;
 public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private AppConfig config;
 	private OutputCorpusConfig outputCorpusConfig;
-	private List<DataSourceConfig> dataSourcesTypes;
+	private Map<String, DataSourceConfig> dataSourcesTypes;
 	
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
 		
 		ConfigHelper.getDSHandlers(config);
+		
+		dataSourcesTypes = new HashMap<String, DataSourceConfig>();
 		XMLConfigHelper.getDataSources(Constants.dataSourcesTypesXML,
 				dataSourcesTypes);
 		
@@ -59,16 +66,82 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		FileHelper.createDirs(dirs);
 	}
 	
-	public List<DataSourceConfig> getDataSourceTypesList() {
-		return dataSourcesTypes;
+	public AppConfig getAppConfig() throws LogicException {
+		AppConfig appConfigCopy = new AppConfig();
+		try {
+			BeanUtils.copyProperties(appConfigCopy, config);
+		} catch (IllegalAccessException e) {
+			throw new LogicException(e);
+		} catch (InvocationTargetException e) {
+			throw new LogicException(e);
+		}
+		return appConfigCopy;
 	}
 	
-	public Collection<DataSourceConfig> getDataSourceConfigList() {
-		return config.getDataSourceConfigs().values();
+	public List<DataSourceConfig> getDataSourceTypesList() throws 
+		LogicException {
+		List<DataSourceConfig> dataSourceTypesList =
+				new ArrayList<DataSourceConfig>();
+		
+		for (DataSourceConfig dsConfig:dataSourcesTypes.values()) {
+			DataSourceConfig dsConfigCopy = new DataSourceConfig();
+			try {
+				BeanUtils.copyProperties(dsConfigCopy, dsConfig);
+			} catch (IllegalAccessException e) {
+				throw new LogicException(e);
+			} catch (InvocationTargetException e) {
+				throw new LogicException(e);
+			}
+			dataSourceTypesList.add(dsConfigCopy);
+		}
+		
+		return dataSourceTypesList;
+	}
+	
+	public DataSourceConfig getDataSourceType(String type) {
+		DataSourceConfig dsConfigCopy = new DataSourceConfig();
+		DataSourceConfig dsConfig = dataSourcesTypes.get(type);
+		try {
+			BeanUtils.copyProperties(dsConfigCopy, dsConfig);
+		} catch (IllegalAccessException e) {
+			throw new LogicException(e);
+		} catch (InvocationTargetException e) {
+			throw new LogicException(e);
+		}
+		return dsConfigCopy;
+	}
+	
+	public List<DataSourceConfig> getDataSourceConfigList() {
+		List<DataSourceConfig> dataSourceConfigsList =
+				new ArrayList<DataSourceConfig>();
+		
+		for (DataSourceConfig dsConfig:config.getDataSourceConfigs().values()) {
+			DataSourceConfig dsConfigCopy = new DataSourceConfig();
+			try {
+				BeanUtils.copyProperties(dsConfigCopy, dsConfig);
+			} catch (IllegalAccessException e) {
+				throw new LogicException(e);
+			} catch (InvocationTargetException e) {
+				throw new LogicException(e);
+			}
+			dataSourceConfigsList.add(dsConfigCopy);
+		}
+		
+		return dataSourceConfigsList;
 	}
 	
 	public DataSourceConfig getDataSourceConfig(String name) {
-		return config.getDataSourceConfigs().get(name);
+		DataSourceConfig dsConfigCopy = new DataSourceConfig();
+		DataSourceConfig dsConfig = config.getDataSourceConfigs().
+				get(name);
+		try {
+			BeanUtils.copyProperties(dsConfigCopy, dsConfig);
+		} catch (IllegalAccessException e) {
+			throw new LogicException(e);
+		} catch (InvocationTargetException e) {
+			throw new LogicException(e);
+		}
+		return dsConfigCopy;
 	}
 	
 	/**

@@ -24,10 +24,10 @@ public class CorpusFileBean {
 	public CorpusFileBean(String filePath, DataSourceConfig dsConfig) {
 		StringBuilder spamPath = new StringBuilder(filePath).
 				append(File.separator).
-				append(dsConfig.getCustomParams().get(SPAM_DIR));
+				append(dsConfig.getCustomParams().get(SPAM_DIR).getValue());
 		StringBuilder hamPath = new StringBuilder(filePath).
 				append(File.separator).
-				append(dsConfig.getCustomParams().get(HAM_DIR));
+				append(dsConfig.getCustomParams().get(HAM_DIR).getValue());
 		spam = new Spam();
 		ham = new Ham();
 		

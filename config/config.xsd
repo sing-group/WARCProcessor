@@ -7,6 +7,26 @@ Schema for WarcGenerator XML Configuration
 	<xs:element name="configuration">
 	  <xs:complexType>
 	    <xs:sequence>
+	      <xs:element name="numSites" minOccurs="1" maxOccurs="1">
+	        <xs:complexType>
+	          <xs:simpleContent>
+	            <xs:extension base="xs:integer">
+		          	<xs:attribute name="onlyActiveSites" type="xs:boolean" use="required" />
+		            <xs:attribute name="downloadAgain" type="xs:boolean" use="required" />
+	            </xs:extension>	
+	          </xs:simpleContent>
+	        </xs:complexType>
+	      </xs:element>
+	      <!-- SPAN/HAM Ratio -->      
+	      <xs:element name="ratio" minOccurs="1" maxOccurs="1">
+	        <xs:complexType>
+	          <xs:sequence>
+			      <xs:element name="spam" minOccurs="1" maxOccurs="1" />
+			      <xs:element name="ham" minOccurs="1" maxOccurs="1" />
+	          </xs:sequence>
+	          <xs:attribute name="isPercentage" type="xs:boolean" use="required" />
+	        </xs:complexType>
+	      </xs:element>
 	      <!-- Output folder -->
 	      <xs:element name="corpusDirPath" type="xs:string" minOccurs="1" maxOccurs="1"/>
 	      <!-- Output folder to save warc files with spam contents  -->

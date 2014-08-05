@@ -73,7 +73,7 @@ public class CSVDS extends DataSource implements IDataSource {
 			}*/
 
 			int urlColNum = Integer.valueOf(this.getDataSourceConfig().
-						getCustomParams().get(URL_COL_NUM));
+						getCustomParams().get(URL_COL_NUM).getValue());
 			
 			String url = inst.stringValue(inst.dataset().attribute(urlColNum));
 

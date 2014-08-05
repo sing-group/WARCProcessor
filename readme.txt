@@ -6,6 +6,9 @@
 
 Dependencias
 -------------------------------------------------------------------------------
+# Dependencias WarcProject
+commons-beanutils-1.9.2.jar
+
 # Dependencias crawler4j
 httpcore-4.2.2.jar
 commons-logging-1.1.1.jar

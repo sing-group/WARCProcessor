@@ -35,8 +35,12 @@ public class CorpusDS extends DataSource implements IDataSource {
 	public CorpusDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);
 		logger.info("Opening Corpus file: " + dsConfig.getFilePath());
+		
+		System.out.println("Abriendo 2-1");
 		corpus = new CorpusFileBean(dsConfig.getFilePath(),
 				dsConfig);
+		System.out.println("Abriendo 2-2");
+		
 	}
 
 	public DataBean read() throws DSException {

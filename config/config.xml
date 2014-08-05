@@ -4,7 +4,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="config.xsd"
 >
-	 <!-- Corpus configuration  -->
+	 <!-- General corpus configuration -->
+	 <numSites onlyActiveSites="true" downloadAgain="true">1000</numSites>
+	 <!-- SPAN/HAM Ratio -->
+	 <ratio isPercentage="true" >
+	 	<spam>10</spam>
+	 	<ham>90</ham>
+	 </ratio>
+	 
+	 <!-- Output corpus configuration  -->
 	 <corpusDirPath>.\\out</corpusDirPath>
 	 <spamDirName>_spam_</spamDirName>
 	 <hamDirName>_ham_</hamDirName>

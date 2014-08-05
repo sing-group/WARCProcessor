@@ -1,7 +1,8 @@
 package com.warcgenerator.core.logic;
 
-import java.util.List;
+import java.util.Collection;
 
+import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 
 /**
@@ -11,10 +12,13 @@ import com.warcgenerator.core.config.DataSourceConfig;
  *
  */
 public interface IAppLogic {
-	public List<DataSourceConfig> getDataSourceTypesList();
-	public void updateDataSourceConfig(String name,
+	AppConfig getAppConfig();
+	Collection<DataSourceConfig> getDataSourceTypesList();
+	DataSourceConfig getDataSourceType(String type);
+	Collection<DataSourceConfig> getDataSourceConfigList();
+	void updateDataSourceConfig(String name,
 			DataSourceConfig dsConfig);
-	public void addDataSourceConfig(DataSourceConfig dsConfig);
-	public void removeDataSourceConfig(String name);
-	public void generateCorpus();
+	void addDataSourceConfig(DataSourceConfig dsConfig);
+	void removeDataSourceConfig(String name);
+	void generateCorpus();
 }

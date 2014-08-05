@@ -10,16 +10,16 @@
  	 	class="com.warcgenerator.datasources.CorpusDS" >
  		<customParams>
  			<urlTag>WARC-Target-URI</urlTag>
- 			<spamDir>_spam_</spamDir>
- 			<hamDir>_ham_</hamDir>
+ 			<spamDir type="java.lang.String">_spam_</spamDir>
+ 			<hamDir type="java.lang.String">_ham_</hamDir>
  		</customParams>
  		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
  	</dataSource>
  	<dataSource name="ArffDS"
  		class="com.warcgenerator.datasources.ArffDS" >
  		<customParams>
- 			<spamTag>LABEL</spamTag>
- 			<urlTag>URL</urlTag>
+ 			<spamTag type="java.lang.String">LABEL</spamTag>
+ 			<urlTag type="java.lang.String">URL</urlTag>
  		</customParams>
  		<handler>com.warcgenerator.datasources.handler.ArffDSHandler</handler>
  	</dataSource>
@@ -30,7 +30,7 @@
  	<dataSource name="CSVDS" 
  		class="com.warcgenerator.datasources.CSVDS">
  		<customParams>
- 			<urlColNum>0</urlColNum>
+ 			<urlColNum type="java.lang.Integer">0</urlColNum>
  		</customParams>
  		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
  	</dataSource>
