@@ -50,8 +50,8 @@ public class DSAsisstantStep1ContinueAction
 			e1.printStackTrace();
 		}
 		
-		dsConfig.setName(panel.getNombreJTField().getText());
-		dsConfig.setFilePath(panel.getCarpetaJTField().getText());	
+		dsConfig.setName(panel.getNameJTField().getText());
+		dsConfig.setFilePath(panel.getFolderJTField().getText());	
 		
 		String dsType = (String)panel.getTipoDSCBox().getSelectedItem();
 		DataSourceConfig dsConfigTmp = logic.getDataSourceType(dsType);

@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.warcgenerator.core.common.GenerateCorpusState;
+import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.config.WebCrawlerConfig;
 import com.warcgenerator.core.datasource.DataSource;
@@ -20,13 +22,13 @@ import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
-import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
+	private GenerateCorpusState generateCorpusState;
 	private CrawlController controller;
 	private Map<String, IWebCrawlerHandler> handlers;
 	private WebCrawlerBean webCrawlerBean;
@@ -49,10 +51,16 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		handlers = new HashMap<String, IWebCrawlerHandler>();
 	}
 
-	public Crawler4JAdapter(WebCrawlerConfig configWC,
+	public Crawler4JAdapter(
+			GenerateCorpusState generateCorpusState,
+			WebCrawlerConfig configWC,
 			WebCrawlerBean webCrawlerBean
 			) throws PluginException {
 		super();
+		this.generateCorpusState = generateCorpusState;
+		
+		System.out.println("generateCorpusState is 1---> " + generateCorpusState);
+		
 		this.handlers = new HashMap<String, IWebCrawlerHandler>();
 		this.webCrawlerBean = webCrawlerBean;
 		String crawlStorageFolder = configWC.getStorePath();
@@ -70,7 +78,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		/*
 		 * Instantiate the controller for this crawl.
 		 */
-		PageFetcher pageFetcher = new PageFetcher(config);
+		CustomPageFetcher pageFetcher = new CustomPageFetcher(generateCorpusState,
+				config);
 		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig,
 				pageFetcher);
@@ -81,7 +90,9 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		} catch (Exception e) {
 			throw new PluginException(e);
 		}
-
+		
+		
+		
 		/*
 		 * For each crawl, you need to add some seed urls. These are the first
 		 * URLs that are fetched and then the crawler starts following links
@@ -180,6 +191,14 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData =
 			getParseData(webUrl.getURL());
 		
+		GenerateCorpusState generateCorpusState =
+				((CustomPageFetcher)this.myController.getPageFetcher()).
+				getGenerateCorpusState();
+		System.out.println("publicando!!");
+		generateCorpusState.incWebsVisited();
+		generateCorpusState.setCurrentUrlCrawled(webUrl.getURL());
+		generateCorpusState.setState(GenerateCorpusStates.CRAWLING_URLS);
+		
 		parseData.setUrl(webUrl.getURL());
 		parseData.setHttpStatus(statusCode);
 		parseData.setHttpStatusDescription(statusDescription);
@@ -191,8 +210,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	 */
 	@Override
 	public void visit(Page page) {
-		
-		
+		// Check status
 		String url = page.getWebURL().getURL();
 		logger.info("URL: " + url);
 		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData =

@@ -28,15 +28,16 @@ public class GeneralConfigAction
 				new GeneralConfigPanel(logic, view);
 
 		AppConfig config = logic.getAppConfig();
-		configPanel.getNumSitesTField().setText(config.getNumSites());
+		configPanel.getNumSitesTField().setText(Integer.toString(
+				config.getNumSites()));
 		if (config.getRatioIsPercentage()) {
 			configPanel.getSpamHamRatioRBtn().setSelected(true);
 			configPanel.getQuantityEnabledRBtn().setSelected(false);
 			
 			configPanel.getSpamHamRationValueTField().setText(
-					config.getRatioSpam());
+					Integer.toString(config.getRatioSpam()));
 			configPanel.getSlider().setValue(
-					Integer.parseInt(config.getRatioSpam()));
+					config.getRatioSpam());
 		} else {
 			configPanel.getSpamHamRatioRBtn().setSelected(false);
 			configPanel.getQuantityEnabledRBtn().setSelected(true);

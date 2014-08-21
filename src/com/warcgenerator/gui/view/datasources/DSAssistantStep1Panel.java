@@ -33,8 +33,8 @@ public class DSAssistantStep1Panel extends JPanel {
 	private Action dsAssistantStep1ContinueAction;
 	private Action dsAssistantStep1CancelAction;
 
-	private JTextField nombreJTField;
-	private JTextField carpetaJTField;
+	private JTextField nameJTField;
+	private JTextField folderJTField;
 	private JComboBox tipoDSCBox;
 
 	// Create a file chooser
@@ -74,12 +74,12 @@ public class DSAssistantStep1Panel extends JPanel {
 
 		JLabel lblNewLabel_3 = new JLabel("Tipo:");
 
-		nombreJTField = new JTextField();
-		nombreJTField.setColumns(10);
+		nameJTField = new JTextField();
+		nameJTField.setColumns(10);
 
-		carpetaJTField = new JTextField();
-		carpetaJTField.setEditable(false);
-		carpetaJTField.setColumns(10);
+		folderJTField = new JTextField();
+		folderJTField.setEditable(false);
+		folderJTField.setColumns(10);
 
 		JButton btnNewButton = new JButton("Cancelar");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -101,7 +101,7 @@ public class DSAssistantStep1Panel extends JPanel {
 				
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
-					carpetaJTField.setText(file.getAbsolutePath());
+					folderJTField.setText(file.getAbsolutePath());
 					// This is where a real application would open the file.
 					//log.append("Opening: " + file.getName() + ".");
 				} else {
@@ -141,7 +141,7 @@ public class DSAssistantStep1Panel extends JPanel {
 																						.createParallelGroup(
 																								Alignment.LEADING)
 																						.addComponent(
-																								nombreJTField,
+																								nameJTField,
 																								GroupLayout.PREFERRED_SIZE,
 																								284,
 																								GroupLayout.PREFERRED_SIZE)
@@ -154,7 +154,7 @@ public class DSAssistantStep1Panel extends JPanel {
 																												groupLayout
 																														.createSequentialGroup()
 																														.addComponent(
-																																carpetaJTField)
+																																folderJTField)
 																														.addGap(18)
 																														.addComponent(
 																																btnBuscar)
@@ -215,7 +215,7 @@ public class DSAssistantStep1Panel extends JPanel {
 														.addComponent(
 																lblNewLabel_1)
 														.addComponent(
-																nombreJTField,
+																nameJTField,
 																GroupLayout.PREFERRED_SIZE,
 																GroupLayout.DEFAULT_SIZE,
 																GroupLayout.PREFERRED_SIZE))
@@ -232,7 +232,7 @@ public class DSAssistantStep1Panel extends JPanel {
 																						.createParallelGroup(
 																								Alignment.BASELINE)
 																						.addComponent(
-																								carpetaJTField,
+																								folderJTField,
 																								GroupLayout.PREFERRED_SIZE,
 																								GroupLayout.DEFAULT_SIZE,
 																								GroupLayout.PREFERRED_SIZE)
@@ -287,20 +287,20 @@ public class DSAssistantStep1Panel extends JPanel {
 		tipoDSCBox.setModel(new DefaultComboBoxModel(values));
 	}
 
-	public JTextField getNombreJTField() {
-		return nombreJTField;
+	public JTextField getNameJTField() {
+		return nameJTField;
 	}
 
-	public void setNombreJTField(JTextField nombreJTField) {
-		this.nombreJTField = nombreJTField;
+	public void setNameJTField(JTextField nombreJTField) {
+		this.nameJTField = nombreJTField;
 	}
 
-	public JTextField getCarpetaJTField() {
-		return carpetaJTField;
+	public JTextField getFolderJTField() {
+		return folderJTField;
 	}
 
-	public void setCarpetaJTField(JTextField carpetaJTField) {
-		this.carpetaJTField = carpetaJTField;
+	public void setFolderJTField(JTextField carpetaJTField) {
+		this.folderJTField = carpetaJTField;
 	}
 
 	public void setTipoDSCBox(JComboBox tipoDSCBox) {

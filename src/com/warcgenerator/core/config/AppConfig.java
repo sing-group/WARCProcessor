@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.warcgenerator.core.exception.config.validation.RatioQuantityUnexpectedValueException;
+
 /**
  * General configuration.
  * 
@@ -13,7 +15,7 @@ import java.util.Map;
  */
 public class AppConfig {
 	private OutputConfig outputConfig;
-	private Map<String, DataSourceConfig> dataSourceConfigs;
+	private Map<Integer, DataSourceConfig> dataSourceConfigs;
 	private WebCrawlerConfig webCrawlerCfgTemplate;
 	private String corpusDirPath;
 	private String spamDirName;
@@ -21,18 +23,18 @@ public class AppConfig {
 	private String domainsLabeledFileName;
 	private String domainsNotFoundFileName;
 	private Boolean flushOutputDir;
-	private String maxDepthOfCrawling;
-	private String numCrawlers;
+	private Integer maxDepthOfCrawling;
+	private Integer numCrawlers;
 	private String webCrawlerTmpStorePath;
-	private String numSites;
+	private Integer numSites;
 	private Boolean onlyActiveSites;
 	private Boolean downloadAgain;
 	private Boolean ratioIsPercentage;
-	private String ratioSpam;
-	private String ratioHam;
+	private Integer ratioSpam;
+	private Integer ratioHam;
 
 	public AppConfig() {
-		setDataSourceConfigs(new HashMap<String, DataSourceConfig>());
+		setDataSourceConfigs(new HashMap<Integer, DataSourceConfig>());
 	}
 
 	public void init() {
@@ -50,7 +52,7 @@ public class AppConfig {
 				:domainsNotFoundFileName;
 		flushOutputDir = flushOutputDir.equals("")?
 				Constants.AppConfigConstants.FLASH_OUTPUT_DIR_DEFAULT: flushOutputDir;
-		maxDepthOfCrawling = maxDepthOfCrawling.equals("")?
+		maxDepthOfCrawling = maxDepthOfCrawling == null?
 				Constants.AppConfigConstants.MAX_DEPTH_OF_CRAWLING_DEFAULT
 				:maxDepthOfCrawling;
 		numCrawlers = numCrawlers.equals("")?
@@ -93,32 +95,28 @@ public class AppConfig {
 		// Set number of crawlers
 		Integer numCrawlersToInt = null;
 		try {
-			numCrawlersToInt = Integer.parseInt(numCrawlers);
+			numCrawlersToInt = numCrawlers;
 			if (numCrawlersToInt < 1) {
-				numCrawlersToInt = Integer
-					.parseInt(Constants.AppConfigConstants.
-								MAX_DEPTH_OF_CRAWLING_DEFAULT);
+				numCrawlersToInt = Constants.AppConfigConstants.
+								MAX_DEPTH_OF_CRAWLING_DEFAULT;
 			}
 		} catch (NumberFormatException ex) {
-			numCrawlersToInt = Integer
-					.parseInt(Constants.AppConfigConstants.
-								MAX_DEPTH_OF_CRAWLING_DEFAULT);
+			numCrawlersToInt = Constants.AppConfigConstants.
+								MAX_DEPTH_OF_CRAWLING_DEFAULT;
 		}
 		webCrawlerCfgTemplate.setNumberOfCrawlers(numCrawlersToInt);
 		
 		// Set max depth of crawling
 		Integer maxDepthOfCrawlingToInt = null;
 		try {
-			maxDepthOfCrawlingToInt = Integer.parseInt(maxDepthOfCrawling);
+			maxDepthOfCrawlingToInt = maxDepthOfCrawling;
 			if (maxDepthOfCrawlingToInt < -1) {
-				maxDepthOfCrawlingToInt = Integer
-						.parseInt(Constants.AppConfigConstants.
-						MAX_DEPTH_OF_CRAWLING_DEFAULT);
+				maxDepthOfCrawlingToInt = Constants.AppConfigConstants.
+						MAX_DEPTH_OF_CRAWLING_DEFAULT;
 			}
 		} catch (NumberFormatException ex) {
-			maxDepthOfCrawlingToInt = Integer
-					.parseInt(Constants.AppConfigConstants.
-								MAX_DEPTH_OF_CRAWLING_DEFAULT);
+			maxDepthOfCrawlingToInt = Constants.AppConfigConstants.
+								MAX_DEPTH_OF_CRAWLING_DEFAULT;
 		}
 		
 		webCrawlerCfgTemplate.setMaxDepthOfCrawling(maxDepthOfCrawlingToInt);
@@ -173,14 +171,6 @@ public class AppConfig {
 		this.domainsNotFoundFileName = domainsNotFoundFileName;
 	}
 
-	public String getMaxDepthOfCrawling() {
-		return maxDepthOfCrawling;
-	}
-
-	public void setMaxDepthOfCrawling(String maxDepthOfCrawling) {
-		this.maxDepthOfCrawling = maxDepthOfCrawling;
-	}
-
 	public String getWebCrawlerTmpStorePath() {
 		return webCrawlerTmpStorePath;
 	}
@@ -203,22 +193,6 @@ public class AppConfig {
 
 	public void setFlushOutputDir(Boolean flushOutputDir) {
 		this.flushOutputDir = flushOutputDir;
-	}
-	
-	public String getNumCrawlers() {
-		return numCrawlers;
-	}
-
-	public void setNumCrawlers(String numCrawlers) {
-		this.numCrawlers = numCrawlers;
-	}
-	
-	public String getNumSites() {
-		return numSites;
-	}
-
-	public void setNumSites(String numSites) {
-		this.numSites = numSites;
 	}
 
 	public Boolean getOnlyActiveSites() {
@@ -245,20 +219,52 @@ public class AppConfig {
 		this.ratioIsPercentage = ratioIsPercentage;
 	}
 
-	public String getRatioSpam() {
+	public Integer getMaxDepthOfCrawling() {
+		return maxDepthOfCrawling;
+	}
+
+	public void setMaxDepthOfCrawling(Integer maxDepthOfCrawling) {
+		this.maxDepthOfCrawling = maxDepthOfCrawling;
+	}
+
+	public Integer getNumCrawlers() {
+		return numCrawlers;
+	}
+
+	public void setNumCrawlers(Integer numCrawlers) {
+		this.numCrawlers = numCrawlers;
+	}
+
+	public Integer getNumSites() {
+		return numSites;
+	}
+
+	public void setNumSites(Integer numSites) {
+		this.numSites = numSites;
+	}
+
+	public Integer getRatioSpam() {
 		return ratioSpam;
 	}
 
-	public void setRatioSpam(String ratioSpam) {
+	public void setRatioSpam(Integer ratioSpam) {
 		this.ratioSpam = ratioSpam;
 	}
 
-	public String getRatioHam() {
+	public Integer getRatioHam() {
 		return ratioHam;
 	}
 
-	public void setRatioHam(String ratioHam) {
+	public void setRatioHam(Integer ratioHam) {
 		this.ratioHam = ratioHam;
+	}
+	
+	public Map<Integer, DataSourceConfig> getDataSourceConfigs() {
+		return dataSourceConfigs;
+	}
+
+	public void setDataSourceConfigs(Map<Integer, DataSourceConfig> dataSourceConfigs) {
+		this.dataSourceConfigs = dataSourceConfigs;
 	}
 	
 	public String toString() {
@@ -279,14 +285,13 @@ public class AppConfig {
 				.append(webCrawlerTmpStorePath).append("\n");
 		return sb.toString();
 	}
-
-	public Map<String, DataSourceConfig> getDataSourceConfigs() {
-		return dataSourceConfigs;
-	}
-
-	public void setDataSourceConfigs(Map<String, DataSourceConfig> dataSourceConfigs) {
-		this.dataSourceConfigs = dataSourceConfigs;
+	
+	public boolean validate() {
+		// Check if ratioQuantity is bigger than numSites
+		if (!ratioIsPercentage && numSites < ratioSpam) {
+			throw new RatioQuantityUnexpectedValueException();
+		}
+		
+		return true;
 	}
 }
-
-

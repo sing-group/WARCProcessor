@@ -6,7 +6,10 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 
+import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.common.Constants;
+import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantCreatePanel;
 
@@ -22,7 +25,11 @@ public class DSAsisstantCreateAction
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {		
+	public void actionPerformed(ActionEvent e) {	
+		DataSourceConfig dsConfig = new DataSourceConfig();
+		Session.add(Constants.DATASOURCE_FORM_SESSION_KEY,
+				dsConfig);
+		
 		view.loadMainPanel(new DSAssistantCreatePanel(logic, view));
 	}
 

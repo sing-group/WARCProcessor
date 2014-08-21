@@ -17,6 +17,11 @@ import com.warcgenerator.core.exception.config.LoadDataSourceException;
  */
 
 public class ConfigHelper {
+	public static void configure(String path, AppConfig config) {
+		XMLConfigHelper.getAppConfigFromXml(path, config);
+		config.validate();
+	}
+	
 	// Add DSHandlers to each configuration data source
 	public static void getDSHandlers(AppConfig config) 
 		throws LoadDataSourceException {

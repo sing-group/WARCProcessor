@@ -2,8 +2,6 @@ package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.AbstractAction;
 
@@ -15,50 +13,40 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 
 public class DSAssistantCreateNewDSAction 
-	extends AbstractAction implements Observer {	
+	extends AbstractAction {	
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
+	private DSAssistantStep1Panel panel;
+	private DataSourceConfig dsConfig;
 	
 	public DSAssistantCreateNewDSAction(IAppLogic logic,
 			WarcGeneratorGUI view
 			) {
 		this.view = view;
 		this.logic = logic;
+		panel = new DSAssistantStep1Panel(logic, view);
+		dsConfig = (DataSourceConfig)Session.get(
+				Constants.DATASOURCE_FORM_SESSION_KEY);	
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DataSourceConfig dsConfig = new DataSourceConfig();
-		Session.add(Constants.DATASOURCE_FORM_SESSION_KEY,
-				dsConfig);
-		
-		DSAssistantStep1Panel panel = new DSAssistantStep1Panel(logic, 
-				view);
-		
-		System.out.println("logic es :" + logic);
+		fill();
+		view.loadMainPanel(panel);
+	}
+
+	private void fill() {
+		panel.getNameJTField().setText(dsConfig.getName());
+		panel.getFolderJTField().setText(dsConfig.getFilePath());
 		
 		Collection<DataSourceConfig> dataSourceTypeList = 
 				logic.getDataSourceTypesList();
-		
-		System.out.println("dataSourceTypeList es: " + 
-				dataSourceTypeList);
-		
 		String[] dsTypeStringArray = 
 				new String[dataSourceTypeList.size()];
 		int i = 0;
 		for (DataSourceConfig dsType:dataSourceTypeList) {
 			dsTypeStringArray[i++] = dsType.getName();
 		}
-		
 		panel.setTipoDSCBoxValues(dsTypeStringArray);
-		
-		view.loadMainPanel(panel);
 	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

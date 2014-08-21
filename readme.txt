@@ -8,6 +8,7 @@ Dependencias
 -------------------------------------------------------------------------------
 # Dependencias WarcProject
 commons-beanutils-1.9.2.jar
+commons-validator-1.4.0.jar
 
 # Dependencias crawler4j
 httpcore-4.2.2.jar

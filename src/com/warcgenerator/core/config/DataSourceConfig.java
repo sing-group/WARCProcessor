@@ -16,7 +16,9 @@ import com.warcgenerator.core.datasource.handler.IDSHandler;
 public class DataSourceConfig {
 	public static final boolean IS_SPAM = true;
 	public static final boolean IS_HAM = false;
+	public static int nextId = 1;
 	
+	private Integer id;
 	private String name;
 	private boolean spam;
 	private String filePath;
@@ -102,6 +104,7 @@ public class DataSourceConfig {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("-- DataSourceConfig --\n").
+		append("ID: ").append(id).append("\n").
 		append("DSClassName: ").append(dsClassName).append("\n").
 		append("HandlerClassName: ").append(handlerClassName).append("\n").
 		append("FilePath: ").append(filePath).append("\n").
@@ -154,5 +157,21 @@ public class DataSourceConfig {
 
 	public void setChildren(List<DataSourceConfig> children) {
 		this.children = children;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	/**
+	 * Request a new datasource Id
+	 * @return id @type of Integer
+	 */
+	public static int getNextId() {
+		return nextId++;
 	}
 }

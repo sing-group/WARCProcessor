@@ -22,8 +22,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.general.GCSaveAction;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
+import com.warcgenerator.gui.view.common.validator.NaturalNumberAndZeroValidator;
+import com.warcgenerator.gui.view.common.validator.NaturalNumberValidator;
+import com.warcgenerator.gui.view.common.validator.PercentageValidator;
 
 public class GeneralConfigPanel extends JPanel {
 	private JTextField numSitesTField;
@@ -35,10 +39,14 @@ public class GeneralConfigPanel extends JPanel {
 	private JCheckBox onlyActiveSitesEnabledCBox;
 	private JCheckBox downloadAgainEnabledCBox;
 
+	private GCSaveAction gcSaveAction;
+	
 	/**
 	 * Create the panel.
 	 */
 	public GeneralConfigPanel(IAppLogic logic, WarcGeneratorGUI view) {
+		gcSaveAction = new GCSaveAction(logic, view, this);
+		
 		setBackground(new Color(230, 230, 250));
 		
 		JLabel lblNewLabel = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel.text")); //$NON-NLS-1$
@@ -60,6 +68,7 @@ public class GeneralConfigPanel extends JPanel {
 		JLabel lblNewLabel_1 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_1.text")); //$NON-NLS-1$
 		
 		numSitesTField = new JTextField();
+		numSitesTField.setInputVerifier(new NaturalNumberValidator(view.getMainFrame(), numSitesTField, "Field cannot be null... "));
 		numSitesTField.setColumns(10);
 		
 		 //Group the radio buttons.
@@ -83,11 +92,15 @@ public class GeneralConfigPanel extends JPanel {
 		});
 		
 		spamHamRationValueTField = new JTextField();
+		spamHamRationValueTField.setInputVerifier(
+				new PercentageValidator(view.getMainFrame(), spamHamRationValueTField, "Field cannot be null... "));
 		spamHamRationValueTField.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_2.text")); //$NON-NLS-1$
 		
 		spamQuantityTField = new JTextField();
+		spamQuantityTField.setInputVerifier(
+				new NaturalNumberAndZeroValidator(view.getMainFrame(), spamQuantityTField, "Field cannot be null... "));
 		spamQuantityTField.setColumns(10);
 		
 		onlyActiveSitesEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox.text")); //$NON-NLS-1$
@@ -96,7 +109,8 @@ public class GeneralConfigPanel extends JPanel {
 		
 		JButton saveBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNewButton.text")); //$NON-NLS-1$
 		saveBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
+				gcSaveAction.actionPerformed(e);
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);

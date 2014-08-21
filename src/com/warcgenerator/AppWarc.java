@@ -5,9 +5,11 @@ import java.io.File;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
+import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.exception.WarcException;
+import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.helper.XMLConfigHelper;
 import com.warcgenerator.core.logic.AppLogicImpl;
 import com.warcgenerator.core.logic.IAppLogic;
@@ -47,7 +49,7 @@ class AppWarc {
 		config = new AppConfig();
 		
 		// Using XML config instead of properties
-		XMLConfigHelper.configure(Constants.defaultConfigXML,
+		ConfigHelper.configure(Constants.defaultConfigXML,
 				config);
 		config.init();
 		
@@ -68,7 +70,7 @@ class AppWarc {
 		logger.info("Loading configuration...");
 		config = new AppConfig();
 		// Using XML config instead of properties
-		XMLConfigHelper.configure(pathConfig, config);
+		ConfigHelper.configure(pathConfig, config);
 		config.init();
 		
 		logger.info("-- AppConfig --\n" + config);
@@ -83,7 +85,7 @@ class AppWarc {
 	public void execute() throws WarcException {
 		// Start
 		logger.info("Generating corpus...");
-		logic.generateCorpus();
+		logic.generateCorpus(new GenerateCorpusState());
 		logger.info("Corpus generated successfully ...");
 	}
 	

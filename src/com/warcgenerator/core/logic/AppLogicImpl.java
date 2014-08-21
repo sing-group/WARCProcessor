@@ -10,6 +10,8 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import com.warcgenerator.core.common.GenerateCorpusState;
+import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -17,6 +19,7 @@ import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.config.WebCrawlerConfig;
 import com.warcgenerator.core.datasource.GenericDS;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.LoadDataSourceException;
 import com.warcgenerator.core.exception.logic.LogicException;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
@@ -41,7 +44,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
 		
-		ConfigHelper.getDSHandlers(config);
+		// ConfigHelper.getDSHandlers(config);
 		
 		dataSourcesTypes = new HashMap<String, DataSourceConfig>();
 		XMLConfigHelper.getDataSources(Constants.dataSourcesTypesXML,
@@ -64,6 +67,22 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 		
 		FileHelper.createDirs(dirs);
+	}
+	
+	public void updateAppConfig(AppConfig appConfig) throws LogicException {
+		try {
+			appConfig.validate();
+		} catch (ConfigException e) {
+			throw new LogicException(e);
+		}
+	
+		try {
+			BeanUtils.copyProperties(config, appConfig);
+		} catch (IllegalAccessException e) {
+			throw new LogicException(e);
+		} catch (InvocationTargetException e) {
+			throw new LogicException(e);
+		}	
 	}
 	
 	public AppConfig getAppConfig() throws LogicException {
@@ -151,31 +170,27 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 */
 	public void addDataSourceConfig(DataSourceConfig dsConfig) 
 			throws LoadDataSourceException{
-		ConfigHelper.getDSHandler(dsConfig, config);
+		if (dsConfig.getId() == null) {
+			dsConfig.setId(DataSourceConfig.nextId);		
+		}
+		//ConfigHelper.getDSHandler(dsConfig, config);
 		config.getDataSourceConfigs().put(
-				dsConfig.getName(), dsConfig);
-	}
-	
-	/**
-	 * Update an exist DataSource
-	 * @param name
-	 * @param dsConfig
-	 */
-	public void updateDataSourceConfig(String name,
-			DataSourceConfig dsConfig) {
-		removeDataSourceConfig(name);
-		addDataSourceConfig(dsConfig);
+				dsConfig.getId(), dsConfig);
 	}
 	
 	/**
 	 * Remove a DataSource
 	 * @param name
 	 */
-	public void removeDataSourceConfig(String name) {
+	public void removeDataSourceConfig(Integer name) {
 		config.getDataSourceConfigs().remove(name);
 	}
 
-	public void generateCorpus() throws LogicException {
+	public void generateCorpus(GenerateCorpusState generateCorpusState)
+			throws LogicException {
+		// Get dsHandlers
+		ConfigHelper.getDSHandlers(config);
+		
 		// Generate wars
 		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
 				outputCorpusConfig.getDomainsLabeledFilePath()));
@@ -186,27 +201,36 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		Set<String> urlsSpam = new HashSet<String>();
 		Set<String> urlsHam = new HashSet<String>();
 		
+		generateCorpusState.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
+		
 		// Get all DSHandlers for each DS
 		// First the ham
 		for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
 			getUrls(dsConfig, urlsSpam, urlsHam);
 		}
 		
+		generateCorpusState.setState(GenerateCorpusStates.READING_SPAM);
+		generateCorpusState.setWebsToVisitTotal(urlsSpam.size());
 		WebCrawlerBean webCrawlerSpam = new WebCrawlerBean( 
 				  labeledDS,
 				  notFoundDS,
 				  true,
 				  outputCorpusConfig);
 		// Start crawling urls in batch
-		startWebCrawling(urlsSpam, webCrawlerSpam);
+		startWebCrawling(generateCorpusState,
+				urlsSpam, webCrawlerSpam);
 		
+		generateCorpusState.setState(GenerateCorpusStates.READING_HAM);
+		generateCorpusState.setWebsToVisitTotal(urlsHam.size());
 		WebCrawlerBean webCrawlerHam = new WebCrawlerBean( 
 				  labeledDS,
 				  notFoundDS,
 				  false,
 				  outputCorpusConfig);
-		startWebCrawling(urlsHam, webCrawlerHam);
+		startWebCrawling(generateCorpusState,
+				urlsHam, webCrawlerHam);
 
+		generateCorpusState.setState(GenerateCorpusStates.ENDING);
 		labeledDS.close();
 		notFoundDS.close();
 	}
@@ -221,7 +245,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 	}
 	
-	private void startWebCrawling(Set<String> urls,
+	private void startWebCrawling(GenerateCorpusState generateCorpusState,
+			Set<String> urls,
 			WebCrawlerBean webCrawlerBean) {
 		//config.getWebCrawlerCfgTemplate().setMaxDepthOfCrawling(0);
 
@@ -229,7 +254,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		WebCrawlerConfig webCrawlerConfig = new WebCrawlerConfig(
 				config.getWebCrawlerCfgTemplate());
 		webCrawlerConfig.setUrls(urls);
-		IWebCrawler webCrawler = new Crawler4JAdapter(webCrawlerConfig,
+		IWebCrawler webCrawler = new Crawler4JAdapter(generateCorpusState,
+				webCrawlerConfig,
 				webCrawlerBean);
 
 		// Start crawler

@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
@@ -40,9 +41,18 @@ public class DSAsisstantStep3FinishAction
 			System.out.println(key);
 		}
 		
+		view.buildTree();
+		
+		Action dsDetailAction = new DSDetailAction(logic,
+				view, dsConfig); 
+		dsDetailAction.actionPerformed(e);
+		
 		// Load modify panel
 		//view.loadMainPanel(new DSCreateStep3Panel(logic, 
 		//		view));
+		
+		
+		
 	}
 
 	@Override

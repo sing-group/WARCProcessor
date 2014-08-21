@@ -67,7 +67,7 @@ public class XMLConfigHelper {
 		}
 	}
 
-	public static void configure(String path, AppConfig config) {
+	public static void getAppConfigFromXml(String path, AppConfig config) {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
@@ -80,7 +80,7 @@ public class XMLConfigHelper {
 			// normalize text representation
 			doc.getDocumentElement().normalize();
 
-			config.setNumSites(getValueFromElement(doc, "numSites"));
+			config.setNumSites(Integer.parseInt(getValueFromElement(doc, "numSites")));
 			config.setOnlyActiveSites(Boolean.valueOf(
 					getAttributeFromElement(doc, "numSites",
 					"onlyActiveSites")));
@@ -98,9 +98,11 @@ public class XMLConfigHelper {
 				if (nodeAux.getNodeType() == Node.ELEMENT_NODE) {
 					System.out.println("nodename es " + nodeAux.getNodeName());
 					if (nodeAux.getNodeName().equals("spam")) {
-						config.setRatioSpam(nodeAux.getTextContent().trim());
+						config.setRatioSpam(Integer.parseInt(
+								nodeAux.getTextContent().trim()));
 					} else if (nodeAux.getNodeName().equals("ham")) {
-						config.setRatioHam(nodeAux.getTextContent().trim());
+						config.setRatioHam(Integer.parseInt(
+								nodeAux.getTextContent().trim()));
 					}
 				}
 			}
@@ -116,9 +118,10 @@ public class XMLConfigHelper {
 			if (flushOutputDir != null) {
 				config.setFlushOutputDir(Boolean.valueOf(flushOutputDir));
 			}
-			config.setMaxDepthOfCrawling(getValueFromElement(doc,
-					"maxDepthOfCrawling"));
-			config.setNumCrawlers(getValueFromElement(doc, "numCrawlers"));
+			config.setMaxDepthOfCrawling(Integer.parseInt(getValueFromElement(doc,
+					"maxDepthOfCrawling")));
+			config.setNumCrawlers(Integer.parseInt(getValueFromElement(doc,
+					"numCrawlers")));
 			config.setWebCrawlerTmpStorePath(getValueFromElement(doc,
 					"webCrawlerDirTmpStorePath"));
 
@@ -130,7 +133,8 @@ public class XMLConfigHelper {
 			for (int s = 0; s < listOfDS.getLength(); s++) {
 				Node dataSourceNode = listOfDS.item(s);
 				DataSourceConfig ds = new DataSourceConfig();
-
+				ds.setId(DataSourceConfig.getNextId());
+				
 				if (dataSourceNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setName(dataSourceElement.getAttribute("name"));
@@ -191,7 +195,7 @@ public class XMLConfigHelper {
 
 					logger.info(ds);
 
-					config.getDataSourceConfigs().put(ds.getName(), ds);
+					config.getDataSourceConfigs().put(ds.getId(), ds);
 				}
 			}
 		} catch (SAXParseException err) {
