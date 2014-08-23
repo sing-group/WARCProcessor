@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.warcgenerator.core.exception.config.validation.RatioQuantityUnexpectedValueException;
+import com.warcgenerator.core.util.Validator;
 
 /**
  * General configuration.
@@ -38,46 +39,43 @@ public class AppConfig {
 	}
 
 	public void init() {
-		corpusDirPath = corpusDirPath.equals("")?
+		corpusDirPath = Validator.isNullOrEmpty(corpusDirPath)?
 				Constants.AppConfigConstants.CORPUS_DIR_PATH_DEFAULT:corpusDirPath;
-		spamDirName = spamDirName.equals("")?
+		spamDirName = Validator.isNullOrEmpty(spamDirName)?
 				Constants.AppConfigConstants.SPAM_DIR_NAME_DEFAULT:spamDirName;
-		hamDirName = hamDirName.equals("")?
+		hamDirName = Validator.isNullOrEmpty(hamDirName)?
 				Constants.AppConfigConstants.HAM_DIR_NAME_DEFAULT:hamDirName;
-		domainsLabeledFileName = domainsLabeledFileName.equals("")?
+		domainsLabeledFileName = Validator.isNullOrEmpty(domainsLabeledFileName)?
 				Constants.AppConfigConstants.DOMAINS_LABELED_FILE_NAME_DEFAULT
 					:domainsLabeledFileName;
-		domainsNotFoundFileName = domainsNotFoundFileName.equals("")?
+		domainsNotFoundFileName = Validator.isNullOrEmpty(domainsNotFoundFileName)?
 				Constants.AppConfigConstants.DOMAINS_NOTFOUND_FILE_NAME_DEFAULT
 				:domainsNotFoundFileName;
-		flushOutputDir = flushOutputDir.equals("")?
+		flushOutputDir = Validator.isNullOrEmpty(flushOutputDir)?
 				Constants.AppConfigConstants.FLASH_OUTPUT_DIR_DEFAULT: flushOutputDir;
-		maxDepthOfCrawling = maxDepthOfCrawling == null?
+		maxDepthOfCrawling = Validator.isNullOrEmpty(maxDepthOfCrawling)?
 				Constants.AppConfigConstants.MAX_DEPTH_OF_CRAWLING_DEFAULT
 				:maxDepthOfCrawling;
-		numCrawlers = numCrawlers.equals("")?
+		numCrawlers = Validator.isNullOrEmpty(numCrawlers)?
 				Constants.AppConfigConstants.NUM_CRAWLERS_DEFAULT:numCrawlers;
-		webCrawlerTmpStorePath = webCrawlerTmpStorePath.equals("")?
+		webCrawlerTmpStorePath = Validator.isNullOrEmpty(webCrawlerTmpStorePath)?
 				Constants.AppConfigConstants.WEB_CRAWLER_DIR_TMP_STORE_PATH_DEFAULT
 				:webCrawlerTmpStorePath;		
-		numSites = numSites.equals("")?
+		numSites = Validator.isNullOrEmpty(numSites)?
 				Constants.AppConfigConstants.NUM_SITES_DEFAULT
 				:numSites;
-		onlyActiveSites = onlyActiveSites.equals("")?
+		onlyActiveSites = Validator.isNullOrEmpty(onlyActiveSites)?
 				Constants.AppConfigConstants.ONLY_ACTIVE_SITES_DEFAULT:
 					onlyActiveSites;
-		downloadAgain = downloadAgain.equals("")?
+		downloadAgain = Validator.isNullOrEmpty(downloadAgain)?
 				Constants.AppConfigConstants.DOWNLOAD_AGAIN_DEFAULT:
 					downloadAgain;
-		ratioIsPercentage = ratioIsPercentage.equals("")?
+		ratioIsPercentage = Validator.isNullOrEmpty(ratioIsPercentage)?
 				Constants.AppConfigConstants.RATIO_IS_PERCENTAGE_DEFAULT:
 					ratioIsPercentage;
-		ratioSpam = ratioSpam.equals("")?
+		ratioSpam = Validator.isNullOrEmpty(ratioSpam)?
 				Constants.AppConfigConstants.RATIO_SPAM_DEFAULT:
 					ratioSpam;
-		ratioHam = ratioHam.equals("")?
-				Constants.AppConfigConstants.RATIO_HAM_DEFAULT:
-					ratioHam;
 		
 		// Configure filepaths
 		String pathCorpus = corpusDirPath;

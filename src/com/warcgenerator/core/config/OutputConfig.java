@@ -8,7 +8,11 @@ package com.warcgenerator.core.config;
  */
 public class OutputConfig {
 	private String outputDir;
-
+	
+	public OutputConfig() {
+		
+	}
+	
 	public OutputConfig(String outputDir) {
 		this.outputDir = outputDir;
 	}

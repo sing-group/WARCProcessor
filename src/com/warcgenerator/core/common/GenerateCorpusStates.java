@@ -5,5 +5,6 @@ public enum GenerateCorpusStates {
 	READING_SPAM,
 	CRAWLING_URLS,
 	READING_HAM,
-	ENDING
+	ENDING,
+	CANCELlING_PROCESS
 }

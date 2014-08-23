@@ -12,6 +12,10 @@ public class OutputCorpusConfig extends OutputConfig {
 	private String domainsLabeledFilePath;
 	private String domainsNotFoundFilePath;
 
+	public OutputCorpusConfig() {
+		super();
+	}
+	
 	public OutputCorpusConfig(String outputDir, String spamDir, String hamDir,
 			String domainsLabeledFileName, String domainsNotFoundFilePath) {
 		super(outputDir);

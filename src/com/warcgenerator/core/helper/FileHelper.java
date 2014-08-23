@@ -20,8 +20,10 @@ public class FileHelper {
 	 */
 	public static void createDirs(String[] dirs) {
 		for (String dir:dirs) {
-			File f = new File(dir);
-			f.mkdirs();
+			if (dir != null) {
+				File f = new File(dir);
+				f.mkdirs();
+			}
 		}
 	}
 	

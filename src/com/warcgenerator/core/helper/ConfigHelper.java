@@ -4,12 +4,16 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.handler.IDSHandler;
+import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.LoadDataSourceException;
+import com.warcgenerator.core.exception.logic.LogicException;
 
 /**
  * 
@@ -17,9 +21,26 @@ import com.warcgenerator.core.exception.config.LoadDataSourceException;
  */
 
 public class ConfigHelper {
-	public static void configure(String path, AppConfig config) {
-		XMLConfigHelper.getAppConfigFromXml(path, config);
-		config.validate();
+	public static void configure(String path, AppConfig config) {	
+		AppConfig newConfig = new AppConfig();
+		try {
+			// Store old config
+			XMLConfigHelper.getAppConfigFromXml(path, newConfig);
+			newConfig.validate();
+			BeanUtils.copyProperties(config, newConfig);
+			
+			// These properties copy doesn't work with BeanUtils
+			//config.setOutputConfig(newConfig.getOutputConfig());
+			//config.setWebCrawlerCfgTemplate(newConfig.getWebCrawlerCfgTemplate());
+		} catch (IllegalAccessException e) {
+			throw new ConfigException(e);
+		} catch (InvocationTargetException e) {
+			throw new ConfigException(e);
+		} 
+	}
+	
+	public static void persistConfig(String path, AppConfig config) {
+		XMLConfigHelper.saveXMLFromAppConfig(path, config);
 	}
 	
 	// Add DSHandlers to each configuration data source

@@ -27,17 +27,32 @@ import javax.swing.tree.TreePath;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.common.Constants;
+import com.warcgenerator.gui.actions.common.ExitAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCreateAction;
 import com.warcgenerator.gui.actions.datasource.DSDetailAction;
+import com.warcgenerator.gui.actions.datasource.DSourcesAction;
+import com.warcgenerator.gui.actions.file.LoadAppConfigAction;
+import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
+import com.warcgenerator.gui.actions.file.SaveAppConfigAction;
 import com.warcgenerator.gui.actions.general.GeneralConfigAction;
 import com.warcgenerator.gui.actions.generate.GenerateCorpusAction;
+import com.warcgenerator.gui.actions.output.OutputConfigAction;
+import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomTreeNode;
+import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 
 public class WarcGeneratorGUI {
-
-	Action assistantCreateDSAction;
-	Action generateCorpusAction;
+	private GUIConfig guiConfig;
+	
+	private Action assistantCreateDSAction;
+	private Action generateCorpusAction;
+	private Action outputConfigAction;
+	private Action saveAppConfigAction;
+	private Action loadAppConfigAction;
+	private Action dsourcesAction;
+	private Action exitAction;
 	
 	private JFrame frmWarcgenerator;
 	private JPanel mainPanel;
@@ -46,7 +61,7 @@ public class WarcGeneratorGUI {
 	private GeneralConfigAction generalConfigAction;
 	
 	private IAppLogic logic;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -71,6 +86,12 @@ public class WarcGeneratorGUI {
 		assistantCreateDSAction = new DSAsisstantCreateAction(logic, 
 				this);
 		generateCorpusAction = new GenerateCorpusAction(logic, this);
+		outputConfigAction = new OutputConfigAction(logic, this);
+		saveAppConfigAction = new SaveAppConfigAction(logic, this);
+		loadAppConfigAction = new LoadAppConfigAction(logic, this);
+		dsourcesAction = new DSourcesAction(logic, this);
+		exitAction = new ExitAction(logic, this);
+		guiConfig = (GUIConfig)Session.get(Constants.GUI_CONFIG_SESSION_KEY);
 		initialize();
 	}
 	
@@ -94,6 +115,8 @@ public class WarcGeneratorGUI {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		
 		
 		frmWarcgenerator = new JFrame();
 		frmWarcgenerator.setTitle("WarcGenerator GUI");
@@ -119,15 +142,51 @@ public class WarcGeneratorGUI {
 		menuBar.add(mnInicio);
 		
 		JMenuItem mntmCargarConfiguracionGeneral = new JMenuItem("Cargar configuracion general");
+		mntmCargarConfiguracionGeneral.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadAppConfigAction.actionPerformed(e);
+			}
+		});
 		mnInicio.add(mntmCargarConfiguracionGeneral);
 		
 		JMenuItem mntmGuardarConfiguracionGeneral = new JMenuItem("Guardar configuracion general");
+		mntmGuardarConfiguracionGeneral.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Pulsado!!!");
+				saveAppConfigAction.actionPerformed(e);
+			}
+		});
 		mnInicio.add(mntmGuardarConfiguracionGeneral);
 		
 		JSeparator separator = new JSeparator();
 		mnInicio.add(separator);
 		
+		for(String configFile:guiConfig.getRecentConfigFiles()) {
+			final String configFileName = configFile; 
+			JMenuItem recentConfig = new JMenuItem(configFile);
+			recentConfig.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Action loadRecentConfigAction =
+							new LoadRecentConfigAction(logic, WarcGeneratorGUI.this,
+									configFileName, true);
+					
+					System.out.println("Pulsado!!!");
+					
+					loadRecentConfigAction.actionPerformed(e);
+				}
+			});
+			mnInicio.add(recentConfig);
+		}
+		
+		mnInicio.add(new JSeparator());
+		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("clicked!!!");
+				exitAction.actionPerformed(null);
+			}
+		});
 		mnInicio.add(mntmSalir);
 		
 		JMenu mnGenerarCorpus = new JMenu("Generar corpus");
@@ -148,6 +207,7 @@ public class WarcGeneratorGUI {
 		menuBar.add(mnSalir);
 		
 		splitPane = new JSplitPane();
+		splitPane.setEnabled(false);
 		frmWarcgenerator.getContentPane().add(splitPane, BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -192,6 +252,8 @@ public class WarcGeneratorGUI {
 		
 		mainPanel = new JPanel();
 		splitPane.setRightComponent(mainPanel);
+			
+		frmWarcgenerator.setLocationRelativeTo(null);
 	}
 	
 	public void buildTree() {
@@ -202,11 +264,14 @@ public class WarcGeneratorGUI {
 					CustomTreeNode general = new CustomTreeNode("General");
 					general.setAction(generalConfigAction);
 					add(general);
+					CustomTreeNode output = new CustomTreeNode("Salida");
+					output.setAction(outputConfigAction);
+					add(output);
 					
 					node_1 = new CustomTreeNode("Origenes");
+					node_1.setAction(dsourcesAction);
 					loadDS(node_1);
 					add(node_1);
-					add(new CustomTreeNode("Salida"));
 				}
 			}
 		));

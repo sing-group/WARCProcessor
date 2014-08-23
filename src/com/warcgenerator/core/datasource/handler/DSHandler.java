@@ -29,6 +29,8 @@ public abstract class DSHandler implements IDSHandler {
 		this.config = config;
 		dsConfig = ds.getDataSourceConfig();
 
+		System.out.println("Get output config es: " + config.getOutputConfig());
+		
 		// Create a output corpus with config
 		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
 			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();

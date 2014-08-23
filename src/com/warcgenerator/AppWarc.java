@@ -10,7 +10,6 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.exception.WarcException;
 import com.warcgenerator.core.helper.ConfigHelper;
-import com.warcgenerator.core.helper.XMLConfigHelper;
 import com.warcgenerator.core.logic.AppLogicImpl;
 import com.warcgenerator.core.logic.IAppLogic;
 
@@ -19,7 +18,7 @@ import com.warcgenerator.core.logic.IAppLogic;
  * 
  * @author Miguel Callon
  */
-class AppWarc {
+public class AppWarc {
 	private static AppWarc singleton = null; 
 	private AppConfig config = null;
 	private IAppLogic logic = null;
@@ -49,8 +48,9 @@ class AppWarc {
 		config = new AppConfig();
 		
 		// Using XML config instead of properties
-		ConfigHelper.configure(Constants.defaultConfigXML,
+		/* ConfigHelper.configure(Constants.defaultConfigXML,
 				config);
+		*/
 		config.init();
 		
 		logger.info("-- AppConfig --\n" + config);

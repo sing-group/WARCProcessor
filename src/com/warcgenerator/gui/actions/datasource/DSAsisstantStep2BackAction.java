@@ -5,34 +5,30 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 
-import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.actions.common.Constants;
-import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 
 public class DSAsisstantStep2BackAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
+	private Action dsAsisstantStep1Action;
 	
 	public DSAsisstantStep2BackAction(IAppLogic logic,
 			WarcGeneratorGUI view
 			) {
 		this.view = view;
 		this.logic = logic;
+		
+		dsAsisstantStep1Action = new DSAssistantCreateNewDSAction(
+				logic, view);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DataSourceConfig dsConfig  = 
-				(DataSourceConfig)Session.get(
-						Constants.DATASOURCE_FORM_SESSION_KEY);
-		
-		view.loadMainPanel(new DSAssistantStep1Panel(logic, 
-				view));
+		dsAsisstantStep1Action.actionPerformed(e);
 	}
 
 	@Override

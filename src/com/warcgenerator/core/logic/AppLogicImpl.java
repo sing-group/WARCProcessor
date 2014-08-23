@@ -40,16 +40,20 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private AppConfig config;
 	private OutputCorpusConfig outputCorpusConfig;
 	private Map<String, DataSourceConfig> dataSourcesTypes;
-	
+	private IWebCrawler webCrawler;
+
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
-		
+
 		// ConfigHelper.getDSHandlers(config);
-		
+
 		dataSourcesTypes = new HashMap<String, DataSourceConfig>();
 		XMLConfigHelper.getDataSources(Constants.dataSourcesTypesXML,
 				dataSourcesTypes);
-		
+
+		System.out.println("config.getOutputConfig() es "
+				+ config.getOutputConfig());
+
 		// Create a output corpus with config
 		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
 			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
@@ -62,29 +66,41 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 				outputCorpusConfig.getSpamDir(), outputCorpusConfig.getHamDir() };
 
 		// Delete directories
-		if (config.getFlushOutputDir()) {
+		if (config.getFlushOutputDir() != null && config.getFlushOutputDir()) {
 			FileHelper.removeDirsIfExist(dirs);
 		}
-		
+
 		FileHelper.createDirs(dirs);
 	}
-	
+
+	/**
+	 * Save configuration in a file
+	 */
+	public void saveAppConfig(String path) {
+		ConfigHelper.persistConfig(path, config);
+	}
+
+	public void loadAppConfig(String path) {
+		ConfigHelper.configure(path, config);
+		config.init();
+	}
+
 	public void updateAppConfig(AppConfig appConfig) throws LogicException {
 		try {
 			appConfig.validate();
 		} catch (ConfigException e) {
 			throw new LogicException(e);
 		}
-	
+
 		try {
 			BeanUtils.copyProperties(config, appConfig);
 		} catch (IllegalAccessException e) {
 			throw new LogicException(e);
 		} catch (InvocationTargetException e) {
 			throw new LogicException(e);
-		}	
+		}
 	}
-	
+
 	public AppConfig getAppConfig() throws LogicException {
 		AppConfig appConfigCopy = new AppConfig();
 		try {
@@ -96,13 +112,12 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 		return appConfigCopy;
 	}
-	
-	public List<DataSourceConfig> getDataSourceTypesList() throws 
-		LogicException {
-		List<DataSourceConfig> dataSourceTypesList =
-				new ArrayList<DataSourceConfig>();
-		
-		for (DataSourceConfig dsConfig:dataSourcesTypes.values()) {
+
+	public List<DataSourceConfig> getDataSourceTypesList()
+			throws LogicException {
+		List<DataSourceConfig> dataSourceTypesList = new ArrayList<DataSourceConfig>();
+
+		for (DataSourceConfig dsConfig : dataSourcesTypes.values()) {
 			DataSourceConfig dsConfigCopy = new DataSourceConfig();
 			try {
 				BeanUtils.copyProperties(dsConfigCopy, dsConfig);
@@ -113,10 +128,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			}
 			dataSourceTypesList.add(dsConfigCopy);
 		}
-		
+
 		return dataSourceTypesList;
 	}
-	
+
 	public DataSourceConfig getDataSourceType(String type) {
 		DataSourceConfig dsConfigCopy = new DataSourceConfig();
 		DataSourceConfig dsConfig = dataSourcesTypes.get(type);
@@ -129,12 +144,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 		return dsConfigCopy;
 	}
-	
+
 	public List<DataSourceConfig> getDataSourceConfigList() {
-		List<DataSourceConfig> dataSourceConfigsList =
-				new ArrayList<DataSourceConfig>();
-		
-		for (DataSourceConfig dsConfig:config.getDataSourceConfigs().values()) {
+		List<DataSourceConfig> dataSourceConfigsList = new ArrayList<DataSourceConfig>();
+
+		for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
 			DataSourceConfig dsConfigCopy = new DataSourceConfig();
 			try {
 				BeanUtils.copyProperties(dsConfigCopy, dsConfig);
@@ -145,14 +159,13 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			}
 			dataSourceConfigsList.add(dsConfigCopy);
 		}
-		
+
 		return dataSourceConfigsList;
 	}
-	
+
 	public DataSourceConfig getDataSourceConfig(String name) {
 		DataSourceConfig dsConfigCopy = new DataSourceConfig();
-		DataSourceConfig dsConfig = config.getDataSourceConfigs().
-				get(name);
+		DataSourceConfig dsConfig = config.getDataSourceConfigs().get(name);
 		try {
 			BeanUtils.copyProperties(dsConfigCopy, dsConfig);
 		} catch (IllegalAccessException e) {
@@ -162,101 +175,104 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 		return dsConfigCopy;
 	}
-	
+
 	/**
 	 * Add a new DataSource
+	 * 
 	 * @param dsConfig
 	 * @throws LoadDataSourceException
 	 */
-	public void addDataSourceConfig(DataSourceConfig dsConfig) 
-			throws LoadDataSourceException{
+	public void addDataSourceConfig(DataSourceConfig dsConfig)
+			throws LoadDataSourceException {
 		if (dsConfig.getId() == null) {
-			dsConfig.setId(DataSourceConfig.nextId);		
+			dsConfig.setId(DataSourceConfig.nextId);
 		}
-		//ConfigHelper.getDSHandler(dsConfig, config);
-		config.getDataSourceConfigs().put(
-				dsConfig.getId(), dsConfig);
+		// ConfigHelper.getDSHandler(dsConfig, config);
+		config.getDataSourceConfigs().put(dsConfig.getId(), dsConfig);
 	}
-	
+
 	/**
 	 * Remove a DataSource
+	 * 
 	 * @param name
 	 */
 	public void removeDataSourceConfig(Integer name) {
 		config.getDataSourceConfigs().remove(name);
 	}
 
+	/**
+	 * Stop the generation of corpus
+	 */
+	public void stopGenerateCorpus() {
+		System.out.println("Finalizando ejecucion!!");
+		stopWebCrawling();
+	}
+
 	public void generateCorpus(GenerateCorpusState generateCorpusState)
 			throws LogicException {
 		// Get dsHandlers
 		ConfigHelper.getDSHandlers(config);
-		
+
 		// Generate wars
 		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
 				outputCorpusConfig.getDomainsLabeledFilePath()));
 		IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
-				outputCorpusConfig.getDomainsNotFoundFilePath()));		
-		
+				outputCorpusConfig.getDomainsNotFoundFilePath()));
+
 		// Init data structures
 		Set<String> urlsSpam = new HashSet<String>();
 		Set<String> urlsHam = new HashSet<String>();
-		
+
 		generateCorpusState.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
-		
 		// Get all DSHandlers for each DS
 		// First the ham
 		for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
 			getUrls(dsConfig, urlsSpam, urlsHam);
 		}
-		
+
 		generateCorpusState.setState(GenerateCorpusStates.READING_SPAM);
 		generateCorpusState.setWebsToVisitTotal(urlsSpam.size());
-		WebCrawlerBean webCrawlerSpam = new WebCrawlerBean( 
-				  labeledDS,
-				  notFoundDS,
-				  true,
-				  outputCorpusConfig);
+		WebCrawlerBean webCrawlerSpam = new WebCrawlerBean(labeledDS,
+				notFoundDS, true, outputCorpusConfig);
 		// Start crawling urls in batch
-		startWebCrawling(generateCorpusState,
-				urlsSpam, webCrawlerSpam);
-		
+		startWebCrawling(generateCorpusState, urlsSpam, webCrawlerSpam);
+
 		generateCorpusState.setState(GenerateCorpusStates.READING_HAM);
 		generateCorpusState.setWebsToVisitTotal(urlsHam.size());
-		WebCrawlerBean webCrawlerHam = new WebCrawlerBean( 
-				  labeledDS,
-				  notFoundDS,
-				  false,
-				  outputCorpusConfig);
-		startWebCrawling(generateCorpusState,
-				urlsHam, webCrawlerHam);
+		WebCrawlerBean webCrawlerHam = new WebCrawlerBean(labeledDS,
+				notFoundDS, false, outputCorpusConfig);
+		startWebCrawling(generateCorpusState, urlsHam, webCrawlerHam);
 
 		generateCorpusState.setState(GenerateCorpusStates.ENDING);
 		labeledDS.close();
 		notFoundDS.close();
+
 	}
-	
+
 	private void getUrls(DataSourceConfig dsConfig, Set<String> urlsSpam,
 			Set<String> urlsHam) {
 		if (dsConfig.getHandler() != null) {
 			dsConfig.getHandler().toHandle(urlsSpam, urlsHam);
 		}
-		for (DataSourceConfig dsChild: dsConfig.getChildren()) {
+		for (DataSourceConfig dsChild : dsConfig.getChildren()) {
 			getUrls(dsChild, urlsSpam, urlsHam);
 		}
 	}
-	
+
+	private void stopWebCrawling() {
+		webCrawler.stop();
+	}
+
 	private void startWebCrawling(GenerateCorpusState generateCorpusState,
-			Set<String> urls,
-			WebCrawlerBean webCrawlerBean) {
-		//config.getWebCrawlerCfgTemplate().setMaxDepthOfCrawling(0);
+			Set<String> urls, WebCrawlerBean webCrawlerBean) {
+		// config.getWebCrawlerCfgTemplate().setMaxDepthOfCrawling(0);
 
 		// Initialize web crawler
 		WebCrawlerConfig webCrawlerConfig = new WebCrawlerConfig(
 				config.getWebCrawlerCfgTemplate());
 		webCrawlerConfig.setUrls(urls);
-		IWebCrawler webCrawler = new Crawler4JAdapter(generateCorpusState,
-				webCrawlerConfig,
-				webCrawlerBean);
+		webCrawler = new Crawler4JAdapter(generateCorpusState,
+				webCrawlerConfig, webCrawlerBean);
 
 		// Start crawler
 		webCrawler.start();

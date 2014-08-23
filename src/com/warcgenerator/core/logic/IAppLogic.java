@@ -13,6 +13,8 @@ import com.warcgenerator.core.config.DataSourceConfig;
  *
  */
 public interface IAppLogic {
+	void saveAppConfig(String path);
+	void loadAppConfig(String path);
 	void updateAppConfig(AppConfig appConfig);
 	AppConfig getAppConfig();
 	Collection<DataSourceConfig> getDataSourceTypesList();
@@ -20,5 +22,6 @@ public interface IAppLogic {
 	Collection<DataSourceConfig> getDataSourceConfigList();
 	void addDataSourceConfig(DataSourceConfig dsConfig);
 	void removeDataSourceConfig(Integer id);
+	void stopGenerateCorpus();
 	void generateCorpus(GenerateCorpusState generateCorpusState);
 }

@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -20,6 +21,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSModifyAction;
+import com.warcgenerator.gui.actions.datasource.DSRemoveAction;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
@@ -27,7 +29,8 @@ public class DSDetailPanel extends JPanel {
 	
 	private JTextArea summaryConfigTField;
 	private JScrollPane scrollPane;
-	private DSModifyAction dsModifyAction;
+	private Action dsModifyAction;
+	private Action dsRemoveAction;
 	
 	public void setSummaryText(String text) {
 		summaryConfigTField.setText(text);
@@ -43,7 +46,8 @@ public class DSDetailPanel extends JPanel {
 	public DSDetailPanel(IAppLogic logic, 
 			WarcGeneratorGUI view,
 			DataSourceConfig config) {
-		dsModifyAction = new DSModifyAction(logic, view, config); 
+		dsModifyAction = new DSModifyAction(logic, view, config);
+		dsRemoveAction = new DSRemoveAction(logic, view, config);
 		
 		setBackground(new Color(230, 230, 250));
 		
@@ -66,7 +70,7 @@ public class DSDetailPanel extends JPanel {
 		JButton removeBtn = new JButton(Messages.getString("DSDetailPanel.removeBtn.text")); //$NON-NLS-1$
 		removeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				dsRemoveAction.actionPerformed(e);
 			}
 		});
 		

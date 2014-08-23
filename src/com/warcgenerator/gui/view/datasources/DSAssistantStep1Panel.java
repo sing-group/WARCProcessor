@@ -21,7 +21,7 @@ import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.actions.datasource.DSAsisstantStep1CancelAction;
+import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep1ContinueAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
@@ -31,7 +31,7 @@ public class DSAssistantStep1Panel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Action dsAssistantStep1ContinueAction;
-	private Action dsAssistantStep1CancelAction;
+	private Action dsAssistantCancelAction;
 
 	private JTextField nameJTField;
 	private JTextField folderJTField;
@@ -46,7 +46,7 @@ public class DSAssistantStep1Panel extends JPanel {
 	public DSAssistantStep1Panel(IAppLogic logic, WarcGeneratorGUI view) {
 		dsAssistantStep1ContinueAction = new DSAsisstantStep1ContinueAction(
 				logic, view, this);
-		dsAssistantStep1CancelAction = new DSAsisstantStep1CancelAction(logic,
+		dsAssistantCancelAction = new DSAsisstantCancelAction(logic,
 				view);
 
 		setBackground(new Color(230, 230, 250));
@@ -84,7 +84,7 @@ public class DSAssistantStep1Panel extends JPanel {
 		JButton btnNewButton = new JButton("Cancelar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dsAssistantStep1CancelAction.actionPerformed(e);
+				dsAssistantCancelAction.actionPerformed(e);
 			}
 		});
 

@@ -103,6 +103,11 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		}
 	}
 
+	public void stop() {
+		generateCorpusState.setState(GenerateCorpusStates.CANCELlING_PROCESS);
+		controller.shutdown();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void start() {
 		/*

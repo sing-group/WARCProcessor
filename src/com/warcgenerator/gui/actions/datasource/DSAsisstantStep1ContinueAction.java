@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JDialog;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -17,13 +18,13 @@ import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
-import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
 
 public class DSAsisstantStep1ContinueAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
 	private DSAssistantStep1Panel panel;
 	private IAppLogic logic;
+	private Action dsAsisstantStep2Action;
 	
 	public DSAsisstantStep1ContinueAction(IAppLogic logic,
 			WarcGeneratorGUI view,
@@ -32,6 +33,9 @@ public class DSAsisstantStep1ContinueAction
 		this.view = view;
 		this.logic = logic;
 		this.panel = panel;
+		
+		dsAsisstantStep2Action =
+				new DSAsisstantStep2Action(logic, view);
 	}
 	
 	@Override
@@ -70,12 +74,7 @@ public class DSAsisstantStep1ContinueAction
 			Session.add(
 					Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
 			
-			DSAssistantStep2Panel nextPanel = new DSAssistantStep2Panel(logic,
-					view);
-			nextPanel.setTableModel(dsConfig.getCustomParams());
-			
-			
-			view.loadMainPanel(nextPanel);
+			dsAsisstantStep2Action.actionPerformed(e);
 		}
 	}
 

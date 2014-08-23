@@ -7,7 +7,7 @@ import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.ReadException;
 import com.warcgenerator.core.exception.datasource.WriteException;
-import com.warcgenerator.gui.view.WarcGeneratorGUI;
+import com.warcgenerator.gui.actions.common.StartGUIAction;
 
 /**
  * AppWarcGenerator
@@ -38,9 +38,9 @@ public class AppWarcGeneratorGUI {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						WarcGeneratorGUI window = new WarcGeneratorGUI(
-								app.getAppLogic());
-						window.setVisible(true);
+						StartGUIAction mainAction = 
+								new StartGUIAction(app);
+						mainAction.actionPerformed(null);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

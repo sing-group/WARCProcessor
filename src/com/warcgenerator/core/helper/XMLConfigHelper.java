@@ -7,14 +7,21 @@ import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -80,29 +87,28 @@ public class XMLConfigHelper {
 			// normalize text representation
 			doc.getDocumentElement().normalize();
 
-			config.setNumSites(Integer.parseInt(getValueFromElement(doc, "numSites")));
-			config.setOnlyActiveSites(Boolean.valueOf(
-					getAttributeFromElement(doc, "numSites",
-					"onlyActiveSites")));
-			config.setDownloadAgain(Boolean.valueOf(
-					getAttributeFromElement(doc, "numSites",
-					"downloadAgain")));
-			config.setRatioIsPercentage(Boolean.valueOf(
-					getAttributeFromElement(doc, "ratio",
-					"isPercentage")));
-			NodeList listRatio = doc.getElementsByTagName("ratio").
-					item(0).getChildNodes();
-			
+			config.setNumSites(Integer.parseInt(getValueFromElement(doc,
+					"numSites")));
+			config.setOnlyActiveSites(Boolean.valueOf(getAttributeFromElement(
+					doc, "numSites", "onlyActiveSites")));
+			config.setDownloadAgain(Boolean.valueOf(getAttributeFromElement(
+					doc, "numSites", "downloadAgain")));
+			config.setRatioIsPercentage(Boolean
+					.valueOf(getAttributeFromElement(doc, "ratio",
+							"isPercentage")));
+			NodeList listRatio = doc.getElementsByTagName("ratio").item(0)
+					.getChildNodes();
+
 			for (int s = 0; s < listRatio.getLength(); s++) {
 				Node nodeAux = listRatio.item(s);
 				if (nodeAux.getNodeType() == Node.ELEMENT_NODE) {
 					System.out.println("nodename es " + nodeAux.getNodeName());
 					if (nodeAux.getNodeName().equals("spam")) {
-						config.setRatioSpam(Integer.parseInt(
-								nodeAux.getTextContent().trim()));
+						config.setRatioSpam(Integer.parseInt(nodeAux
+								.getTextContent().trim()));
 					} else if (nodeAux.getNodeName().equals("ham")) {
-						config.setRatioHam(Integer.parseInt(
-								nodeAux.getTextContent().trim()));
+						config.setRatioHam(Integer.parseInt(nodeAux
+								.getTextContent().trim()));
 					}
 				}
 			}
@@ -118,8 +124,8 @@ public class XMLConfigHelper {
 			if (flushOutputDir != null) {
 				config.setFlushOutputDir(Boolean.valueOf(flushOutputDir));
 			}
-			config.setMaxDepthOfCrawling(Integer.parseInt(getValueFromElement(doc,
-					"maxDepthOfCrawling")));
+			config.setMaxDepthOfCrawling(Integer.parseInt(getValueFromElement(
+					doc, "maxDepthOfCrawling")));
 			config.setNumCrawlers(Integer.parseInt(getValueFromElement(doc,
 					"numCrawlers")));
 			config.setWebCrawlerTmpStorePath(getValueFromElement(doc,
@@ -134,7 +140,7 @@ public class XMLConfigHelper {
 				Node dataSourceNode = listOfDS.item(s);
 				DataSourceConfig ds = new DataSourceConfig();
 				ds.setId(DataSourceConfig.getNextId());
-				
+
 				if (dataSourceNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setName(dataSourceElement.getAttribute("name"));
@@ -172,15 +178,16 @@ public class XMLConfigHelper {
 									.getLength(); j++) {
 								Node nodeCustomParamAux = (Node) customParamsInfoNode
 										.item(j);
-								
-								CustomParamConfig customParam =
-										new CustomParamConfig();
-								customParam.setName(nodeCustomParamAux.getNodeName());
-								customParam.setValue(nodeCustomParamAux.getTextContent()
-												.trim());
+
+								CustomParamConfig customParam = new CustomParamConfig();
+								customParam.setName(nodeCustomParamAux
+										.getNodeName());
+								customParam.setValue(nodeCustomParamAux
+										.getTextContent().trim());
 								// Caution!! We are not getting the defaultValue
-								// and type because already know it of datasources.xml
-			
+								// and type because already know it of
+								// datasources.xml
+
 								ds.getCustomParams().put(
 										nodeCustomParamAux.getNodeName(),
 										customParam);
@@ -235,11 +242,11 @@ public class XMLConfigHelper {
 			int totalDS = listOfDS.getLength();
 
 			System.out.println("path es: " + path);
-			
+
 			System.out.println("total ds: " + totalDS);
-			
+
 			System.out.println("dataSourcesTypes es: " + dataSourcesTypes);
-			
+
 			for (int s = 0; s < listOfDS.getLength(); s++) {
 				Node dataSourceNode = listOfDS.item(s);
 				DataSourceConfig ds = new DataSourceConfig();
@@ -251,7 +258,7 @@ public class XMLConfigHelper {
 
 					System.out.println("name es " + ds.getName());
 					System.out.println("class " + ds.getDsClassName());
-					
+
 					// NodeList nodeList = dataSourceElement.getChildNodes();
 					NodeList dataSourceInfoNode = dataSourceNode
 							.getChildNodes();
@@ -265,21 +272,22 @@ public class XMLConfigHelper {
 									.getLength(); j++) {
 								Node nodeCustomParamAux = (Node) customParamsInfoNode
 										.item(j);
-								
+
 								if (nodeCustomParamAux.getNodeType() == Node.ELEMENT_NODE) {
 									// Extract the type of the parameter
 									Element nodeElement = (Element) nodeCustomParamAux;
-									
-									
-									CustomParamConfig customParam =
-											new CustomParamConfig();
-									customParam.setName(nodeCustomParamAux.getNodeName());
-									customParam.setType(nodeElement.getAttribute("type"));
-									customParam.setValue(nodeCustomParamAux.getTextContent()
-													.trim());
-									customParam.setDefaultValue(nodeCustomParamAux.
-											getTextContent().trim());
-									
+
+									CustomParamConfig customParam = new CustomParamConfig();
+									customParam.setName(nodeCustomParamAux
+											.getNodeName());
+									customParam.setType(nodeElement
+											.getAttribute("type"));
+									customParam.setValue(nodeCustomParamAux
+											.getTextContent().trim());
+									customParam
+											.setDefaultValue(nodeCustomParamAux
+													.getTextContent().trim());
+
 									ds.getCustomParams().put(
 											nodeCustomParamAux.getNodeName(),
 											customParam);
@@ -305,9 +313,174 @@ public class XMLConfigHelper {
 		} catch (SAXException e) {
 			throw new ConfigException(e);
 		} catch (Throwable t) {
-			
+
 			t.printStackTrace();
 			throw new ConfigException(t);
+		}
+	}
+
+	/**
+	 * Return a XML with config
+	 * 
+	 * @param config
+	 * @return
+	 */
+	public static void saveXMLFromAppConfig(String path, 
+			AppConfig config) {
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory
+				.newInstance();
+		DocumentBuilder docBuilder;
+		Document doc = null;
+		try {
+			docBuilder = docFactory.newDocumentBuilder();
+
+			// root elements
+			doc = docBuilder.newDocument();
+			Element rootElement = doc.createElement("configuration");
+			doc.appendChild(rootElement);
+
+			Element numSites = doc.createElement("numSites");
+			numSites.setTextContent(config.getNumSites().toString());
+			rootElement.appendChild(numSites);
+
+			// set attribute to staff element
+			Attr attr = doc.createAttribute("onlyActiveSites");
+			attr.setValue(config.getOnlyActiveSites().toString());
+			numSites.setAttributeNode(attr);
+
+			attr = doc.createAttribute("downloadAgain");
+			attr.setValue(config.getDownloadAgain().toString());
+			numSites.setAttributeNode(attr);
+
+			Element ratio = doc.createElement("ratio");
+			rootElement.appendChild(ratio);
+
+			attr = doc.createAttribute("isPercentage");
+			attr.setValue(config.getRatioIsPercentage().toString());
+			ratio.setAttributeNode(attr);
+
+			Element spam = doc.createElement("spam");
+			spam.setTextContent(config.getRatioSpam().toString());
+			ratio.appendChild(spam);
+
+			Element corpusDirPath = doc.createElement("corpusDirPath");
+			corpusDirPath.setTextContent(config.getCorpusDirPath());
+			rootElement.appendChild(corpusDirPath);
+
+			Element spamDirName = doc.createElement("spamDirName");
+			spamDirName.setTextContent(config.getSpamDirName());
+			rootElement.appendChild(spamDirName);
+
+			Element hamDirName = doc.createElement("hamDirName");
+			hamDirName.setTextContent(config.getHamDirName());
+			rootElement.appendChild(hamDirName);
+
+			Element domainsLabeledFileName = doc
+					.createElement("domainsLabeledFileName");
+			domainsLabeledFileName.setTextContent(config
+					.getDomainsLabeledFileName());
+			rootElement.appendChild(domainsLabeledFileName);
+
+			Element domainsNotFoundFileName = doc
+					.createElement("domainsNotFoundFileName");
+			domainsNotFoundFileName.setTextContent(config
+					.getDomainsNotFoundFileName());
+			rootElement.appendChild(domainsNotFoundFileName);
+
+			Element flushOutputDir = doc.createElement("flushOutputDir");
+			flushOutputDir
+					.setTextContent(config.getFlushOutputDir().toString());
+			rootElement.appendChild(flushOutputDir);
+
+			Element maxDepthOfCrawling = doc
+					.createElement("maxDepthOfCrawling");
+			maxDepthOfCrawling.setTextContent(config.getMaxDepthOfCrawling()
+					.toString());
+			rootElement.appendChild(maxDepthOfCrawling);
+
+			Element numCrawlers = doc.createElement("numCrawlers");
+			numCrawlers.setTextContent(config.getNumCrawlers().toString());
+			rootElement.appendChild(numCrawlers);
+
+			Element webCrawlerDirTmpStorePath = doc
+					.createElement("webCrawlerDirTmpStorePath");
+			webCrawlerDirTmpStorePath.setTextContent(config
+					.getWebCrawlerTmpStorePath());
+			rootElement.appendChild(webCrawlerDirTmpStorePath);
+
+			Element dataSources = doc.createElement("dataSources");
+			rootElement.appendChild(dataSources);
+
+			// Start create datasource
+			for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
+
+				Element dataSource = doc.createElement("dataSource");
+				dataSources.appendChild(dataSource);
+
+				attr = doc.createAttribute("name");
+				attr.setValue(dsConfig.getName());
+				dataSource.setAttributeNode(attr);
+
+				attr = doc.createAttribute("class");
+				attr.setValue(dsConfig.getDsClassName());
+				dataSource.setAttributeNode(attr);
+
+				if (dsConfig.getMaxElements() != null) {
+					attr = doc.createAttribute("maxElements");
+					attr.setValue(dsConfig.getMaxElements().toString());
+					dataSource.setAttributeNode(attr);
+				}
+
+				
+				Element customParams = doc.createElement("customParams");
+				dataSource.appendChild(customParams);
+
+				// Here we put the custom params
+				for (String paramName: dsConfig.getCustomParams().keySet()) {
+					Element customParam = doc.createElement(paramName);
+					customParam.setTextContent(
+							dsConfig.getCustomParams().get(paramName).getValue());
+					customParams.appendChild(customParam);
+				}
+				
+				// End custom params
+
+				Element srcDirPath = doc.createElement("srcDirPath");
+				srcDirPath.setTextContent(dsConfig.getFilePath());
+				dataSource.appendChild(srcDirPath);
+
+				Element handler = doc.createElement("handler");
+				handler.setTextContent(dsConfig.getHandlerClassName());
+				dataSource.appendChild(handler);
+			}
+
+			// write the content into xml file
+			TransformerFactory transformerFactory = TransformerFactory
+					.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			
+			// At the moment we are not to validate Scheme
+			validateSchema(doc, Constants.configSchemaFilePath);
+
+			// normalize text representation
+			doc.getDocumentElement().normalize();
+			
+			StreamResult result = new StreamResult(new File(path));
+
+			// StreamResult result = new StreamResult(System.out);
+
+			transformer.transform(source, result);
+
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -325,16 +498,17 @@ public class XMLConfigHelper {
 		NodeList textLNList = element.getChildNodes();
 		return ((Node) textLNList.item(0)).getNodeValue().trim();
 	}
-	
+
 	/**
 	 * Get value from an attribute of a field
+	 * 
 	 * @param doc
 	 * @param field
 	 * @param attrName
 	 * @return
 	 */
-	public static String getAttributeFromElement(Document doc, 
-			String field, String attrName) {
+	public static String getAttributeFromElement(Document doc, String field,
+			String attrName) {
 		Element element = (Element) doc.getElementsByTagName(field).item(0);
 		return element.getAttribute(attrName);
 	}

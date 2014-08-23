@@ -19,14 +19,14 @@ import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3BackAction;
-import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3CancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3FinishAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class DSAssistantStep3Panel extends JPanel {
 	private Action dsAssistantStep3BackAction;
-	private Action dsAssistantStep3CancelAction;
+	private Action dsAssistantCancelAction;
 	private Action dsAssistantStep3FinishAction;
 	
 	private JTextArea summaryConfigTField;
@@ -47,8 +47,8 @@ public class DSAssistantStep3Panel extends JPanel {
 			WarcGeneratorGUI view) {
 		dsAssistantStep3BackAction =
 				new DSAsisstantStep3BackAction(logic, view);
-		dsAssistantStep3CancelAction =
-				new DSAsisstantStep3CancelAction(view);
+		dsAssistantCancelAction =
+				new DSAsisstantCancelAction(logic, view);
 		dsAssistantStep3FinishAction =
 				new DSAsisstantStep3FinishAction(logic, view);
 		
@@ -73,7 +73,7 @@ public class DSAssistantStep3Panel extends JPanel {
 		JButton btnNewButton = new JButton("Cancelar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dsAssistantStep3CancelAction.actionPerformed(e);
+				dsAssistantCancelAction.actionPerformed(e);
 			}
 		});
 		

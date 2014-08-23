@@ -27,14 +27,14 @@ import javax.swing.table.DefaultTableModel;
 
 import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2BackAction;
-import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2CancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2ContinueAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class DSAssistantStep2Panel extends JPanel {
 	private Action dsAssistantStep2BackAction;
-	private Action dsAssistantStep2CancelAction;
+	private Action dsAssistantCancelAction;
 	private Action dsAssistantStep2ContinueAction;
 	
 	private JTable paramsTable;
@@ -55,8 +55,8 @@ public class DSAssistantStep2Panel extends JPanel {
 			WarcGeneratorGUI view) {
 		dsAssistantStep2BackAction =
 				new DSAsisstantStep2BackAction(logic, view);
-		dsAssistantStep2CancelAction =
-				new DSAsisstantStep2CancelAction(view);
+		dsAssistantCancelAction =
+				new DSAsisstantCancelAction(logic, view);
 		dsAssistantStep2ContinueAction =
 				new DSAsisstantStep2ContinueAction(logic, view, this);
 		
@@ -87,7 +87,7 @@ public class DSAssistantStep2Panel extends JPanel {
 		JButton btnNewButton = new JButton("Cancelar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dsAssistantStep2CancelAction.actionPerformed(e);
+				dsAssistantCancelAction.actionPerformed(e);
 			}
 		});
 		

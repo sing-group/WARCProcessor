@@ -74,8 +74,22 @@ public class GeneralConfigPanel extends JPanel {
 		 //Group the radio buttons.
 	    ButtonGroup group = new ButtonGroup();
 		spamHamRatioRBtn = new JRadioButton(Messages.getString("GeneralConfigPanel.spamHamRationEnabledCBox.text")); //$NON-NLS-1$
+		spamHamRatioRBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				spamQuantityTField.setEnabled(false);
+				slider.setEnabled(true);
+				spamHamRationValueTField.setEnabled(true);
+			}
+		});
 		
 		quantityEnabledRBtn = new JRadioButton(Messages.getString("GeneralConfigPanel.rdbtnNewRadioButton.text")); //$NON-NLS-1$
+		quantityEnabledRBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				spamQuantityTField.setEnabled(true);
+				slider.setEnabled(false);
+				spamHamRationValueTField.setEnabled(false);
+			}
+		});
 		
 		group.add(spamHamRatioRBtn);
 		group.add(quantityEnabledRBtn);
