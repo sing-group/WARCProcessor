@@ -33,8 +33,6 @@ public class SaveAppConfigAction
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File fileToSave = fileChooser.getSelectedFile();	
 			logic.saveAppConfig(fileToSave.getAbsolutePath());
-			
-			System.out.println("Guardado!!");
 		}
 	}
 }

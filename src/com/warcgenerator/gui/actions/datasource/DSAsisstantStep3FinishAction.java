@@ -36,7 +36,6 @@ public class DSAsisstantStep3FinishAction
 		
 		Collection<DataSourceConfig> dsConfigList =
 				logic.getDataSourceConfigList();
-		System.out.println("Nuevos datasources: -------------");
 		for(DataSourceConfig key: dsConfigList) {
 			System.out.println(key);
 		}
@@ -49,10 +48,7 @@ public class DSAsisstantStep3FinishAction
 		
 		// Load modify panel
 		//view.loadMainPanel(new DSCreateStep3Panel(logic, 
-		//		view));
-		
-		
-		
+		//		view));	
 	}
 
 	@Override

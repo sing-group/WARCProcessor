@@ -46,8 +46,7 @@ public class DSAsisstantStep2ContinueAction
 				(DataSourceConfig)Session.get(
 						Constants.DATASOURCE_FORM_SESSION_KEY);
 		DataSourceConfig dsConfig = new DataSourceConfig();
-		
-		System.out.println("dsConfigSrc es " + dsConfigSrc);
+
 		try {
 			BeanUtils.copyProperties(dsConfig, dsConfigSrc);
 		} catch (IllegalAccessException e1) {
@@ -57,8 +56,6 @@ public class DSAsisstantStep2ContinueAction
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		System.out.println("dsConfig copiado es " + dsConfigSrc);
 		
 		// Check isSpam
 		if (panel.getSpamEnabledCBox().isSelected()) {
@@ -81,13 +78,9 @@ public class DSAsisstantStep2ContinueAction
 			String paramName = (String)panel.getParamsTable().getModel().getValueAt(i, 0);
 			String paramValue = (String)panel.getParamsTable().getModel().getValueAt(i, 1);
 			
-			System.out.println("Nuevo nombre: " + paramName + ", valor" + paramValue);
-			
 			customParams.get(paramName).setValue(paramValue);
 		}
-		
-		System.out.println("Guardando en session: " + dsConfig);
-		
+
 		if (validate(dsConfig)) {
 			Session.add(
 					Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);

@@ -65,25 +65,11 @@ public class ConfigHelper {
 					specificDsConfig.setCustomParams(ds.getCustomParams());
 					specificDsConfig.setParent(ds);
 					
-					System.out.println("ds.getDsClassName() es " + 
-							ds.getDsClassName());
-					System.out.println("specificDsConfig es: " + 
-							specificDsConfig);
-					
 					Class<?> cArgs[] = { DataSourceConfig.class };
 					Class<?> clazz = Class.forName(ds.getDsClassName());
-					System.out.println("Abriendo!!! 1");
 					Constructor<?> ctor = clazz.getConstructor(cArgs);
-					
-					System.out.println("Abriendo!!! 2");
 					IDataSource dsSource = (DataSource) ctor
 							.newInstance(specificDsConfig);
-					System.out.println("Abriendo!!! 3");
-					
-					
-					System.out.println("HandlerclassName: " + 
-							ds.getHandlerClassName());
-					
 					
 					Class<?> cArgs2[] = { IDataSource.class, AppConfig.class };
 					Class<?> clazz2 = Class.forName(ds.getHandlerClassName());

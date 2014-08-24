@@ -3,20 +3,26 @@ package com.warcgenerator.gui.task;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
 
 public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements Observer {
 	private IAppLogic logic;
+	private WarcGeneratorGUI view;
 	private GeneratingCorpusDialog gcd;
 	private GenerateCorpusState gcState;
 	
-	public GenerateCorpusTask(IAppLogic logic, GeneratingCorpusDialog gcd) {
+	public GenerateCorpusTask(IAppLogic logic, 
+			WarcGeneratorGUI view,
+			GeneratingCorpusDialog gcd) {
 		this.logic = logic;
+		this.view = view;
 		this.gcd = gcd;
 		this.gcState = new GenerateCorpusState();
 		gcState.addObserver(this);
@@ -47,64 +53,59 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements Ob
 	 */
 	@Override
 	public void done() {
-		if (this.isCancelled()) {
-			System.out.println("La tarea ha sido cancelada");
-			logic.stopGenerateCorpus();
-		} else {
-			System.out.println("Tarea completada");
-		}
+		/*try {
+		super.get();*/
+			if (this.isCancelled()) {
+				gcState.setState(GenerateCorpusStates.CANCELlING_PROCESS);
+				logic.stopGenerateCorpus();
+			} else {
+				System.out.println("Tarea completada");
+			}
+		/*} catch (Throwable t) {
+			System.out.println(t);
+		}*/
 	}
 
 	@Override
 	public void update(Observable obs, Object arg1) {
-		System.out.println("se ha escuchado algo!!");
 		// TODO Auto-generated method stub
 		if (obs == gcState) {
 			//gcd.getStateLbl().setText(arg0);
-			int inc = Math.round(100 / (GenerateCorpusStates.values().length + 1));
-			System.out.println("inc es " + inc);
-			int progress = 0;
+			int NUM_PHASES = 5;
+			int inc = Math.round(100 / NUM_PHASES - 1);
+			int progress = getProgress();
 			switch (gcState.getState()) {
 				case GETTING_URLS_FROM_DS:
 					gcd.getStateLbl().setText("Obteniendo urls de los datasources");
-					System.out.println("Obteniendo urls<--");
-					progress = getProgress() + inc;
+					progress += inc;
 					break;
 				case READING_SPAM:
 					gcd.getStateLbl().setText("Leyendo urls de spam");
-					System.out.println("Reading spam!!");
-					progress = getProgress() + inc;
+					progress += inc;
 					break;
 				case CRAWLING_URLS:
 					gcd.getStateLbl().setText("Leyendo url: " + gcState.
 							getCurrentUrlCrawled());
-						System.out.println("Reading urls");
-						progress = getProgress() + 
+					progress += 
 							Math.round(inc / gcState.getWebsToVisitTotal());
 					break;
 				case READING_HAM:
 					gcd.getStateLbl().setText("Leyendo urls de ham");
-					System.out.println("Reading ham");
-					progress = getProgress() + inc;
+					progress += inc;
 					break;
 				case ENDING:
 					gcd.getStateLbl().setText("Finalizando la ejecucion");
-					System.out.println(" -- Finalizando --");
 					progress = 100;
 					break;
 				case CANCELlING_PROCESS:
 					gcd.getStateLbl().setText("Cancelando el proceso");
-					System.out.println(" -- Cancelando el proceso --");
-					progress = 100;
+					break;
+				case PROCESS_CANCELLED:
+					gcd.getStateLbl().setText("Proceso cancelado");
 					break;
 			}
-			
-			System.out.println("progress!!!!! ->>> " + progress);
 			setProgress(progress);
-			//setProgress(gcState.getWebsVisited());
-			
 			publish();
-			System.out.println("Numero webs visitadas: " + gcState.getWebsVisited());
 		}
 	}
 }

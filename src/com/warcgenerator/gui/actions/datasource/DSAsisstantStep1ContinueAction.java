@@ -67,8 +67,6 @@ public class DSAsisstantStep1ContinueAction
 					dsConfigTmp.getCustomParams().get(key));
 		}
 		
-		System.out.println("Guardando en session: " + dsConfig);
-		
 		if (validate(dsConfig)) {
 			// Escribiendo los datos en el nuevo panel
 			Session.add(

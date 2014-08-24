@@ -130,7 +130,6 @@ public class WarcGeneratorGUI {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				assistantCreateDSAction.actionPerformed(null);
-				System.out.println("Clicado");
 			}
 		});
 		popup.add(menuItemPopup);
@@ -152,7 +151,6 @@ public class WarcGeneratorGUI {
 		JMenuItem mntmGuardarConfiguracionGeneral = new JMenuItem("Guardar configuracion general");
 		mntmGuardarConfiguracionGeneral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Pulsado!!!");
 				saveAppConfigAction.actionPerformed(e);
 			}
 		});
@@ -169,9 +167,6 @@ public class WarcGeneratorGUI {
 					Action loadRecentConfigAction =
 							new LoadRecentConfigAction(logic, WarcGeneratorGUI.this,
 									configFileName, true);
-					
-					System.out.println("Pulsado!!!");
-					
 					loadRecentConfigAction.actionPerformed(e);
 				}
 			});
@@ -183,7 +178,6 @@ public class WarcGeneratorGUI {
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mntmSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("clicked!!!");
 				exitAction.actionPerformed(null);
 			}
 		});
@@ -233,8 +227,6 @@ public class WarcGeneratorGUI {
 			    		Object obj = tp.getLastPathComponent();
 			    		if (obj instanceof CustomTreeNode) {
 					    	CustomTreeNode itemSelected = (CustomTreeNode)obj;
-					    	if (itemSelected != null) 
-					    		System.out.println(itemSelected.toString());
 					    	if (itemSelected.getAction() != null)
 					    		itemSelected.getAction().actionPerformed(null);
 			    		}
@@ -286,9 +278,7 @@ public class WarcGeneratorGUI {
 		}
 	}
 	
-	public void loadMainPanel(JPanel newPanel) {
-		System.out.println("Cambiando el panel a: " + newPanel);
-		
+	public void loadMainPanel(JPanel newPanel) {	
 		splitPane.setRightComponent(newPanel);
 		splitPane.revalidate();
 		splitPane.updateUI();

@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import com.warcgenerator.gui.actions.generate.CancelGenerateCorpusAction;
 import com.warcgenerator.gui.actions.generate.GCGenerateAction;
@@ -25,10 +26,13 @@ public class GeneratingCorpusDialog extends CustomJDialog {
 	private JLabel stateLbl;
 	private WarcGeneratorGUI view;
 	private Action cancelGenerateCorpusAction;
+	private JButton cancelBtn;
 
 	public GeneratingCorpusDialog(WarcGeneratorGUI view,
 			GCGenerateAction GCGenerateAction) {
 		super(view.getMainFrame(), true);
+		//this.setUndecorated(true); 
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		
 		cancelGenerateCorpusAction = new CancelGenerateCorpusAction(view, this,
 				GCGenerateAction);
@@ -107,18 +111,18 @@ public class GeneratingCorpusDialog extends CustomJDialog {
 		gbc_horizontalStrut_3.gridy = 6;
 		getContentPane().add(horizontalStrut_3, gbc_horizontalStrut_3);
 		
-		JButton btnNewButton = new JButton("Cancelar");
-		btnNewButton.addActionListener(new ActionListener() {
+		cancelBtn = new JButton("Cancelar");
+		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cancelGenerateCorpusAction.actionPerformed(e);
 			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.gridwidth = 2;
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 7;
-		getContentPane().add(btnNewButton, gbc_btnNewButton);
+		GridBagConstraints gbc_cancelBtn = new GridBagConstraints();
+		gbc_cancelBtn.insets = new Insets(0, 0, 5, 0);
+		gbc_cancelBtn.gridwidth = 2;
+		gbc_cancelBtn.gridx = 1;
+		gbc_cancelBtn.gridy = 7;
+		getContentPane().add(cancelBtn, gbc_cancelBtn);
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1 = new GridBagConstraints();
@@ -134,5 +138,9 @@ public class GeneratingCorpusDialog extends CustomJDialog {
 	
 	public JLabel getStateLbl() {
 		return stateLbl;
+	}
+	
+	public JButton getCancelBtn() {
+		return cancelBtn;
 	}
 }

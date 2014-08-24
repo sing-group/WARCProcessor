@@ -28,10 +28,7 @@ public class DSourcesAction extends AbstractAction {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println("datasource config list es !!!: " + 
-				logic.getDataSourceConfigList().size());
-		
+	public void actionPerformed(ActionEvent e) {		
 		if (logic.getDataSourceConfigList().size() == 0) {
 			dsCreateAction.actionPerformed(e);
 		}

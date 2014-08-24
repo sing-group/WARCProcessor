@@ -86,8 +86,7 @@ public class ArffDS extends DataSource implements IDataSource {
 				dataBean = new DataBean();
 				dataBean.setUrl(url);
 				dataBean.setSpam(isSpam);
-				
-				System.out.println("Reading arfds!! " + url);
+
 				//data.delete();
 			}
 		} catch (IOException e) {

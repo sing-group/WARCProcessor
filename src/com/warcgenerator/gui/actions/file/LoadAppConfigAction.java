@@ -32,8 +32,6 @@ public class LoadAppConfigAction extends AbstractAction {
 			File fileToSave = fileChooser.getSelectedFile();
 			logic.loadAppConfig(fileToSave.getAbsolutePath());
 
-			System.out.println("Recuperada!!");
-
 			// Add config file path
 			GUIConfig guiConfig = (GUIConfig) Session
 					.get(Constants.GUI_CONFIG_SESSION_KEY);

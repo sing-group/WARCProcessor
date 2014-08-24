@@ -58,9 +58,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 			) throws PluginException {
 		super();
 		this.generateCorpusState = generateCorpusState;
-		
-		System.out.println("generateCorpusState is 1---> " + generateCorpusState);
-		
 		this.handlers = new HashMap<String, IWebCrawlerHandler>();
 		this.webCrawlerBean = webCrawlerBean;
 		String crawlStorageFolder = configWC.getStorePath();
@@ -103,8 +100,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		}
 	}
 
-	public void stop() {
-		generateCorpusState.setState(GenerateCorpusStates.CANCELlING_PROCESS);
+	public void stop () {
+		System.out.println("pppppppppppppppppppparando !!!!!!!!!!!!!!");
 		controller.shutdown();
 	}
 	
@@ -189,7 +186,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		// && href.startsWith("http://www.ics.uci.edu/");
 		return !FILTERS.matcher(href).matches();
 	}
-
+	
 	@Override
 	protected void handlePageStatusCode(WebURL webUrl, int statusCode,
 			String statusDescription) {

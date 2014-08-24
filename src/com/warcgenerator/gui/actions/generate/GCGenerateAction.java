@@ -25,41 +25,33 @@ public class GCGenerateAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		gcd = new GeneratingCorpusDialog(view,
-				this);
-		gcTask = new GenerateCorpusTask(logic, gcd);
+		gcd = new GeneratingCorpusDialog(view, this);
+		gcTask = new GenerateCorpusTask(logic, view, gcd);
 		gcTask.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent e) {
-				System.out.println("progress changed!!!!!!!!!!!!!!!!!!!" + 
-						e.getPropertyName());
 				// TODO Auto-generated method stub
 				if ("progress" == e.getPropertyName()) {
 					int progress = (Integer) e.getNewValue();
-					System.out.println("->> progresss " + progress);
-					
 					gcd.getProgressBar().setValue(progress);
-					/*
-					 * taskOutput.append(String.format("Completed %d%% of task.\n"
-					 * , task .getProgress()));
-					 */
-					System.out.println("" + gcTask.getProgress());
-					
-					// If the task is complete, close the dialog
-					if (progress == 100) {
-						JOptionPane.showMessageDialog(view.getMainFrame(),
-								"El corpus se ha generado con exito.");
-						
+
+					if (gcTask.isDone()) {
+						if (!gcTask.isCancelled()) {
+							JOptionPane.showMessageDialog(view.getMainFrame(),
+									"El corpus se ha generado con exito.");
+						} else {
+							JOptionPane.showMessageDialog(view.getMainFrame(),
+									"El proceso ha sido cancelado.");
+						}
 						gcd.dispose();
 					}
 				}
 			}
 		});
 		gcTask.execute();
-		
 		gcd.setVisible(true);
 	}
-	
+
 	public GenerateCorpusTask getGcTask() {
 		return gcTask;
 	}

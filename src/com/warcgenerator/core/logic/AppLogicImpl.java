@@ -16,7 +16,6 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
-import com.warcgenerator.core.config.WebCrawlerConfig;
 import com.warcgenerator.core.datasource.GenericDS;
 import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.exception.config.ConfigException;
@@ -26,9 +25,12 @@ import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.core.helper.XMLConfigHelper;
-import com.warcgenerator.core.plugin.webcrawler.Crawler4JAdapter;
 import com.warcgenerator.core.plugin.webcrawler.IWebCrawler;
-import com.warcgenerator.core.plugin.webcrawler.WebCrawlerBean;
+import com.warcgenerator.core.task.ExecutionTaskBatch;
+import com.warcgenerator.core.task.Task;
+import com.warcgenerator.core.task.generateCorpus.GetURLFromDSTask;
+import com.warcgenerator.core.task.generateCorpus.ReadHamTask;
+import com.warcgenerator.core.task.generateCorpus.ReadSpamTask;
 
 /**
  * Business logic layer
@@ -41,6 +43,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private OutputCorpusConfig outputCorpusConfig;
 	private Map<String, DataSourceConfig> dataSourcesTypes;
 	private IWebCrawler webCrawler;
+	private ExecutionTaskBatch executorTasks;
 
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
@@ -204,78 +207,52 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 * Stop the generation of corpus
 	 */
 	public void stopGenerateCorpus() {
-		System.out.println("Finalizando ejecucion!!");
 		stopWebCrawling();
 	}
 
 	public void generateCorpus(GenerateCorpusState generateCorpusState)
 			throws LogicException {
-		// Get dsHandlers
-		ConfigHelper.getDSHandlers(config);
+			executorTasks = new ExecutionTaskBatch();
+		
+			// Get dsHandlers
+			ConfigHelper.getDSHandlers(config);
 
-		// Generate wars
-		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
-				outputCorpusConfig.getDomainsLabeledFilePath()));
-		IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
-				outputCorpusConfig.getDomainsNotFoundFilePath()));
+			// Generate wars
+			IDataSource labeledDS = new GenericDS(new DataSourceConfig(
+					outputCorpusConfig.getDomainsLabeledFilePath()));
+			IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
+					outputCorpusConfig.getDomainsNotFoundFilePath()));
 
-		// Init data structures
-		Set<String> urlsSpam = new HashSet<String>();
-		Set<String> urlsHam = new HashSet<String>();
+			// Init data structures
+			Set<String> urlsSpam = new HashSet<String>();
+			Set<String> urlsHam = new HashSet<String>();
 
-		generateCorpusState.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
-		// Get all DSHandlers for each DS
-		// First the ham
-		for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
-			getUrls(dsConfig, urlsSpam, urlsHam);
-		}
-
-		generateCorpusState.setState(GenerateCorpusStates.READING_SPAM);
-		generateCorpusState.setWebsToVisitTotal(urlsSpam.size());
-		WebCrawlerBean webCrawlerSpam = new WebCrawlerBean(labeledDS,
-				notFoundDS, true, outputCorpusConfig);
-		// Start crawling urls in batch
-		startWebCrawling(generateCorpusState, urlsSpam, webCrawlerSpam);
-
-		generateCorpusState.setState(GenerateCorpusStates.READING_HAM);
-		generateCorpusState.setWebsToVisitTotal(urlsHam.size());
-		WebCrawlerBean webCrawlerHam = new WebCrawlerBean(labeledDS,
-				notFoundDS, false, outputCorpusConfig);
-		startWebCrawling(generateCorpusState, urlsHam, webCrawlerHam);
-
-		generateCorpusState.setState(GenerateCorpusStates.ENDING);
-		labeledDS.close();
-		notFoundDS.close();
-
-	}
-
-	private void getUrls(DataSourceConfig dsConfig, Set<String> urlsSpam,
-			Set<String> urlsHam) {
-		if (dsConfig.getHandler() != null) {
-			dsConfig.getHandler().toHandle(urlsSpam, urlsHam);
-		}
-		for (DataSourceConfig dsChild : dsConfig.getChildren()) {
-			getUrls(dsChild, urlsSpam, urlsHam);
-		}
+			// Init Task
+			Task t1 = new GetURLFromDSTask(config, 
+					generateCorpusState, urlsSpam, urlsHam);
+			Task t2 = new ReadSpamTask(config, outputCorpusConfig,
+					generateCorpusState, labeledDS, notFoundDS, urlsSpam);
+			Task t3 = new ReadHamTask(config, outputCorpusConfig,
+					generateCorpusState, labeledDS, notFoundDS, urlsHam);
+			
+			executorTasks.addTask(t1);
+			executorTasks.addTask(t2);
+			executorTasks.addTask(t3);
+			
+			executorTasks.execution();
+			
+			if (executorTasks.isTerminate()) {
+				generateCorpusState.setState(GenerateCorpusStates.
+						PROCESS_CANCELLED);
+			}
+			
+			generateCorpusState.setState(GenerateCorpusStates.ENDING);
+			labeledDS.close();
+			notFoundDS.close();
 	}
 
 	private void stopWebCrawling() {
-		webCrawler.stop();
+		if (executorTasks != null)
+			executorTasks.terminate();
 	}
-
-	private void startWebCrawling(GenerateCorpusState generateCorpusState,
-			Set<String> urls, WebCrawlerBean webCrawlerBean) {
-		// config.getWebCrawlerCfgTemplate().setMaxDepthOfCrawling(0);
-
-		// Initialize web crawler
-		WebCrawlerConfig webCrawlerConfig = new WebCrawlerConfig(
-				config.getWebCrawlerCfgTemplate());
-		webCrawlerConfig.setUrls(urls);
-		webCrawler = new Crawler4JAdapter(generateCorpusState,
-				webCrawlerConfig, webCrawlerBean);
-
-		// Start crawler
-		webCrawler.start();
-	}
-
 }
