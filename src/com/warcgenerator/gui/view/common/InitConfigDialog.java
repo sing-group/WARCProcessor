@@ -9,9 +9,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.Box;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -19,19 +21,34 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.common.SearchInitConfigAction;
 import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
+import com.warcgenerator.gui.components.CustomComboBoxRenderer;
 import com.warcgenerator.gui.components.CustomJDialog;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class InitConfigDialog extends CustomJDialog {
 	private final JPanel contentPanel = new JPanel();
-	private JComboBox<String> configFilesList;
+	private Vector<String> configFilesList;
+	private DefaultComboBoxModel<String> comboBoxModel; 
+	private JComboBox<String> configFilesCBox;
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;
 	private Action loadRecentConfigAction;
-
+	private Action searchInitConfigAction;;
+	
+	public void addFirstConfigFile(String configFile) {
+		if (comboBoxModel.getElementAt(1).equals(CustomComboBoxRenderer.SEPARATOR)) {
+			configFilesList.remove(0);
+			configFilesList.remove(0);
+		}
+		comboBoxModel.insertElementAt(configFile, 0);
+		comboBoxModel.insertElementAt(CustomComboBoxRenderer.SEPARATOR, 1);
+		configFilesCBox.setSelectedIndex(0);
+	}
+	
 	public void addConfigFile(String configFile) {
-		configFilesList.addItem(configFile);
+		comboBoxModel.addElement(configFile);
 	}
 	
 	/**
@@ -40,6 +57,8 @@ public class InitConfigDialog extends CustomJDialog {
 	public InitConfigDialog(final IAppLogic logic, 
 			final WarcGeneratorGUI view) {
 		super(view.getMainFrame(), true);
+		
+		searchInitConfigAction = new SearchInitConfigAction(logic, view, this);
 		
 		this.logic = logic;
 		this.view = view;
@@ -83,19 +102,23 @@ public class InitConfigDialog extends CustomJDialog {
 			contentPanel.add(lblDetermineLaConfiguracin, gbc_lblDetermineLaConfiguracin);
 		}
 		{
-			configFilesList = new JComboBox();
+			configFilesList = new Vector<String>();
+			comboBoxModel = new DefaultComboBoxModel<>(configFilesList);
+			configFilesCBox = new JComboBox(comboBoxModel);
+			configFilesCBox.setRenderer(new CustomComboBoxRenderer<String>());
 			GridBagConstraints gbc_configFilesList = new GridBagConstraints();
 			gbc_configFilesList.gridwidth = 2;
 			gbc_configFilesList.insets = new Insets(0, 0, 0, 5);
 			gbc_configFilesList.fill = GridBagConstraints.HORIZONTAL;
 			gbc_configFilesList.gridx = 1;
 			gbc_configFilesList.gridy = 3;
-			contentPanel.add(configFilesList, gbc_configFilesList);
+			contentPanel.add(configFilesCBox, gbc_configFilesList);
 		}
 		{
 			JButton examineBtn = new JButton("Examinar");
 			examineBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
+				public void actionPerformed(ActionEvent e) {
+					searchInitConfigAction.actionPerformed(e);
 				}
 			});
 			GridBagConstraints gbc_examineBtn = new GridBagConstraints();
@@ -113,7 +136,7 @@ public class InitConfigDialog extends CustomJDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						loadRecentConfigAction = new LoadRecentConfigAction(logic,
-								view, configFilesList.getSelectedItem().toString(),
+								view, configFilesCBox.getSelectedItem().toString(),
 								false);
 						loadRecentConfigAction.actionPerformed(e);
 						InitConfigDialog.this.dispose();

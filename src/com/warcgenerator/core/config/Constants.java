@@ -4,7 +4,7 @@ public interface Constants {
 	String outputCorpusFileExtension = "warc";
 	String outputEnconding = "UTF-8";
 	String outputContentType = "text/html";
-	String configSchemaFilePath = ".//config//config.xsd";
+	String configSchemaFilePath = ".//config//schema//config.xsd";
 	String defaultConfigXML= ".//config//config.xml";
 	String dataSourcesTypesXML= ".//config//datasources.xml";
 	

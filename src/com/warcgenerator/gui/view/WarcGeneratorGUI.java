@@ -1,6 +1,7 @@
 package com.warcgenerator.gui.view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -18,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -27,6 +31,7 @@ import javax.swing.tree.TreePath;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.common.AboutOfAction;
 import com.warcgenerator.gui.actions.common.Constants;
 import com.warcgenerator.gui.actions.common.ExitAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCreateAction;
@@ -42,6 +47,14 @@ import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomTreeNode;
 import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
+import javax.swing.ImageIcon;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
+import java.awt.Color;
+import java.awt.FlowLayout;
 
 public class WarcGeneratorGUI {
 	private GUIConfig guiConfig;
@@ -53,6 +66,7 @@ public class WarcGeneratorGUI {
 	private Action loadAppConfigAction;
 	private Action dsourcesAction;
 	private Action exitAction;
+	private Action aboutOfAction;
 	
 	private JFrame frmWarcgenerator;
 	private JPanel mainPanel;
@@ -119,6 +133,8 @@ public class WarcGeneratorGUI {
 		
 		
 		frmWarcgenerator = new JFrame();
+		frmWarcgenerator.setResizable(false);
+		frmWarcgenerator.setIconImage(Toolkit.getDefaultToolkit().getImage(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/warc.png")));
 		frmWarcgenerator.setTitle("WarcGenerator GUI");
 		frmWarcgenerator.setBounds(100, 100, 630, 470);
 		frmWarcgenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -137,7 +153,8 @@ public class WarcGeneratorGUI {
 		JMenuBar menuBar = new JMenuBar();
 		frmWarcgenerator.setJMenuBar(menuBar);
 		
-		JMenu mnInicio = new JMenu("Inicio");
+		JMenu mnInicio = new JMenu("Fichero");
+		mnInicio.setMnemonic('F');
 		menuBar.add(mnInicio);
 		
 		JMenuItem mntmCargarConfiguracionGeneral = new JMenuItem("Cargar configuracion general");
@@ -176,6 +193,7 @@ public class WarcGeneratorGUI {
 		mnInicio.add(new JSeparator());
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
 		mntmSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				exitAction.actionPerformed(null);
@@ -183,31 +201,53 @@ public class WarcGeneratorGUI {
 		});
 		mnInicio.add(mntmSalir);
 		
-		JMenu mnGenerarCorpus = new JMenu("Generar corpus");
-		mnGenerarCorpus.addMouseListener(new MouseAdapter() {
+		final JMenu mnHelp = new JMenu("Ayuda");
+		mnHelp.setMnemonic('A');
+		menuBar.add(mnHelp);
+		
+		final JMenuItem mnAboutOf = new JMenuItem("Acerca De ...");
+		mnAboutOf.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		mnAboutOf.addActionListener(new ActionListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				generateCorpusAction.actionPerformed(null);
+			public void actionPerformed(ActionEvent e) {
+				aboutOfAction = new AboutOfAction(WarcGeneratorGUI.this);
+				aboutOfAction.actionPerformed(null);
 			}
 		});
+		mnHelp.add(mnAboutOf);
+		
+		menuBar.add(Box.createHorizontalGlue());
+		
+		JButton mnGenerarCorpus = new JButton("Generar corpus");
+		mnGenerarCorpus.setMinimumSize(new Dimension(114, 26));
+		mnGenerarCorpus.setIcon(new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/load.png")));
+		mnGenerarCorpus.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		mnGenerarCorpus.setHorizontalAlignment(SwingConstants.LEFT);
+		mnGenerarCorpus.setMnemonic('G');
 		mnGenerarCorpus.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("action listener");
+				generateCorpusAction.actionPerformed(null);
 			}
 		});
 		menuBar.add(mnGenerarCorpus);
 		
-		JMenu mnSalir = new JMenu("Acerca De ...");
-		menuBar.add(mnSalir);
 		
 		splitPane = new JSplitPane();
 		splitPane.setEnabled(false);
 		frmWarcgenerator.getContentPane().add(splitPane, BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setPreferredSize(new Dimension(150, 2));
 		splitPane.setLeftComponent(scrollPane);
 		
 		JPanel panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		panel.setPreferredSize(new Dimension(140, 10));
+		panel.setBackground(Color.WHITE);
 		scrollPane.setViewportView(panel);
 		
 		tree = new JTree();

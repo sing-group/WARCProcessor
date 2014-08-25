@@ -3,6 +3,11 @@
 - Añadido soporte para nuevos formatos de entrada: Arff, CSV, Corpus Warc
 - Modificado el fichero de configuracion de la aplicacion para personalizar los
   origenes de datos
+  
+
+Creditos
+-------------------------------------------------------------------------------
+Iconos: www.aha-soft.com - Creative Commons Attribution-Share Alike 3.0 License
 
 Dependencias
 -------------------------------------------------------------------------------

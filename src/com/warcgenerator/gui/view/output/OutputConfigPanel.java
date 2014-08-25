@@ -10,6 +10,7 @@ import java.io.File;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -22,7 +23,6 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.output.OutputSaveAction;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 
 public class OutputConfigPanel extends JPanel {
 	private JTextField outputDirTField;
@@ -40,6 +40,8 @@ public class OutputConfigPanel extends JPanel {
 	public OutputConfigPanel(IAppLogic logic, WarcGeneratorGUI view) {
 		outputSaveAction = new OutputSaveAction(logic, view, this);
 		
+		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/save.png"));
+		
 		setBackground(new Color(230, 230, 250));
 		
 		JLabel lblNewLabel = new JLabel("Carpeta de salida"); //$NON-NLS-1$
@@ -48,7 +50,8 @@ public class OutputConfigPanel extends JPanel {
 		
 		JTextPane txtpnunOrigenDe = new JTextPane();
 		txtpnunOrigenDe.setEditable(false);
-		txtpnunOrigenDe.setBackground(new Color(230, 230, 250));
+		txtpnunOrigenDe.setOpaque(false);
+		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
 		txtpnunOrigenDe.setText("Configure las carpetas de salida del corpus a generar."); //$NON-NLS-1$
 		
 		JButton saveAndGenerateBtn = new JButton("Guardar y generar"); //$NON-NLS-1$
@@ -97,6 +100,8 @@ public class OutputConfigPanel extends JPanel {
 				} 
 			}
 		});
+		
+		JLabel lblNewLabel_3 = new JLabel(icon); //$NON-NLS-1$
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -104,7 +109,10 @@ public class OutputConfigPanel extends JPanel {
 					.addGap(23)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNewLabel_3)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(183)
 							.addComponent(saveBtn)
@@ -132,7 +140,9 @@ public class OutputConfigPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(21)
-					.addComponent(lblNewLabel)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_3))
 					.addGap(18)
 					.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -148,7 +158,7 @@ public class OutputConfigPanel extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblHam)
 						.addComponent(hamDirTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(58)
+					.addPreferredGap(ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(saveAndGenerateBtn)
 						.addComponent(saveBtn))

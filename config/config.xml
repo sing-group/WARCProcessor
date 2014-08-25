@@ -2,14 +2,13 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <configuration
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="config.xsd"
+	xsi:noNamespaceSchemaLocation="schema/config.xsd"
 >
 	 <!-- General corpus configuration -->
 	 <numSites onlyActiveSites="true" downloadAgain="true">1000</numSites>
 	 <!-- SPAN/HAM Ratio -->
 	 <ratio isPercentage="true" >
 	 	<spam>10</spam>
-	 	<ham>90</ham>
 	 </ratio>
 	 
 	 <!-- Output corpus configuration  -->
@@ -27,7 +26,7 @@
 	 
 	 <!--  Data sources -->
 	 <dataSources>
-	 	 <dataSource name="CorpusDS" 
+	 	 <!-- <dataSource name="CorpusDS" 
 	 	 	class="com.warcgenerator.datasources.CorpusDS" 
 	 		maxElements="10" >
 	 		<customParams>
@@ -47,7 +46,7 @@
 	 		</customParams>
 	 		<srcDirPath>.\\in\\arff</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.ArffDSHandler</handler>
-	 	</dataSource>
+	 	</dataSource> -->
 	 	<dataSource name="WhitelistDS" 
 	 		class="com.warcgenerator.datasources.FileDS">
 	 		<srcDirPath>.\\in\\plain\whitelists</srcDirPath>
@@ -59,13 +58,13 @@
 	 		<srcDirPath>.\\in\\plain\blacklists</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
 	 	</dataSource>
-	 	<dataSource name="CSVDS" 
+	 	<!-- <dataSource name="CSVDS" 
 	 		class="com.warcgenerator.datasources.CSVDS">
 	 		<customParams>
 	 			<urlColNum>0</urlColNum>
 	 		</customParams>
 	 		<srcDirPath>.\\in\\csv</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
-	 	</dataSource>
+	 	</dataSource>-->
 	 </dataSources>
 </configuration>

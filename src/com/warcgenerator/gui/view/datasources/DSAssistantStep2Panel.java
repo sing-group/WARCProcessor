@@ -13,6 +13,7 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -60,6 +61,8 @@ public class DSAssistantStep2Panel extends JPanel {
 		dsAssistantStep2ContinueAction =
 				new DSAsisstantStep2ContinueAction(logic, view, this);
 		
+		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
+		
 		setBackground(new Color(230, 230, 250));
 		
 		JLabel lblNewLabel = new JLabel("Origenes de datos");
@@ -68,7 +71,8 @@ public class DSAssistantStep2Panel extends JPanel {
 		
 		JTextPane txtpnunOrigenDe = new JTextPane();
 		txtpnunOrigenDe.setEditable(false);
-		txtpnunOrigenDe.setBackground(new Color(230, 230, 250));
+		txtpnunOrigenDe.setOpaque(false);
+		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
 		txtpnunOrigenDe.setText("Configure las opciones del origen de datos.");
 		
 		JButton btnNuevoOrigen = new JButton("Continuar");
@@ -145,6 +149,8 @@ public class DSAssistantStep2Panel extends JPanel {
 				dsAssistantStep2BackAction.actionPerformed(e);
 			}
 		});
+		
+		JLabel lblNewLabel_4 = new JLabel(icon);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -169,7 +175,10 @@ public class DSAssistantStep2Panel extends JPanel {
 									.addComponent(spamRButtom)
 									.addGap(18)
 									.addComponent(hamRButtom))))
-						.addComponent(lblNewLabel)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNewLabel_4)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel))
 						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 							.addGroup(groupLayout.createSequentialGroup()
 								.addComponent(lblPasoDe)
@@ -186,7 +195,9 @@ public class DSAssistantStep2Panel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(21)
-					.addComponent(lblNewLabel)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_4))
 					.addGap(18)
 					.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -203,7 +214,7 @@ public class DSAssistantStep2Panel extends JPanel {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNewLabel_3)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNuevoOrigen)

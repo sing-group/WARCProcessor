@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -40,12 +41,15 @@ public class GeneralConfigPanel extends JPanel {
 	private JCheckBox downloadAgainEnabledCBox;
 
 	private GCSaveAction gcSaveAction;
+	private JLabel lblNewLabel_3;
 	
 	/**
 	 * Create the panel.
 	 */
 	public GeneralConfigPanel(IAppLogic logic, WarcGeneratorGUI view) {
 		gcSaveAction = new GCSaveAction(logic, view, this);
+		
+		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/application.png"));
 		
 		setBackground(new Color(230, 230, 250));
 		
@@ -55,7 +59,7 @@ public class GeneralConfigPanel extends JPanel {
 		
 		JTextPane txtpnunOrigenDe = new JTextPane();
 		txtpnunOrigenDe.setEditable(false);
-		txtpnunOrigenDe.setBackground(new Color(230, 230, 250));
+		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
 		txtpnunOrigenDe.setText(Messages.getString("GeneralConfigPanel.txtpnunOrigenDe.text")); //$NON-NLS-1$
 		
 		JButton saveAndGenerateBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNuevoOrigen.text")); //$NON-NLS-1$
@@ -127,6 +131,8 @@ public class GeneralConfigPanel extends JPanel {
 				gcSaveAction.actionPerformed(e);
 			}
 		});
+		
+		lblNewLabel_3 = new JLabel(icon); //$NON-NLS-1$
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -138,7 +144,10 @@ public class GeneralConfigPanel extends JPanel {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(numSitesTField, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE))
 						.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNewLabel_3)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(183)
 							.addComponent(saveBtn)
@@ -171,7 +180,9 @@ public class GeneralConfigPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(21)
-					.addComponent(lblNewLabel)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_3))
 					.addGap(18)
 					.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -195,7 +206,7 @@ public class GeneralConfigPanel extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(onlyActiveSitesEnabledCBox)
 						.addComponent(downloadAgainEnabledCBox))
-					.addGap(12)
+					.addPreferredGap(ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(saveAndGenerateBtn)
 						.addComponent(saveBtn))

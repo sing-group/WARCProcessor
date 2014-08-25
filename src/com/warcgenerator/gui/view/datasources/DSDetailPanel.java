@@ -10,6 +10,7 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -49,6 +50,8 @@ public class DSDetailPanel extends JPanel {
 		dsModifyAction = new DSModifyAction(logic, view, config);
 		dsRemoveAction = new DSRemoveAction(logic, view, config);
 		
+		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
+		
 		setBackground(new Color(230, 230, 250));
 		
 		JLabel lblNewLabel = new JLabel(Messages.getString("DSDetailPanel.lblNewLabel.text")); //$NON-NLS-1$
@@ -57,7 +60,8 @@ public class DSDetailPanel extends JPanel {
 		
 		JTextPane txtpnunOrigenDe = new JTextPane();
 		txtpnunOrigenDe.setEditable(false);
-		txtpnunOrigenDe.setBackground(new Color(230, 230, 250));
+		txtpnunOrigenDe.setOpaque(false);
+		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
 		txtpnunOrigenDe.setText(Messages.getString("DSDetailPanel.txtpnunOrigenDe.text")); //$NON-NLS-1$
 		
 		JButton btnNuevoOrigen = new JButton(Messages.getString("DSDetailPanel.btnNuevoOrigen.text")); //$NON-NLS-1$
@@ -78,13 +82,18 @@ public class DSDetailPanel extends JPanel {
 	    ButtonGroup group = new ButtonGroup();
 		
 		scrollPane = new JScrollPane();
+		
+		JLabel lblNewLabel_1 = new JLabel(icon); //$NON-NLS-1$
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(23)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNewLabel_1)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel))
 						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 							.addGroup(groupLayout.createSequentialGroup()
 								.addComponent(removeBtn)
@@ -98,11 +107,13 @@ public class DSDetailPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(21)
-					.addComponent(lblNewLabel)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_1))
 					.addGap(18)
 					.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnNuevoOrigen)

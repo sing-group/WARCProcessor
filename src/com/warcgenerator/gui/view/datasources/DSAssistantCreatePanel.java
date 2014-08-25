@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +30,8 @@ public class DSAssistantCreatePanel extends JPanel {
 		dsAssistantCreateNewDSAction = new DSAssistantCreateNewDSAction(logic,
 				view);
 		
+		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
+		
 		setBackground(new Color(230, 230, 250));
 		
 		JLabel lblNewLabel = new JLabel("Origenes de datos");
@@ -37,7 +40,8 @@ public class DSAssistantCreatePanel extends JPanel {
 		
 		JTextPane txtpnunOrigenDe = new JTextPane();
 		txtpnunOrigenDe.setEditable(false);
-		txtpnunOrigenDe.setBackground(new Color(230, 230, 250));
+		txtpnunOrigenDe.setOpaque(false);
+		txtpnunOrigenDe.setBackground(new Color(255, 255, 255,0));
 		txtpnunOrigenDe.setText("Un origen de datos le permite obtener informaci\u00F3n de corpus provenientes de diferentes tipos de ficheros. \r\n\r\nPulse en \"Nuevo Origen\" para comenzar el asistente de configuraci\u00F3n de un nuevo origen de datos. ");
 		
 		JButton btnNuevoOrigen = new JButton("Nuevo Origen");
@@ -46,6 +50,8 @@ public class DSAssistantCreatePanel extends JPanel {
 				dsAssistantCreateNewDSAction.actionPerformed(e);
 			}
 		});
+		
+		JLabel lblNewLabel_1 = new JLabel(icon);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -53,7 +59,10 @@ public class DSAssistantCreatePanel extends JPanel {
 					.addGap(23)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNewLabel_1)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(305)
 							.addComponent(btnNuevoOrigen)))
@@ -63,10 +72,12 @@ public class DSAssistantCreatePanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(21)
-					.addComponent(lblNewLabel)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_1))
 					.addGap(18)
 					.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
 					.addComponent(btnNuevoOrigen)
 					.addGap(22))
 		);

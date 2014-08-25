@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.task.GenerateCorpusTask;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
+import com.warcgenerator.gui.view.generate.GenerateCorpusDialog;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
 
 public class GCGenerateAction extends AbstractAction {
@@ -17,14 +18,19 @@ public class GCGenerateAction extends AbstractAction {
 	private IAppLogic logic;
 	private GenerateCorpusTask gcTask;
 	private GeneratingCorpusDialog gcd;
+	private GenerateCorpusDialog generateCorpusDialog;
 
-	public GCGenerateAction(IAppLogic logic, WarcGeneratorGUI view) {
+	public GCGenerateAction(IAppLogic logic, WarcGeneratorGUI view,
+			GenerateCorpusDialog generateCorpusDialog) {
 		this.view = view;
 		this.logic = logic;
+		this.generateCorpusDialog = generateCorpusDialog;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// Hide the parent dialog
+		generateCorpusDialog.dispose();
 		gcd = new GeneratingCorpusDialog(view, this);
 		gcTask = new GenerateCorpusTask(logic, view, gcd);
 		gcTask.addPropertyChangeListener(new PropertyChangeListener() {

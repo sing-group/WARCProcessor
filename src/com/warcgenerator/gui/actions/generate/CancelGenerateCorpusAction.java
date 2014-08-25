@@ -1,14 +1,10 @@
 package com.warcgenerator.gui.actions.generate;
 
 import java.awt.event.ActionEvent;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import com.warcgenerator.core.common.GenerateCorpusState;
-import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
 

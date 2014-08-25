@@ -27,11 +27,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.warcgenerator.core.config.AppConfig;
-import com.warcgenerator.core.config.Constants;
-import com.warcgenerator.core.exception.config.ConfigException;
-import com.warcgenerator.core.exception.config.ValidateXMLSchemaException;
+import com.warcgenerator.gui.actions.common.Constants;
 import com.warcgenerator.gui.config.GUIConfig;
+import com.warcgenerator.gui.exception.config.ConfigException;
+import com.warcgenerator.gui.exception.config.ValidateXMLSchemaException;
 
 /**
  * Read the app configuration from xml config
@@ -78,8 +77,7 @@ public class XMLGUIConfigHelper {
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse(new File(path));
 
-			// At the moment we are not to validate Scheme
-			//validateSchema(doc, Constants.configSchemaFilePath);
+			validateSchema(doc, Constants.CONFIG_SCHEMA_FILE_PATH);
 
 			// normalize text representation
 			doc.getDocumentElement().normalize();
