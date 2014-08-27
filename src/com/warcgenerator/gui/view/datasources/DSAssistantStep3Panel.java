@@ -45,13 +45,18 @@ public class DSAssistantStep3Panel extends JPanel {
 	 * Create the panel.
 	 */
 	public DSAssistantStep3Panel(IAppLogic logic, 
-			WarcGeneratorGUI view) {
+			WarcGeneratorGUI view,
+			JPanel parentAssistant) {
 		dsAssistantStep3BackAction =
-				new DSAsisstantStep3BackAction(logic, view);
+				new DSAsisstantStep3BackAction(logic, view,
+						parentAssistant);
 		dsAssistantCancelAction =
-				new DSAsisstantCancelAction(logic, view);
+				new DSAsisstantCancelAction(logic, view,
+						parentAssistant);
 		dsAssistantStep3FinishAction =
 				new DSAsisstantStep3FinishAction(logic, view);
+		
+		setName("DSAssistantStep3Panel");
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 		

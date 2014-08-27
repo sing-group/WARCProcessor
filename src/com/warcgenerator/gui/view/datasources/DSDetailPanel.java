@@ -46,9 +46,12 @@ public class DSDetailPanel extends JPanel {
 	 */
 	public DSDetailPanel(IAppLogic logic, 
 			WarcGeneratorGUI view,
-			DataSourceConfig config) {
-		dsModifyAction = new DSModifyAction(logic, view, config);
+			DataSourceConfig config,
+			JPanel parentAssistant) {
+		dsModifyAction = new DSModifyAction(logic, view, config, parentAssistant);
 		dsRemoveAction = new DSRemoveAction(logic, view, config);
+		
+		setName("DSDetailPanel" + config.getId());
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 		

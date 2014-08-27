@@ -26,9 +26,11 @@ public class DSAssistantCreatePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public DSAssistantCreatePanel(IAppLogic logic, WarcGeneratorGUI view) {
+	public DSAssistantCreatePanel(IAppLogic logic, WarcGeneratorGUI view, JPanel
+			parentAssistant) {
 		dsAssistantCreateNewDSAction = new DSAssistantCreateNewDSAction(logic,
-				view);
+				view, parentAssistant);
+		this.setName("DSAssistantCreatePanel");
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 		

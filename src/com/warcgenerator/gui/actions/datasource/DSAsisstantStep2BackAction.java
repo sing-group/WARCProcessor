@@ -6,8 +6,10 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JPanel;
 
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class DSAsisstantStep2BackAction 
@@ -15,20 +17,21 @@ public class DSAsisstantStep2BackAction
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
 	private Action dsAsisstantStep1Action;
+	private JPanel parentAssistant;
 	
 	public DSAsisstantStep2BackAction(IAppLogic logic,
-			WarcGeneratorGUI view
+			WarcGeneratorGUI view,
+			JPanel parentAssistant
 			) {
 		this.view = view;
 		this.logic = logic;
-		
-		dsAsisstantStep1Action = new DSAssistantCreateNewDSAction(
-				logic, view);
+		this.parentAssistant = parentAssistant;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		dsAsisstantStep1Action.actionPerformed(e);
+		((CustomCardLayout)parentAssistant.getLayout()).
+			previous(parentAssistant);
 	}
 
 	@Override

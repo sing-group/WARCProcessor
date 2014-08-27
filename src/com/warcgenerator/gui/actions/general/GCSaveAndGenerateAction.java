@@ -1,56 +1,64 @@
 package com.warcgenerator.gui.actions.general;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.config.AppConfig;
-import com.warcgenerator.core.logic.AppLogic;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.generate.GenerateCorpusAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 
-public class GCSaveAction 
+public class GCSaveAndGenerateAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
 	private GeneralConfigPanel panel;
 	private IAppLogic logic;
+	private Action generateCorpusAction;
+	private GCSaveAction gcSaveAction;
 	
-	public GCSaveAction() {
+	public GCSaveAndGenerateAction() {	
 	}
 	
 	public void init(IAppLogic logic,
 			WarcGeneratorGUI view,
-			GeneralConfigPanel panel
-			) {
+			GeneralConfigPanel panel,
+			GCSaveAction gcSaveAction) {
 		this.view = view;
 		this.logic = logic;
 		this.panel = panel;
+		this.gcSaveAction = gcSaveAction;
+		
+		generateCorpusAction =
+				new GenerateCorpusAction(logic, view);
+		
+		// Add callback
+		this.logic.addObserver(this);
+		gcSaveAction.init(logic, view, panel);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Add callback
-		this.logic.addObserver(this);
+		gcSaveAction.actionPerformed(e);
 		
-		AppConfig appConfig = logic.getAppConfig();
+		/*AppConfig appConfig = logic.getAppConfig();
 		
 		appConfig.setNumSites(
-				Integer.parseInt((String)panel.getNumSitesTField().getValue()));
+				Integer.parseInt(panel.getNumSitesTField().getText()));
 		if (panel.getSpamHamRatioRBtn().isSelected()) {
 			appConfig.setRatioIsPercentage(true);
-			appConfig.setRatioPercentageSpam(Integer.parseInt(
+			appConfig.setRatioSpam(Integer.parseInt(
 					panel.getSpamHamRationValueTField().getText()));
 		} else {
 			appConfig.setRatioIsPercentage(false);
-			appConfig.setRatioQuantitySpam(Integer.parseInt(
+			appConfig.setRatioSpam(Integer.parseInt(
 					panel.getSpamQuantityTField().getText()));
 		}
 		appConfig.setDownloadAgain(panel.getDownloadAgainEnabledCBox().
@@ -59,11 +67,12 @@ public class GCSaveAction
 				isSelected());
 		
 		if (validate(appConfig)) {
-			logic.updateAppConfig(appConfig);
-		}	
+			AppConfig config = logic.getAppConfig();
+			logic.updateAppConfig(config);
+		}*/
 	}
 
-	public boolean validate(AppConfig config) {
+	/* public boolean validate(AppConfig config) {
 		StringBuilder errors = new StringBuilder();
 		
 		if (errors.length() != 0) {
@@ -76,15 +85,13 @@ public class GCSaveAction
 			return false;
 		}
 		return true;
-	}
+	} */
 	
 	@Override
 	public void update(Observable obj, Object message) {
 		if (obj == logic) {
 			if (message.equals(IAppLogic.APP_LOGIC_UPDATED_CALLBACK)) {
-				JOptionPane.showMessageDialog(view.getMainFrame(), 
-						"Los cambios se han guardado");
-				panel.commit();
+				generateCorpusAction.actionPerformed(null);
 			}
 		}
 	}

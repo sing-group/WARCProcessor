@@ -13,25 +13,24 @@ public class OutputConfigAction
 	extends AbstractAction {	
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
+	private OutputConfigPanel configPanel;
 	
-	public OutputConfigAction(IAppLogic logic, WarcGeneratorGUI view
-			) {
+	public OutputConfigAction(IAppLogic logic, WarcGeneratorGUI view,
+			OutputConfigPanel configPanel) {
 		this.logic = logic;
 		this.view = view;
+		this.configPanel = configPanel;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		OutputConfigPanel configPanel = 
-				new OutputConfigPanel(logic, view);
-
 		AppConfig config = logic.getAppConfig();
 		
-		configPanel.getOutputDirTField().setText(
+		configPanel.getOutputDirTField().setValue(
 				config.getOutputConfig().getOutputDir());
-		configPanel.getSpamDirTField().setText(
+		configPanel.getSpamDirTField().setValue(
 				config.getSpamDirName());
-		configPanel.getHamDirTField().setText(
+		configPanel.getHamDirTField().setValue(
 				config.getHamDirName());
 		
 		/*configPanel.getNumSitesTField().setText(Integer.toString(

@@ -8,7 +8,7 @@
 	 <numSites onlyActiveSites="true" downloadAgain="true">1000</numSites>
 	 <!-- SPAN/HAM Ratio -->
 	 <ratio isPercentage="true" >
-	 	<spam>10</spam>
+	 	<percentageSpam>50</percentageSpam>
 	 </ratio>
 	 
 	 <!-- Output corpus configuration  -->

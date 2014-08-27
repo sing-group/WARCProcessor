@@ -8,6 +8,7 @@ import java.util.Observer;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -28,14 +29,15 @@ public class DSAsisstantStep1ContinueAction
 	
 	public DSAsisstantStep1ContinueAction(IAppLogic logic,
 			WarcGeneratorGUI view,
-			DSAssistantStep1Panel panel
+			DSAssistantStep1Panel panel,
+			JPanel parentAssistant
 			) {
 		this.view = view;
 		this.logic = logic;
 		this.panel = panel;
 		
 		dsAsisstantStep2Action =
-				new DSAsisstantStep2Action(logic, view);
+				new DSAsisstantStep2Action(logic, view, parentAssistant);
 	}
 	
 	@Override

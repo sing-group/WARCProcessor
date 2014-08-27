@@ -13,21 +13,25 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.output.OutputSaveAction;
+import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
-public class OutputConfigPanel extends JPanel {
-	private JTextField outputDirTField;
-	private JTextField spamDirTField;
-	private JTextField hamDirTField;
+public class OutputConfigPanel extends CustomJPanel {
+	private JFormattedTextField outputDirTField;
+	private JFormattedTextField spamDirTField;
+	private JFormattedTextField hamDirTField;
+	
+	private IAppLogic logic;
+	private WarcGeneratorGUI view;
 	
 	private OutputSaveAction outputSaveAction;
 	
@@ -38,6 +42,12 @@ public class OutputConfigPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public OutputConfigPanel(IAppLogic logic, WarcGeneratorGUI view) {
+		super();
+		this.logic = logic;
+		this.view = view;
+		
+		this.setName("Configuracion de salida");
+		
 		outputSaveAction = new OutputSaveAction(logic, view, this);
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/save.png"));
@@ -63,7 +73,7 @@ public class OutputConfigPanel extends JPanel {
 		
 		JLabel lblNewLabel_1 = new JLabel(Messages.getString("OutputConfigPanel.lblNewLabel_1.text")); //$NON-NLS-1$ //$NON-NLS-1$
 		
-		outputDirTField = new JTextField();
+		outputDirTField = new JFormattedTextField("");
 		outputDirTField.setColumns(10);
 		
 		 //Group the radio buttons.
@@ -72,7 +82,7 @@ public class OutputConfigPanel extends JPanel {
 		JButton saveBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNewButton.text")); //$NON-NLS-1$
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				outputSaveAction.actionPerformed(e);
+				save();
 			}
 		});
 		
@@ -80,10 +90,10 @@ public class OutputConfigPanel extends JPanel {
 		
 		JLabel lblHam = new JLabel(Messages.getString("OutputConfigPanel.lblHam.text")); //$NON-NLS-1$
 		
-		spamDirTField = new JTextField();
+		spamDirTField = new JFormattedTextField("");
 		spamDirTField.setColumns(10);
 		
-		hamDirTField = new JTextField();
+		hamDirTField = new JFormattedTextField("");
 		hamDirTField.setColumns(10);
 		
 		JButton examineBtn = new JButton("Examinar"); //$NON-NLS-1$
@@ -95,8 +105,6 @@ public class OutputConfigPanel extends JPanel {
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
 					outputDirTField.setText(file.getAbsolutePath());
-					// This is where a real application would open the file.
-					//log.append("Opening: " + file.getName() + ".");
 				} 
 			}
 		});
@@ -168,15 +176,20 @@ public class OutputConfigPanel extends JPanel {
 
 	}
 
-	public JTextField getOutputDirTField() {
+	public JFormattedTextField getOutputDirTField() {
 		return outputDirTField;
 	}
 
-	public JTextField getSpamDirTField() {
+	public JFormattedTextField getSpamDirTField() {
 		return spamDirTField;
 	}
 
-	public JTextField getHamDirTField() {
+	public JFormattedTextField getHamDirTField() {
 		return hamDirTField;
-	}	
+	}
+
+	@Override
+	public void save() {
+		outputSaveAction.actionPerformed(null);
+	}
 }

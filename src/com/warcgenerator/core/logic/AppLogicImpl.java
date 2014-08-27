@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Observer;
 import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -97,11 +98,18 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 		try {
 			BeanUtils.copyProperties(config, appConfig);
+			
+			System.out.println("Nuevo numSites es" + config.getNumSites());
+			
 		} catch (IllegalAccessException e) {
 			throw new LogicException(e);
 		} catch (InvocationTargetException e) {
 			throw new LogicException(e);
 		}
+		
+		// Notify observers
+		setChanged();
+		notifyObservers(APP_LOGIC_UPDATED_CALLBACK);
 	}
 
 	public AppConfig getAppConfig() throws LogicException {
@@ -254,5 +262,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private void stopWebCrawling() {
 		if (executorTasks != null)
 			executorTasks.terminate();
+	}
+	
+	public void addObserver(Observer obj) {
+		deleteObserver(obj);
+		super.addObserver(obj);
 	}
 }

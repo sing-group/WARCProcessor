@@ -31,8 +31,8 @@ public class AppConfig {
 	private Boolean onlyActiveSites;
 	private Boolean downloadAgain;
 	private Boolean ratioIsPercentage;
-	private Integer ratioSpam;
-	private Integer ratioHam;
+	private Integer ratioPercentageSpam;
+	private Integer ratioQuantitySpam;
 
 	public AppConfig() {
 		setDataSourceConfigs(new HashMap<Integer, DataSourceConfig>());
@@ -73,9 +73,12 @@ public class AppConfig {
 		ratioIsPercentage = Validator.isNullOrEmpty(ratioIsPercentage)?
 				Constants.AppConfigConstants.RATIO_IS_PERCENTAGE_DEFAULT:
 					ratioIsPercentage;
-		ratioSpam = Validator.isNullOrEmpty(ratioSpam)?
-				Constants.AppConfigConstants.RATIO_SPAM_DEFAULT:
-					ratioSpam;
+		ratioPercentageSpam = Validator.isNullOrEmpty(ratioPercentageSpam)?
+				Constants.AppConfigConstants.RATIO_PERCENTAGE_SPAM_DEFAULT:
+					ratioPercentageSpam;
+		ratioQuantitySpam = Validator.isNullOrEmpty(ratioQuantitySpam)?
+				Constants.AppConfigConstants.RATIO_QUANTITY_SPAM_DEFAULT:
+					ratioQuantitySpam;
 		
 		// Configure filepaths
 		String pathCorpus = corpusDirPath;
@@ -240,21 +243,21 @@ public class AppConfig {
 	public void setNumSites(Integer numSites) {
 		this.numSites = numSites;
 	}
-
-	public Integer getRatioSpam() {
-		return ratioSpam;
+	
+	public Integer getRatioQuantitySpam() {
+		return ratioQuantitySpam;
 	}
 
-	public void setRatioSpam(Integer ratioSpam) {
-		this.ratioSpam = ratioSpam;
+	public void setRatioQuantitySpam(Integer ratioQuantitySpam) {
+		this.ratioQuantitySpam = ratioQuantitySpam;
+	}
+	
+	public Integer getRatioPercentageSpam() {
+		return ratioPercentageSpam;
 	}
 
-	public Integer getRatioHam() {
-		return ratioHam;
-	}
-
-	public void setRatioHam(Integer ratioHam) {
-		this.ratioHam = ratioHam;
+	public void setRatioPercentageSpam(Integer ratioPercentageSpam) {
+		this.ratioPercentageSpam = ratioPercentageSpam;
 	}
 	
 	public Map<Integer, DataSourceConfig> getDataSourceConfigs() {
@@ -286,7 +289,7 @@ public class AppConfig {
 	
 	public boolean validate() {
 		// Check if ratioQuantity is bigger than numSites
-		if (!ratioIsPercentage && numSites < ratioSpam) {
+		if (!ratioIsPercentage && numSites < ratioPercentageSpam) {
 			throw new RatioQuantityUnexpectedValueException();
 		}
 		

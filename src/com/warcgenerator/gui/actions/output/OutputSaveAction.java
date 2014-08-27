@@ -6,16 +6,17 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.config.AppConfig;
+import com.warcgenerator.core.exception.logic.LogicException;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
-import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 import com.warcgenerator.gui.view.output.OutputConfigPanel;
 
 public class OutputSaveAction 
-	extends AbstractAction {	
+	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
 	private OutputConfigPanel panel;
 	private IAppLogic logic;
@@ -40,10 +41,14 @@ public class OutputSaveAction
 		
 		if (validate(appConfig)) {
 			AppConfig config = logic.getAppConfig();
-			
-			logic.updateAppConfig(config);
-			
-			System.out.println("Se ha guardado con exito");
+			// Add callback
+			logic.addObserver(this);
+			try {
+				logic.updateAppConfig(config);
+			} catch (LogicException ex) {
+				
+				
+			}
 		}
 	}
 
@@ -60,5 +65,16 @@ public class OutputSaveAction
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public void update(Observable obj, Object message) {
+		if (obj == logic) {
+			if (message.equals(IAppLogic.APP_LOGIC_UPDATED_CALLBACK)) {
+				JOptionPane.showMessageDialog(view.getMainFrame(), 
+						"Los cambios se han guardado");
+				panel.commit();
+			}
+		}
 	}
 }

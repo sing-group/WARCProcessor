@@ -53,13 +53,16 @@ public class DSAssistantStep2Panel extends JPanel {
 	 * Create the panel.
 	 */
 	public DSAssistantStep2Panel(IAppLogic logic, 
-			WarcGeneratorGUI view) {
-		dsAssistantStep2BackAction =
-				new DSAsisstantStep2BackAction(logic, view);
-		dsAssistantCancelAction =
-				new DSAsisstantCancelAction(logic, view);
+			WarcGeneratorGUI view, JPanel parentAssistant) {
 		dsAssistantStep2ContinueAction =
-				new DSAsisstantStep2ContinueAction(logic, view, this);
+				new DSAsisstantStep2ContinueAction(logic, view, this,
+						parentAssistant);
+		dsAssistantStep2BackAction =
+				new DSAsisstantStep2BackAction(logic, view, parentAssistant);
+		dsAssistantCancelAction =
+				new DSAsisstantCancelAction(logic, view, parentAssistant);
+		
+		setName("DSAssistantStep2Panel");
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 		

@@ -44,11 +44,14 @@ public class DSAssistantStep1Panel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public DSAssistantStep1Panel(IAppLogic logic, WarcGeneratorGUI view) {
+	public DSAssistantStep1Panel(IAppLogic logic, WarcGeneratorGUI view,
+			JPanel parentAssistant) {
 		dsAssistantStep1ContinueAction = new DSAsisstantStep1ContinueAction(
-				logic, view, this);
+				logic, view, this, parentAssistant);
 		dsAssistantCancelAction = new DSAsisstantCancelAction(logic,
-				view);
+				view, parentAssistant);
+		
+		this.setName("DSAssistantStep1Panel");
 
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 		

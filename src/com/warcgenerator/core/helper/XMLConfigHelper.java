@@ -103,11 +103,11 @@ public class XMLConfigHelper {
 				Node nodeAux = listRatio.item(s);
 				if (nodeAux.getNodeType() == Node.ELEMENT_NODE) {
 					System.out.println("nodename es " + nodeAux.getNodeName());
-					if (nodeAux.getNodeName().equals("spam")) {
-						config.setRatioSpam(Integer.parseInt(nodeAux
+					if (nodeAux.getNodeName().equals("percentageSpam")) {
+						config.setRatioPercentageSpam(Integer.parseInt(nodeAux
 								.getTextContent().trim()));
-					} else if (nodeAux.getNodeName().equals("ham")) {
-						config.setRatioHam(Integer.parseInt(nodeAux
+					} else if (nodeAux.getNodeName().equals("quantitySpam")) {
+						config.setRatioQuantitySpam(Integer.parseInt(nodeAux
 								.getTextContent().trim()));
 					}
 				}
@@ -360,7 +360,7 @@ public class XMLConfigHelper {
 			ratio.setAttributeNode(attr);
 
 			Element spam = doc.createElement("spam");
-			spam.setTextContent(config.getRatioSpam().toString());
+			spam.setTextContent(config.getRatioPercentageSpam().toString());
 			ratio.appendChild(spam);
 
 			Element corpusDirPath = doc.createElement("corpusDirPath");

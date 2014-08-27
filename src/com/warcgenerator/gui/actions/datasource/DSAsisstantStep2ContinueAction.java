@@ -9,16 +9,16 @@ import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 import org.apache.commons.beanutils.BeanUtils;
 
 import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.DataSource;
-import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.common.Constants;
 import com.warcgenerator.gui.common.Session;
+import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
@@ -29,15 +29,16 @@ public class DSAsisstantStep2ContinueAction
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
 	private DSAssistantStep2Panel panel;
-	
+	private JPanel parentAssistant;
 	
 	public DSAsisstantStep2ContinueAction(IAppLogic logic,
 			WarcGeneratorGUI view,
-			DSAssistantStep2Panel panel
-			) {
+			DSAssistantStep2Panel panel,
+			JPanel parentAssistant) {
 		this.view = view;
 		this.logic = logic;
 		this.panel = panel;
+		this.parentAssistant = parentAssistant;
 	}
 	
 	@Override
@@ -85,11 +86,15 @@ public class DSAsisstantStep2ContinueAction
 			Session.add(
 					Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
 			
-			DSAssistantStep3Panel nextPanel = new DSAssistantStep3Panel(logic,
-					view);
+			CustomCardLayout cardLayout = 
+					((CustomCardLayout)parentAssistant.getLayout());
+			cardLayout.next(parentAssistant);
+			DSAssistantStep3Panel nextPanel = (DSAssistantStep3Panel)
+					cardLayout.getCurrentPanel(parentAssistant);
+			
 			nextPanel.setSummaryText(dsConfig.toString());
 			
-			view.loadMainPanel(nextPanel);
+			cardLayout.show(parentAssistant, nextPanel.getName());
 		}
 	}
 

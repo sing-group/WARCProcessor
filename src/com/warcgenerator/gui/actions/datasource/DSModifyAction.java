@@ -5,6 +5,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
+import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
@@ -18,17 +19,20 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
  * @author amparop
  *
  */
-public class DSModifyAction extends AbstractAction implements Observer {
+public class DSModifyAction extends AbstractAction {
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;
 	private DataSourceConfig config;
+	private JPanel parentAssistant;
 	
 	public DSModifyAction(IAppLogic logic, 
 			WarcGeneratorGUI view,
-			DataSourceConfig config) {
+			DataSourceConfig config,
+			JPanel parentAssistant) {
 		this.logic = logic;
 		this.view = view;
 		this.config = config;
+		this.parentAssistant = parentAssistant;
 	}
 
 	@Override
@@ -38,15 +42,8 @@ public class DSModifyAction extends AbstractAction implements Observer {
 				config);
 		
 		DSAssistantCreateNewDSAction nextAction = new
-				DSAssistantCreateNewDSAction(logic, view);
+				DSAssistantCreateNewDSAction(logic, view, 
+						parentAssistant);
 		nextAction.actionPerformed(e);
 	}
-
-	@Override
-	public void update(Observable aPublisher, Object aData) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	 
 }

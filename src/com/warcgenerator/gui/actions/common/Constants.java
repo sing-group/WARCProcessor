@@ -5,4 +5,5 @@ public interface Constants {
 	String GUI_CONFIG_SESSION_KEY = "gui_config_session_key";
 	String DEFAULT_GUI_CONFIG_XML= ".//config//gui-config.xml";
 	String CONFIG_SCHEMA_FILE_PATH = ".//config//schema//gui-config.xsd";
+	String FORM_MODIFIED_SESSION_KEY = "form_modified_session_key";
 }

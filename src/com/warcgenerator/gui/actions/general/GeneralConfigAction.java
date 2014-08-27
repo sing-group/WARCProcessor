@@ -15,20 +15,22 @@ public class GeneralConfigAction
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
+	private GeneralConfigPanel configPanel;
 	
-	public GeneralConfigAction(IAppLogic logic, WarcGeneratorGUI view
-			) {
+	public GeneralConfigAction(IAppLogic logic, WarcGeneratorGUI view,
+			GeneralConfigPanel configPanel) {
 		this.logic = logic;
 		this.view = view;
+		this.configPanel = configPanel;
 	}
-	
+		
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		GeneralConfigPanel configPanel = 
-				new GeneralConfigPanel(logic, view);
-
 		AppConfig config = logic.getAppConfig();
-		configPanel.getNumSitesTField().setText(Integer.toString(
+		
+		System.out.println("config.getNumSites(): " + config.getNumSites());
+		
+		configPanel.getNumSitesTField().setValue(Integer.toString(
 				config.getNumSites()));
 		if (config.getRatioIsPercentage()) {
 			configPanel.getSpamHamRatioRBtn().setSelected(true);
@@ -38,10 +40,10 @@ public class GeneralConfigAction
 			configPanel.getSlider().setEnabled(true);
 			configPanel.getSpamHamRationValueTField().setEnabled(true);
 			
-			configPanel.getSpamHamRationValueTField().setText(
-					Integer.toString(config.getRatioSpam()));
+			configPanel.getSpamHamRationValueTField().setValue(
+					Integer.toString(config.getRatioPercentageSpam()));
 			configPanel.getSlider().setValue(
-					config.getRatioSpam());
+					config.getRatioPercentageSpam());
 		} else {
 			configPanel.getSpamHamRatioRBtn().setSelected(false);
 			configPanel.getQuantityEnabledRBtn().setSelected(true);
@@ -49,6 +51,9 @@ public class GeneralConfigAction
 			configPanel.getSpamQuantityTField().setEnabled(true);
 			configPanel.getSlider().setEnabled(false);
 			configPanel.getSpamHamRationValueTField().setEnabled(false);
+			
+			configPanel.getSpamHamRationValueTField().setValue(
+					Integer.toString(config.getRatioPercentageSpam()));
 		}
 		
 		configPanel.getOnlyActiveSitesEnabledCBox().setSelected(
@@ -56,6 +61,7 @@ public class GeneralConfigAction
 		configPanel.getDownloadAgainEnabledCBox().setSelected(
 				config.getDownloadAgain());
 		
+		//view.loadMainPanel(configPanel);
 		view.loadMainPanel(configPanel);
 	}
 

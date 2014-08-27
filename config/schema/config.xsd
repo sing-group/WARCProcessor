@@ -21,7 +21,8 @@ Schema for WarcGenerator XML Configuration
 	      <xs:element name="ratio" minOccurs="1" maxOccurs="1">
 	        <xs:complexType>
 	          <xs:sequence>
-			      <xs:element name="spam" minOccurs="1" maxOccurs="1" />
+			      <xs:element name="percentageSpam" minOccurs="0" maxOccurs="1" />
+			      <xs:element name="quantitySpam" minOccurs="0" maxOccurs="1" />
 	          </xs:sequence>
 	          <xs:attribute name="isPercentage" type="xs:boolean" use="required" />
 	        </xs:complexType>

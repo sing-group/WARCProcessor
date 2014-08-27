@@ -4,28 +4,30 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JPanel;
 
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class DSAsisstantStep3BackAction 
 	extends AbstractAction {	
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
-	private Action dsAssistantStep2Action;
+	private JPanel parentAssistant;
 	
 	public DSAsisstantStep3BackAction(IAppLogic logic,
-			WarcGeneratorGUI view
+			WarcGeneratorGUI view,
+			JPanel parentAssistant
 			) {
 		this.view = view;
 		this.logic = logic;
-		
-		dsAssistantStep2Action = new 
-				DSAsisstantStep2Action(logic, view);
+		this.parentAssistant = parentAssistant;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		dsAssistantStep2Action.actionPerformed(e);
+		((CustomCardLayout)parentAssistant.getLayout()).
+			previous(parentAssistant);
 	}
 }

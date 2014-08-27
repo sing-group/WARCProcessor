@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.common.Constants;
 import com.warcgenerator.gui.common.Session;
+import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class DSAsisstantCancelAction 
@@ -16,30 +18,22 @@ public class DSAsisstantCancelAction
 	private static final long serialVersionUID = 1L;
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
-	private Action dsAsisstantCreateAction;
-	private Action dsAsisstantDetailAction;
 	private DataSourceConfig config;
+	private JPanel parentAssistant;
 	
 	
 	public DSAsisstantCancelAction(IAppLogic logic,
-			WarcGeneratorGUI view
+			WarcGeneratorGUI view,
+			JPanel parentAssistant
 			) {
 		this.view = view;
 		this.logic = logic;
-		
-		config = (DataSourceConfig)Session.get(
-				Constants.DATASOURCE_FORM_SESSION_KEY);
-		dsAsisstantDetailAction = new DSDetailAction(logic, view,
-				config);
-		dsAsisstantCreateAction = new DSAsisstantCreateAction(logic, view);
+		this.parentAssistant = parentAssistant;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (config.getId() != null) {
-			dsAsisstantDetailAction.actionPerformed(e);
-		} else {
-			dsAsisstantCreateAction.actionPerformed(e);
-		}
+		((CustomCardLayout)parentAssistant.getLayout()).
+			first(parentAssistant);
 	}
 }

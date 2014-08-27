@@ -23,7 +23,7 @@ public interface Constants {
 		Boolean ONLY_ACTIVE_SITES_DEFAULT = true;
 		Boolean DOWNLOAD_AGAIN_DEFAULT = true;
 		Boolean RATIO_IS_PERCENTAGE_DEFAULT = true;
-		Integer RATIO_SPAM_DEFAULT = 50;
-		Integer RATIO_HAM_DEFAULT = 50;
+		Integer RATIO_PERCENTAGE_SPAM_DEFAULT = 0;
+		Integer RATIO_QUANTITY_SPAM_DEFAULT = 0;
 	}
 }

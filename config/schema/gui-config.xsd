@@ -1,0 +1,18 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="gui-configuration">
+		<xs:complexType>
+	    	<xs:sequence>
+	  			<xs:element name="recentConfigFiles" minOccurs="1" maxOccurs="1">
+	  				<xs:complexType>
+	    				<xs:sequence>
+	    					<xs:element name="configFile" minOccurs="0" maxOccurs="unbounded" />			
+	  					</xs:sequence>
+	  				</xs:complexType>
+	  			</xs:element>
+	  		</xs:sequence>
+   			<!-- Tag to specify an schema -->
+	    	<xs:attribute name="noNamespaceSchemaLocation" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
+	

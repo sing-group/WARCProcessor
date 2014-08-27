@@ -12,8 +12,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -24,30 +24,42 @@ import javax.swing.event.ChangeListener;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.general.GCSaveAction;
+import com.warcgenerator.gui.actions.general.GCSaveAndGenerateAction;
+import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.components.listener.CustomPropertyChangeListener;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.validator.NaturalNumberAndZeroValidator;
 import com.warcgenerator.gui.view.common.validator.NaturalNumberValidator;
 import com.warcgenerator.gui.view.common.validator.PercentageValidator;
 
-public class GeneralConfigPanel extends JPanel {
-	private JTextField numSitesTField;
-	private JTextField spamHamRationValueTField;
-	private JTextField spamQuantityTField;
+public class GeneralConfigPanel extends CustomJPanel {
+	private JFormattedTextField numSitesTField;
+	private JFormattedTextField spamHamRationValueTField;
+	private JFormattedTextField spamQuantityTField;
 	private JRadioButton spamHamRatioRBtn;
 	private JRadioButton quantityEnabledRBtn;
 	private JSlider slider;
 	private JCheckBox onlyActiveSitesEnabledCBox;
 	private JCheckBox downloadAgainEnabledCBox;
-
-	private GCSaveAction gcSaveAction;
 	private JLabel lblNewLabel_3;
+	private JButton saveAndGenerateBtn;
+	private JButton saveBtn;
+	private GCSaveAndGenerateAction gcSaveAndGenerateAction;
+	private GCSaveAction gcSaveAction;
 	
+	private IAppLogic logic;
+	private WarcGeneratorGUI view;
+		
 	/**
 	 * Create the panel.
 	 */
-	public GeneralConfigPanel(IAppLogic logic, WarcGeneratorGUI view) {
-		gcSaveAction = new GCSaveAction(logic, view, this);
+	public GeneralConfigPanel(final IAppLogic logic, final WarcGeneratorGUI view) {
+		super();
+		this.logic = logic;
+		this.view = view;
+		
+		this.setName("Configuracion general");
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/application.png"));
 		
@@ -62,16 +74,25 @@ public class GeneralConfigPanel extends JPanel {
 		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
 		txtpnunOrigenDe.setText(Messages.getString("GeneralConfigPanel.txtpnunOrigenDe.text")); //$NON-NLS-1$
 		
-		JButton saveAndGenerateBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNuevoOrigen.text")); //$NON-NLS-1$
+		saveAndGenerateBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNuevoOrigen.text")); //$NON-NLS-1$
+	
+		gcSaveAndGenerateAction =
+				new GCSaveAndGenerateAction();
+						
+		
 		saveAndGenerateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				gcSaveAndGenerateAction.init(
+						logic, view, GeneralConfigPanel.this,
+						gcSaveAction);
+				gcSaveAndGenerateAction.actionPerformed(e);
 			}
 		});
 		
 		JLabel lblNewLabel_1 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_1.text")); //$NON-NLS-1$
 		
-		numSitesTField = new JTextField();
+		numSitesTField = new JFormattedTextField("");
+		numSitesTField.setToolTipText(Messages.getString("GeneralConfigPanel.numSitesTField.toolTipText")); //$NON-NLS-1$
 		numSitesTField.setInputVerifier(new NaturalNumberValidator(view.getMainFrame(), numSitesTField, "Field cannot be null... "));
 		numSitesTField.setColumns(10);
 		
@@ -91,7 +112,7 @@ public class GeneralConfigPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				spamQuantityTField.setEnabled(true);
 				slider.setEnabled(false);
-				spamHamRationValueTField.setEnabled(false);
+				spamHamRationValueTField.setEnabled(false);	
 			}
 		});
 		
@@ -104,31 +125,33 @@ public class GeneralConfigPanel extends JPanel {
 				JSlider source = (JSlider)e.getSource();
 			    if (!source.getValueIsAdjusting()) {
 			        int value = (int)source.getValue();
-			        spamHamRationValueTField.setText(Integer.toString(value));
+			        spamHamRationValueTField.setValue(Integer.toString(value));
 			    }
 			}
 		});
 		
-		spamHamRationValueTField = new JTextField();
+		spamHamRationValueTField = new JFormattedTextField("");
 		spamHamRationValueTField.setInputVerifier(
 				new PercentageValidator(view.getMainFrame(), spamHamRationValueTField, "Field cannot be null... "));
 		spamHamRationValueTField.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_2.text")); //$NON-NLS-1$
 		
-		spamQuantityTField = new JTextField();
+		spamQuantityTField = new JFormattedTextField("");
 		spamQuantityTField.setInputVerifier(
 				new NaturalNumberAndZeroValidator(view.getMainFrame(), spamQuantityTField, "Field cannot be null... "));
 		spamQuantityTField.setColumns(10);
 		
 		onlyActiveSitesEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox.text")); //$NON-NLS-1$
-		
 		downloadAgainEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox_1.text")); //$NON-NLS-1$
 		
-		JButton saveBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNewButton.text")); //$NON-NLS-1$
+		saveBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNewButton.text")); //$NON-NLS-1$
+		
+		gcSaveAction = new GCSaveAction();
+		
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gcSaveAction.actionPerformed(e);
+				save();
 			}
 		});
 		
@@ -213,30 +236,35 @@ public class GeneralConfigPanel extends JPanel {
 					.addGap(22))
 		);
 		setLayout(groupLayout);
-
 	}
 	
-	public JTextField getNumSitesTField() {
+	public void save() {
+		gcSaveAction.init(logic, view, 
+				GeneralConfigPanel.this);
+		gcSaveAction.actionPerformed(null);
+	}
+	
+	public JFormattedTextField getNumSitesTField() {
 		return numSitesTField;
 	}
 
-	public void setNumSitesTField(JTextField numSitesTField) {
+	public void setNumSitesTField(JFormattedTextField numSitesTField) {
 		this.numSitesTField = numSitesTField;
 	}
 
-	public JTextField getSpamHamRationValueTField() {
+	public JFormattedTextField getSpamHamRationValueTField() {
 		return spamHamRationValueTField;
 	}
 
-	public void setSpamHamRationValueTField(JTextField spamHamRationValueTField) {
+	public void setSpamHamRationValueTField(JFormattedTextField spamHamRationValueTField) {
 		this.spamHamRationValueTField = spamHamRationValueTField;
 	}
 
-	public JTextField getSpamQuantityTField() {
+	public JFormattedTextField getSpamQuantityTField() {
 		return spamQuantityTField;
 	}
 
-	public void setSpamQuantityTField(JTextField spamQuantityTField) {
+	public void setSpamQuantityTField(JFormattedTextField spamQuantityTField) {
 		this.spamQuantityTField = spamQuantityTField;
 	}
 	
@@ -280,5 +308,11 @@ public class GeneralConfigPanel extends JPanel {
 		this.downloadAgainEnabledCBox = downloadAgainEnabledCBox;
 	}
 
+	public JButton getSaveAndGenerateBtn() {
+		return saveAndGenerateBtn;
+	}
 
+	public JButton getSaveBtn() {
+		return saveBtn;
+	}
 }
