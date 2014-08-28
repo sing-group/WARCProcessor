@@ -2,6 +2,7 @@ package com.warcgenerator.gui.view.datasources;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,6 +64,8 @@ public class DSAssistantStep2Panel extends JPanel {
 				new DSAsisstantCancelAction(logic, view, parentAssistant);
 		
 		setName("DSAssistantStep2Panel");
+		
+		setPreferredSize(new Dimension(100, 100));
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 		

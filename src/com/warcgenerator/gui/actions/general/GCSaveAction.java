@@ -1,8 +1,6 @@
 package com.warcgenerator.gui.actions.general;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,8 +9,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.config.AppConfig;
-import com.warcgenerator.core.logic.AppLogic;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.core.logic.LogicCallback;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
@@ -33,13 +31,13 @@ public class GCSaveAction
 		this.view = view;
 		this.logic = logic;
 		this.panel = panel;
+		
+		// Add callback
+		logic.addObserver(this);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// Add callback
-		this.logic.addObserver(this);
-		
 		AppConfig appConfig = logic.getAppConfig();
 		
 		appConfig.setNumSites(
@@ -79,12 +77,15 @@ public class GCSaveAction
 	}
 	
 	@Override
-	public void update(Observable obj, Object message) {
+	public void update(Observable obj, Object logicCallback) {
 		if (obj == logic) {
-			if (message.equals(IAppLogic.APP_LOGIC_UPDATED_CALLBACK)) {
-				JOptionPane.showMessageDialog(view.getMainFrame(), 
-						"Los cambios se han guardado");
-				panel.commit();
+			if (panel.isVisible()) {
+				String message = ((LogicCallback)logicCallback).getMessage();
+				if (message.equals(IAppLogic.APP_LOGIC_UPDATED_CALLBACK)) {
+					JOptionPane.showMessageDialog(view.getMainFrame(), 
+							"Los cambios se han guardado");
+					panel.commit();
+				}
 			}
 		}
 	}

@@ -14,6 +14,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Enumeration;
+import java.util.Observable;
 
 import javax.swing.Action;
 import javax.swing.Box;
@@ -23,7 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -37,6 +38,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -55,15 +57,17 @@ import com.warcgenerator.gui.actions.generate.GenerateCorpusAction;
 import com.warcgenerator.gui.actions.output.OutputConfigAction;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
-import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.components.CustomTreeNode;
 import com.warcgenerator.gui.config.GUIConfig;
+import com.warcgenerator.gui.helper.MenuHelper;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 import com.warcgenerator.gui.view.output.OutputConfigPanel;
 
-public class WarcGeneratorGUI {
+public class WarcGeneratorGUI extends Observable {
 	private GUIConfig guiConfig;
 	private CardLayout cardLayout;
+
+	public static final String TRYING_CHANGE_MAIN_PANEL = "TRYING_CHANGE_MAIN_PANEL";
 
 	private Action assistantCreateDSAction;
 	private Action generateCorpusAction;
@@ -76,7 +80,9 @@ public class WarcGeneratorGUI {
 
 	private JFrame frmWarcgenerator;
 	private JPanel mainPanel;
+	private JPanel assistantPanel;
 	private JSplitPane splitPane;
+	private DefaultMutableTreeNode m_rootNode;
 	private JTree tree;
 	private GeneralConfigAction generalConfigAction;
 
@@ -113,17 +119,19 @@ public class WarcGeneratorGUI {
 
 	public void loadPanels() {
 		mainPanel = new JPanel(new CustomCardLayout());
+		assistantPanel = new JPanel(new CustomCardLayout());
+		assistantPanel.setName("AssistantPanel");
 		
-
 		GeneralConfigPanel generalConfigPanel = new GeneralConfigPanel(logic,
 				this);
 		OutputConfigPanel outputconfigPanel = new OutputConfigPanel(logic, this);
-		
+
 		JPanel initPanel = new JPanel();
 		initPanel.setName("0");
 		addMainPanel(initPanel);
 		addMainPanel(generalConfigPanel);
 		addMainPanel(outputconfigPanel);
+		addMainPanel(assistantPanel);
 
 		assistantCreateDSAction = new DSAsisstantCreateAction(logic, this);
 		generateCorpusAction = new GenerateCorpusAction(logic, this);
@@ -133,7 +141,8 @@ public class WarcGeneratorGUI {
 				outputconfigPanel);
 		saveAppConfigAction = new SaveAppConfigAction(logic, this);
 		loadAppConfigAction = new LoadAppConfigAction(logic, this);
-		dsourcesAction = new DSourcesAction(logic, this);
+		dsourcesAction = new DSourcesAction(logic, this,
+				assistantCreateDSAction);
 		exitAction = new ExitAction(logic, this);
 		guiConfig = (GUIConfig) Session.get(Constants.GUI_CONFIG_SESSION_KEY);
 	}
@@ -321,11 +330,11 @@ public class WarcGeneratorGUI {
 	}
 
 	public void buildTree() {
-		tree.setModel(new DefaultTreeModel(new DefaultMutableTreeNode(
-				"Configuracion") {
+		final CustomTreeNode general = new CustomTreeNode("General");
+		
+		m_rootNode = new DefaultMutableTreeNode("Configuracion") {
 			{
 				CustomTreeNode node_1;
-				CustomTreeNode general = new CustomTreeNode("General");
 				general.setAction(generalConfigAction);
 				add(general);
 				CustomTreeNode output = new CustomTreeNode("Salida");
@@ -337,62 +346,69 @@ public class WarcGeneratorGUI {
 				loadDS(node_1);
 				add(node_1);
 			}
-		}));
+		};
+
+		tree.setModel(new DefaultTreeModel(m_rootNode));
+		MenuHelper.selectLeftMenu(tree, (String)general.getUserObject());
+	}
+
+	public void updateDS(Integer id, DataSourceConfig config) {
+		MenuHelper.updateDS(tree, id, config, this, logic);
+	}
+
+	public void removeDS(Integer id) {
+		MenuHelper.removeDS(tree, id);
+	}
+	
+	public void addDS(DataSourceConfig config) {
+		DefaultMutableTreeNode node = MenuHelper.searchNode(tree,
+				"Origenes");
+		MenuHelper.addDS(tree, node, config, this, logic);
+	}
+
+	public void selectLeftMenu(String search) {
+		MenuHelper.selectLeftMenu(tree, search);
 	}
 
 	private void loadDS(DefaultMutableTreeNode treeNode) {
-		for (DataSourceConfig config : logic.getDataSourceConfigList()) {
-			CustomTreeNode treeNodeDS = new CustomTreeNode(config.getName());
-			treeNodeDS.setAction(new DSDetailAction(logic, this, config));
-			treeNode.add(treeNodeDS);
-		}
+		MenuHelper.loadDS(treeNode,
+				this, logic);
 	}
-	
+
 	public void addMainPanel(JPanel panel) {
 		mainPanel.add(panel, panel.getName());
 	}
-	
-	
+
 	public void loadMainPanel(JPanel newPanel) {
-		System.out.println("mostrando: " + newPanel.getName());
 		Object obj = Session.get(Constants.FORM_MODIFIED_SESSION_KEY);
 		Boolean formModified = false;
 		if (obj instanceof Boolean) {
 			formModified = (Boolean) obj;
 		}
 
-		CustomCardLayout cardLayout = 
-				((CustomCardLayout) mainPanel.getLayout());
-		JPanel currentPanel = cardLayout.getCurrentPanel(mainPanel);
-		
+		CustomCardLayout cardLayout = ((CustomCardLayout) mainPanel.getLayout());
 		if (!formModified) {
 			cardLayout.show(mainPanel, newPanel.getName());
 		} else {
-			int userSelection = JOptionPane
-					.showConfirmDialog(this.frmWarcgenerator,
-							"Existen cambios no guardados. ¿Desea guardar los cambios?");
-			
-			if (userSelection == JOptionPane.OK_OPTION) {
-				if (currentPanel instanceof CustomJPanel) {
-					((CustomJPanel)currentPanel).save();
-				}
-				cardLayout.show(mainPanel, newPanel.getName());
-			} else if (userSelection == JOptionPane.NO_OPTION) {
-				if (currentPanel instanceof CustomJPanel) {
-					((CustomJPanel)currentPanel).rollback();
-				}
-			}
-		}		
+			setChanged();
+			notifyObservers(new Object[] { TRYING_CHANGE_MAIN_PANEL, newPanel });
+		}
 	}
 
 	public void setVisible(boolean visible) {
-
-		System.out.println("frmWarcgenerator es " + frmWarcgenerator);
 		frmWarcgenerator.setVisible(visible);
 	}
 
 	public JFrame getMainFrame() {
 		return frmWarcgenerator;
+	}
+
+	public JPanel getAssistantPanel() {
+		return assistantPanel;
+	}
+
+	public void setAssistantPanel(JPanel assistantPanel) {
+		this.assistantPanel = assistantPanel;
 	}
 
 }

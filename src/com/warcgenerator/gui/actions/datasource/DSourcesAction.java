@@ -20,11 +20,11 @@ public class DSourcesAction extends AbstractAction {
 	private Action dsCreateAction;
 	
 	public DSourcesAction(IAppLogic logic, 
-			WarcGeneratorGUI view) {
+			WarcGeneratorGUI view, 
+			Action dsCreateAction) {
 		this.logic = logic;
 		this.view = view;
-		
-		dsCreateAction = new DSAsisstantCreateAction(logic, view);
+		this.dsCreateAction = dsCreateAction; 
 	}
 
 	@Override

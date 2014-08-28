@@ -1,4 +1,4 @@
-package com.warcgenerator.gui.actions.general;
+package com.warcgenerator.gui.actions.output;
 
 import java.awt.event.ActionEvent;
 import java.util.Observable;
@@ -12,40 +12,37 @@ import com.warcgenerator.core.logic.LogicCallback;
 import com.warcgenerator.gui.actions.generate.GenerateCorpusAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
+import com.warcgenerator.gui.view.output.OutputConfigPanel;
 
-public class GCSaveAndGenerateAction 
+public class OutputSaveAndGenerateAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
-	private GeneralConfigPanel panel;
+	private OutputConfigPanel panel;
 	private IAppLogic logic;
 	private Action generateCorpusAction;
-	private GCSaveAction gcSaveAction;
+	private OutputSaveAction outputSaveAction;
 	private boolean showGenerateCorpus;
 	
-	public GCSaveAndGenerateAction() {	
-	}
-	
-	public void init(IAppLogic logic,
+	public OutputSaveAndGenerateAction (IAppLogic logic,
 			WarcGeneratorGUI view,
-			GeneralConfigPanel panel,
-			GCSaveAction gcSaveAction) {
+			OutputConfigPanel panel,
+			OutputSaveAction outputSaveAction) {
 		this.view = view;
 		this.logic = logic;
 		this.panel = panel;
-		this.gcSaveAction = gcSaveAction;
+		this.outputSaveAction = outputSaveAction;
+		
+		// Add callback
+		logic.addObserver(this);
 		
 		generateCorpusAction =
 				new GenerateCorpusAction(logic, view);
-		
-		// Add callback
-		this.logic.addObserver(this);
-		gcSaveAction.init(logic, view, panel);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		showGenerateCorpus = true;
-		gcSaveAction.actionPerformed(e);
+		outputSaveAction.actionPerformed(e);
 	}
 	
 	@Override

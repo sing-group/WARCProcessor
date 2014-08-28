@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -24,9 +25,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep1ContinueAction;
+import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
-public class DSAssistantStep1Panel extends JPanel {
+public class DSAssistantStep1Panel extends CustomJPanel {
 	/**
 	 * 
 	 */
@@ -34,8 +36,8 @@ public class DSAssistantStep1Panel extends JPanel {
 	private Action dsAssistantStep1ContinueAction;
 	private Action dsAssistantCancelAction;
 
-	private JTextField nameJTField;
-	private JTextField folderJTField;
+	private JFormattedTextField nameJTField;
+	private JFormattedTextField folderJTField;
 	private JComboBox tipoDSCBox;
 
 	// Create a file chooser
@@ -46,6 +48,7 @@ public class DSAssistantStep1Panel extends JPanel {
 	 */
 	public DSAssistantStep1Panel(IAppLogic logic, WarcGeneratorGUI view,
 			JPanel parentAssistant) {
+		super();
 		dsAssistantStep1ContinueAction = new DSAsisstantStep1ContinueAction(
 				logic, view, this, parentAssistant);
 		dsAssistantCancelAction = new DSAsisstantCancelAction(logic,
@@ -81,10 +84,10 @@ public class DSAssistantStep1Panel extends JPanel {
 
 		JLabel lblNewLabel_3 = new JLabel("Tipo:");
 
-		nameJTField = new JTextField();
+		nameJTField = new JFormattedTextField();
 		nameJTField.setColumns(10);
 
-		folderJTField = new JTextField();
+		folderJTField = new JFormattedTextField();
 		folderJTField.setEditable(false);
 		folderJTField.setColumns(10);
 
@@ -198,19 +201,19 @@ public class DSAssistantStep1Panel extends JPanel {
 		tipoDSCBox.setModel(new DefaultComboBoxModel(values));
 	}
 
-	public JTextField getNameJTField() {
+	public JFormattedTextField getNameJTField() {
 		return nameJTField;
 	}
 
-	public void setNameJTField(JTextField nombreJTField) {
+	public void setNameJTField(JFormattedTextField nombreJTField) {
 		this.nameJTField = nombreJTField;
 	}
 
-	public JTextField getFolderJTField() {
+	public JFormattedTextField getFolderJTField() {
 		return folderJTField;
 	}
 
-	public void setFolderJTField(JTextField carpetaJTField) {
+	public void setFolderJTField(JFormattedTextField carpetaJTField) {
 		this.folderJTField = carpetaJTField;
 	}
 
@@ -220,5 +223,10 @@ public class DSAssistantStep1Panel extends JPanel {
 
 	public JComboBox getTipoDSCBox() {
 		return tipoDSCBox;
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
 	}
 }

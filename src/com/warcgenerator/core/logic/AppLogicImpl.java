@@ -98,9 +98,6 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 		try {
 			BeanUtils.copyProperties(config, appConfig);
-			
-			System.out.println("Nuevo numSites es" + config.getNumSites());
-			
 		} catch (IllegalAccessException e) {
 			throw new LogicException(e);
 		} catch (InvocationTargetException e) {
@@ -109,7 +106,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		
 		// Notify observers
 		setChanged();
-		notifyObservers(APP_LOGIC_UPDATED_CALLBACK);
+		notifyObservers(new LogicCallback(APP_LOGIC_UPDATED_CALLBACK));
 	}
 
 	public AppConfig getAppConfig() throws LogicException {
@@ -186,6 +183,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 		return dsConfigCopy;
 	}
+	
+	public DataSourceConfig getDataSourceById(Integer id) {
+		// ConfigHelper.getDSHandler(dsConfig, config);
+		return config.getDataSourceConfigs().get(id);
+	}
 
 	/**
 	 * Add a new DataSource
@@ -195,11 +197,22 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 */
 	public void addDataSourceConfig(DataSourceConfig dsConfig)
 			throws LoadDataSourceException {
+		System.out.println("Se va a almacenar: " + dsConfig);
+		
+		String callback_message = DATASOURCE_UPDATED_CALLBACK;
 		if (dsConfig.getId() == null) {
-			dsConfig.setId(DataSourceConfig.nextId);
+			dsConfig.setId(DataSourceConfig.getNextId());
+			callback_message = DATASOURCE_CREATED_CALLBACK;
 		}
+		
+		System.out.println("El nuevo ID es " + dsConfig.getId());
 		// ConfigHelper.getDSHandler(dsConfig, config);
 		config.getDataSourceConfigs().put(dsConfig.getId(), dsConfig);
+		
+		// Notify observers
+		setChanged();
+		notifyObservers(new LogicCallback(callback_message, 
+				new Object[]{dsConfig.getId()}));
 	}
 
 	/**
@@ -207,8 +220,13 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 * 
 	 * @param name
 	 */
-	public void removeDataSourceConfig(Integer name) {
-		config.getDataSourceConfigs().remove(name);
+	public void removeDataSourceConfig(Integer id) {
+		config.getDataSourceConfigs().remove(id);
+		
+		// Notify observers
+		setChanged();
+		notifyObservers(new LogicCallback(DATASOURCE_REMOVED_CALLBACK,
+				new Object[]{id}));
 	}
 
 	/**

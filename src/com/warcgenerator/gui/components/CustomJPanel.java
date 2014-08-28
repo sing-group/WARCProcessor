@@ -17,12 +17,10 @@ public abstract class CustomJPanel extends JPanel {
 		this.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				System.out.println("mostrado!!!!!!!!!!!!");
 				installChangeListeners();
 			}
 			@Override
 			public void componentHidden(ComponentEvent e) {
-				System.out.println("no visibleeeeeeeeeeee!!!!!!!!!!!!");
 				uninstallChangeListeners();
 			}
 		});
@@ -49,12 +47,8 @@ public abstract class CustomJPanel extends JPanel {
 		}
 	}
 	public void installChangeListeners() {
-		System.out.println("instalando change listeners");
-		
 		for (Component component:this.getComponents()) {
 			if (component instanceof JFormattedTextField) {
-				System.out.println("Encontrado jformattedtextfield");
-				
 				JFormattedTextField text = (JFormattedTextField)component;
 				text.addPropertyChangeListener("value",
 						new CustomPropertyChangeListener());

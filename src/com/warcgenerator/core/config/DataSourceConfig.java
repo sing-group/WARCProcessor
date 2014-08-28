@@ -19,11 +19,11 @@ public class DataSourceConfig {
 	public static int nextId = 1;
 	
 	private Integer id;
-	private String name;
+	private String name = "";
 	private boolean spam;
-	private String filePath;
-	private String dsClassName;
-	private String handlerClassName;
+	private String filePath = "";
+	private String dsClassName = "";
+	private String handlerClassName ="";
 	// Max number of elements to get from datasource
 	private Integer maxElements;
 	private Map<String, CustomParamConfig> customParams;

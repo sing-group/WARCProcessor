@@ -139,6 +139,11 @@ public class GenerateCorpusDialog extends CustomJDialog {
 		});
 		
 		JButton cancelBtn = new JButton(Messages.getString("GenerateCorpusDialog.btnNewButton.text_1")); //$NON-NLS-1$
+		cancelBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		foot.add(cancelBtn);
 		btnNuevoOrigen.setHorizontalAlignment(SwingConstants.RIGHT);
 		foot.add(btnNuevoOrigen);

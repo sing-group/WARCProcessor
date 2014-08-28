@@ -49,7 +49,7 @@ public class DSDetailPanel extends JPanel {
 			DataSourceConfig config,
 			JPanel parentAssistant) {
 		dsModifyAction = new DSModifyAction(logic, view, config, parentAssistant);
-		dsRemoveAction = new DSRemoveAction(logic, view, config);
+		dsRemoveAction = new DSRemoveAction(logic, view, config, this);
 		
 		setName("DSDetailPanel" + config.getId());
 		

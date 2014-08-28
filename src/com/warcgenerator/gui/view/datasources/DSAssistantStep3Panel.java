@@ -23,9 +23,10 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3FinishAction;
+import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
-public class DSAssistantStep3Panel extends JPanel {
+public class DSAssistantStep3Panel extends CustomJPanel {
 	private Action dsAssistantStep3BackAction;
 	private Action dsAssistantCancelAction;
 	private Action dsAssistantStep3FinishAction;
@@ -54,7 +55,7 @@ public class DSAssistantStep3Panel extends JPanel {
 				new DSAsisstantCancelAction(logic, view,
 						parentAssistant);
 		dsAssistantStep3FinishAction =
-				new DSAsisstantStep3FinishAction(logic, view);
+				new DSAsisstantStep3FinishAction(logic, view, this);
 		
 		setName("DSAssistantStep3Panel");
 		
@@ -150,6 +151,12 @@ public class DSAssistantStep3Panel extends JPanel {
 		scrollPane.setBounds(23, 23, 404, 134);
 		setLayout(groupLayout);
 
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

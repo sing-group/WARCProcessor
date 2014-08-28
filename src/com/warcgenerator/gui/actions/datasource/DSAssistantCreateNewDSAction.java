@@ -28,11 +28,7 @@ public class DSAssistantCreateNewDSAction
 			JPanel parentAssistant) {
 		this.view = view;
 		this.logic = logic;
-		this.parentAssistant = parentAssistant;
-		
-		
-		
-		System.out.println("panel es " + panel);		
+		this.parentAssistant = parentAssistant;	
 	}
 	
 	@Override
@@ -46,16 +42,14 @@ public class DSAssistantCreateNewDSAction
 		
 		fill();
 		cardLayout.show(parentAssistant, panel.getName());
-		System.out.println("Mostrar!!" + panel.getName());
 	}
 
 	private void fill() {
 		dsConfig = (DataSourceConfig)Session.get(
 				Constants.DATASOURCE_FORM_SESSION_KEY);
-		
-		System.out.println("panel es " + panel);
-		panel.getNameJTField().setText(dsConfig.getName());
-		panel.getFolderJTField().setText(dsConfig.getFilePath());
+
+		panel.getNameJTField().setValue(dsConfig.getName());
+		panel.getFolderJTField().setValue(dsConfig.getFilePath());
 		
 		Collection<DataSourceConfig> dataSourceTypeList = 
 				logic.getDataSourceTypesList();

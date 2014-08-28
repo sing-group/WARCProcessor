@@ -15,12 +15,12 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.output.OutputSaveAction;
+import com.warcgenerator.gui.actions.output.OutputSaveAndGenerateAction;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
@@ -34,6 +34,7 @@ public class OutputConfigPanel extends CustomJPanel {
 	private WarcGeneratorGUI view;
 	
 	private OutputSaveAction outputSaveAction;
+	private OutputSaveAndGenerateAction outputSaveAndGenerateAction;
 	
 	// Create a file chooser
 	private JFileChooser fc = new JFileChooser();
@@ -49,6 +50,8 @@ public class OutputConfigPanel extends CustomJPanel {
 		this.setName("Configuracion de salida");
 		
 		outputSaveAction = new OutputSaveAction(logic, view, this);
+		outputSaveAndGenerateAction = new OutputSaveAndGenerateAction(
+				logic, view, this, outputSaveAction);
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/save.png"));
 		
@@ -67,7 +70,7 @@ public class OutputConfigPanel extends CustomJPanel {
 		JButton saveAndGenerateBtn = new JButton("Guardar y generar"); //$NON-NLS-1$
 		saveAndGenerateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				outputSaveAndGenerateAction.actionPerformed(e);
 			}
 		});
 		
