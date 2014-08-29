@@ -20,7 +20,7 @@ public class DataSourceConfig {
 	
 	private Integer id;
 	private String name = "";
-	private boolean spam;
+	private Boolean spam;
 	private String filePath = "";
 	private String dsClassName = "";
 	private String handlerClassName ="";
@@ -45,19 +45,11 @@ public class DataSourceConfig {
 		this.children = new ArrayList<DataSourceConfig>();
 	}
 	
-	public DataSourceConfig(boolean spamOrHam, String filePath) {
+	public DataSourceConfig(Boolean spamOrHam, String filePath) {
 		this.spam = spamOrHam;
 		this.filePath = filePath;
 		this.customParams = new HashMap<String, CustomParamConfig>();
 		this.children = new ArrayList<DataSourceConfig>();
-	}
-	
-	public boolean isSpam() {
-		return spam;
-	}
-
-	public void setSpamOrHam(boolean spam) {
-		this.spam = spam;
 	}
 
 	public String getFilePath() {
@@ -99,6 +91,14 @@ public class DataSourceConfig {
 	public void setCustomParams(Map<String,
 			CustomParamConfig> customParams) {
 		this.customParams = customParams;
+	}
+	
+	public Boolean getSpam() {
+		return spam;
+	}
+
+	public void setSpam(Boolean spam) {
+		this.spam = spam;
 	}
 	
 	public String toString() {

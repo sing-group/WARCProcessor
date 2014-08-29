@@ -60,7 +60,8 @@ public class ConfigHelper {
 						.getGeneralFileFilter())) {
 					DataSourceConfig specificDsConfig = new DataSourceConfig(
 							f.getPath());
-					specificDsConfig.setSpamOrHam(ds.isSpam());
+					
+					specificDsConfig.setSpam(ds.getSpam());
 					specificDsConfig.setMaxElements(ds.getMaxElements());
 					specificDsConfig.setCustomParams(ds.getCustomParams());
 					specificDsConfig.setParent(ds);

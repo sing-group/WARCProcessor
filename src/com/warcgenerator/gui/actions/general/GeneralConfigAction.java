@@ -79,7 +79,7 @@ public class GeneralConfigAction
 				formModified = (Boolean) isModified;
 			}
 			
-			if (formModified && configPanel.isVisible()
+			if (formModified && configPanel.isShowing()
 					&& ((Object[])message)[0].
 						equals(WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL)) {
 				int userSelection = JOptionPane

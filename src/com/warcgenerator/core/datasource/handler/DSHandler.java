@@ -1,12 +1,13 @@
 package com.warcgenerator.core.datasource.handler;
 
-import java.util.Set;
+import java.util.Map;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.WarcDS;
 import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 
@@ -44,8 +45,8 @@ public abstract class DSHandler implements IDSHandler {
 	
 	public abstract void handle(DataBean data);
 	
-	public void toHandle(Set<String> urlsSpam,
-			Set<String> urlsHam) {
+	public void toHandle(Map<String, DataBean> urlsSpam,
+			Map<String, DataBean> urlsHam) {
 		DataBean data = null;
 		boolean stop = false;
 		Integer maxElements = dsConfig.getMaxElements();
@@ -62,10 +63,25 @@ public abstract class DSHandler implements IDSHandler {
 			// Method to implement
 			handle(data);
 			
-			if (data.isSpam()) {				
-				urlsSpam.add(data.getUrl());
+			if (data.isSpam()) {
+				addToUrls(urlsSpam, data);
 			} else {
-				urlsHam.add(data.getUrl());
+				addToUrls(urlsHam, data);
+			}
+		}
+	}
+	
+	private void addToUrls(Map<String, DataBean> urls, 
+			DataBean data) {
+		// check if this url already exists in the list
+		DataBean aux = urls.get(data.getUrl());
+		if (aux == null) {
+			// If is a new url only add it
+			urls.put(data.getUrl(), data);
+		} else {
+			// If the url is not from warc type, add it
+			if (!aux.getTypeDS().equals(WarcDS.DS_TYPE)) {
+				urls.put(data.getUrl(), data);
 			}
 		}
 	}

@@ -17,6 +17,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -32,9 +33,10 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2ContinueAction;
+import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
-public class DSAssistantStep2Panel extends JPanel {
+public class DSAssistantStep2Panel extends CustomJPanel {
 	private Action dsAssistantStep2BackAction;
 	private Action dsAssistantCancelAction;
 	private Action dsAssistantStep2ContinueAction;
@@ -44,7 +46,7 @@ public class DSAssistantStep2Panel extends JPanel {
 		return paramsTable;
 	}
 
-	private JTextField quantityMaxElemsTField;
+	private JFormattedTextField quantityMaxElemsTField;
 	private JCheckBox spamEnabledCBox;
 	private JCheckBox maxElementsEnabledCBox;
 	private JRadioButton spamRButtom;
@@ -65,7 +67,7 @@ public class DSAssistantStep2Panel extends JPanel {
 		
 		setName("DSAssistantStep2Panel");
 		
-		setPreferredSize(new Dimension(100, 100));
+		setPreferredSize(new Dimension(447, 372));
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 		
@@ -141,7 +143,7 @@ public class DSAssistantStep2Panel extends JPanel {
 	    group.add(spamRButtom);
 	    group.add(hamRButtom);
 		
-		quantityMaxElemsTField = new JTextField();
+		quantityMaxElemsTField = new JFormattedTextField();
 		quantityMaxElemsTField.setColumns(10);
 		
 		// Disabled quantity
@@ -264,11 +266,11 @@ public class DSAssistantStep2Panel extends JPanel {
 		}	
 	}
 	
-	public JTextField getQuantityMaxElemsTField() {
+	public JFormattedTextField getQuantityMaxElemsTField() {
 		return quantityMaxElemsTField;
 	}
 
-	public void setQuantityMaxElemsTField(JTextField quantityMaxElemsTField) {
+	public void setQuantityMaxElemsTField(JFormattedTextField quantityMaxElemsTField) {
 		this.quantityMaxElemsTField = quantityMaxElemsTField;
 	}
 
@@ -302,5 +304,11 @@ public class DSAssistantStep2Panel extends JPanel {
 
 	public void setHamRButtom(JRadioButton hamRButtom) {
 		this.hamRButtom = hamRButtom;
+	}
+
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
 	}
 }

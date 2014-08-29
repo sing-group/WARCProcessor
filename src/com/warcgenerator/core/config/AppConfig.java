@@ -284,6 +284,7 @@ public class AppConfig {
 		.append("\n");
 		sb.append("webCrawlerDirTmpStorePath:  ")
 				.append(webCrawlerTmpStorePath).append("\n");
+		sb.append("downloadAgain: ").append(downloadAgain).append("\n");
 		return sb.toString();
 	}
 	

@@ -5,16 +5,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
 import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.common.GenerateCorpusStates;
+import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.config.WebCrawlerConfig;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.WarcDS;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.plugin.PluginException;
 import com.warcgenerator.core.helper.FileHelper;
 
@@ -28,12 +31,17 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
+	private AppConfig appConfig;
 	private GenerateCorpusState generateCorpusState;
 	private CrawlController controller;
 	private Map<String, IWebCrawlerHandler> handlers;
 	private WebCrawlerBean webCrawlerBean;
 	private int numberOfCrawlers;
 	private Map<String, com.warcgenerator.core.plugin.webcrawler.HtmlParseData> parseDataMap;
+	private Map<String, DataSource> outputDS;
+	private Map<String, DataBean> urls;
+	private Set<String> urlsActive;
+	private Set<String> urlsNotActive;
 	
 	private static Logger logger = Logger.getLogger
             (Crawler4JAdapter.class);
@@ -52,14 +60,24 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	}
 
 	public Crawler4JAdapter(
+			AppConfig appConfig,
 			GenerateCorpusState generateCorpusState,
 			WebCrawlerConfig configWC,
-			WebCrawlerBean webCrawlerBean
+			WebCrawlerBean webCrawlerBean,
+			Map<String, DataSource> outputDS,
+			Map<String, DataBean> urls,
+			Set<String> urlsActive,
+			Set<String> urlsNotActive
 			) throws PluginException {
 		super();
+		this.appConfig = appConfig;
 		this.generateCorpusState = generateCorpusState;
 		this.handlers = new HashMap<String, IWebCrawlerHandler>();
 		this.webCrawlerBean = webCrawlerBean;
+		this.outputDS = outputDS;
+		this.urls = urls;
+		this.urlsActive = urlsActive;
+		this.urlsNotActive = urlsNotActive;
 		String crawlStorageFolder = configWC.getStorePath();
 		numberOfCrawlers = configWC.getNumberOfCrawlers();
 
@@ -101,7 +119,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	}
 
 	public void stop () {
-		System.out.println("pppppppppppppppppppparando !!!!!!!!!!!!!!");
 		controller.shutdown();
 	}
 	
@@ -112,9 +129,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		 * will reach the line after this only when crawling is finished.
 		 */
 		controller.start(Crawler4JAdapter.class, numberOfCrawlers);
-		
-		Map<String, DataSource> outputDS = 
-				new HashMap<String, DataSource>();
 		
 		List<Object> crawlersLocalData = controller.getCrawlersLocalData();
 		for (Object localData : crawlersLocalData) {
@@ -127,6 +141,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 					DataSource warcDS = 
 							outputDS.get(FileHelper.getDomainNameFromURL(parseData.getUrl()));
 					if (warcDS == null) {
+						StringBuilder warcFileName = new StringBuilder();
+						
 						StringBuilder outputWarcPath = new StringBuilder();
 						if (webCrawlerBean.isSpam()) {
 							outputWarcPath.append(webCrawlerBean.
@@ -137,7 +153,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 						}
 						outputWarcPath.append(File.separator);
 						
-						StringBuilder warcFileName = new StringBuilder();
 						warcFileName.append(outputWarcPath.toString()).append(
 								FileHelper.getOutputFileName(parseData.getUrl()));
 						
@@ -151,10 +166,14 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 					
 					if (handler == null) {
 						handler = new WebCrawlerHandler(
+							appConfig,
 							webCrawlerBean.isSpam(),
 							webCrawlerBean.getDomainsNotFoundDS(), 
 							webCrawlerBean.getDomainsLabeledDS(),
-							warcDS);
+							warcDS, 
+							urls,
+							urlsActive,
+							urlsNotActive);
 						
 						handlers.put(FileHelper.getDomainNameFromURL(parseData.getUrl()),
 									handler);
@@ -163,11 +182,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 					handler.handle(parseData);
 				}
 			}
-		}
-		
-		// Close all output datasources
-		for (DataSource aux : outputDS.values()) {
-					aux.close();
 		}
 	}
 
@@ -196,7 +210,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		GenerateCorpusState generateCorpusState =
 				((CustomPageFetcher)this.myController.getPageFetcher()).
 				getGenerateCorpusState();
-		System.out.println("publicando!!");
 		generateCorpusState.incWebsVisited();
 		generateCorpusState.setCurrentUrlCrawled(webUrl.getURL());
 		generateCorpusState.setState(GenerateCorpusStates.CRAWLING_URLS);

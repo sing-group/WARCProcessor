@@ -74,8 +74,6 @@ public class DSAsisstantCreateAction extends AbstractAction implements Observer 
 		DataSourceConfig dsConfig = new DataSourceConfig();
 		Session.add(Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
 
-		System.out.println("create panel!!!!!!!!!!!!!!!");
-
 		((CardLayout) mainAssistantCreatePanel.getLayout()).show(
 				mainAssistantCreatePanel, dsAssistantCreatePanel.getName());
 
@@ -84,10 +82,6 @@ public class DSAsisstantCreateAction extends AbstractAction implements Observer 
 
 	@Override
 	public void update(Observable obj, Object message) {
-		// TODO Auto-generated method stub
-
-		System.out.println("Detecta algo!!");
-
 		if (obj == view) {
 			if (mainAssistantCreatePanel.isVisible()
 					&& ((Object[]) message)[0]
@@ -97,6 +91,9 @@ public class DSAsisstantCreateAction extends AbstractAction implements Observer 
 						"¿Esta seguro que desea salir del asistente?");
 
 				if (userSelection == JOptionPane.OK_OPTION) {
+					System.out.println("JPanel es de tipo: " + cardLayout
+					.getCurrentPanel(mainAssistantCreatePanel).getClass().getName()); 
+					
 					CustomJPanel panel = (CustomJPanel) cardLayout
 							.getCurrentPanel(mainAssistantCreatePanel);
 					panel.rollback();

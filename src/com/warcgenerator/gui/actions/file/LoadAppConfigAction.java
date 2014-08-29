@@ -41,6 +41,7 @@ public class LoadAppConfigAction extends AbstractAction {
 
 			// Reload tree
 			view.buildTree();
+			view.selectFirstSelectionableItem();
 		}
 	}
 }

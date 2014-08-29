@@ -2,9 +2,10 @@ package com.warcgenerator.core.datasource.bean;
 
 public class DataBean {
 	private String filePath;
-	private String data;
+	private Object data;
 	private String url;
 	private boolean spam;
+	private String typeDS;
 	
 	public DataBean() {}
 	
@@ -12,11 +13,11 @@ public class DataBean {
 		this.data = data;
 	}
 
-	public String getData() {
+	public Object getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 
@@ -42,5 +43,13 @@ public class DataBean {
 
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+
+	public String getTypeDS() {
+		return typeDS;
+	}
+
+	public void setTypeDS(String typeDS) {
+		this.typeDS = typeDS;
 	}
 }

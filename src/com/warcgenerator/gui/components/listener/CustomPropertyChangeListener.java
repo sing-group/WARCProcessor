@@ -3,6 +3,7 @@ package com.warcgenerator.gui.components.listener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 
@@ -17,9 +18,7 @@ public class CustomPropertyChangeListener implements
 		System.out.println("property : " + e.getPropertyName());
 		
 		JComponent component = (JComponent) e.getSource();
-		
-		
-		
+
 		if (component instanceof JFormattedTextField) {
 			JFormattedTextField textField =
 					(JFormattedTextField)component;

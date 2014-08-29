@@ -147,12 +147,16 @@ public class XMLConfigHelper {
 					ds.setDsClassName(dataSourceElement.getAttribute("class"));
 
 					// Check if isSpam parameter exists
-					ds.setSpamOrHam(false);
+					
+					System.out.println("is Spam is " + 
+							dataSourceElement.getAttribute("isSpam"));
 					if (dataSourceElement.getAttribute("isSpam") != null) {
 						String isSpam = dataSourceElement
 								.getAttribute("isSpam");
 						if (isSpam.toLowerCase().equals("true")) {
-							ds.setSpamOrHam(true);
+							ds.setSpam(true);
+						} else {
+							ds.setSpam(false);
 						}
 					}
 
@@ -161,6 +165,9 @@ public class XMLConfigHelper {
 									.equals("")) {
 						String maxElements = dataSourceElement
 								.getAttribute("maxElements");
+						
+						System.out.println("maxElements es " + maxElements);
+						
 						// TODO Test if maxElements is a int number
 						ds.setMaxElements(Integer.valueOf(maxElements));
 					}
@@ -359,9 +366,17 @@ public class XMLConfigHelper {
 			attr.setValue(config.getRatioIsPercentage().toString());
 			ratio.setAttributeNode(attr);
 
-			Element spam = doc.createElement("spam");
-			spam.setTextContent(config.getRatioPercentageSpam().toString());
-			ratio.appendChild(spam);
+			if (config.getRatioPercentageSpam() != null) {
+				Element spam = doc.createElement("percentageSpam");
+				spam.setTextContent(config.getRatioPercentageSpam().toString());
+				ratio.appendChild(spam);
+			}
+			
+			if (config.getRatioQuantitySpam() != null) {
+				Element spam = doc.createElement("quantitySpam");
+				spam.setTextContent(config.getRatioPercentageSpam().toString());
+				ratio.appendChild(spam);
+			}
 
 			Element corpusDirPath = doc.createElement("corpusDirPath");
 			corpusDirPath.setTextContent(config.getCorpusDirPath());

@@ -50,7 +50,7 @@ public class OutputSaveAndGenerateAction
 		if (obj == logic) {
 			String message = ((LogicCallback)logicCallback).getMessage();
 			if (showGenerateCorpus == true) {
-				if (message.equals(IAppLogic.APP_LOGIC_UPDATED_CALLBACK)) {
+				if (message.equals(IAppLogic.APP_CONFIG_UPDATED_CALLBACK)) {
 					generateCorpusAction.actionPerformed(null);
 					showGenerateCorpus = false;
 				}

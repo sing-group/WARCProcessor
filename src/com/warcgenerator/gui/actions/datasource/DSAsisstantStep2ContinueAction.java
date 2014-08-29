@@ -60,7 +60,9 @@ public class DSAsisstantStep2ContinueAction
 		
 		// Check isSpam
 		if (panel.getSpamEnabledCBox().isSelected()) {
-			dsConfig.setSpamOrHam(panel.getSpamRButtom().isSelected());
+			dsConfig.setSpam(panel.getSpamRButtom().isSelected());
+		} else {
+			dsConfig.setSpam(null);
 		}
 		if (panel.getMaxElementsEnabledCBox().isSelected()) {
 			Integer intValue = null;
@@ -71,6 +73,8 @@ public class DSAsisstantStep2ContinueAction
 				// TODO handle this
 			}
 			dsConfig.setMaxElements(intValue);
+		} else {
+			dsConfig.setMaxElements(null);
 		}
 		
 		// Get params from the params tabled

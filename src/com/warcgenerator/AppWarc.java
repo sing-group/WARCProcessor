@@ -7,7 +7,6 @@ import org.apache.log4j.xml.DOMConfigurator;
 
 import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.config.AppConfig;
-import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.exception.WarcException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.logic.AppLogicImpl;

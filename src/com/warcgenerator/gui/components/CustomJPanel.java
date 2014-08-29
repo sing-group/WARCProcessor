@@ -3,8 +3,11 @@ package com.warcgenerator.gui.components;
 import java.awt.Component;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 
@@ -52,6 +55,16 @@ public abstract class CustomJPanel extends JPanel {
 				JFormattedTextField text = (JFormattedTextField)component;
 				text.addPropertyChangeListener("value",
 						new CustomPropertyChangeListener());
+			} else if (component instanceof JCheckBox) {
+				JCheckBox cb = (JCheckBox) component;
+				cb.addItemListener(new ItemListener() {
+					@Override
+					public void itemStateChanged(ItemEvent arg0) {
+						// TODO Auto-generated method stub
+						Session.add(Constants.FORM_MODIFIED_SESSION_KEY,
+								new Boolean(true));	
+					}
+				});
 			}
 		}
 	}

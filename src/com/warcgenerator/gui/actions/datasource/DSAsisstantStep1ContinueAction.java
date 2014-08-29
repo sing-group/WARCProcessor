@@ -64,7 +64,9 @@ public class DSAsisstantStep1ContinueAction
 		dsConfig.setDsClassName(dsConfigTmp.getDsClassName());
 		dsConfig.setHandlerClassName(dsConfigTmp.getHandlerClassName());
 		
+		System.out.println("rellenando param!!!");
 		for (String key: dsConfigTmp.getCustomParams().keySet()) {
+			System.out.println("parametro es " + key);
 			dsConfig.getCustomParams().put(key, 
 					dsConfigTmp.getCustomParams().get(key));
 		}

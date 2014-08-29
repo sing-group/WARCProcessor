@@ -45,7 +45,7 @@ public class GenericDS extends DataSource implements IDataSource {
 			if (line != null) {
 				dataBean = new DataBean();
 				dataBean.setUrl(line);
-				dataBean.setSpam(this.getDataSourceConfig().isSpam());
+				dataBean.setSpam(this.getDataSourceConfig().getSpam());
 			} 
 		} catch (IOException e) {
 			throw new ReadException(e);
@@ -55,7 +55,7 @@ public class GenericDS extends DataSource implements IDataSource {
 
 	public void write(DataBean data) throws DSException {
 		try {
-			bufferWriter.write(data.getData());
+			bufferWriter.write((String)data.getData());
 			bufferWriter.newLine();
 			bufferWriter.flush();
 		} catch (IOException e) {

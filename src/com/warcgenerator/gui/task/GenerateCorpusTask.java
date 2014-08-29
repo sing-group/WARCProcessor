@@ -79,18 +79,14 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements Ob
 					gcd.getStateLbl().setText("Obteniendo urls de los datasources");
 					progress += inc;
 					break;
-				case READING_SPAM:
-					gcd.getStateLbl().setText("Leyendo urls de spam");
-					progress += inc;
-					break;
 				case CRAWLING_URLS:
 					gcd.getStateLbl().setText("Leyendo url: " + gcState.
 							getCurrentUrlCrawled());
 					progress += 
 							Math.round(inc / gcState.getWebsToVisitTotal());
 					break;
-				case READING_HAM:
-					gcd.getStateLbl().setText("Leyendo urls de ham");
+				case READING_URLS:
+					gcd.getStateLbl().setText("Leyendo urls");
 					progress += inc;
 					break;
 				case ENDING:

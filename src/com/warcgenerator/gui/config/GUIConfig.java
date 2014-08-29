@@ -1,7 +1,8 @@
 package com.warcgenerator.gui.config;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.Vector;
 
 /**
  * General configuration.
@@ -11,10 +12,10 @@ import java.util.Set;
  * @author Miguel Callon
  */
 public class GUIConfig {
-	private Set<String> recentConfigFiles;
+	private Vector<String> recentConfigFiles;
 
 	public GUIConfig() {
-		recentConfigFiles = new HashSet<String>();
+		recentConfigFiles = new Vector<String>();
 	}
 		
 	public String toString() {
@@ -37,15 +38,16 @@ public class GUIConfig {
 		return true;
 	}
 	
-	public Set<String> getRecentConfigFiles() {
+	public Vector<String> getRecentConfigFiles() {
 		return recentConfigFiles;
 	}
 
-	public void setRecentConfigFiles(Set<String> recentConfigFiles) {
+	public void setRecentConfigFiles(Vector<String> recentConfigFiles) {
 		this.recentConfigFiles = recentConfigFiles;
 	}
 	
 	public void addRecentConfigFile(String configFilePath) {
-		recentConfigFiles.add(configFilePath);
+		recentConfigFiles.remove(configFilePath);
+		recentConfigFiles.add(0, configFilePath);
 	}
 }

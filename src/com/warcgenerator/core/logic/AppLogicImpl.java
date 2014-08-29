@@ -17,8 +17,10 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
+import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.GenericDS;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.LoadDataSourceException;
 import com.warcgenerator.core.exception.logic.LogicException;
@@ -26,12 +28,11 @@ import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.core.helper.XMLConfigHelper;
-import com.warcgenerator.core.plugin.webcrawler.IWebCrawler;
 import com.warcgenerator.core.task.ExecutionTaskBatch;
 import com.warcgenerator.core.task.Task;
+import com.warcgenerator.core.task.generateCorpus.CheckActiveSitesConfigTask;
 import com.warcgenerator.core.task.generateCorpus.GetURLFromDSTask;
-import com.warcgenerator.core.task.generateCorpus.ReadHamTask;
-import com.warcgenerator.core.task.generateCorpus.ReadSpamTask;
+import com.warcgenerator.core.task.generateCorpus.ReadURLsTask;
 
 /**
  * Business logic layer
@@ -43,13 +44,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private AppConfig config;
 	private OutputCorpusConfig outputCorpusConfig;
 	private Map<String, DataSourceConfig> dataSourcesTypes;
-	private IWebCrawler webCrawler;
 	private ExecutionTaskBatch executorTasks;
 
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
-
-		// ConfigHelper.getDSHandlers(config);
 
 		dataSourcesTypes = new HashMap<String, DataSourceConfig>();
 		XMLConfigHelper.getDataSources(Constants.dataSourcesTypesXML,
@@ -82,10 +80,19 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 */
 	public void saveAppConfig(String path) {
 		ConfigHelper.persistConfig(path, config);
+	
+		// Notify observers
+		setChanged();
+		notifyObservers(new LogicCallback(APP_CONFIG_SAVED_CALLBALCK));
 	}
 
 	public void loadAppConfig(String path) {
 		ConfigHelper.configure(path, config);
+		config.init();
+	}
+	
+	public void loadNewAppConfig() {
+		config = new AppConfig();
 		config.init();
 	}
 
@@ -103,10 +110,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		} catch (InvocationTargetException e) {
 			throw new LogicException(e);
 		}
-		
+
 		// Notify observers
 		setChanged();
-		notifyObservers(new LogicCallback(APP_LOGIC_UPDATED_CALLBACK));
+		notifyObservers(new LogicCallback(APP_CONFIG_UPDATED_CALLBACK));
 	}
 
 	public AppConfig getAppConfig() throws LogicException {
@@ -183,7 +190,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 		return dsConfigCopy;
 	}
-	
+
 	public DataSourceConfig getDataSourceById(Integer id) {
 		// ConfigHelper.getDSHandler(dsConfig, config);
 		return config.getDataSourceConfigs().get(id);
@@ -197,22 +204,17 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 */
 	public void addDataSourceConfig(DataSourceConfig dsConfig)
 			throws LoadDataSourceException {
-		System.out.println("Se va a almacenar: " + dsConfig);
-		
 		String callback_message = DATASOURCE_UPDATED_CALLBACK;
 		if (dsConfig.getId() == null) {
 			dsConfig.setId(DataSourceConfig.getNextId());
 			callback_message = DATASOURCE_CREATED_CALLBACK;
 		}
-		
-		System.out.println("El nuevo ID es " + dsConfig.getId());
 		// ConfigHelper.getDSHandler(dsConfig, config);
 		config.getDataSourceConfigs().put(dsConfig.getId(), dsConfig);
-		
 		// Notify observers
 		setChanged();
-		notifyObservers(new LogicCallback(callback_message, 
-				new Object[]{dsConfig.getId()}));
+		notifyObservers(new LogicCallback(callback_message,
+				new Object[] { dsConfig.getId() }));
 	}
 
 	/**
@@ -222,11 +224,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 */
 	public void removeDataSourceConfig(Integer id) {
 		config.getDataSourceConfigs().remove(id);
-		
 		// Notify observers
 		setChanged();
 		notifyObservers(new LogicCallback(DATASOURCE_REMOVED_CALLBACK,
-				new Object[]{id}));
+				new Object[] { id }));
 	}
 
 	/**
@@ -238,50 +239,89 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	public void generateCorpus(GenerateCorpusState generateCorpusState)
 			throws LogicException {
-			executorTasks = new ExecutionTaskBatch();
+		executorTasks = new ExecutionTaskBatch();
+
+		// Get dsHandlers
+		ConfigHelper.getDSHandlers(config);
+
+		// Generate wars
+		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
+				outputCorpusConfig.getDomainsLabeledFilePath()));
+		IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
+				outputCorpusConfig.getDomainsNotFoundFilePath()));
+
+		// Init data structures
+		Map<String, DataBean> urlsSpam = new HashMap<String, DataBean>();
+		Map<String, DataBean> urlsHam = new HashMap<String, DataBean>();
+		Map<String, DataSource> outputDS = new HashMap<String, DataSource>();
+		Set<String> urlsActive = new HashSet<String>();
+		Set<String> urlsNotActive = new HashSet<String>();
 		
-			// Get dsHandlers
-			ConfigHelper.getDSHandlers(config);
+		/*
+		 * Si solo activas (descarta estas urls)
+		 * 	-> Si descargar de nuevo
+		 * 		Coger de internet
+		 *  -> No descargar de nuevo
+		 * 		Coger del fichero
+		 * Si no solo activas
+		 *  -> Si descargar de nuevo
+		 * 		Coger de internet
+		 *  -> No descargar de nuevo
+		 * 		Coger del fichero		
+		 */
+		
+		// Init Task
+		Task t1 = new GetURLFromDSTask(config, generateCorpusState, urlsSpam,
+				urlsHam);
+		
+		// ////////// READING SPAM
+		Task t2 = new ReadURLsTask(config, outputCorpusConfig,
+				generateCorpusState, outputDS,
+				labeledDS, notFoundDS, urlsSpam, urlsActive,
+				urlsNotActive);
 
-			// Generate wars
-			IDataSource labeledDS = new GenericDS(new DataSourceConfig(
-					outputCorpusConfig.getDomainsLabeledFilePath()));
-			IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
-					outputCorpusConfig.getDomainsNotFoundFilePath()));
+		// ////////// READING HAM
+		Task t3 = new ReadURLsTask(config, outputCorpusConfig,
+				generateCorpusState, outputDS,
+				labeledDS, notFoundDS, urlsHam, urlsActive,
+				urlsNotActive);
 
-			// Init data structures
-			Set<String> urlsSpam = new HashSet<String>();
-			Set<String> urlsHam = new HashSet<String>();
+		// Read url that contains html
+		Task t4 = new CheckActiveSitesConfigTask(config,
+				urlsSpam, urlsNotActive,
+				outputDS, outputCorpusConfig, labeledDS);
+		
+		Task t5 = new CheckActiveSitesConfigTask(config,
+				urlsHam, urlsNotActive,
+				outputDS, outputCorpusConfig, labeledDS);
 
-			// Init Task
-			Task t1 = new GetURLFromDSTask(config, 
-					generateCorpusState, urlsSpam, urlsHam);
-			Task t2 = new ReadSpamTask(config, outputCorpusConfig,
-					generateCorpusState, labeledDS, notFoundDS, urlsSpam);
-			Task t3 = new ReadHamTask(config, outputCorpusConfig,
-					generateCorpusState, labeledDS, notFoundDS, urlsHam);
-			
-			executorTasks.addTask(t1);
-			executorTasks.addTask(t2);
-			executorTasks.addTask(t3);
-			
-			executorTasks.execution();
-			
-			if (executorTasks.isTerminate()) {
-				generateCorpusState.setState(GenerateCorpusStates.
-						PROCESS_CANCELLED);
-			}
-			
-			generateCorpusState.setState(GenerateCorpusStates.ENDING);
-			labeledDS.close();
-			notFoundDS.close();
+		executorTasks.addTask(t1);
+		executorTasks.addTask(t2);
+		executorTasks.addTask(t3);
+		executorTasks.addTask(t4);
+		executorTasks.addTask(t5);
+		
+		executorTasks.execution();
+
+		if (executorTasks.isTerminate()) {
+			generateCorpusState
+					.setState(GenerateCorpusStates.PROCESS_CANCELLED);
+		}
+
+		// Close all output datasources
+		for (DataSource ds : outputDS.values()) {
+			ds.close();
+		}
+		generateCorpusState.setState(GenerateCorpusStates.ENDING);
+		labeledDS.close();
+		notFoundDS.close();
 	}
 
 	private void stopWebCrawling() {
 		if (executorTasks != null)
 			executorTasks.terminate();
 	}
-	
+
 	public void addObserver(Observer obj) {
 		deleteObserver(obj);
 		super.addObserver(obj);

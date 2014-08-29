@@ -43,6 +43,8 @@ public class DSDetailAction extends AbstractAction implements Observer {
 		this.config = config;
 		view.addObserver(this);
 		
+		System.out.println("config!!!!! es " + config);
+		
 		mainDetailPanel = view.getAssistantPanel();
 		
 		detailPanel = 

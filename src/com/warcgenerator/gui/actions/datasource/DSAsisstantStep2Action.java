@@ -35,15 +35,31 @@ public class DSAsisstantStep2Action extends AbstractAction {
 				((CustomCardLayout)parentAssistant.getLayout());
 		
 		cardLayout.next(parentAssistant);
-		this.panel = (DSAssistantStep2Panel)
+		panel = (DSAssistantStep2Panel)
 				cardLayout.getCurrentPanel(parentAssistant);
+		
+		if (dsConfig.getMaxElements() != null) {
+			panel.getMaxElementsEnabledCBox().setSelected(true);
+			panel.getQuantityMaxElemsTField().setEnabled(true);
+            panel.getQuantityMaxElemsTField().setValue(
+            		dsConfig.getMaxElements());
+		}
+		
+		if (dsConfig.getSpam() != null) {			
+			panel.getSpamEnabledCBox().setSelected(true);
+			panel.getSpamRButtom().setEnabled(true);
+			panel.getHamRButtom().setEnabled(true);
+			if (dsConfig.getSpam()) {
+				panel.getSpamRButtom().setSelected(true);
+				panel.getHamRButtom().setSelected(false);
+			} else {
+				panel.getSpamRButtom().setSelected(false);
+				panel.getHamRButtom().setSelected(true);
+			}
+		}
+		
+		panel.setTableModel(dsConfig.getCustomParams());
+		
 		cardLayout.show(parentAssistant, panel.getName());
-		
-		
-		/* DSAssistantStep2Panel nextPanel = new DSAssistantStep2Panel(logic, view);
-		nextPanel.setTableModel(dsConfig.getCustomParams());
-
-		view.loadMainPanel(nextPanel);*/
 	}
-
 }

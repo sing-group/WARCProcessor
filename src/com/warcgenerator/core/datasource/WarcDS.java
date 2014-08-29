@@ -24,6 +24,7 @@ import org.archive.util.ArchiveUtils;
 import org.archive.util.anvl.ANVLRecord;
 
 import com.warcgenerator.core.config.Constants;
+import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.datasource.bean.DataBean;
@@ -34,6 +35,8 @@ import com.warcgenerator.core.exception.datasource.WriteException;
 import com.warcgenerator.core.helper.FileHelper;
 
 public class WarcDS extends DataSource implements IDataSource {
+	public static final String DS_TYPE = "WarcDS";
+	
 	private static final String URL_TAG = "urlTag";
 	
 	@SuppressWarnings("unused")
@@ -82,7 +85,7 @@ public class WarcDS extends DataSource implements IDataSource {
 			// metadata.add("something");
 
 			writer = new WARCWriter(new AtomicInteger(), bos, warc,
-					getSettings(false, null, null, metadata));
+					getSettings(false, "", null, metadata));
 
 			// Write a warcinfo record with description about how this WARC
 			// was made.
@@ -146,12 +149,13 @@ public class WarcDS extends DataSource implements IDataSource {
 			skip = false;
 			if (archIt.hasNext()) {
 				ar = archIt.next();
+				//System.out.println("faltan: " + );
 			}
 			if (ar != null) {
 				// Get the filename
 				String url = (String) ar.getHeader()
-						.getHeaderFields().get(this.getDataSourceConfig().getCustomParams()
-								.get(URL_TAG));
+						.getHeaderFields().get(((CustomParamConfig)this.getDataSourceConfig().getCustomParams()
+								.get(URL_TAG)).getValue());
 				if (url == null || url.equals("")) {
 					skip = true;
 				}
@@ -159,11 +163,12 @@ public class WarcDS extends DataSource implements IDataSource {
 				if (skip == false) {
 					dataBean = new DataBean();
 					dataBean.setUrl(url);
-					dataBean.setSpam(this.getDataSourceConfig().isSpam());
+					dataBean.setSpam(this.getDataSourceConfig().getSpam());
+					dataBean.setData(ar);
+					dataBean.setTypeDS(DS_TYPE);
 					
 					StringBuffer sb = new StringBuffer();
-					
-					/*try {
+					try {
 						for (byte[] buffer = new byte[1024];
 								ar.read(buffer) != -1;) {
 							sb.append(new String(buffer));
@@ -174,10 +179,6 @@ public class WarcDS extends DataSource implements IDataSource {
 					}
 					dataBean.setData(sb.toString());
 					
-					System.out.println("data es :" + dataBean.getData());
-					*/
-					
-				
 					// Turn the out file to the warc file name
 					this.setOutputFilePath(
 							FileHelper.getOutputFileName(dataBean.getUrl()));
@@ -199,7 +200,7 @@ public class WarcDS extends DataSource implements IDataSource {
 			// Write a warcinfo record with description about how this WARC
 			// was made.
 			try {
-				InputStream is = new ByteArrayInputStream(bean.getData().
+				InputStream is = new ByteArrayInputStream(((String)bean.getData()).
 		            		getBytes(Constants.outputEnconding));
 				
 				ANVLRecord headers = new ANVLRecord(1);
@@ -210,7 +211,12 @@ public class WarcDS extends DataSource implements IDataSource {
 			
 			    is.close();
 			} catch (IOException e) {
+				System.out.println("erroror1!!!");
+				e.printStackTrace();
 				throw new WriteException(e);
+			} catch (Exception e) {
+				System.out.println("erroror2!!!");
+				e.printStackTrace();
 			}
 	}
 

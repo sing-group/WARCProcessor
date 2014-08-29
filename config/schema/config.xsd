@@ -51,7 +51,7 @@ Schema for WarcGenerator XML Configuration
 	        <xs:complexType>
 		      <xs:sequence>
 		         
-		      	 <xs:element name="dataSource" maxOccurs="unbounded">
+		      	 <xs:element name="dataSource" minOccurs="0" maxOccurs="unbounded">
 			        <xs:complexType>
 			          <xs:sequence>
 			            <!-- This tag allow to add new parameters in a customized datasource -->

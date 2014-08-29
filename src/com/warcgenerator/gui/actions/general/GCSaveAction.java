@@ -81,7 +81,7 @@ public class GCSaveAction
 		if (obj == logic) {
 			if (panel.isVisible()) {
 				String message = ((LogicCallback)logicCallback).getMessage();
-				if (message.equals(IAppLogic.APP_LOGIC_UPDATED_CALLBACK)) {
+				if (message.equals(IAppLogic.APP_CONFIG_UPDATED_CALLBACK)) {
 					JOptionPane.showMessageDialog(view.getMainFrame(), 
 							"Los cambios se han guardado");
 					panel.commit();

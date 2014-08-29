@@ -15,11 +15,13 @@ import com.warcgenerator.core.config.DataSourceConfig;
  */
 public interface IAppLogic {
 	// Callback messages
-	String APP_LOGIC_UPDATED_CALLBACK = "APP_LOGIC_UPDATED_CALLBACK";
+	String APP_CONFIG_SAVED_CALLBALCK = "APP_CONFIG_SAVED_CALLBALCK";
+	String APP_CONFIG_UPDATED_CALLBACK = "APP_CONFIG_UPDATED_CALLBACK";
 	String DATASOURCE_REMOVED_CALLBACK = "DATASOURCE_REMOVED_CALLBACK";
 	String DATASOURCE_UPDATED_CALLBACK = "DATASOURCE_UPDATED_CALLBACK";
 	String DATASOURCE_CREATED_CALLBACK = "DATASOURCE_CREATED_CALLBACK";
 	
+	void loadNewAppConfig();
 	void saveAppConfig(String path);
 	void loadAppConfig(String path);
 	void updateAppConfig(AppConfig appConfig);

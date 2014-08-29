@@ -49,7 +49,7 @@ public class CorpusDS extends DataSource implements IDataSource {
 				dsConfig = new DataSourceConfig();
 				File f = corpus.getSpam().next();
 				dsConfig.setFilePath(f.getPath());
-				dsConfig.setSpamOrHam(DataSourceConfig.IS_SPAM);
+				dsConfig.setSpam(DataSourceConfig.IS_SPAM);
 				dsConfig.setCustomParams(this.getDataSourceConfig().getCustomParams());
 				currentDS = new WarcDS(dsConfig);
 				
@@ -60,7 +60,7 @@ public class CorpusDS extends DataSource implements IDataSource {
 				dsConfig = new DataSourceConfig();
 				File f = corpus.getHam().next();
 				dsConfig.setFilePath(f.getPath());
-				dsConfig.setSpamOrHam(DataSourceConfig.IS_HAM);
+				dsConfig.setSpam(DataSourceConfig.IS_HAM);
 				dsConfig.setCustomParams(this.getDataSourceConfig().getCustomParams());
 				currentDS = new WarcDS(dsConfig);
 				

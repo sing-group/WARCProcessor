@@ -14,7 +14,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Enumeration;
 import java.util.Observable;
 
 import javax.swing.Action;
@@ -38,7 +37,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -47,8 +45,8 @@ import com.warcgenerator.gui.actions.common.AboutOfAction;
 import com.warcgenerator.gui.actions.common.Constants;
 import com.warcgenerator.gui.actions.common.ExitAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCreateAction;
-import com.warcgenerator.gui.actions.datasource.DSDetailAction;
 import com.warcgenerator.gui.actions.datasource.DSourcesAction;
+import com.warcgenerator.gui.actions.file.CreateNewConfigAction;
 import com.warcgenerator.gui.actions.file.LoadAppConfigAction;
 import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
 import com.warcgenerator.gui.actions.file.SaveAppConfigAction;
@@ -60,6 +58,7 @@ import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.components.CustomTreeNode;
 import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.helper.MenuHelper;
+import com.warcgenerator.gui.view.common.InitPanel;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 import com.warcgenerator.gui.view.output.OutputConfigPanel;
 
@@ -74,6 +73,7 @@ public class WarcGeneratorGUI extends Observable {
 	private Action outputConfigAction;
 	private Action saveAppConfigAction;
 	private Action loadAppConfigAction;
+	private Action createNewConfigAction;
 	private Action dsourcesAction;
 	private Action exitAction;
 	private Action aboutOfAction;
@@ -122,12 +122,11 @@ public class WarcGeneratorGUI extends Observable {
 		assistantPanel = new JPanel(new CustomCardLayout());
 		assistantPanel.setName("AssistantPanel");
 		
+		InitPanel initPanel = new InitPanel();
 		GeneralConfigPanel generalConfigPanel = new GeneralConfigPanel(logic,
 				this);
 		OutputConfigPanel outputconfigPanel = new OutputConfigPanel(logic, this);
 
-		JPanel initPanel = new JPanel();
-		initPanel.setName("0");
 		addMainPanel(initPanel);
 		addMainPanel(generalConfigPanel);
 		addMainPanel(outputconfigPanel);
@@ -141,6 +140,7 @@ public class WarcGeneratorGUI extends Observable {
 				outputconfigPanel);
 		saveAppConfigAction = new SaveAppConfigAction(logic, this);
 		loadAppConfigAction = new LoadAppConfigAction(logic, this);
+		createNewConfigAction = new CreateNewConfigAction(logic, this);
 		dsourcesAction = new DSourcesAction(logic, this,
 				assistantCreateDSAction);
 		exitAction = new ExitAction(logic, this);
@@ -200,6 +200,15 @@ public class WarcGeneratorGUI extends Observable {
 		mnInicio.setMnemonic('F');
 		menuBar.add(mnInicio);
 
+		JMenuItem mntmCreateNewConfig = new JMenuItem(
+				"Nueva configuracion");
+		mntmCreateNewConfig.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				createNewConfigAction.actionPerformed(e);
+			}
+		});
+		mnInicio.add(mntmCreateNewConfig);
+		
 		JMenuItem mntmCargarConfiguracionGeneral = new JMenuItem(
 				"Cargar configuracion general");
 		mntmCargarConfiguracionGeneral.addActionListener(new ActionListener() {
@@ -324,9 +333,12 @@ public class WarcGeneratorGUI extends Observable {
 
 		buildTree();
 		panel.add(tree);
-
+		
 		splitPane.setRightComponent(mainPanel);
 		frmWarcgenerator.setLocationRelativeTo(null);
+	
+	
+		//MenuHelper.selectLeftMenu(tree, "InitPanel");
 	}
 
 	public void buildTree() {
@@ -349,9 +361,12 @@ public class WarcGeneratorGUI extends Observable {
 		};
 
 		tree.setModel(new DefaultTreeModel(m_rootNode));
-		MenuHelper.selectLeftMenu(tree, (String)general.getUserObject());
 	}
 
+	public void selectFirstSelectionableItem() {
+		MenuHelper.selectLeftMenu(tree, "General");
+	}
+	
 	public void updateDS(Integer id, DataSourceConfig config) {
 		MenuHelper.updateDS(tree, id, config, this, logic);
 	}

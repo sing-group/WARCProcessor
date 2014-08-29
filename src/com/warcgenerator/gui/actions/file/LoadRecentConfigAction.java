@@ -45,6 +45,7 @@ public class LoadRecentConfigAction extends AbstractAction {
 	private void loadConfig() {
 		logic.loadAppConfig(path);
 		view.buildTree();
+		view.selectFirstSelectionableItem();
 		JOptionPane.showMessageDialog(view.getMainFrame(), 
 				"La configuracion se ha cargado correctamente");
 	}
