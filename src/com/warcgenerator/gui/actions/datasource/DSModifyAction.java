@@ -1,15 +1,13 @@
 package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.actions.common.Constants;
+import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 

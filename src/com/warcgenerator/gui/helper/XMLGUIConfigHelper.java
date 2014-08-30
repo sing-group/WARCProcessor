@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import com.warcgenerator.gui.actions.common.Constants;
+import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.exception.config.ConfigException;
 import com.warcgenerator.gui.exception.config.ValidateXMLSchemaException;

@@ -7,7 +7,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.actions.common.Constants;
+import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.helper.GUIConfigHelper;
@@ -38,9 +38,12 @@ public class LoadAppConfigAction extends AbstractAction {
 			guiConfig.addRecentConfigFile(fileToSave.getAbsolutePath());
 			GUIConfigHelper.persistConfig(Constants.DEFAULT_GUI_CONFIG_XML,
 					guiConfig);
+			
+			System.out.println("anadiendo configuracion recientes!!");
 
 			// Reload tree
 			view.buildTree();
+			view.loadRecentFiles();
 			view.selectFirstSelectionableItem();
 		}
 	}

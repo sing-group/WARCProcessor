@@ -1,11 +1,13 @@
 package com.warcgenerator.gui.actions.common;
 
 import java.awt.event.ActionEvent;
+import java.util.Collections;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 
 import com.warcgenerator.AppWarc;
+import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.helper.GUIConfigHelper;
@@ -44,8 +46,8 @@ public class StartGUIAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		window.setVisible(true);
-		// Load recent config files
-		for(String configFile:guiConfig.getRecentConfigFiles()) {
+		
+		for(String configFile:guiConfig.getRecentConfigFilesReversed()) {
 			initConfigDialog.addConfigFile(configFile);
 		}
 		initConfigDialog.setVisible(true);

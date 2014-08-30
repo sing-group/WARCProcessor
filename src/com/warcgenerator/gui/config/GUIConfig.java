@@ -1,8 +1,13 @@
 package com.warcgenerator.gui.config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.Vector;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.beanutils.BeanUtils;
+
+import com.warcgenerator.gui.common.Constants;
 
 /**
  * General configuration.
@@ -12,10 +17,10 @@ import java.util.Vector;
  * @author Miguel Callon
  */
 public class GUIConfig {
-	private Vector<String> recentConfigFiles;
+	private List<String> recentConfigFiles;
 
 	public GUIConfig() {
-		recentConfigFiles = new Vector<String>();
+		recentConfigFiles = new ArrayList<String>();
 	}
 		
 	public String toString() {
@@ -38,16 +43,36 @@ public class GUIConfig {
 		return true;
 	}
 	
-	public Vector<String> getRecentConfigFiles() {
+	public List<String> getRecentConfigFiles() {
 		return recentConfigFiles;
 	}
 
-	public void setRecentConfigFiles(Vector<String> recentConfigFiles) {
+	public void setRecentConfigFiles(List<String> recentConfigFiles) {
 		this.recentConfigFiles = recentConfigFiles;
 	}
 	
 	public void addRecentConfigFile(String configFilePath) {
-		recentConfigFiles.remove(configFilePath);
-		recentConfigFiles.add(0, configFilePath);
+		if (recentConfigFiles.contains(configFilePath)) {
+			recentConfigFiles.remove(configFilePath);
+			recentConfigFiles.add(configFilePath);
+		} else {
+			if (recentConfigFiles.size() >= 
+					Constants.NUM_MAX_RECENT_CONFIG_FILES) {
+				// Remove the oldest value
+				recentConfigFiles.remove(recentConfigFiles.size());
+				// Add new value
+				recentConfigFiles.add(configFilePath);
+			} else {
+				recentConfigFiles.add(configFilePath);
+			}
+		}
+	}
+	
+	public List<String> getRecentConfigFilesReversed() {
+		List<String> reversedArray = new ArrayList<String>();
+		for (String text:recentConfigFiles) {
+			reversedArray.add(0, text);
+		}
+		return reversedArray;
 	}
 }

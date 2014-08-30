@@ -1,4 +1,4 @@
-package com.warcgenerator.gui.actions.common;
+package com.warcgenerator.gui.common;
 
 public interface Constants {
 	String DATASOURCE_FORM_SESSION_KEY = "datasource_form_session_key";
@@ -6,4 +6,5 @@ public interface Constants {
 	String DEFAULT_GUI_CONFIG_XML= ".//config//gui-config.xml";
 	String CONFIG_SCHEMA_FILE_PATH = ".//config//schema//gui-config.xsd";
 	String FORM_MODIFIED_SESSION_KEY = "form_modified_session_key";
+	Integer NUM_MAX_RECENT_CONFIG_FILES = 5;
 }

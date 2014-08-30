@@ -48,7 +48,7 @@ public class InitConfigDialog extends CustomJDialog {
 	}
 	
 	public void addConfigFile(String configFile) {
-		comboBoxModel.addElement(configFile);
+		configFilesCBox.addItem(configFile);
 	}
 	
 	/**

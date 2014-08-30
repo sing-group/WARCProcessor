@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.actions.common.Constants;
+import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.components.CustomJPanel;

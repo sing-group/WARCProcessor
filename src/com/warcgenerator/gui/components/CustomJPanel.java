@@ -11,7 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 
-import com.warcgenerator.gui.actions.common.Constants;
+import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.listener.CustomPropertyChangeListener;
 

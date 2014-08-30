@@ -83,7 +83,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	
 		// Notify observers
 		setChanged();
-		notifyObservers(new LogicCallback(APP_CONFIG_SAVED_CALLBALCK));
+		notifyObservers(new LogicCallback(APP_CONFIG_SAVED_CALLBACK));
 	}
 
 	public void loadAppConfig(String path) {

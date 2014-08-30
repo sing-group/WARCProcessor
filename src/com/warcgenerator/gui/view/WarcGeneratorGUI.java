@@ -14,12 +14,15 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -42,7 +45,6 @@ import javax.swing.tree.TreePath;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.common.AboutOfAction;
-import com.warcgenerator.gui.actions.common.Constants;
 import com.warcgenerator.gui.actions.common.ExitAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCreateAction;
 import com.warcgenerator.gui.actions.datasource.DSourcesAction;
@@ -53,6 +55,7 @@ import com.warcgenerator.gui.actions.file.SaveAppConfigAction;
 import com.warcgenerator.gui.actions.general.GeneralConfigAction;
 import com.warcgenerator.gui.actions.generate.GenerateCorpusAction;
 import com.warcgenerator.gui.actions.output.OutputConfigAction;
+import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.components.CustomTreeNode;
@@ -85,6 +88,7 @@ public class WarcGeneratorGUI extends Observable {
 	private DefaultMutableTreeNode m_rootNode;
 	private JTree tree;
 	private GeneralConfigAction generalConfigAction;
+	private JMenu recentFilesMI;
 
 	private IAppLogic logic;
 
@@ -229,19 +233,10 @@ public class WarcGeneratorGUI extends Observable {
 
 		JSeparator separator = new JSeparator();
 		mnInicio.add(separator);
-
-		for (String configFile : guiConfig.getRecentConfigFiles()) {
-			final String configFileName = configFile;
-			JMenuItem recentConfig = new JMenuItem(configFile);
-			recentConfig.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Action loadRecentConfigAction = new LoadRecentConfigAction(
-							logic, WarcGeneratorGUI.this, configFileName, true);
-					loadRecentConfigAction.actionPerformed(e);
-				}
-			});
-			mnInicio.add(recentConfig);
-		}
+		
+		recentFilesMI = new JMenu("Configuraciones recientes");
+		loadRecentFiles();
+		mnInicio.add(recentFilesMI);
 
 		mnInicio.add(new JSeparator());
 
@@ -336,9 +331,6 @@ public class WarcGeneratorGUI extends Observable {
 		
 		splitPane.setRightComponent(mainPanel);
 		frmWarcgenerator.setLocationRelativeTo(null);
-	
-	
-		//MenuHelper.selectLeftMenu(tree, "InitPanel");
 	}
 
 	public void buildTree() {
@@ -361,6 +353,22 @@ public class WarcGeneratorGUI extends Observable {
 		};
 
 		tree.setModel(new DefaultTreeModel(m_rootNode));
+	}
+	
+	public void loadRecentFiles() {
+		recentFilesMI.removeAll();
+		for (String configFile : guiConfig.getRecentConfigFilesReversed()) {
+			final String configFileName = configFile;
+			JMenuItem recentConfig = new JMenuItem(configFile);
+			recentConfig.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Action loadRecentConfigAction = new LoadRecentConfigAction(
+							logic, WarcGeneratorGUI.this, configFileName, true);
+					loadRecentConfigAction.actionPerformed(e);
+				}
+			});
+			recentFilesMI.add(recentConfig);
+		}
 	}
 
 	public void selectFirstSelectionableItem() {

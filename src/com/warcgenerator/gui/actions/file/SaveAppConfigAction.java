@@ -43,7 +43,7 @@ public class SaveAppConfigAction
 	public void update(Observable obj, Object logicCallback) {
 		if (obj == logic) {
 			String message = ((LogicCallback)logicCallback).getMessage();
-			if (message.equals(IAppLogic.APP_CONFIG_UPDATED_CALLBACK)) {
+			if (message.equals(IAppLogic.APP_CONFIG_SAVED_CALLBACK)) {
 				JOptionPane.showMessageDialog(view.getMainFrame(), 
 						"La configuracion se ha guardado con exito.");
 			}
