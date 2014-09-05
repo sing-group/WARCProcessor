@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
@@ -24,7 +25,7 @@ import com.warcgenerator.gui.view.datasources.DSDetailPanel;
  * @author amparop
  *
  */
-public class DSDetailAction extends AbstractAction implements Observer {
+public class DSDetailAction extends CustomAction {
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;
 	private DataSourceConfig config;
@@ -38,10 +39,10 @@ public class DSDetailAction extends AbstractAction implements Observer {
 	public DSDetailAction(IAppLogic logic, 
 			WarcGeneratorGUI view,
 			DataSourceConfig config) {
+		super(view, view.getAssistantPanel());
 		this.logic = logic;
 		this.view = view;
 		this.config = config;
-		view.addObserver(this);
 		
 		System.out.println("config!!!!! es " + config);
 		
@@ -76,19 +77,25 @@ public class DSDetailAction extends AbstractAction implements Observer {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void action(ActionEvent e) {
 		init();
 		detailPanel.setSummaryText(config.toString());
 		((CustomCardLayout)mainDetailPanel.getLayout()).show(mainDetailPanel,
 				detailPanel.getName());
 		view.loadMainPanel(mainDetailPanel);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}	 
 	
 	
-	@Override
+	/*@Override
 	public void update(Observable obj, Object message) {
 		if (obj == view) {
-			if (mainDetailPanel.isVisible()
+			if (this.isCurrentAction()
 					&& ((Object[])message)[0].
 						equals(WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL)) {
 				int userSelection = JOptionPane
@@ -102,10 +109,12 @@ public class DSDetailAction extends AbstractAction implements Observer {
 									mainDetailPanel);
 					panel.rollback();
 					
-					JPanel newPanel = (JPanel)((Object[])message)[1];
-					view.loadMainPanel(newPanel);
+					//JPanel newPanel = (JPanel)((Object[])message)[1];
+					//view.loadMainPanel(newPanel);
+					Action nextAction = (Action)((Object[])message)[1];
+					nextAction.actionPerformed(null);
 				}
 			}
 		}
-	}
+	}*/
 }

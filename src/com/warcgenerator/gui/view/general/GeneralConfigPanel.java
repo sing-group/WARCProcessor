@@ -16,7 +16,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ChangeEvent;
@@ -26,7 +25,6 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.general.GCSaveAction;
 import com.warcgenerator.gui.actions.general.GCSaveAndGenerateAction;
 import com.warcgenerator.gui.components.CustomJPanel;
-import com.warcgenerator.gui.components.listener.CustomPropertyChangeListener;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.validator.NaturalNumberAndZeroValidator;
@@ -93,7 +91,7 @@ public class GeneralConfigPanel extends CustomJPanel {
 		
 		numSitesTField = new JFormattedTextField("");
 		numSitesTField.setToolTipText(Messages.getString("GeneralConfigPanel.numSitesTField.toolTipText")); //$NON-NLS-1$
-		numSitesTField.setInputVerifier(new NaturalNumberValidator(view.getMainFrame(), numSitesTField, "Field cannot be null... "));
+		numSitesTField.setInputVerifier(new NaturalNumberValidator(view.getMainFrame(), numSitesTField, "Numero mayor que 0"));
 		numSitesTField.setColumns(10);
 		
 		 //Group the radio buttons.

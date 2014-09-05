@@ -1,4 +1,4 @@
-package com.warcgenerator.gui.actions.output;
+package com.warcgenerator.gui.actions.other;
 
 import java.awt.event.ActionEvent;
 import java.util.Observable;
@@ -14,17 +14,17 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
-import com.warcgenerator.gui.view.output.OutputConfigPanel;
+import com.warcgenerator.gui.view.other.OtherConfigPanel;
 
-public class OutputSaveAction 
+public class OtherSaveAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
-	private OutputConfigPanel panel;
+	private OtherConfigPanel panel;
 	private IAppLogic logic;
 	
-	public OutputSaveAction(IAppLogic logic,
+	public OtherSaveAction(IAppLogic logic,
 			WarcGeneratorGUI view,
-			OutputConfigPanel panel
+			OtherConfigPanel panel
 			) {
 		this.view = view;
 		this.logic = logic;
@@ -36,11 +36,12 @@ public class OutputSaveAction
 	public void actionPerformed(ActionEvent e) {
 		AppConfig appConfig = logic.getAppConfig();
 		
-		appConfig.getOutputConfig().setOutputDir(
-				panel.getOutputDirTField().getText());
-		appConfig.setSpamDirName(panel.getSpamDirTField().getText());
-		appConfig.setHamDirName(panel.getHamDirTField().getText());
-		appConfig.setFlushOutputDir(panel.getChckbxEliminarLaSalida().isSelected());
+		appConfig.setWebCrawlerTmpStorePath(
+				panel.getTempDirTField().getText());
+		appConfig.setNumCrawlers(Integer.parseInt(panel.
+				getNumberOfCrawlersTField().getText()));
+		appConfig.setMaxDepthOfCrawling(Integer.parseInt(
+				panel.getDeepCrawlerTField().getText()));
 		
 		if (validate(appConfig)) {
 			try {

@@ -106,8 +106,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 			throw new PluginException(e);
 		}
 		
-		
-		
 		/*
 		 * For each crawl, you need to add some seed urls. These are the first
 		 * URLs that are fetched and then the crawler starts following links
@@ -198,7 +196,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		String href = url.getURL().toLowerCase();
 		// return !FILTERS.matcher(href).matches()
 		// && href.startsWith("http://www.ics.uci.edu/");
-		return !FILTERS.matcher(href).matches();
+		return !FILTERS.matcher(href).matches() 
+			&& href.startsWith("http://www.ics.uci.edu/");
 	}
 	
 	@Override

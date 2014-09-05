@@ -10,6 +10,7 @@ import javax.swing.tree.TreePath;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.actions.datasource.DSDetailAction;
 import com.warcgenerator.gui.components.CustomTreeNode;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
@@ -20,8 +21,9 @@ public class MenuHelper {
 			IAppLogic logic) {
 		for (DataSourceConfig config : logic.getDataSourceConfigList()) {
 			CustomTreeNode treeNodeDS = new CustomTreeNode(config.getName());
+			DSDetailAction newAction = new DSDetailAction(logic, view, config);
 			treeNodeDS.setId(config.getId());
-			treeNodeDS.setAction(new DSDetailAction(logic, view, config));
+			treeNodeDS.setAction(newAction);
 			treeNode.add(treeNodeDS);
 		}
 	}
@@ -82,12 +84,15 @@ public class MenuHelper {
 					// Select a datasource
 					if (parentNode.getChildCount() > 0) {
 						if (previousNode == parentNode) {
-							selectLeftMenu(tree, (String)nextNode.getUserObject());
+							selectAndExecuteLeftMenu(
+									tree, (String)nextNode.getUserObject());
 						} else {
-							selectLeftMenu(tree, (String)previousNode.getUserObject());
+							selectAndExecuteLeftMenu(
+									tree, (String)previousNode.getUserObject());
 						}
 					} else {
-						selectLeftMenu(tree, (String)parentNode.getUserObject());
+						selectAndExecuteLeftMenu(
+								tree, (String)parentNode.getUserObject());
 					}
 				}
 			}
@@ -127,24 +132,40 @@ public class MenuHelper {
 		return null;
 	}
 	
-	public static void selectLeftMenu(JTree tree, String search) {
+	public static TreePath getLeftMenu(JTree tree, String search) {
 		DefaultMutableTreeNode node = searchNode(tree, search);
+		TreePath tp = null;
 		if (node != null) {
 			TreeNode[] nodes = ((DefaultTreeModel) tree.getModel())
 					.getPathToRoot(node);
-			TreePath tp = new TreePath(nodes);
-			tree.scrollPathToVisible(tp);
-			tree.setSelectionPath(tp);
-			if (tp != null) {
-				Object obj = tp.getLastPathComponent();
-				if (obj instanceof CustomTreeNode) {
-					CustomTreeNode itemSelected = (CustomTreeNode) obj;
-					if (itemSelected.getAction() != null)
-						itemSelected.getAction().actionPerformed(null);
-				}
-			}
+			tp = new TreePath(nodes);
 		} else {
 			System.out.println("Node with string " + search + " not found");
+		}
+		return tp;
+	}
+	
+	public static void selectLeftMenu(JTree tree, TreePath tp) {
+		//TreePath tp = getLeftMenu(tree, search);
+		if (tree != null && tp != null) {
+			tree.scrollPathToVisible(tp);
+			tree.setSelectionPath(tp);
+			tree.getParent().repaint();
+			tree.updateUI();
+			tree.repaint();
+		}
+	}
+	
+	public static void selectAndExecuteLeftMenu(JTree tree, String search) {
+		TreePath tp = getLeftMenu(tree,  search);
+		if (tp != null) {
+			Object obj = tp.getLastPathComponent();
+			if (obj instanceof CustomTreeNode) {
+				CustomTreeNode itemSelected = (CustomTreeNode) obj;
+				if (itemSelected.getAction() != null)
+					itemSelected.getAction().actionPerformed(null);
+				selectLeftMenu(tree, tp);
+			}
 		}
 	}
 }

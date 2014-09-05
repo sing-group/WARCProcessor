@@ -13,13 +13,14 @@ import com.warcgenerator.core.datasource.handler.IDSHandler;
  * @author Miguel Callon
  * 
  */
-public class DataSourceConfig {
+public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public static final boolean IS_SPAM = true;
 	public static final boolean IS_HAM = false;
 	public static int nextId = 1;
 	
 	private Integer id;
 	private String name = "";
+	private String type = "";
 	private Boolean spam;
 	private String filePath = "";
 	private String dsClassName = "";
@@ -173,5 +174,19 @@ public class DataSourceConfig {
 	 */
 	public static int getNextId() {
 		return nextId++;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	@Override
+	public int compareTo(DataSourceConfig obj) {
+		int lastCmp = name.compareTo(obj.name);
+        return lastCmp;
 	}
 }

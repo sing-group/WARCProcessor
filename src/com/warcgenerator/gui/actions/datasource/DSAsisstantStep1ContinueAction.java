@@ -16,6 +16,7 @@ import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
+import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
@@ -61,10 +62,12 @@ public class DSAsisstantStep1ContinueAction
 		
 		String dsType = (String)panel.getTipoDSCBox().getSelectedItem();
 		DataSourceConfig dsConfigTmp = logic.getDataSourceType(dsType);
+		dsConfig.setType(dsConfigTmp.getName());
 		dsConfig.setDsClassName(dsConfigTmp.getDsClassName());
 		dsConfig.setHandlerClassName(dsConfigTmp.getHandlerClassName());
 		
 		System.out.println("rellenando param!!!");
+		dsConfig.getCustomParams().clear();
 		for (String key: dsConfigTmp.getCustomParams().keySet()) {
 			System.out.println("parametro es " + key);
 			dsConfig.getCustomParams().put(key, 
@@ -76,6 +79,7 @@ public class DSAsisstantStep1ContinueAction
 			Session.add(
 					Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
 			
+			((CustomJPanel)panel).commit();
 			dsAsisstantStep2Action.actionPerformed(e);
 		}
 	}

@@ -144,8 +144,9 @@ public class XMLConfigHelper {
 				if (dataSourceNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setName(dataSourceElement.getAttribute("name"));
-					ds.setDsClassName(dataSourceElement.getAttribute("class"));
-
+					//ds.setDsClassName(dataSourceElement.getAttribute("class"));
+					ds.setType(dataSourceElement.getAttribute("type"));
+					
 					// Check if isSpam parameter exists
 					
 					System.out.println("is Spam is " + 
@@ -403,6 +404,8 @@ public class XMLConfigHelper {
 			rootElement.appendChild(domainsNotFoundFileName);
 
 			Element flushOutputDir = doc.createElement("flushOutputDir");
+			
+			System.out.println("Guardar flushOutputDir: " + config.getFlushOutputDir().toString());
 			flushOutputDir
 					.setTextContent(config.getFlushOutputDir().toString());
 			rootElement.appendChild(flushOutputDir);
@@ -436,8 +439,8 @@ public class XMLConfigHelper {
 				attr.setValue(dsConfig.getName());
 				dataSource.setAttributeNode(attr);
 
-				attr = doc.createAttribute("class");
-				attr.setValue(dsConfig.getDsClassName());
+				attr = doc.createAttribute("type");
+				attr.setValue(dsConfig.getType());
 				dataSource.setAttributeNode(attr);
 
 				if (dsConfig.getMaxElements() != null) {

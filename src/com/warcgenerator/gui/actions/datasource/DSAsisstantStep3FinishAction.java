@@ -63,7 +63,7 @@ public class DSAsisstantStep3FinishAction
 					panel.commit();
 					
 					view.updateDS(dsConfig.getId(), dsConfig);
-					view.selectLeftMenu(dsConfig.getName());
+					view.selectAndExecuteLeftMenu(dsConfig.getName());
 				} else if (message.equals(
 						IAppLogic.DATASOURCE_CREATED_CALLBACK)) {
 					JOptionPane.showMessageDialog(view.getMainFrame(), 
@@ -76,7 +76,7 @@ public class DSAsisstantStep3FinishAction
 					
 					//view.buildTree();
 					view.addDS(newDSConfig);
-					view.selectLeftMenu(dsConfig.getName());
+					view.selectAndExecuteLeftMenu(dsConfig.getName());
 				}
 			}
 		}

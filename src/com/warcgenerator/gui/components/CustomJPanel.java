@@ -16,6 +16,11 @@ import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.listener.CustomPropertyChangeListener;
 
 public abstract class CustomJPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	public CustomJPanel() {
 		this.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -38,7 +43,7 @@ public abstract class CustomJPanel extends JPanel {
 				new Boolean(false));	
 	}
 	
-	private void uninstallChangeListeners() {
+	public void uninstallChangeListeners() {
 		for (Component component:this.getComponents()) {
 			if (component instanceof JFormattedTextField) {
 				JFormattedTextField text = (JFormattedTextField)component;
@@ -49,6 +54,7 @@ public abstract class CustomJPanel extends JPanel {
 			}
 		}
 	}
+	
 	public void installChangeListeners() {
 		for (Component component:this.getComponents()) {
 			if (component instanceof JFormattedTextField) {
@@ -60,7 +66,6 @@ public abstract class CustomJPanel extends JPanel {
 				cb.addItemListener(new ItemListener() {
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
-						// TODO Auto-generated method stub
 						Session.add(Constants.FORM_MODIFIED_SESSION_KEY,
 								new Boolean(true));	
 					}

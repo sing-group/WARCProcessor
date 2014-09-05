@@ -9,7 +9,7 @@
  	 <dataSource name="CorpusDS" 
  	 	class="com.warcgenerator.datasources.CorpusDS" >
  		<customParams>
- 			<urlTag>WARC-Target-URI</urlTag>
+ 			<urlTag type="java.lang.String">WARC-Target-URI</urlTag>
  			<spamDir type="java.lang.String">_spam_</spamDir>
  			<hamDir type="java.lang.String">_ham_</hamDir>
  		</customParams>

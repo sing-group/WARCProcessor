@@ -5,7 +5,7 @@
 	xsi:noNamespaceSchemaLocation="schema/config.xsd"
 >
 	 <!-- General corpus configuration -->
-	 <numSites onlyActiveSites="true" downloadAgain="true">1000</numSites>
+	 <numSites onlyActiveSites="true" downloadAgain="false">1000</numSites>
 	 <!-- SPAN/HAM Ratio -->
 	 <ratio isPercentage="true" >
 	 	<percentageSpam>50</percentageSpam>
@@ -26,7 +26,7 @@
 	 
 	 <!--  Data sources -->
 	 <dataSources>
-	 	 <!-- <dataSource name="CorpusDS" 
+	    <!-- <dataSource name="CorpusDS" 
 	 	 	class="com.warcgenerator.datasources.CorpusDS" 
 	 		maxElements="10" >
 	 		<customParams>
@@ -46,14 +46,15 @@
 	 		</customParams>
 	 		<srcDirPath>.\\in\\arff</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.ArffDSHandler</handler>
-	 	</dataSource> -->
+	 	</dataSource>-->
 	 	<dataSource name="WhitelistDS" 
-	 		class="com.warcgenerator.datasources.FileDS">
+	 		type="FileDS">
 	 		<srcDirPath>.\\in\\plain\whitelists</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
 	 	</dataSource>
 	 	<dataSource name="BlacklistDS" 
-	 		class="com.warcgenerator.datasources.FileDS"
+	 		type="FileDS"
+	 		maxElements="10"
 	 		isSpam="true" >
 	 		<srcDirPath>.\\in\\plain\blacklists</srcDirPath>
 	 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>

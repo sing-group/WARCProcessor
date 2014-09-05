@@ -24,7 +24,7 @@ public class DSourcesAction extends AbstractAction {
 			Action dsCreateAction) {
 		this.logic = logic;
 		this.view = view;
-		this.dsCreateAction = dsCreateAction; 
+		this.dsCreateAction = dsCreateAction;
 	}
 
 	@Override

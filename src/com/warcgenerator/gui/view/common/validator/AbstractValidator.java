@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -13,6 +15,8 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import com.warcgenerator.gui.view.WarcGeneratorGUI;
  
 /**
  * This class handles most of the details of validating a component, including
@@ -23,9 +27,11 @@ import javax.swing.JLabel;
  * @see WantsValidationStatus
  */
  
-public abstract class AbstractValidator extends InputVerifier implements KeyListener {
+public abstract class AbstractValidator extends InputVerifier implements KeyListener,
+	FocusListener {
     private JDialog popup;
     private Object parent;
+    private JComponent c;
     private JLabel messageLabel;
     private JLabel image;
     private Point point;
@@ -38,9 +44,11 @@ public abstract class AbstractValidator extends InputVerifier implements KeyList
 	
     private AbstractValidator(JComponent c, String message) {
         this();
+        this.c = c;
         c.addKeyListener(this);
+        c.addFocusListener(this);
         messageLabel = new JLabel(message + " ");
-        image = new JLabel(new ImageIcon("exception_16x16.png"));
+        image = new JLabel(new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/16x16danger.png")));
     }
 	
     /**
@@ -113,6 +121,18 @@ public abstract class AbstractValidator extends InputVerifier implements KeyList
         return true;
     }
 	
+    public void focusGained(FocusEvent e) {
+    	//
+    }
+    
+    public void focusLost(FocusEvent e) {
+    	if (!this.verify(c)) {
+    		c.requestFocusInWindow();
+    	} else {
+    		popup.setVisible(false);
+    	}
+    }
+    
     /**
      * Changes the message that appears in the popup help tip when a component's
      * data is invalid. Subclasses can use this to provide context sensitive help
@@ -146,6 +166,7 @@ public abstract class AbstractValidator extends InputVerifier implements KeyList
     public void keyReleased(KeyEvent e) {}
 	
     private void initComponents() {
+    	popup.setModal(true);
         popup.getContentPane().setLayout(new FlowLayout());
         popup.setUndecorated(true);
         popup.getContentPane().setBackground(color);

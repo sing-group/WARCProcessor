@@ -2,6 +2,7 @@ package com.warcgenerator.core.logic;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -89,6 +90,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public void loadAppConfig(String path) {
 		ConfigHelper.configure(path, config);
 		config.init();
+		
+		// Notify observers
+		setChanged();
+		notifyObservers(new LogicCallback(APP_CONFIG_LOADED_CALLBACK));
 	}
 	
 	public void loadNewAppConfig() {
@@ -131,7 +136,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public List<DataSourceConfig> getDataSourceTypesList()
 			throws LogicException {
 		List<DataSourceConfig> dataSourceTypesList = new ArrayList<DataSourceConfig>();
-
+		
 		for (DataSourceConfig dsConfig : dataSourcesTypes.values()) {
 			DataSourceConfig dsConfigCopy = new DataSourceConfig();
 			try {
@@ -144,6 +149,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			dataSourceTypesList.add(dsConfigCopy);
 		}
 
+		Collections.sort(dataSourceTypesList);
 		return dataSourceTypesList;
 	}
 
@@ -175,6 +181,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			dataSourceConfigsList.add(dsConfigCopy);
 		}
 
+		Collections.sort(dataSourceConfigsList);
 		return dataSourceConfigsList;
 	}
 
@@ -242,7 +249,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		executorTasks = new ExecutionTaskBatch();
 
 		// Get dsHandlers
-		ConfigHelper.getDSHandlers(config);
+		ConfigHelper.getDSHandlers(config, dataSourcesTypes);
 
 		// Generate wars
 		IDataSource labeledDS = new GenericDS(new DataSourceConfig(

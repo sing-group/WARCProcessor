@@ -1,4 +1,4 @@
-package com.warcgenerator.gui.actions.output;
+package com.warcgenerator.gui.actions.other;
 
 import java.awt.event.ActionEvent;
 import java.util.Observable;
@@ -10,9 +10,9 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import com.warcgenerator.gui.view.output.OutputConfigPanel;
+import com.warcgenerator.gui.view.other.OtherConfigPanel;
 
-public class OutputConfigAction 
+public class OtherConfigAction 
 	extends CustomAction {	
 	/**
 	 * 
@@ -20,33 +20,30 @@ public class OutputConfigAction
 	private static final long serialVersionUID = 1L;
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
-	private OutputConfigPanel configPanel;
+	private OtherConfigPanel configPanel;
 	
-	public OutputConfigAction(IAppLogic logic, WarcGeneratorGUI view,
-			OutputConfigPanel configPanel) {
+	public OtherConfigAction(IAppLogic logic, WarcGeneratorGUI view,
+			OtherConfigPanel configPanel) {
 		super(view, configPanel);
 		this.logic = logic;
 		this.view = view;
 		this.configPanel = configPanel;
-		//view.addObserver(this);
 	}
-	
+		
 	@Override
 	public void action(ActionEvent e) {		
 		AppConfig config = logic.getAppConfig();
 		
-		configPanel.getOutputDirTField().setValue(
-				config.getOutputConfig().getOutputDir());
-		configPanel.getSpamDirTField().setValue(
-				config.getSpamDirName());
-		configPanel.getHamDirTField().setValue(
-				config.getHamDirName());
-		configPanel.getChckbxEliminarLaSalida().setSelected(
-				config.getFlushOutputDir());
-		
+		configPanel.getTempDirTField().setValue(
+				config.getWebCrawlerTmpStorePath());
+		configPanel.getDeepCrawlerTField().setValue(
+				config.getMaxDepthOfCrawling());
+		configPanel.getNumberOfCrawlersTField().setValue(
+				config.getNumCrawlers());		
+
 		view.loadMainPanel(configPanel);
 	}
-	
+
 	@Override
 	public void update(Observable obj, Object message) {
 		if (obj == view) {
@@ -69,4 +66,5 @@ public class OutputConfigAction
 			}
 		}
 	}
+	
 }

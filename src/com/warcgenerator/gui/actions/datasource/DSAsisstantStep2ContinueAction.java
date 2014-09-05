@@ -116,6 +116,8 @@ public class DSAsisstantStep2ContinueAction
 			CustomParamConfig customParam = config.getCustomParams().get(key);
 			try {
 				Class<?> cArgs[] = { String.class };
+				System.out.println("get Type es: " + customParam.getType());
+				
 				Class<?> clazz = Class.forName(customParam.getType());
 				Constructor<?> ctor = clazz.getConstructor(cArgs);
 				

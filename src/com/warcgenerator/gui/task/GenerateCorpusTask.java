@@ -6,6 +6,8 @@ import java.util.Observer;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.logic.IAppLogic;
@@ -80,17 +82,18 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements Ob
 					progress += inc;
 					break;
 				case CRAWLING_URLS:
-					gcd.getStateLbl().setText("Leyendo url: " + gcState.
-							getCurrentUrlCrawled());
+					gcd.getStateLbl().setText(
+							StringUtils.abbreviate("Leyendo: " + gcState.
+									getCurrentUrlCrawled(), 40));
 					progress += 
 							Math.round(inc / gcState.getWebsToVisitTotal());
 					break;
 				case READING_URLS:
-					gcd.getStateLbl().setText("Leyendo urls");
+					gcd.getStateLbl().setText("Leyendo urls...");
 					progress += inc;
 					break;
 				case ENDING:
-					gcd.getStateLbl().setText("Finalizando la ejecucion");
+					gcd.getStateLbl().setText("Finalizando la ejecucion...");
 					progress = 100;
 					break;
 				case CANCELlING_PROCESS:

@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
@@ -233,6 +232,14 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		);
 		
 		paramsTable = new JTable();
+		loadTableModel(paramsTable);
+		
+		scrollPane.setViewportView(paramsTable);
+		setLayout(groupLayout);
+
+	}
+
+	private void loadTableModel(JTable paramsTable) {
 		paramsTable.setModel(new DefaultTableModel(
 				new Object[0][0],
 				new String[] {
@@ -252,17 +259,16 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 
 			}
 		);
-		
-		scrollPane.setViewportView(paramsTable);
-		setLayout(groupLayout);
-
 	}
-
+	
 	public void setTableModel(Map<String, CustomParamConfig> map) {
+		loadTableModel(paramsTable);
+		
 		DefaultTableModel model = (DefaultTableModel)paramsTable.getModel();
-
+		
 		for(String key:map.keySet()) {
 			model.addRow(new Object[]{key, map.get(key).getValue()});
+			System.out.println("anadiendo : " + key);
 		}	
 	}
 	

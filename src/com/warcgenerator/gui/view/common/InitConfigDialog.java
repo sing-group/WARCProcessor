@@ -38,7 +38,8 @@ public class InitConfigDialog extends CustomJDialog {
 	private Action searchInitConfigAction;;
 	
 	public void addFirstConfigFile(String configFile) {
-		if (comboBoxModel.getElementAt(1).equals(CustomComboBoxRenderer.SEPARATOR)) {
+		if (comboBoxModel.getSize() > 0 && 
+				comboBoxModel.getElementAt(1).equals(CustomComboBoxRenderer.SEPARATOR)) {
 			configFilesList.remove(0);
 			configFilesList.remove(0);
 		}

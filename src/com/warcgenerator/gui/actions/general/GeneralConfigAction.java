@@ -4,35 +4,37 @@ import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.common.Constants;
-import com.warcgenerator.gui.common.Session;
+import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 
 public class GeneralConfigAction 
-	extends AbstractAction implements Observer {	
+	extends CustomAction implements Observer {	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
 	private GeneralConfigPanel configPanel;
 	
 	public GeneralConfigAction(IAppLogic logic, WarcGeneratorGUI view,
 			GeneralConfigPanel configPanel) {
+		super(view, configPanel);
 		this.logic = logic;
 		this.view = view;
 		this.configPanel = configPanel;
-		view.addObserver(this);
 	}
 		
 	@Override
-	public void actionPerformed(ActionEvent e) {		
+	public void action(ActionEvent e) {		
 		AppConfig config = logic.getAppConfig();
-		
+	
 		configPanel.getNumSitesTField().setValue(Integer.toString(
 				config.getNumSites()));
 		if (config.getRatioIsPercentage()) {
@@ -64,21 +66,14 @@ public class GeneralConfigAction
 		configPanel.getDownloadAgainEnabledCBox().setSelected(
 				config.getDownloadAgain());
 		
-		//view.loadMainPanel(configPanel);
+		configPanel.commit();
 		view.loadMainPanel(configPanel);
 	}
 
 	@Override
 	public void update(Observable obj, Object message) {
 		if (obj == view) {
-			System.out.println("Es visible: ----> " + configPanel.isVisible());
-			Object isModified = Session.get(Constants.FORM_MODIFIED_SESSION_KEY);
-			Boolean formModified = false;
-			if (isModified instanceof Boolean) {
-				formModified = (Boolean) isModified;
-			}
-			
-			if (formModified && configPanel.isShowing()
+			if (this.isCurrentAction() 
 					&& ((Object[])message)[0].
 						equals(WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL)) {
 				int userSelection = JOptionPane
@@ -87,12 +82,12 @@ public class GeneralConfigAction
 				
 				if (userSelection == JOptionPane.OK_OPTION) {
 					configPanel.save();
-					JPanel newPanel = (JPanel)((Object[])message)[1];
-					view.loadMainPanel(newPanel);
+					Action nextAction = (Action)((Object[])message)[1];
+					nextAction.actionPerformed(null);
 				} else if (userSelection == JOptionPane.NO_OPTION) {
 					configPanel.rollback();
-					JPanel newPanel = (JPanel)((Object[])message)[1];
-					view.loadMainPanel(newPanel);
+					Action nextAction = (Action)((Object[])message)[1];
+					nextAction.actionPerformed(null);
 				}
 			}
 		}

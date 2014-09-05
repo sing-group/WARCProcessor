@@ -2,6 +2,7 @@ package com.warcgenerator.gui.view.output;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -29,6 +31,7 @@ public class OutputConfigPanel extends CustomJPanel {
 	private JFormattedTextField outputDirTField;
 	private JFormattedTextField spamDirTField;
 	private JFormattedTextField hamDirTField;
+	private JCheckBox chckbxEliminarLaSalida;
 	
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;
@@ -42,7 +45,7 @@ public class OutputConfigPanel extends CustomJPanel {
 	/**
 	 * Create the panel.
 	 */
-	public OutputConfigPanel(IAppLogic logic, WarcGeneratorGUI view) {
+	public OutputConfigPanel(final IAppLogic logic, final WarcGeneratorGUI view) {
 		super();
 		this.logic = logic;
 		this.view = view;
@@ -107,19 +110,20 @@ public class OutputConfigPanel extends CustomJPanel {
 				
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
-					outputDirTField.setText(file.getAbsolutePath());
+					outputDirTField.setValue(file.getAbsolutePath());
 				} 
 			}
 		});
 		
 		JLabel lblNewLabel_3 = new JLabel(icon); //$NON-NLS-1$
+		
+		chckbxEliminarLaSalida = new JCheckBox(Messages.getString("OutputConfigPanel.chckbxEliminarLaSalida.text")); //$NON-NLS-1$
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(23)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblNewLabel_3)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -127,25 +131,28 @@ public class OutputConfigPanel extends CustomJPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(183)
 							.addComponent(saveBtn)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(saveAndGenerateBtn))
+						.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNewLabel_1)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblHam)
-									.addGap(18)
-									.addComponent(hamDirTField))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblNewLabel_2)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblNewLabel_2)
+										.addComponent(lblHam))
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(spamDirTField))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblNewLabel_1)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(outputDirTField, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(hamDirTField)
+										.addComponent(spamDirTField)
+										.addComponent(outputDirTField, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))))
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(examineBtn)))
-					.addContainerGap(42, Short.MAX_VALUE))
+					.addGap(49))
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(129, Short.MAX_VALUE)
+					.addComponent(chckbxEliminarLaSalida)
+					.addGap(45))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -169,10 +176,12 @@ public class OutputConfigPanel extends CustomJPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblHam)
 						.addComponent(hamDirTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+					.addGap(18)
+					.addComponent(chckbxEliminarLaSalida)
+					.addPreferredGap(ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(saveAndGenerateBtn)
-						.addComponent(saveBtn))
+						.addComponent(saveBtn)
+						.addComponent(saveAndGenerateBtn))
 					.addGap(22))
 		);
 		setLayout(groupLayout);
@@ -189,6 +198,14 @@ public class OutputConfigPanel extends CustomJPanel {
 
 	public JFormattedTextField getHamDirTField() {
 		return hamDirTField;
+	}
+	
+	public JCheckBox getChckbxEliminarLaSalida() {
+		return chckbxEliminarLaSalida;
+	}
+
+	public void setChckbxEliminarLaSalida(JCheckBox chckbxEliminarLaSalida) {
+		this.chckbxEliminarLaSalida = chckbxEliminarLaSalida;
 	}
 
 	@Override

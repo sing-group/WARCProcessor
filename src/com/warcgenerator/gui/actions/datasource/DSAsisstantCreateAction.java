@@ -5,12 +5,13 @@ import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
@@ -21,7 +22,7 @@ import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep3Panel;
 
-public class DSAsisstantCreateAction extends AbstractAction implements Observer {
+public class DSAsisstantCreateAction extends CustomAction {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
 	private JPanel mainAssistantCreatePanel;
@@ -32,9 +33,9 @@ public class DSAsisstantCreateAction extends AbstractAction implements Observer 
 	private CustomCardLayout cardLayout;
 
 	public DSAsisstantCreateAction(IAppLogic logic, WarcGeneratorGUI view) {
+		super(view, view.getAssistantPanel());
 		this.logic = logic;
 		this.view = view;
-		view.addObserver(this);
 
 		mainAssistantCreatePanel = view.getAssistantPanel();
 		
@@ -46,7 +47,6 @@ public class DSAsisstantCreateAction extends AbstractAction implements Observer 
 				mainAssistantCreatePanel);
 		dsAssistantStep3Panel = new DSAssistantStep3Panel(logic, view,
 				mainAssistantCreatePanel);
-
 	}
 
 	private void init() {
@@ -69,7 +69,7 @@ public class DSAsisstantCreateAction extends AbstractAction implements Observer 
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void action(ActionEvent e) {
 		init();
 		DataSourceConfig dsConfig = new DataSourceConfig();
 		Session.add(Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
@@ -83,7 +83,7 @@ public class DSAsisstantCreateAction extends AbstractAction implements Observer 
 	@Override
 	public void update(Observable obj, Object message) {
 		if (obj == view) {
-			if (mainAssistantCreatePanel.isVisible()
+			if (mainAssistantCreatePanel.isShowing()
 					&& ((Object[]) message)[0]
 							.equals(WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL)) {
 				int userSelection = JOptionPane.showConfirmDialog(
@@ -98,8 +98,10 @@ public class DSAsisstantCreateAction extends AbstractAction implements Observer 
 							.getCurrentPanel(mainAssistantCreatePanel);
 					panel.rollback();
 
-					JPanel newPanel = (JPanel) ((Object[]) message)[1];
-					view.loadMainPanel(newPanel);
+					//JPanel newPanel = (JPanel) ((Object[]) message)[1];
+					//view.loadMainPanel(newPanel);
+					Action nextAction = (Action)((Object[])message)[1];
+					nextAction.actionPerformed(null);
 				}
 			}
 		}

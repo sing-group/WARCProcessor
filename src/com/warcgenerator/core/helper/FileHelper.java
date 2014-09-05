@@ -50,7 +50,7 @@ public class FileHelper {
 	 * @return
 	 */
 	public static String getDomainNameFromURL(String url) {
-		String domain = "";
+		/*String domain = "";
 		URL myUrl = null;
 		try {
 			myUrl = new URL(url);
@@ -58,12 +58,12 @@ public class FileHelper {
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 		String privateDomain = "";
 		try {
 			privateDomain =
-				InternetDomainName.from(domain).topPrivateDomain().name();
+				InternetDomainName.from(url).topPrivateDomain().name();
 		} catch (IllegalArgumentException ex) {
 			String urlTmp = url.replaceAll("http://", "");
 			urlTmp = urlTmp.replaceAll("https://", "");
