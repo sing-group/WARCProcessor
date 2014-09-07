@@ -105,17 +105,20 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("-- DataSourceConfig --\n").
-		append("ID: ").append(id).append("\n").
-		append("DSClassName: ").append(dsClassName).append("\n").
-		append("HandlerClassName: ").append(handlerClassName).append("\n").
-		append("FilePath: ").append(filePath).append("\n").
-		append("Spam: ").append(spam).append("\n");
+		append("Name: ").append(name).append("\n").
+		append("Type: ").append(type).append("\n").
+		//append("DSClassName: ").append(dsClassName).append("\n").
+		//append("HandlerClassName: ").append(handlerClassName).append("\n").
+		append("FilePath: ").append(filePath).append("\n");
+		if (spam != null) {
+			sb.append("Spam: ").append(spam).append("\n");
+		}
 		if (maxElements != null) {
 			sb.append("MaxElements: ").append(maxElements).append("\n");
 		}
 		
 		if (!customParams.isEmpty()) {
-			sb.append("Custom params: ");
+			sb.append("Custom params: \n");
 			for (String key: customParams.keySet()) {
 				CustomParamConfig customParam = 
 							customParams.get(key);

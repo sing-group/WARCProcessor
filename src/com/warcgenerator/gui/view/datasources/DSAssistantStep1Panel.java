@@ -18,7 +18,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -27,6 +26,15 @@ import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep1ContinueAction;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
+import com.warcgenerator.gui.view.common.validator.NotNullOREmptyValidator;
+import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import javax.swing.Box;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.Icon;
+import java.awt.FlowLayout;
+import javax.swing.SwingConstants;
 
 public class DSAssistantStep1Panel extends CustomJPanel {
 	/**
@@ -58,11 +66,7 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 		
-		setBackground(new Color(230, 230, 250));
-
-		JLabel lblNewLabel = new JLabel("Origenes de datos");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		//setBackground(new Color(230, 230, 250));
 
 		JTextPane txtpnunOrigenDe = new JTextPane();
 		txtpnunOrigenDe.setEditable(false);
@@ -78,123 +82,176 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 			}
 		});
 
-		JLabel lblNewLabel_1 = new JLabel("Nombre:");
-
-		JLabel lblNewLabel_2 = new JLabel("Carpeta:");
-
-		JLabel lblNewLabel_3 = new JLabel("Tipo:");
-
-		nameJTField = new JFormattedTextField();
-		nameJTField.setColumns(10);
-
-		folderJTField = new JFormattedTextField();
-		folderJTField.setEditable(false);
-		folderJTField.setColumns(10);
-
 		JButton btnNewButton = new JButton("Cancelar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dsAssistantCancelAction.actionPerformed(e);
 			}
 		});
-
-		JLabel lblPasoDe = new JLabel("Paso 1 de 3");
-
-		tipoDSCBox = new JComboBox();
-
-		JButton btnBuscar = new JButton("Examinar");
-		btnBuscar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				int returnVal = fc.showOpenDialog(DSAssistantStep1Panel.this);
-				
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					File file = fc.getSelectedFile();
-					folderJTField.setText(file.getAbsolutePath());
-					// This is where a real application would open the file.
-					//log.append("Opening: " + file.getName() + ".");
-				} else {
-					//log.append("Open command cancelled by user.");
-				}
-			}
-		});
+		setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		//panel.setBackground(new Color(230, 230, 250));
+		add(panel, BorderLayout.NORTH);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[] {0, 0, 363};
+		gbl_panel.rowHeights = new int[]{0, 36, 0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel.setLayout(gbl_panel);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
+		gbc_horizontalStrut.insets = new Insets(5, 0, 5, 0);
+		gbc_horizontalStrut.gridx = 2;
+		gbc_horizontalStrut.gridy = 0;
+		panel.add(horizontalStrut, gbc_horizontalStrut);
 		
 		JLabel lblNewLabel_4 = new JLabel(icon);
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(23)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(23)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblNewLabel_1)
-								.addComponent(lblNewLabel_3)
-								.addComponent(lblNewLabel_2))
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(nameJTField, GroupLayout.PREFERRED_SIZE, 284, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-									.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(folderJTField)
-										.addGap(18)
-										.addComponent(btnBuscar)
-										.addPreferredGap(ComponentPlacement.RELATED))
-									.addComponent(tipoDSCBox, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblNewLabel_4)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel))
-						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-							.addGroup(groupLayout.createSequentialGroup()
-								.addComponent(lblPasoDe)
-								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnNewButton)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(btnNuevoOrigen))
-							.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(23, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(21)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_4))
-					.addGap(18)
-					.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_1)
-						.addComponent(nameJTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(11)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(folderJTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_2)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnBuscar)))
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(18)
-							.addComponent(lblNewLabel_3))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(tipoDSCBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnNuevoOrigen)
-						.addComponent(lblPasoDe)
-						.addComponent(btnNewButton))
-					.addGap(21))
-		);
-		setLayout(groupLayout);
-
+		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
+		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_4.gridx = 1;
+		gbc_lblNewLabel_4.gridy = 1;
+		panel.add(lblNewLabel_4, gbc_lblNewLabel_4);
+		
+		Component verticalStrut = Box.createVerticalStrut(20);
+		GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
+		gbc_verticalStrut.gridheight = 2;
+		gbc_verticalStrut.insets = new Insets(0, 0, 0, 5);
+		gbc_verticalStrut.gridx = 0;
+		gbc_verticalStrut.gridy = 1;
+		panel.add(verticalStrut, gbc_verticalStrut);
+		
+		JLabel label = new JLabel((Icon) null);
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.insets = new Insets(0, 0, 5, 0);
+		gbc_label.gridx = 2;
+		gbc_label.gridy = 1;
+		panel.add(label, gbc_label);
+		
+				JLabel lblNewLabel = new JLabel("Origenes de datos");
+				GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+				gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
+				gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
+				gbc_lblNewLabel.gridx = 2;
+				gbc_lblNewLabel.gridy = 1;
+				panel.add(lblNewLabel, gbc_lblNewLabel);
+				lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+				lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		
+		JLabel label_2 = new JLabel("Seleccione los par\u00E1metros del corpus a generar.");
+		GridBagConstraints gbc_label_2 = new GridBagConstraints();
+		gbc_label_2.anchor = GridBagConstraints.WEST;
+		gbc_label_2.gridwidth = 2;
+		gbc_label_2.gridx = 1;
+		gbc_label_2.gridy = 2;
+		panel.add(label_2, gbc_label_2);
+		
+		JPanel panel_1 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		add(panel_1, BorderLayout.SOUTH);
+		
+				JLabel lblPasoDe = new JLabel("Paso 1 de 3");
+				lblPasoDe.setHorizontalAlignment(SwingConstants.LEFT);
+				panel_1.add(lblPasoDe);
+		panel_1.add(btnNewButton);
+		panel_1.add(btnNuevoOrigen);
+		panel_1.add(txtpnunOrigenDe);
+		
+		JPanel panel_2 = new JPanel();
+		add(panel_2, BorderLayout.CENTER);
+		GridBagLayout gbl_panel_2 = new GridBagLayout();
+		gbl_panel_2.columnWidths = new int[] {0, 190, 82};
+		gbl_panel_2.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_2.setLayout(gbl_panel_2);
+				
+				Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+				GridBagConstraints gbc_horizontalStrut_2 = new GridBagConstraints();
+				gbc_horizontalStrut_2.gridwidth = 3;
+				gbc_horizontalStrut_2.insets = new Insets(10, 0, 5, 0);
+				gbc_horizontalStrut_2.gridx = 0;
+				gbc_horizontalStrut_2.gridy = 0;
+				panel_2.add(horizontalStrut_2, gbc_horizontalStrut_2);
+		
+				JLabel lblNewLabel_1 = new JLabel("Nombre:");
+				GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+				gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
+				gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+				gbc_lblNewLabel_1.gridx = 0;
+				gbc_lblNewLabel_1.gridy = 1;
+				panel_2.add(lblNewLabel_1, gbc_lblNewLabel_1);
+								
+										nameJTField = new JFormattedTextField();
+										GridBagConstraints gbc_nameJTField = new GridBagConstraints();
+										gbc_nameJTField.fill = GridBagConstraints.HORIZONTAL;
+										gbc_nameJTField.insets = new Insets(0, 0, 5, 5);
+										gbc_nameJTField.gridx = 1;
+										gbc_nameJTField.gridy = 1;
+										panel_2.add(nameJTField, gbc_nameJTField);
+										nameJTField.setInputVerifier(new NotNullOREmptyValidator(view.getMainFrame(), nameJTField, "Debe especificar un nombre"));
+										nameJTField.setColumns(10);
+						
+								JLabel lblNewLabel_2 = new JLabel("Carpeta:");
+								GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+								gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
+								gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+								gbc_lblNewLabel_2.gridx = 0;
+								gbc_lblNewLabel_2.gridy = 2;
+								panel_2.add(lblNewLabel_2, gbc_lblNewLabel_2);
+						
+								folderJTField = new JFormattedTextField();
+								GridBagConstraints gbc_folderJTField = new GridBagConstraints();
+								gbc_folderJTField.fill = GridBagConstraints.HORIZONTAL;
+								gbc_folderJTField.insets = new Insets(0, 0, 5, 5);
+								gbc_folderJTField.gridx = 1;
+								gbc_folderJTField.gridy = 2;
+								panel_2.add(folderJTField, gbc_folderJTField);
+								folderJTField.setEditable(false);
+								folderJTField.setColumns(10);
+						
+								JButton btnBuscar = new JButton("Examinar");
+								GridBagConstraints gbc_btnBuscar = new GridBagConstraints();
+								gbc_btnBuscar.insets = new Insets(0, 0, 5, 0);
+								gbc_btnBuscar.gridx = 2;
+								gbc_btnBuscar.gridy = 2;
+								panel_2.add(btnBuscar, gbc_btnBuscar);
+								btnBuscar.addActionListener(new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent arg0) {
+										fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+										int returnVal = fc.showOpenDialog(DSAssistantStep1Panel.this);
+										
+										if (returnVal == JFileChooser.APPROVE_OPTION) {
+											File file = fc.getSelectedFile();
+											folderJTField.setText(file.getAbsolutePath());
+											// This is where a real application would open the file.
+											//log.append("Opening: " + file.getName() + ".");
+										} else {
+											//log.append("Open command cancelled by user.");
+										}
+									}
+								});
+				
+						JLabel lblNewLabel_3 = new JLabel("Tipo:");
+						GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+						gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
+						gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
+						gbc_lblNewLabel_3.gridx = 0;
+						gbc_lblNewLabel_3.gridy = 3;
+						panel_2.add(lblNewLabel_3, gbc_lblNewLabel_3);
+								
+										tipoDSCBox = new JComboBox();
+										GridBagConstraints gbc_tipoDSCBox = new GridBagConstraints();
+										gbc_tipoDSCBox.fill = GridBagConstraints.HORIZONTAL;
+										gbc_tipoDSCBox.insets = new Insets(0, 0, 0, 5);
+										gbc_tipoDSCBox.gridx = 1;
+										gbc_tipoDSCBox.gridy = 3;
+										panel_2.add(tipoDSCBox, gbc_tipoDSCBox);
+		
+		
 	}
 
 	public void setTipoDSCBoxValues(String[] values) {

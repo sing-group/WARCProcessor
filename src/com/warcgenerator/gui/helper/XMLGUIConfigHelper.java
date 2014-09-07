@@ -153,8 +153,6 @@ public class XMLGUIConfigHelper {
 			
 			StreamResult result = new StreamResult(new File(path));
 
-			// StreamResult result = new StreamResult(System.out);
-
 			transformer.transform(source, result);
 
 		} catch (ParserConfigurationException e) {

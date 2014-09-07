@@ -13,6 +13,7 @@ public class WebCrawlerConfig {
 	private Set<String> urls;
 	private int numberOfCrawlers;
 	private int maxDepthOfCrawling;
+	private boolean followRedirect;
 	
 	public WebCrawlerConfig() {
 	}
@@ -22,6 +23,7 @@ public class WebCrawlerConfig {
 		this.urls = template.getUrls();
 		this.maxDepthOfCrawling = template.getMaxDepthOfCrawling();
 		this.storePath = template.getStorePath();
+		this.followRedirect = template.isFollowRedirect();
 	}
 
 	public Set<String> getUrls() {
@@ -54,6 +56,14 @@ public class WebCrawlerConfig {
 
 	public void setStorePath(String storePath) {
 		this.storePath = storePath;
+	}
+
+	public boolean isFollowRedirect() {
+		return followRedirect;
+	}
+
+	public void setFollowRedirect(boolean followRedirect) {
+		this.followRedirect = followRedirect;
 	}
 	
 	

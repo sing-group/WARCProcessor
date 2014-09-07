@@ -8,14 +8,18 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
+
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.actions.datasource.DSDetailAction;
 import com.warcgenerator.gui.components.CustomTreeNode;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class MenuHelper {
+	private static Logger logger = Logger.getLogger
+            (MenuHelper.class);
+	
 	public static void loadDS(DefaultMutableTreeNode treeNode, 
 			WarcGeneratorGUI view,
 			IAppLogic logic) {
@@ -35,8 +39,6 @@ public class MenuHelper {
 			CustomTreeNode treeNodeDS = new CustomTreeNode(config.getName());
 			treeNodeDS.setId(config.getId());
 			treeNodeDS.setAction(new DSDetailAction(logic, view, config));
-
-			System.out.println("insertando: " + config);
 
 			// Insert at the end of datasources
 			node.insert(treeNodeDS, node.getChildCount());
@@ -73,11 +75,7 @@ public class MenuHelper {
 				if (((CustomTreeNode)node).getId() != null &&
 						((CustomTreeNode)node).getId().equals(id)) {	
 					((DefaultMutableTreeNode)node.getParent()).remove(node);
-					
-					
-				//	System.out.println("node: " + previousNode);
-					//System.out.println("node name: " + previousNode.getUserObject().toString());
-					
+						
 					tree.updateUI();
 					tree.repaint();
 					
@@ -140,7 +138,7 @@ public class MenuHelper {
 					.getPathToRoot(node);
 			tp = new TreePath(nodes);
 		} else {
-			System.out.println("Node with string " + search + " not found");
+			logger.info("Node with string " + search + " not found");
 		}
 		return tp;
 	}

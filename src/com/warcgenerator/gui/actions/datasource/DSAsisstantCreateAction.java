@@ -91,15 +91,10 @@ public class DSAsisstantCreateAction extends CustomAction {
 						"¿Esta seguro que desea salir del asistente?");
 
 				if (userSelection == JOptionPane.OK_OPTION) {
-					System.out.println("JPanel es de tipo: " + cardLayout
-					.getCurrentPanel(mainAssistantCreatePanel).getClass().getName()); 
-					
 					CustomJPanel panel = (CustomJPanel) cardLayout
 							.getCurrentPanel(mainAssistantCreatePanel);
 					panel.rollback();
 
-					//JPanel newPanel = (JPanel) ((Object[]) message)[1];
-					//view.loadMainPanel(newPanel);
 					Action nextAction = (Action)((Object[])message)[1];
 					nextAction.actionPerformed(null);
 				}

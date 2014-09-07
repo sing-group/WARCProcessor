@@ -3,6 +3,13 @@ package com.warcgenerator.gui.helper;
 import org.apache.commons.validator.routines.IntegerValidator;
 
 public class ValidatorHelper {
+	public static boolean isNotNullOREmpty(String textToValidate) {
+		if (textToValidate == null || textToValidate.equals("")) {
+			return false;
+		}
+		return true;
+	}
+	
 	public static boolean isNaturalNumberAndZero(String textToValidate) {
 		IntegerValidator v = IntegerValidator.getInstance();
 		

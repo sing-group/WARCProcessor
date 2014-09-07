@@ -42,6 +42,8 @@ public class OtherSaveAction
 				getNumberOfCrawlersTField().getText()));
 		appConfig.setMaxDepthOfCrawling(Integer.parseInt(
 				panel.getDeepCrawlerTField().getText()));
+		appConfig.setFollowRedirect(
+				panel.getChckbxFollowRedirect().isSelected());
 		
 		if (validate(appConfig)) {
 			try {
@@ -58,7 +60,7 @@ public class OtherSaveAction
 		
 		if (errors.length() != 0) {
 			ValidationDialog dialog =
-					ValidationDialog.getInstance();
+					ValidationDialog.getInstance(view.getMainFrame());
 			dialog.setErroresLabel(errors.toString());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);

@@ -22,6 +22,7 @@ public interface Constants {
 		Integer NUM_SITES_DEFAULT = 1000;
 		Boolean ONLY_ACTIVE_SITES_DEFAULT = true;
 		Boolean DOWNLOAD_AGAIN_DEFAULT = true;
+		Boolean FOLLOW_REDIRECT_DEFAULT = true;
 		Boolean RATIO_IS_PERCENTAGE_DEFAULT = true;
 		Integer RATIO_PERCENTAGE_SPAM_DEFAULT = 0;
 		Integer RATIO_QUANTITY_SPAM_DEFAULT = 0;

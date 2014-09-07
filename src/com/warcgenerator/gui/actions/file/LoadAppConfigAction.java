@@ -5,33 +5,44 @@ import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.logic.AppLogic;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
-import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.helper.GUIConfigHelper;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
-public class LoadAppConfigAction extends CustomAction implements Observer {
+/**
+ * Load an exist general config.
+ * 
+ * @author Miguel Callon
+ *
+ */
+public class LoadAppConfigAction extends AbstractAction implements Observer {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
 	private File fileToSave;
 
+	/**
+	 * Default constructor
+	 * @param logic @type of IAppLogic
+	 * @param view @type of WarcGeneratorGUI
+	 */
 	public LoadAppConfigAction(IAppLogic logic, WarcGeneratorGUI view) {
-		super(view);
 		this.view = view;
 		this.logic = logic;
 		logic.addObserver(this);
 	}
 
 	@Override
-	public void action(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Specify a file to load");
 
@@ -54,14 +65,19 @@ public class LoadAppConfigAction extends CustomAction implements Observer {
 	public void update(Observable obj, Object logicCallback) {
 		if (obj == logic) {
 			String message = ((LogicCallback) logicCallback).getMessage();
-			if (this.isCurrentAction() && 
-					message.equals(AppLogic.APP_CONFIG_LOADED_CALLBACK)) {
+			if (message.equals(AppLogic.APP_CONFIG_LOADED_CALLBACK)) {
 				// Reload tree
 				view.buildTree();
 				view.loadRecentFiles();
+				
+				// Remove recent changes from the session
+				Session.add(Constants.FORM_MODIFIED_SESSION_KEY,
+						new Boolean(false));					
+				
 				view.selectFirstSelectionableItem();
 				JOptionPane.showMessageDialog(view.getMainFrame(), 
-						"La configuracion se ha cargado correctamente");
+						Messages.getString(
+								"LoadAppConfigAction.confirmLoadConfiguration"));
 			}
 		}
 	}

@@ -102,7 +102,6 @@ public class XMLConfigHelper {
 			for (int s = 0; s < listRatio.getLength(); s++) {
 				Node nodeAux = listRatio.item(s);
 				if (nodeAux.getNodeType() == Node.ELEMENT_NODE) {
-					System.out.println("nodename es " + nodeAux.getNodeName());
 					if (nodeAux.getNodeName().equals("percentageSpam")) {
 						config.setRatioPercentageSpam(Integer.parseInt(nodeAux
 								.getTextContent().trim()));
@@ -148,9 +147,6 @@ public class XMLConfigHelper {
 					ds.setType(dataSourceElement.getAttribute("type"));
 					
 					// Check if isSpam parameter exists
-					
-					System.out.println("is Spam is " + 
-							dataSourceElement.getAttribute("isSpam"));
 					if (dataSourceElement.getAttribute("isSpam") != null) {
 						String isSpam = dataSourceElement
 								.getAttribute("isSpam");
@@ -166,9 +162,6 @@ public class XMLConfigHelper {
 									.equals("")) {
 						String maxElements = dataSourceElement
 								.getAttribute("maxElements");
-						
-						System.out.println("maxElements es " + maxElements);
-						
 						// TODO Test if maxElements is a int number
 						ds.setMaxElements(Integer.valueOf(maxElements));
 					}
@@ -247,13 +240,6 @@ public class XMLConfigHelper {
 			doc.getDocumentElement().normalize();
 
 			NodeList listOfDS = doc.getElementsByTagName("dataSource");
-			int totalDS = listOfDS.getLength();
-
-			System.out.println("path es: " + path);
-
-			System.out.println("total ds: " + totalDS);
-
-			System.out.println("dataSourcesTypes es: " + dataSourcesTypes);
 
 			for (int s = 0; s < listOfDS.getLength(); s++) {
 				Node dataSourceNode = listOfDS.item(s);
@@ -263,9 +249,6 @@ public class XMLConfigHelper {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setName(dataSourceElement.getAttribute("name"));
 					ds.setDsClassName(dataSourceElement.getAttribute("class"));
-
-					System.out.println("name es " + ds.getName());
-					System.out.println("class " + ds.getDsClassName());
 
 					// NodeList nodeList = dataSourceElement.getChildNodes();
 					NodeList dataSourceInfoNode = dataSourceNode
@@ -405,7 +388,6 @@ public class XMLConfigHelper {
 
 			Element flushOutputDir = doc.createElement("flushOutputDir");
 			
-			System.out.println("Guardar flushOutputDir: " + config.getFlushOutputDir().toString());
 			flushOutputDir
 					.setTextContent(config.getFlushOutputDir().toString());
 			rootElement.appendChild(flushOutputDir);
@@ -483,11 +465,8 @@ public class XMLConfigHelper {
 
 			// normalize text representation
 			doc.getDocumentElement().normalize();
-			
+
 			StreamResult result = new StreamResult(new File(path));
-
-			// StreamResult result = new StreamResult(System.out);
-
 			transformer.transform(source, result);
 
 		} catch (ParserConfigurationException e) {

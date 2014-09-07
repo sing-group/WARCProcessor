@@ -54,9 +54,6 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		XMLConfigHelper.getDataSources(Constants.dataSourcesTypesXML,
 				dataSourcesTypes);
 
-		System.out.println("config.getOutputConfig() es "
-				+ config.getOutputConfig());
-
 		// Create a output corpus with config
 		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
 			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
@@ -102,12 +99,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	}
 
 	public void updateAppConfig(AppConfig appConfig) throws LogicException {
-		try {
-			appConfig.validate();
-		} catch (ConfigException e) {
-			throw new LogicException(e);
-		}
-
+		appConfig.validate();
 		try {
 			BeanUtils.copyProperties(config, appConfig);
 		} catch (IllegalAccessException e) {
@@ -284,13 +276,13 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		// ////////// READING SPAM
 		Task t2 = new ReadURLsTask(config, outputCorpusConfig,
 				generateCorpusState, outputDS,
-				labeledDS, notFoundDS, urlsSpam, urlsActive,
+				labeledDS, notFoundDS, urlsSpam, true, urlsActive,
 				urlsNotActive);
 
 		// ////////// READING HAM
 		Task t3 = new ReadURLsTask(config, outputCorpusConfig,
 				generateCorpusState, outputDS,
-				labeledDS, notFoundDS, urlsHam, urlsActive,
+				labeledDS, notFoundDS, urlsHam, false, urlsActive,
 				urlsNotActive);
 
 		// Read url that contains html

@@ -57,7 +57,7 @@ public class OutputSaveAction
 		
 		if (errors.length() != 0) {
 			ValidationDialog dialog =
-					ValidationDialog.getInstance();
+					ValidationDialog.getInstance(view.getMainFrame());
 			dialog.setErroresLabel(errors.toString());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);

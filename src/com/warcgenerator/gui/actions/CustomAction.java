@@ -42,20 +42,18 @@ public abstract class CustomAction extends AbstractAction implements Observer {
 			// Check menu 
 			currentMenuPath = nextMenuPath;
 
-			if (panel != null) {
-				panel.setVisible(false);
-			}
+			panel.setVisible(false);
 			view.deleteObserver(currentAction);
+			
 			currentAction = this;
 			currentAction.action(e);
+			
 			view.addObserver(currentAction);
 			if (panel instanceof CustomJPanel) {
 				((CustomJPanel)panel).commit();
 			}
 			
-			if (panel != null) {
-				panel.setVisible(true);
-			}
+			panel.setVisible(true);
 		} else {
 			nextMenuPath = currentMenuPath;
 			view.tryChangeMainPanel(this);

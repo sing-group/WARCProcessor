@@ -42,7 +42,7 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 	}
 
 	public void execute() {
-		logger.info("Task start: CheckActiveSitesConfigTask");
+		logger.info("Task start");
 
 		if (!config.getOnlyActiveSites()) {
 			for (String url : urlsInactives) {
@@ -79,10 +79,10 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 			}
 		}
 
-		logger.info("Task completed: CheckActiveSitesConfigTask");
+		logger.info("Task completed");
 	}
 
 	public void rollback() {
-		System.out.println("ReadSpamWithContentTask");
+		logger.info("Rollback");
 	}
 }

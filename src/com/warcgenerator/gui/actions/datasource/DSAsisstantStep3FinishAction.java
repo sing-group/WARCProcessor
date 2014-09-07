@@ -41,15 +41,7 @@ public class DSAsisstantStep3FinishAction
 		dsConfig  = 
 				(DataSourceConfig)Session.get(
 						Constants.DATASOURCE_FORM_SESSION_KEY);
-		System.out.println("Insertando!!! " + dsConfig);
-		
 		logic.addDataSourceConfig(dsConfig);
-		
-		Collection<DataSourceConfig> dsConfigList =
-				logic.getDataSourceConfigList();
-		for(DataSourceConfig key: dsConfigList) {
-			System.out.println(key);
-		}	
 	}
 
 	@Override

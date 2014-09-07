@@ -29,6 +29,7 @@ public class ReadURLsTask extends Task implements ITask {
 	private Map<String, DataSource> outputDS;
 	private Set<String> urlsActive;
 	private Set<String> urlsNotActive;
+	private boolean isSpam;
 	
 	private static Logger logger = Logger.getLogger
             (ReadURLsTask.class);
@@ -40,6 +41,7 @@ public class ReadURLsTask extends Task implements ITask {
 			IDataSource labeledDS,
 			IDataSource notFoundDS,
 			Map<String, DataBean> urls, 
+			boolean isSpam,
 			Set<String> urlsActive,
 			Set<String> urlsNotActive) {
 		this.config = config;
@@ -49,22 +51,28 @@ public class ReadURLsTask extends Task implements ITask {
 		this.labeledDS = labeledDS;
 		this.notFoundDS = notFoundDS;
 		this.urls = urls;
+		this.isSpam = isSpam;
 		this.urlsActive = urlsActive;
 		this.urlsNotActive = urlsNotActive;
 	}
 	
 	public void execute() {
-		logger.info("Task start: ReadSpamTask");
+		logger.info("Task start");
 		
 		if (urls.size() > 0) {
 			generateCorpusState.setState(GenerateCorpusStates.READING_URLS);
 			generateCorpusState.setWebsToVisitTotal(urls.size());
 			WebCrawlerBean webCrawlerBean = new WebCrawlerBean(labeledDS,
-					notFoundDS, true, outputCorpusConfig);
+					notFoundDS, isSpam, outputCorpusConfig);
 			
 			WebCrawlerConfig webCrawlerConfig = new WebCrawlerConfig(
 					config.getWebCrawlerCfgTemplate());
 			webCrawlerConfig.setUrls(urls.keySet());
+			webCrawlerConfig.setMaxDepthOfCrawling(config.getMaxDepthOfCrawling());
+			webCrawlerConfig.setStorePath(config.getWebCrawlerTmpStorePath());
+			webCrawlerConfig.setNumberOfCrawlers(config.getNumCrawlers());
+			webCrawlerConfig.setFollowRedirect(config.getFollowRedirect());
+			
 			IWebCrawler webCrawler = new Crawler4JAdapter(
 					config,
 					generateCorpusState,
@@ -79,11 +87,11 @@ public class ReadURLsTask extends Task implements ITask {
 			webCrawler.start();
 		}
 		
-		logger.info("Task end: ReadSpamTask");
+		logger.info("Task completed");
 	}
 	
 	public void rollback() {
-		System.out.println("Rollback ReadSpamTask");
+		logger.info("Rollback");
 		if (webCrawler != null)
 			webCrawler.stop();
 	}

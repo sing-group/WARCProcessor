@@ -30,6 +30,7 @@ public class AppConfig {
 	private Integer numSites;
 	private Boolean onlyActiveSites;
 	private Boolean downloadAgain;
+	private Boolean followRedirect;
 	private Boolean ratioIsPercentage;
 	private Integer ratioPercentageSpam;
 	private Integer ratioQuantitySpam;
@@ -70,6 +71,9 @@ public class AppConfig {
 		downloadAgain = Validator.isNullOrEmpty(downloadAgain)?
 				Constants.AppConfigConstants.DOWNLOAD_AGAIN_DEFAULT:
 					downloadAgain;
+		followRedirect = Validator.isNullOrEmpty(followRedirect)?
+				Constants.AppConfigConstants.FOLLOW_REDIRECT_DEFAULT:
+					followRedirect;
 		ratioIsPercentage = Validator.isNullOrEmpty(ratioIsPercentage)?
 				Constants.AppConfigConstants.RATIO_IS_PERCENTAGE_DEFAULT:
 					ratioIsPercentage;
@@ -268,8 +272,17 @@ public class AppConfig {
 		this.dataSourceConfigs = dataSourceConfigs;
 	}
 	
+	public Boolean getFollowRedirect() {
+		return followRedirect;
+	}
+
+	public void setFollowRedirect(Boolean followRedirect) {
+		this.followRedirect = followRedirect;
+	}
+	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer("-- AppConfig -- \n");
+		sb.append("corpusDirPath:  ").append(corpusDirPath).append("\n");
 		sb.append("spamDirName:  ").append(spamDirName).append("\n");
 		sb.append("hamDirName:  ").append(hamDirName).append("\n");
 		sb.append("domainsLabeledFileName:  ").append(domainsLabeledFileName)
@@ -285,12 +298,18 @@ public class AppConfig {
 		sb.append("webCrawlerDirTmpStorePath:  ")
 				.append(webCrawlerTmpStorePath).append("\n");
 		sb.append("downloadAgain: ").append(downloadAgain).append("\n");
+		sb.append("followRedirect: ").append(followRedirect).append("\n");
+		sb.append("\n");
+		for (DataSourceConfig dsConfig:dataSourceConfigs.values()) {
+			sb.append(dsConfig.toString());
+			sb.append("\n");
+		}
 		return sb.toString();
 	}
 	
 	public boolean validate() {
 		// Check if ratioQuantity is bigger than numSites
-		if (!ratioIsPercentage && numSites < ratioPercentageSpam) {
+		if (!ratioIsPercentage && numSites < ratioQuantitySpam) {
 			throw new RatioQuantityUnexpectedValueException();
 		}
 		

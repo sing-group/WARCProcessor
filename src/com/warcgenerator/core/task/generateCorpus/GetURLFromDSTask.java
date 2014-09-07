@@ -2,6 +2,8 @@ package com.warcgenerator.core.task.generateCorpus;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.config.AppConfig;
@@ -15,6 +17,9 @@ public class GetURLFromDSTask extends Task implements ITask {
 	private AppConfig config;
 	private Map<String, DataBean> urlsSpam, urlsHam;
 	
+	private static Logger logger = Logger
+			.getLogger(CheckActiveSitesConfigTask.class);
+	
 	public GetURLFromDSTask(
 			AppConfig config,
 			GenerateCorpusState generateCorpusState,
@@ -26,6 +31,7 @@ public class GetURLFromDSTask extends Task implements ITask {
 	}
 	
 	public void execute() {
+		logger.info("Task start");
 		generateCorpusState
 				.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
 		// Get all DSHandlers for each DS
@@ -34,11 +40,12 @@ public class GetURLFromDSTask extends Task implements ITask {
 				.values()) {
 			getUrls(dsConfig, urlsSpam, urlsHam);
 		}
+		logger.info("Task completed");
 	}
 	
 	public void rollback() {
 		// Rollback
-		System.out.println("Rollback GetURLFromDSTask");
+		logger.info("Rollback");
 	}
 	
 	private void getUrls(DataSourceConfig dsConfig, Map<String, DataBean> urlsSpam,

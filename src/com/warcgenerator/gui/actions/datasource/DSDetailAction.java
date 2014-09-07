@@ -44,8 +44,6 @@ public class DSDetailAction extends CustomAction {
 		this.view = view;
 		this.config = config;
 		
-		System.out.println("config!!!!! es " + config);
-		
 		mainDetailPanel = view.getAssistantPanel();
 		
 		detailPanel = 

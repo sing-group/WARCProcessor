@@ -1,8 +1,10 @@
 package com.warcgenerator.core.plugin.webcrawler;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,6 +54,9 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 					+ "|png|tiff?|mid|mp2|mp3|mp4"
 					+ "|wav|avi|mov|mpeg|ram|m4v|pdf"
 					+ "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
+	
+	// Allow any urls
+	private static Set<String> urlsAllowed;
 
 	public Crawler4JAdapter() {
 		parseDataMap = new HashMap<String, 
@@ -78,17 +83,24 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		this.urls = urls;
 		this.urlsActive = urlsActive;
 		this.urlsNotActive = urlsNotActive;
-		String crawlStorageFolder = configWC.getStorePath();
+	
 		numberOfCrawlers = configWC.getNumberOfCrawlers();
 
+		// Ursls to avoid exit from the seed urls domains
+		urlsAllowed = urls.keySet();		
+		
 		CrawlConfig config = new CrawlConfig();
-		config.setCrawlStorageFolder(crawlStorageFolder);
-
+		config.setCrawlStorageFolder(configWC.getStorePath());
+		config.setFollowRedirects(configWC.isFollowRedirect());
+		
+		System.out.println("redirect es: " + config.isFollowRedirects());
+		
 		/*
 		 * You can set the maximum crawl depth here. The default value is -1 for
 		 * unlimited depth
 		 */
 		config.setMaxDepthOfCrawling(configWC.getMaxDepthOfCrawling());
+		System.out.println("maxDepthOfCrawling: " + config.getMaxDepthOfCrawling());
 		
 		/*
 		 * Instantiate the controller for this crawl.
@@ -193,11 +205,26 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	 */
 	@Override
 	public boolean shouldVisit(WebURL url) {
+		System.out.println("error-------------------------------> " + url);
 		String href = url.getURL().toLowerCase();
-		// return !FILTERS.matcher(href).matches()
-		// && href.startsWith("http://www.ics.uci.edu/");
-		return !FILTERS.matcher(href).matches() 
-			&& href.startsWith("http://www.ics.uci.edu/");
+		
+		// Avoid that the crawler go out from the source domains.
+		boolean domainAllowed = false;
+		for(Iterator<String> it = urlsAllowed.iterator();
+			it.hasNext() && !domainAllowed;) {
+			String urlAllowed = it.next();
+			
+			String domain = FileHelper.getURLWithoutParams(urlAllowed);
+			System.out.println("href es: " + href);
+			System.out.println("domain es " + domain);
+			if (href.startsWith(domain)) {
+				domainAllowed = true;	                       
+			}
+			System.out.println("permitido es: " + domainAllowed);
+		}
+
+		return !FILTERS.matcher(href).matches() &&
+				domainAllowed;
 	}
 	
 	@Override

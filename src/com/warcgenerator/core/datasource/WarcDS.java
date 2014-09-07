@@ -149,7 +149,6 @@ public class WarcDS extends DataSource implements IDataSource {
 			skip = false;
 			if (archIt.hasNext()) {
 				ar = archIt.next();
-				//System.out.println("faltan: " + );
 			}
 			if (ar != null) {
 				// Get the filename
@@ -208,14 +207,12 @@ public class WarcDS extends DataSource implements IDataSource {
 			    writer.writeResourceRecord(bean.getUrl(),
 			                ArchiveUtils.get14DigitDate(), Constants.outputContentType,
 			                headers, is, is.available());
-			
+
 			    is.close();
 			} catch (IOException e) {
-				System.out.println("erroror1!!!");
 				e.printStackTrace();
 				throw new WriteException(e);
 			} catch (Exception e) {
-				System.out.println("erroror2!!!");
 				e.printStackTrace();
 			}
 	}

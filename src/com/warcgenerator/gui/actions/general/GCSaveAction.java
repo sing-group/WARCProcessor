@@ -9,6 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.config.AppConfig;
+import com.warcgenerator.core.exception.config.validation.RatioQuantityUnexpectedValueException;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
@@ -64,9 +65,15 @@ public class GCSaveAction
 	public boolean validate(AppConfig config) {
 		StringBuilder errors = new StringBuilder();
 		
+		try {
+			config.validate();
+		} catch (RatioQuantityUnexpectedValueException ex) {
+			errors.append("Ratio no puede ser mayor que el numero de sites \n");
+		}
+		
 		if (errors.length() != 0) {
 			ValidationDialog dialog =
-					ValidationDialog.getInstance();
+					ValidationDialog.getInstance(view.getMainFrame());
 			dialog.setErroresLabel(errors.toString());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);

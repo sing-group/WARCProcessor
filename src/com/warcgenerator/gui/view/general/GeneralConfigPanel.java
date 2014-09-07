@@ -30,6 +30,14 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.validator.NaturalNumberAndZeroValidator;
 import com.warcgenerator.gui.view.common.validator.NaturalNumberValidator;
 import com.warcgenerator.gui.view.common.validator.PercentageValidator;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.Box;
+import java.awt.FlowLayout;
+import javax.swing.SwingConstants;
 
 public class GeneralConfigPanel extends CustomJPanel {
 	private JFormattedTextField numSitesTField;
@@ -48,6 +56,13 @@ public class GeneralConfigPanel extends CustomJPanel {
 	
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;
+	private JPanel panel;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JLabel lblSeleccioneLosParmetros;
+	private Component horizontalStrut;
+	private Component verticalStrut;
+	private Component horizontalStrut_2;
 		
 	/**
 	 * Create the panel.
@@ -62,15 +77,6 @@ public class GeneralConfigPanel extends CustomJPanel {
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/application.png"));
 		
 		setBackground(new Color(230, 230, 250));
-		
-		JLabel lblNewLabel = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel.text")); //$NON-NLS-1$
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		
-		JTextPane txtpnunOrigenDe = new JTextPane();
-		txtpnunOrigenDe.setEditable(false);
-		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
-		txtpnunOrigenDe.setText(Messages.getString("GeneralConfigPanel.txtpnunOrigenDe.text")); //$NON-NLS-1$
 		
 		saveAndGenerateBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNuevoOrigen.text")); //$NON-NLS-1$
 	
@@ -87,61 +93,8 @@ public class GeneralConfigPanel extends CustomJPanel {
 			}
 		});
 		
-		JLabel lblNewLabel_1 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_1.text")); //$NON-NLS-1$
-		
-		numSitesTField = new JFormattedTextField("");
-		numSitesTField.setToolTipText(Messages.getString("GeneralConfigPanel.numSitesTField.toolTipText")); //$NON-NLS-1$
-		numSitesTField.setInputVerifier(new NaturalNumberValidator(view.getMainFrame(), numSitesTField, "Numero mayor que 0"));
-		numSitesTField.setColumns(10);
-		
 		 //Group the radio buttons.
 	    ButtonGroup group = new ButtonGroup();
-		spamHamRatioRBtn = new JRadioButton(Messages.getString("GeneralConfigPanel.spamHamRationEnabledCBox.text")); //$NON-NLS-1$
-		spamHamRatioRBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				spamQuantityTField.setEnabled(false);
-				slider.setEnabled(true);
-				spamHamRationValueTField.setEnabled(true);
-			}
-		});
-		
-		quantityEnabledRBtn = new JRadioButton(Messages.getString("GeneralConfigPanel.rdbtnNewRadioButton.text")); //$NON-NLS-1$
-		quantityEnabledRBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				spamQuantityTField.setEnabled(true);
-				slider.setEnabled(false);
-				spamHamRationValueTField.setEnabled(false);	
-			}
-		});
-		
-		group.add(spamHamRatioRBtn);
-		group.add(quantityEnabledRBtn);
-		
-		slider = new JSlider();
-		slider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				JSlider source = (JSlider)e.getSource();
-			    if (!source.getValueIsAdjusting()) {
-			        int value = (int)source.getValue();
-			        spamHamRationValueTField.setValue(Integer.toString(value));
-			    }
-			}
-		});
-		
-		spamHamRationValueTField = new JFormattedTextField("");
-		spamHamRationValueTField.setInputVerifier(
-				new PercentageValidator(view.getMainFrame(), spamHamRationValueTField, "Field cannot be null... "));
-		spamHamRationValueTField.setColumns(10);
-		
-		JLabel lblNewLabel_2 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_2.text")); //$NON-NLS-1$
-		
-		spamQuantityTField = new JFormattedTextField("");
-		spamQuantityTField.setInputVerifier(
-				new NaturalNumberAndZeroValidator(view.getMainFrame(), spamQuantityTField, "Field cannot be null... "));
-		spamQuantityTField.setColumns(10);
-		
-		onlyActiveSitesEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox.text")); //$NON-NLS-1$
-		downloadAgainEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox_1.text")); //$NON-NLS-1$
 		
 		saveBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNewButton.text")); //$NON-NLS-1$
 		
@@ -152,88 +105,199 @@ public class GeneralConfigPanel extends CustomJPanel {
 				save();
 			}
 		});
+		setLayout(new BorderLayout(0, 0));
 		
-		lblNewLabel_3 = new JLabel(icon); //$NON-NLS-1$
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(23)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblNewLabel_1)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(numSitesTField, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE))
-						.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblNewLabel_3)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(183)
-							.addComponent(saveBtn)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(saveAndGenerateBtn))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(spamHamRatioRBtn)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(slider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(spamHamRationValueTField, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addComponent(onlyActiveSitesEnabledCBox)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(quantityEnabledRBtn)
-											.addGap(18)
-											.addComponent(spamQuantityTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addGap(30)))
-									.addGap(18)
-									.addComponent(downloadAgainEnabledCBox)))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_2)))
-					.addContainerGap(42, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(21)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_3))
-					.addGap(18)
-					.addComponent(txtpnunOrigenDe, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNewLabel_1)
-								.addComponent(numSitesTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(spamHamRatioRBtn)
-								.addComponent(slider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(spamHamRationValueTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblNewLabel_2)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(spamQuantityTField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(quantityEnabledRBtn))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(onlyActiveSitesEnabledCBox)
-						.addComponent(downloadAgainEnabledCBox))
-					.addPreferredGap(ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(saveAndGenerateBtn)
-						.addComponent(saveBtn))
-					.addGap(22))
-		);
-		setLayout(groupLayout);
+		panel = new JPanel();
+		//panel.setBackground(new Color(230, 230, 250));
+		
+		add(panel, BorderLayout.NORTH);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[] {0, 0, 363};
+		gbl_panel.rowHeights = new int[] {0, 36, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0};
+		panel.setLayout(gbl_panel);
+		
+		horizontalStrut = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
+		gbc_horizontalStrut.gridwidth = 2;
+		gbc_horizontalStrut.insets = new Insets(5, 0, 5, 0);
+		gbc_horizontalStrut.gridx = 1;
+		gbc_horizontalStrut.gridy = 0;
+		panel.add(horizontalStrut, gbc_horizontalStrut);
+		
+		verticalStrut = Box.createVerticalStrut(20);
+		GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
+		gbc_verticalStrut.gridheight = 2;
+		gbc_verticalStrut.insets = new Insets(0, 0, 0, 5);
+		gbc_verticalStrut.gridx = 0;
+		gbc_verticalStrut.gridy = 1;
+		panel.add(verticalStrut, gbc_verticalStrut);
+		
+		lblNewLabel_3 = new JLabel(icon);
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_3.gridx = 1;
+		gbc_lblNewLabel_3.gridy = 1;
+		panel.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		
+		JLabel lblNewLabel = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel.text")); //$NON-NLS-1$
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel.gridx = 2;
+		gbc_lblNewLabel.gridy = 1;
+		panel.add(lblNewLabel, gbc_lblNewLabel);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		
+		lblSeleccioneLosParmetros = new JLabel(Messages.getString("GeneralConfigPanel.lblSeleccioneLosParmetros.text")); //$NON-NLS-1$
+		GridBagConstraints gbc_lblSeleccioneLosParmetros = new GridBagConstraints();
+		gbc_lblSeleccioneLosParmetros.anchor = GridBagConstraints.WEST;
+		gbc_lblSeleccioneLosParmetros.gridwidth = 2;
+		gbc_lblSeleccioneLosParmetros.gridx = 1;
+		gbc_lblSeleccioneLosParmetros.gridy = 2;
+		panel.add(lblSeleccioneLosParmetros, gbc_lblSeleccioneLosParmetros);
+		
+		panel_1 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		add(panel_1, BorderLayout.SOUTH);
+		panel_1.add(saveBtn);
+		panel_1.add(saveAndGenerateBtn);
+		
+		panel_2 = new JPanel();
+		add(panel_2, BorderLayout.CENTER);
+		GridBagLayout gbl_panel_2 = new GridBagLayout();
+		gbl_panel_2.columnWidths = new int[] {0, 190, 45};
+		gbl_panel_2.rowHeights = new int[] {0, 0, 0, 0, 26, 84};
+		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_2.setLayout(gbl_panel_2);
+		
+		horizontalStrut_2 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_2 = new GridBagConstraints();
+		gbc_horizontalStrut_2.gridwidth = 4;
+		gbc_horizontalStrut_2.insets = new Insets(10, 0, 5, 0);
+		gbc_horizontalStrut_2.gridx = 0;
+		gbc_horizontalStrut_2.gridy = 0;
+		panel_2.add(horizontalStrut_2, gbc_horizontalStrut_2);
+		
+		JLabel lblNewLabel_1 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_1.text")); //$NON-NLS-1$
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 0;
+		gbc_lblNewLabel_1.gridy = 1;
+		panel_2.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		numSitesTField = new JFormattedTextField("");
+		GridBagConstraints gbc_numSitesTField = new GridBagConstraints();
+		gbc_numSitesTField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_numSitesTField.insets = new Insets(0, 0, 5, 5);
+		gbc_numSitesTField.gridx = 1;
+		gbc_numSitesTField.gridy = 1;
+		panel_2.add(numSitesTField, gbc_numSitesTField);
+		numSitesTField.setToolTipText(Messages.getString("GeneralConfigPanel.numSitesTField.toolTipText")); //$NON-NLS-1$
+		numSitesTField.setInputVerifier(new NaturalNumberValidator(view.getMainFrame(), numSitesTField, "Numero mayor que 0"));
+		numSitesTField.setColumns(10);
+		
+		spamHamRationValueTField = new JFormattedTextField("");
+		GridBagConstraints gbc_spamHamRationValueTField = new GridBagConstraints();
+		gbc_spamHamRationValueTField.insets = new Insets(0, 0, 5, 5);
+		gbc_spamHamRationValueTField.gridx = 2;
+		gbc_spamHamRationValueTField.gridy = 2;
+		panel_2.add(spamHamRationValueTField, gbc_spamHamRationValueTField);
+		spamHamRationValueTField.setInputVerifier(
+				new PercentageValidator(view.getMainFrame(), spamHamRationValueTField, Messages.getString("GeneralConfigPanel.spamHamRationValueTField.error")));
+		spamHamRationValueTField.setColumns(2);
+		spamHamRatioRBtn = new JRadioButton(Messages.getString("GeneralConfigPanel.spamHamRationEnabledCBox.text")); //$NON-NLS-1$
+		GridBagConstraints gbc_spamHamRatioRBtn = new GridBagConstraints();
+		gbc_spamHamRatioRBtn.anchor = GridBagConstraints.EAST;
+		gbc_spamHamRatioRBtn.insets = new Insets(0, 0, 5, 5);
+		gbc_spamHamRatioRBtn.gridx = 0;
+		gbc_spamHamRatioRBtn.gridy = 2;
+		panel_2.add(spamHamRatioRBtn, gbc_spamHamRatioRBtn);
+		spamHamRatioRBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				spamQuantityTField.setEnabled(false);
+				slider.setEnabled(true);
+				spamHamRationValueTField.setEnabled(true);
+			}
+		});
+		
+		group.add(spamHamRatioRBtn);
+		
+		slider = new JSlider();
+		GridBagConstraints gbc_slider = new GridBagConstraints();
+		gbc_slider.fill = GridBagConstraints.HORIZONTAL;
+		gbc_slider.insets = new Insets(0, 0, 5, 5);
+		gbc_slider.gridx = 1;
+		gbc_slider.gridy = 2;
+		panel_2.add(slider, gbc_slider);
+		slider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+			    if (!source.getValueIsAdjusting()) {
+			        int value = (int)source.getValue();
+			        spamHamRationValueTField.setValue(Integer.toString(value));
+			    }
+			}
+		});
+		
+		JLabel lblNewLabel_2 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_2.text")); //$NON-NLS-1$
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel_2.gridx = 3;
+		gbc_lblNewLabel_2.gridy = 2;
+		panel_2.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		
+		quantityEnabledRBtn = new JRadioButton(Messages.getString("GeneralConfigPanel.rdbtnNewRadioButton.text")); //$NON-NLS-1$
+		GridBagConstraints gbc_quantityEnabledRBtn = new GridBagConstraints();
+		gbc_quantityEnabledRBtn.anchor = GridBagConstraints.WEST;
+		gbc_quantityEnabledRBtn.insets = new Insets(0, 0, 5, 5);
+		gbc_quantityEnabledRBtn.gridx = 0;
+		gbc_quantityEnabledRBtn.gridy = 3;
+		panel_2.add(quantityEnabledRBtn, gbc_quantityEnabledRBtn);
+		quantityEnabledRBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				spamQuantityTField.setEnabled(true);
+				slider.setEnabled(false);
+				spamHamRationValueTField.setEnabled(false);	
+			}
+		});
+		group.add(quantityEnabledRBtn);
+		
+		spamQuantityTField = new JFormattedTextField("");
+		GridBagConstraints gbc_spamQuantityTField = new GridBagConstraints();
+		gbc_spamQuantityTField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_spamQuantityTField.insets = new Insets(0, 0, 5, 5);
+		gbc_spamQuantityTField.gridx = 1;
+		gbc_spamQuantityTField.gridy = 3;
+		panel_2.add(spamQuantityTField, gbc_spamQuantityTField);
+		spamQuantityTField.setInputVerifier(
+				new NaturalNumberAndZeroValidator(view.getMainFrame(), spamQuantityTField, Messages.getString("GeneralConfigPanel.spamQuantityTField.error")));
+		spamQuantityTField.setColumns(10);
+		
+		onlyActiveSitesEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox.text")); //$NON-NLS-1$
+		GridBagConstraints gbc_onlyActiveSitesEnabledCBox = new GridBagConstraints();
+		gbc_onlyActiveSitesEnabledCBox.gridwidth = 4;
+		gbc_onlyActiveSitesEnabledCBox.anchor = GridBagConstraints.EAST;
+		gbc_onlyActiveSitesEnabledCBox.insets = new Insets(0, 0, 5, 5);
+		gbc_onlyActiveSitesEnabledCBox.gridx = 0;
+		gbc_onlyActiveSitesEnabledCBox.gridy = 4;
+		panel_2.add(onlyActiveSitesEnabledCBox, gbc_onlyActiveSitesEnabledCBox);
+		downloadAgainEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox_1.text")); //$NON-NLS-1$
+		downloadAgainEnabledCBox.setVerticalAlignment(SwingConstants.TOP);
+		GridBagConstraints gbc_downloadAgainEnabledCBox = new GridBagConstraints();
+		gbc_downloadAgainEnabledCBox.gridwidth = 3;
+		gbc_downloadAgainEnabledCBox.anchor = GridBagConstraints.NORTHEAST;
+		gbc_downloadAgainEnabledCBox.insets = new Insets(0, 0, 0, 5);
+		gbc_downloadAgainEnabledCBox.gridx = 1;
+		gbc_downloadAgainEnabledCBox.gridy = 5;
+		panel_2.add(downloadAgainEnabledCBox, gbc_downloadAgainEnabledCBox);
+		
 	}
 	
 	public void save() {

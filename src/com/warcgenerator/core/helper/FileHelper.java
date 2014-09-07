@@ -7,12 +7,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 
 import com.google.common.net.InternetDomainName;
 import com.warcgenerator.core.config.Constants;
 
 public class FileHelper {
 	private static FileFilter generalFileFilter; 
+	
+	private static Logger logger = Logger.getLogger
+            (FileHelper.class);
+	
 	
 	/**
 	 * Create directories from an input array
@@ -34,7 +39,7 @@ public class FileHelper {
 	public static void removeDirsIfExist(String[] dirs) {
 		for (String dir:dirs) {
 			File f = new File(dir);
-			System.out.println("Deleting dir: " + dir);
+			logger.info("Deleting dir: " + dir);
 			try {
 				FileUtils.deleteDirectory(f);
 			} catch (IOException e) {
@@ -42,6 +47,24 @@ public class FileHelper {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static String getURLWithoutParams(String url) {
+		String domain = url;
+		URL myUrl = null;
+		try {
+			myUrl = new URL(url); 
+			if (myUrl.getFile().length() > 1) {
+				domain = domain.substring(0,
+						domain.indexOf(myUrl.getFile()));
+			} else {
+				System.out.println("domain es: " + domain);
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return domain;
 	}
 	
 	/**

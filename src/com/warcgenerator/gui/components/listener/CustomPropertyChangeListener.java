@@ -14,8 +14,6 @@ public class CustomPropertyChangeListener implements
 
 	@Override
 	public void propertyChange(PropertyChangeEvent e) {
-		System.out.println("property : " + e.getPropertyName());
-		
 		JComponent component = (JComponent) e.getSource();
 
 		if (component instanceof JFormattedTextField) {
@@ -23,9 +21,6 @@ public class CustomPropertyChangeListener implements
 					(JFormattedTextField)component;
 			
 			if (e.getPropertyName().equals("value")) {
-				System.out.println("oldValue: " + e.getOldValue());
-				System.out.println("newValue: " + e.getNewValue());
-				
 				if (e.getOldValue() != null &&
 						!e.getOldValue().equals(e.getNewValue())) {
 					Session.add(Constants.FORM_MODIFIED_SESSION_KEY,

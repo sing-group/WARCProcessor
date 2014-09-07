@@ -2,6 +2,7 @@ package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,6 +18,7 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.helper.ValidatorHelper;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
@@ -66,10 +68,8 @@ public class DSAsisstantStep1ContinueAction
 		dsConfig.setDsClassName(dsConfigTmp.getDsClassName());
 		dsConfig.setHandlerClassName(dsConfigTmp.getHandlerClassName());
 		
-		System.out.println("rellenando param!!!");
 		dsConfig.getCustomParams().clear();
 		for (String key: dsConfigTmp.getCustomParams().keySet()) {
-			System.out.println("parametro es " + key);
 			dsConfig.getCustomParams().put(key, 
 					dsConfigTmp.getCustomParams().get(key));
 		}
@@ -85,23 +85,40 @@ public class DSAsisstantStep1ContinueAction
 	}
 
 	
-	public boolean validate(DataSourceConfig config) {
+	public boolean validate(DataSourceConfig dsConfig) {
 		StringBuilder errors = new StringBuilder();
 		
-		if (config.getName().length() == 0) {
-			errors.append("-Name\n");
+		// Check if already exist a DS with the same name
+		boolean sameName = false;
+		Collection<DataSourceConfig> dsList = 
+			logic.getDataSourceConfigList();
+		for (DataSourceConfig dsAux: dsList) {
+			if (dsAux.getName().equals(dsConfig.getName())) {
+				sameName = true;
+			}
 		}
-		if (config.getFilePath().length() == 0) {
-			errors.append("-Folder\n");
+		
+		if (sameName && dsConfig.getId() == null) {
+			errors.append("El nombre del datasource ya existe\n");
 		}
+		
+		if (!ValidatorHelper.isNotNullOREmpty(
+				dsConfig.getName())) {
+			errors.append("Nombre<br>");
+		}
+		
+		if (!ValidatorHelper.isNotNullOREmpty(
+				dsConfig.getFilePath())) {
+			errors.append("Carpeta<br>");
+		}
+	
 		
 		if (errors.length() != 0) {
 			ValidationDialog dialog =
-					ValidationDialog.getInstance();
-			dialog.setErroresLabel(errors.toString());
+					ValidationDialog.getInstance(view.getMainFrame());
+			dialog.setErroresLabel("<html>" + errors.toString() + "</html>");
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-			
 			return false;
 		}
 		return true;

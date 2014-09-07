@@ -67,11 +67,8 @@ public class DSAssistantCreateNewDSAction
 		}
 		panel.setTipoDSCBoxValues(dsTypeStringArray);
 		
-		System.out.println("dsTypeStringArray es:" + dsTypeStringArray);
-		
 		// Select item in combo box
 		if (!Validator.isNullOrEmpty(dsConfig.getType())) {
-			System.out.println("gettype es " + dsConfig.getType());
 			panel.getTipoDSCBox().getModel().
 				setSelectedItem(dsConfig.getType());
 		}

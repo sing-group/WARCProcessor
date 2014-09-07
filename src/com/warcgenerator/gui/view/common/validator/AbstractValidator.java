@@ -48,7 +48,7 @@ public abstract class AbstractValidator extends InputVerifier implements KeyList
         c.addKeyListener(this);
         c.addFocusListener(this);
         messageLabel = new JLabel(message + " ");
-        image = new JLabel(new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/16x16danger.png")));
+        image = new JLabel(new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/danger.png")));
     }
 	
     /**

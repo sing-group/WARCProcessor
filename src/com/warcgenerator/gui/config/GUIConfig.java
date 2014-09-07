@@ -1,11 +1,7 @@
 package com.warcgenerator.gui.config;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import org.apache.commons.beanutils.BeanUtils;
 
 import com.warcgenerator.gui.common.Constants;
 
@@ -26,7 +22,6 @@ public class GUIConfig {
 	public String toString() {
 		StringBuffer sb = new StringBuffer("-- GUI-Config --");
 		
-		System.out.println("Recent config files:");
 		for (String configFile: recentConfigFiles) {
 			sb.append("-> Config File Path:  ").append(configFile).append("\n");
 		}

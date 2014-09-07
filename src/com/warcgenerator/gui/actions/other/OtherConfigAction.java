@@ -40,6 +40,8 @@ public class OtherConfigAction
 				config.getMaxDepthOfCrawling());
 		configPanel.getNumberOfCrawlersTField().setValue(
 				config.getNumCrawlers());		
+		configPanel.getChckbxFollowRedirect().setSelected(
+				config.getFollowRedirect());
 
 		view.loadMainPanel(configPanel);
 	}

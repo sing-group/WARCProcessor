@@ -116,7 +116,6 @@ public class DSAsisstantStep2ContinueAction
 			CustomParamConfig customParam = config.getCustomParams().get(key);
 			try {
 				Class<?> cArgs[] = { String.class };
-				System.out.println("get Type es: " + customParam.getType());
 				
 				Class<?> clazz = Class.forName(customParam.getType());
 				Constructor<?> ctor = clazz.getConstructor(cArgs);
@@ -155,7 +154,7 @@ public class DSAsisstantStep2ContinueAction
 				
 		if (errors.length() != 0) {
 			ValidationDialog dialog =
-					ValidationDialog.getInstance();
+					ValidationDialog.getInstance(view.getMainFrame());
 			dialog.setErroresLabel(errors.toString());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
