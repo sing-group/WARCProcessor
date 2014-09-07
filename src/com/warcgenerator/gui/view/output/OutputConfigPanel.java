@@ -66,9 +66,9 @@ public class OutputConfigPanel extends CustomJPanel {
 		
 		this.setName("Configuracion de salida");
 		
-		/*outputSaveAction = new OutputSaveAction(logic, view, this);
+		outputSaveAction = new OutputSaveAction(logic, view, this);
 		outputSaveAndGenerateAction = new OutputSaveAndGenerateAction(
-				logic, view, this, outputSaveAction);*/
+				logic, view, this, outputSaveAction);
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/save.png"));
 		

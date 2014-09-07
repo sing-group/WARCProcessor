@@ -20,45 +20,49 @@ public abstract class CustomJPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public CustomJPanel() {
 		this.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				installChangeListeners();
+				installChangeListeners(getComponents());
 			}
+
 			@Override
 			public void componentHidden(ComponentEvent e) {
-				uninstallChangeListeners();
+				uninstallChangeListeners(getComponents());
 			}
 		});
 	}
-	
+
 	public void commit() {
-		Session.add(Constants.FORM_MODIFIED_SESSION_KEY,
-				new Boolean(false));	
+		Session.add(Constants.FORM_MODIFIED_SESSION_KEY, new Boolean(false));
 	}
+
 	public void rollback() {
-		Session.add(Constants.FORM_MODIFIED_SESSION_KEY,
-				new Boolean(false));	
+		Session.add(Constants.FORM_MODIFIED_SESSION_KEY, new Boolean(false));
 	}
-	
-	public void uninstallChangeListeners() {
-		for (Component component:this.getComponents()) {
-			if (component instanceof JFormattedTextField) {
-				JFormattedTextField text = (JFormattedTextField)component;
-				for (PropertyChangeListener changeListener:
-					text.getPropertyChangeListeners()) {
+
+	public void uninstallChangeListeners(Component[] components) {
+		for (Component component : components) {
+			if (component instanceof JPanel) {
+				uninstallChangeListeners(((JPanel) component).getComponents());
+			} else if (component instanceof JFormattedTextField) {
+				JFormattedTextField text = (JFormattedTextField) component;
+				for (PropertyChangeListener changeListener : text
+						.getPropertyChangeListeners()) {
 					text.removePropertyChangeListener(changeListener);
 				}
 			}
 		}
 	}
-	
-	public void installChangeListeners() {
-		for (Component component:this.getComponents()) {
-			if (component instanceof JFormattedTextField) {
-				JFormattedTextField text = (JFormattedTextField)component;
+
+	public void installChangeListeners(Component[] components) {
+		for (Component component : components) {
+			if (component instanceof JPanel) {
+				installChangeListeners(((JPanel) component).getComponents());
+			} else if (component instanceof JFormattedTextField) {
+				JFormattedTextField text = (JFormattedTextField) component;
 				text.addPropertyChangeListener("value",
 						new CustomPropertyChangeListener());
 			} else if (component instanceof JCheckBox) {
@@ -67,11 +71,13 @@ public abstract class CustomJPanel extends JPanel {
 					@Override
 					public void itemStateChanged(ItemEvent arg0) {
 						Session.add(Constants.FORM_MODIFIED_SESSION_KEY,
-								new Boolean(true));	
+								new Boolean(true));
 					}
 				});
 			}
 		}
+
 	}
+
 	public abstract void save();
 }

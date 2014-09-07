@@ -63,9 +63,9 @@ public class OtherConfigPanel extends CustomJPanel {
 		
 		this.setName("OtherConfigPanel");
 		
-		/*otherSaveAction = new OtherSaveAction(logic, view, this);
+		otherSaveAction = new OtherSaveAction(logic, view, this);
 		otherSaveAndGenerateAction = new OtherSaveAndGenerateAction(
-				logic, view, this, otherSaveAction);*/
+				logic, view, this, otherSaveAction);
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/save.png"));
 		
