@@ -76,12 +76,24 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	/**
 	 * Save configuration in a file
 	 */
-	public void saveAppConfig(String path) {
-		ConfigHelper.persistConfig(path, config);
+	public void saveAppConfig() {
+		String configFilePath = ConfigHelper.getConfigFilePath();
+		ConfigHelper.persistConfig(configFilePath, config);
 	
 		// Notify observers
 		setChanged();
 		notifyObservers(new LogicCallback(APP_CONFIG_SAVED_CALLBACK));
+	}
+	
+	/**
+	 * Save configuration in a file
+	 */
+	public void saveAsAppConfig(String path) {
+		ConfigHelper.persistConfig(path, config);
+	
+		// Notify observers
+		setChanged();
+		notifyObservers(new LogicCallback(APP_CONFIG_SAVED_AS_CALLBACK));
 	}
 
 	public void loadAppConfig(String path) {

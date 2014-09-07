@@ -52,6 +52,7 @@ import com.warcgenerator.gui.actions.file.CreateNewConfigAction;
 import com.warcgenerator.gui.actions.file.LoadAppConfigAction;
 import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
 import com.warcgenerator.gui.actions.file.SaveAppConfigAction;
+import com.warcgenerator.gui.actions.file.SaveAsAppConfigAction;
 import com.warcgenerator.gui.actions.general.GeneralConfigAction;
 import com.warcgenerator.gui.actions.generate.GenerateCorpusAction;
 import com.warcgenerator.gui.actions.other.OtherConfigAction;
@@ -77,6 +78,7 @@ public class WarcGeneratorGUI extends Observable {
 	private Action generateCorpusAction;
 	private OutputConfigAction outputConfigAction;
 	private OtherConfigAction otherConfigAction;
+	private Action saveAsAppConfigAction;
 	private Action saveAppConfigAction;
 	private Action loadAppConfigAction;
 	private Action createNewConfigAction;
@@ -151,6 +153,7 @@ public class WarcGeneratorGUI extends Observable {
 				outputconfigPanel);
 		otherConfigAction = new OtherConfigAction(logic, this, otherConfigPanel);
 		saveAppConfigAction = new SaveAppConfigAction(logic, this);
+		saveAsAppConfigAction = new SaveAsAppConfigAction(logic, this);
 		loadAppConfigAction = new LoadAppConfigAction(logic, this);
 		createNewConfigAction = new CreateNewConfigAction(logic, this);
 		dsourcesAction = new DSourcesAction(logic, this,
@@ -212,7 +215,7 @@ public class WarcGeneratorGUI extends Observable {
 		mnInicio.setMnemonic('F');
 		menuBar.add(mnInicio);
 
-		JMenuItem mntmCreateNewConfig = new JMenuItem("Nueva configuracion");
+		JMenuItem mntmCreateNewConfig = new JMenuItem("Nueva");
 		mntmCreateNewConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				createNewConfigAction.actionPerformed(e);
@@ -221,7 +224,7 @@ public class WarcGeneratorGUI extends Observable {
 		mnInicio.add(mntmCreateNewConfig);
 
 		JMenuItem mntmCargarConfiguracionGeneral = new JMenuItem(
-				"Cargar configuracion");
+				"Cargar");
 		mntmCargarConfiguracionGeneral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadAppConfigAction.actionPerformed(e);
@@ -229,14 +232,27 @@ public class WarcGeneratorGUI extends Observable {
 		});
 		mnInicio.add(mntmCargarConfiguracionGeneral);
 
-		JMenuItem mntmGuardarConfiguracionGeneral = new JMenuItem(
-				"Guardar configuracion");
-		mntmGuardarConfiguracionGeneral.addActionListener(new ActionListener() {
+		mnInicio.add(new JSeparator());
+		
+		JMenuItem mntmSaveCG = new JMenuItem(
+				"Guardar");
+		mntmSaveCG.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				InputEvent.CTRL_MASK));
+		mntmSaveCG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveAppConfigAction.actionPerformed(e);
 			}
 		});
-		mnInicio.add(mntmGuardarConfiguracionGeneral);
+		mnInicio.add(mntmSaveCG);
+		
+		JMenuItem mntmSaveAsCG = new JMenuItem(
+				"Guardar como");
+		mntmSaveAsCG.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveAsAppConfigAction.actionPerformed(e);
+			}
+		});
+		mnInicio.add(mntmSaveAsCG);
 
 		JSeparator separator = new JSeparator();
 		mnInicio.add(separator);

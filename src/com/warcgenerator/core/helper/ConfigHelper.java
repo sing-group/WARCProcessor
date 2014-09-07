@@ -21,6 +21,8 @@ import com.warcgenerator.core.exception.config.LoadDataSourceException;
  */
 
 public class ConfigHelper {
+	public static String configFilePath = null;
+
 	public static void configure(String path, AppConfig config) {	
 		AppConfig newConfig = new AppConfig();
 		try {
@@ -28,10 +30,7 @@ public class ConfigHelper {
 			XMLConfigHelper.getAppConfigFromXml(path, newConfig);
 			newConfig.validate();
 			BeanUtils.copyProperties(config, newConfig);
-			
-			// These properties copy doesn't work with BeanUtils
-			//config.setOutputConfig(newConfig.getOutputConfig());
-			//config.setWebCrawlerCfgTemplate(newConfig.getWebCrawlerCfgTemplate());
+			setConfigFilePath(path);
 		} catch (IllegalAccessException e) {
 			throw new ConfigException(e);
 		} catch (InvocationTargetException e) {
@@ -112,5 +111,13 @@ public class ConfigHelper {
 			e.printStackTrace();
 			throw new LoadDataSourceException(e);
 		}
+	}
+	
+	public static String getConfigFilePath() {
+		return configFilePath;
+	}
+
+	public static void setConfigFilePath(String configFilePath) {
+		ConfigHelper.configFilePath = configFilePath;
 	}
 }

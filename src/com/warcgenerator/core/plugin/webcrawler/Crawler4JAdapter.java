@@ -150,6 +150,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 					
 					DataSource warcDS = 
 							outputDS.get(FileHelper.getDomainNameFromURL(parseData.getUrl()));
+					
 					if (warcDS == null) {
 						StringBuilder warcFileName = new StringBuilder();
 						

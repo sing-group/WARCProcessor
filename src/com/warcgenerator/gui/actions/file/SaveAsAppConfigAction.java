@@ -13,12 +13,12 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
-public class SaveAppConfigAction
+public class SaveAsAppConfigAction
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
 	
-	public SaveAppConfigAction(IAppLogic logic,
+	public SaveAsAppConfigAction(IAppLogic logic,
 			WarcGeneratorGUI view
 			) {
 		this.view = view;
@@ -29,14 +29,21 @@ public class SaveAppConfigAction
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		logic.saveAppConfig();
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Specify a file to save");
+
+		int userSelection = fileChooser.showSaveDialog(view.getMainFrame());
+		if (userSelection == JFileChooser.APPROVE_OPTION) {
+			File fileToSave = fileChooser.getSelectedFile();	
+			logic.saveAsAppConfig(fileToSave.getAbsolutePath());
+		}
 	}
 
 	@Override
 	public void update(Observable obj, Object logicCallback) {
 		if (obj == logic) {
 			String message = ((LogicCallback)logicCallback).getMessage();
-			if (message.equals(IAppLogic.APP_CONFIG_SAVED_CALLBACK)) {
+			if (message.equals(IAppLogic.APP_CONFIG_SAVED_AS_CALLBACK)) {
 				JOptionPane.showMessageDialog(view.getMainFrame(), 
 						"La configuracion se ha guardado con exito.");
 			}

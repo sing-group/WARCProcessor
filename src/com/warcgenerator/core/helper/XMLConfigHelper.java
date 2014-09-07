@@ -358,7 +358,7 @@ public class XMLConfigHelper {
 			
 			if (config.getRatioQuantitySpam() != null) {
 				Element spam = doc.createElement("quantitySpam");
-				spam.setTextContent(config.getRatioPercentageSpam().toString());
+				spam.setTextContent(config.getRatioQuantitySpam().toString());
 				ratio.appendChild(spam);
 			}
 
@@ -408,6 +408,13 @@ public class XMLConfigHelper {
 					.getWebCrawlerTmpStorePath());
 			rootElement.appendChild(webCrawlerDirTmpStorePath);
 
+			Element followRedirect = doc
+					.createElement("followRedirect");
+			followRedirect.setTextContent(Boolean.toString(config
+					.getFollowRedirect()));
+			rootElement.appendChild(followRedirect);
+
+			
 			Element dataSources = doc.createElement("dataSources");
 			rootElement.appendChild(dataSources);
 
@@ -425,6 +432,12 @@ public class XMLConfigHelper {
 				attr.setValue(dsConfig.getType());
 				dataSource.setAttributeNode(attr);
 
+				if (dsConfig.getSpam() != null) {
+					attr = doc.createAttribute("isSpam");
+					attr.setValue(Boolean.toString(dsConfig.getSpam()));
+					dataSource.setAttributeNode(attr);
+				}
+				
 				if (dsConfig.getMaxElements() != null) {
 					attr = doc.createAttribute("maxElements");
 					attr.setValue(dsConfig.getMaxElements().toString());

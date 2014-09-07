@@ -17,13 +17,15 @@ public interface IAppLogic {
 	// Callback messages
 	String APP_CONFIG_LOADED_CALLBACK = "APP_CONFIG_LOADED_CALLBACK";
 	String APP_CONFIG_SAVED_CALLBACK = "APP_CONFIG_SAVED_CALLBACK";
+	String APP_CONFIG_SAVED_AS_CALLBACK = "APP_CONFIG_SAVED_AS_CALLBACK";
 	String APP_CONFIG_UPDATED_CALLBACK = "APP_CONFIG_UPDATED_CALLBACK";
 	String DATASOURCE_REMOVED_CALLBACK = "DATASOURCE_REMOVED_CALLBACK";
 	String DATASOURCE_UPDATED_CALLBACK = "DATASOURCE_UPDATED_CALLBACK";
 	String DATASOURCE_CREATED_CALLBACK = "DATASOURCE_CREATED_CALLBACK";
 	
 	void loadNewAppConfig();
-	void saveAppConfig(String path);
+	void saveAppConfig();
+	void saveAsAppConfig(String path);
 	void loadAppConfig(String path);
 	void updateAppConfig(AppConfig appConfig);
 	AppConfig getAppConfig();

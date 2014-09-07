@@ -44,11 +44,6 @@ public class GeneralConfigAction
 			configPanel.getSpamQuantityTField().setEnabled(false);
 			configPanel.getSlider().setEnabled(true);
 			configPanel.getSpamHamRationValueTField().setEnabled(true);
-			
-			configPanel.getSpamHamRationValueTField().setValue(
-					Integer.toString(config.getRatioPercentageSpam()));
-			configPanel.getSlider().setValue(
-					config.getRatioPercentageSpam());
 		} else {
 			configPanel.getSpamHamRatioRBtn().setSelected(false);
 			configPanel.getQuantityEnabledRBtn().setSelected(true);
@@ -56,10 +51,14 @@ public class GeneralConfigAction
 			configPanel.getSpamQuantityTField().setEnabled(true);
 			configPanel.getSlider().setEnabled(false);
 			configPanel.getSpamHamRationValueTField().setEnabled(false);
-			
-			configPanel.getSpamHamRationValueTField().setValue(
-					Integer.toString(config.getRatioPercentageSpam()));
 		}
+		
+		configPanel.getSpamHamRationValueTField().setValue(
+				Integer.toString(config.getRatioPercentageSpam()));
+		configPanel.getSlider().setValue(
+				config.getRatioPercentageSpam());
+		configPanel.getSpamQuantityTField().setValue(
+				config.getRatioQuantitySpam());
 		
 		configPanel.getOnlyActiveSitesEnabledCBox().setSelected(
 				config.getOnlyActiveSites());
