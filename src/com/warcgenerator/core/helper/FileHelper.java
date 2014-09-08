@@ -54,11 +54,10 @@ public class FileHelper {
 		URL myUrl = null;
 		try {
 			myUrl = new URL(url); 
+			// Remove http://domain.com/ <- this last '/'
 			if (myUrl.getFile().length() > 1) {
 				domain = domain.substring(0,
 						domain.indexOf(myUrl.getFile()));
-			} else {
-				System.out.println("domain es: " + domain);
 			}
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

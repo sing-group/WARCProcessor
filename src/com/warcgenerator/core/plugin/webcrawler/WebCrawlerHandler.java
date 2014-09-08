@@ -40,6 +40,10 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 	}
 
 	public void handle(HtmlParseData htmlParseData) {
+		// Look for Warc Bean containing html of the urls
+		DataBean previousWarcBean = urls.get(htmlParseData.getUrl());
+		boolean existPreviousWarcBean = checkExistPreviousWarcBean(previousWarcBean);
+		
 		if (htmlParseData.getUrl() != null
 				&& htmlParseData.getHttpStatus() == HttpStatus.SC_OK) {
 			// Es un fichero de tipo warc
@@ -51,13 +55,9 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 
 			// If download again is not active then, if exists,
 			// use the information available in warc datasources
-			DataBean tmpBean = urls.get(htmlParseData.getUrl());
-			if (tmpBean != null) {
-				if (tmpBean.getTypeDS() != null
-						&& tmpBean.getTypeDS().equals(WarcDS.DS_TYPE)
-						&& !config.getDownloadAgain()) {
-					bean = tmpBean;
-				}
+			if (existPreviousWarcBean &&
+				!config.getDownloadAgain()) {
+					bean = previousWarcBean;
 			}
 
 			// Check if the url has data
@@ -70,6 +70,18 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 			}
 				
 			urlsActive.add(htmlParseData.getUrl());
+		} else if (htmlParseData.getUrl() != null &&
+				existPreviousWarcBean &&
+				!config.getFollowRedirect() &&
+				(htmlParseData.getHttpStatus() == HttpStatus.SC_MOVED_PERMANENTLY ||
+				htmlParseData.getHttpStatus() == HttpStatus.SC_MOVED_TEMPORARILY)) {
+			
+				if (!config.getDownloadAgain()) {
+					warcDS.write(previousWarcBean);
+					OutputHelper.writeLabeled(domainsLabeledDS, htmlParseData.getUrl(),
+							this.isSpam);
+				}
+	
 		} else {
 			urlsNotActive.add(htmlParseData.getUrl());
 			OutputHelper.writeNotFound(domainsNotFoundDS,
@@ -77,4 +89,20 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 					htmlParseData.getHttpStatusDescription());
 		}
 	}
+
+	/**
+	 * Check if exist in some warc a html related with the url in databean
+	 * @param previousWarcBean
+	 * @return
+	 */
+	private boolean checkExistPreviousWarcBean(DataBean previousWarcBean) {
+		boolean existPreviousWarcBean = false;
+		if (previousWarcBean != null && 
+				previousWarcBean.getTypeDS() != null
+					&& previousWarcBean.getTypeDS().equals(WarcDS.DS_TYPE)) {
+				existPreviousWarcBean = true;
+		}
+		return existPreviousWarcBean;
+	}
+		
 }

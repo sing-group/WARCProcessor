@@ -86,7 +86,9 @@ public class ReadURLsTask extends Task implements ITask {
 			// Start crawler
 			webCrawler.start();
 			
-			System.out.println("parando!!");
+			// Remove crawler data from Berkeley DB
+			// There is a bug in crawler4j that consist in lock
+			// of frontier temp folder.
 			webCrawler.close();
 		}
 		

@@ -61,6 +61,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			throw new OutCorpusCfgNotFoundException();
 		}
 
+		
+		/*
 		// Corpus Path dirs
 		String dirs[] = { outputCorpusConfig.getOutputDir(),
 				outputCorpusConfig.getSpamDir(), outputCorpusConfig.getHamDir() };
@@ -71,6 +73,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 
 		FileHelper.createDirs(dirs);
+		*/
 	}
 
 	/**
@@ -252,9 +255,18 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			throws LogicException {
 		executorTasks = new ExecutionTaskBatch();
 
+		// Corpus Path dirs
+		String dirs[] = { outputCorpusConfig.getOutputDir(),
+				outputCorpusConfig.getSpamDir(), outputCorpusConfig.getHamDir() };
+		// Delete directories
+		if (config.getFlushOutputDir() != null && config.getFlushOutputDir()) {
+			FileHelper.removeDirsIfExist(dirs);
+		}
+		FileHelper.createDirs(dirs);
+		
 		// Get dsHandlers
 		ConfigHelper.getDSHandlers(config, dataSourcesTypes);
-
+		
 		// Generate wars
 		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
 				outputCorpusConfig.getDomainsLabeledFilePath()));

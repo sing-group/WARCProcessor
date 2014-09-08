@@ -98,14 +98,14 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		config.setCrawlStorageFolder(configWC.getStorePath());
 		config.setFollowRedirects(configWC.isFollowRedirect());
 		
-		System.out.println("redirect es: " + config.isFollowRedirects());
+		// To be polite
+		config.setPolitenessDelay(200);
 		
 		/*
 		 * You can set the maximum crawl depth here. The default value is -1 for
 		 * unlimited depth
 		 */
 		config.setMaxDepthOfCrawling(configWC.getMaxDepthOfCrawling());
-		System.out.println("maxDepthOfCrawling: " + config.getMaxDepthOfCrawling());
 		
 		/*
 		 * Instantiate the controller for this crawl.
@@ -238,7 +238,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	 */
 	@Override
 	public boolean shouldVisit(WebURL url) {
-		System.out.println("error-------------------------------> " + url);
 		String href = url.getURL().toLowerCase();
 		
 		// Avoid that the crawler go out from the source domains.
@@ -248,12 +247,9 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 			String urlAllowed = it.next();
 			
 			String domain = FileHelper.getURLWithoutParams(urlAllowed);
-			System.out.println("href es: " + href);
-			System.out.println("domain es " + domain);
 			if (href.startsWith(domain)) {
 				domainAllowed = true;	                       
 			}
-			System.out.println("permitido es: " + domainAllowed);
 		}
 
 		return !FILTERS.matcher(href).matches() &&
