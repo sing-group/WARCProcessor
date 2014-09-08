@@ -1,71 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<configuration
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="schema/config.xsd"
->
-	 <!-- General corpus configuration -->
-	 <numSites onlyActiveSites="true" downloadAgain="false">1000</numSites>
-	 <!-- SPAN/HAM Ratio -->
-	 <ratio isPercentage="true" >
-	 	<percentageSpam>50</percentageSpam>
-	 </ratio>
-	 
-	 <!-- Output corpus configuration  -->
-	 <corpusDirPath>.\\out</corpusDirPath>
-	 <spamDirName>_spam_</spamDirName>
-	 <hamDirName>_ham_</hamDirName>
-	 <domainsLabeledFileName>domains.labelled</domainsLabeledFileName>
-	 <domainsNotFoundFileName>domains.notFound</domainsNotFoundFileName>
-	 
-	 <!--  Others -->
-	 <flushOutputDir>false</flushOutputDir>
-	 <maxDepthOfCrawling>0</maxDepthOfCrawling>
-	 <numCrawlers>2</numCrawlers>
-	 <webCrawlerDirTmpStorePath>.</webCrawlerDirTmpStorePath>
-	 
-	 <!--  Data sources -->
-	 <dataSources>
-	    <!-- <dataSource name="CorpusDS" 
-	 	 	class="com.warcgenerator.datasources.CorpusDS" 
-	 		maxElements="10" >
-	 		<customParams>
-	 			<urlTag>WARC-Target-URI</urlTag>
-	 			<spamDir>_spam_</spamDir>
-	 			<hamDir>_ham_</hamDir>
-	 		</customParams>
-	 		<srcDirPath>.\\in\\corpus</srcDirPath>
-	 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
-	 	</dataSource>
-	 	<dataSource name="ArffDS"
-	 		class="com.warcgenerator.datasources.ArffDS"
-	 		maxElements="10" >
-	 		<customParams>
-	 			<spamTag>LABEL</spamTag>
-	 			<urlTag>URL</urlTag>
-	 		</customParams>
-	 		<srcDirPath>.\\in\\arff</srcDirPath>
-	 		<handler>com.warcgenerator.datasources.handler.ArffDSHandler</handler>
-	 	</dataSource>-->
-	 	<dataSource name="WhitelistDS" 
-	 		type="FileDS">
-	 		<srcDirPath>.\\in\\plain\whitelists</srcDirPath>
-	 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
-	 	</dataSource>
-	 	<dataSource name="BlacklistDS" 
-	 		type="FileDS"
-	 		maxElements="10"
-	 		isSpam="true" >
-	 		<srcDirPath>.\\in\\plain\blacklists</srcDirPath>
-	 		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
-	 	</dataSource>
-	 	<!-- <dataSource name="CSVDS" 
-	 		class="com.warcgenerator.datasources.CSVDS">
-	 		<customParams>
-	 			<urlColNum>0</urlColNum>
-	 		</customParams>
-	 		<srcDirPath>.\\in\\csv</srcDirPath>
-	 		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
-	 	</dataSource>-->
-	 </dataSources>
-</configuration>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><configuration><numSites downloadAgain="false" onlyActiveSites="true">4</numSites><ratio isPercentage="true"><percentageSpam>25</percentageSpam><quantitySpam>2</quantitySpam></ratio><corpusDirPath>.\\out</corpusDirPath><spamDirName>_spam_</spamDirName><hamDirName>_ham_</hamDirName><domainsLabeledFileName>domains.labelled</domainsLabeledFileName><domainsNotFoundFileName>domains.notFound</domainsNotFoundFileName><flushOutputDir>true</flushOutputDir><maxDepthOfCrawling>0</maxDepthOfCrawling><numCrawlers>2</numCrawlers><webCrawlerDirTmpStorePath>.</webCrawlerDirTmpStorePath><followRedirect>true</followRedirect>
+<dataSources>
+	<dataSource isSpam="false" name="WhitelistDS" type="FileDS">
+			<customParams/>
+			<srcDirPath>.\\in\\plain\whitelists</srcDirPath>
+			<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
+	</dataSource>
+	<dataSource isSpam="true" maxElements="10" name="BlacklistDS" type="FileDS"><customParams/><srcDirPath>.\\in\\plain\blacklists</srcDirPath><handler>com.warcgenerator.datasources.handler.FileDSHandler</handler></dataSource></dataSources></configuration>

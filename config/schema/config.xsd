@@ -45,6 +45,8 @@ Schema for WarcGenerator XML Configuration
 	      <xs:element name="numCrawlers" type="xs:integer" minOccurs="1" maxOccurs="1"/>
 	      <!-- Folder to store temporary crawler data -->
 	      <xs:element name="webCrawlerDirTmpStorePath" type="xs:string" minOccurs="1" maxOccurs="1"/>
+	      <!-- Follow the link when it being a redirect -->
+	      <xs:element name="followRedirect" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
 	      
 	      <!-- Datasource definitions -->
 	      <xs:element name="dataSources" minOccurs="1" maxOccurs="1">

@@ -73,7 +73,7 @@ public class ReadURLsTask extends Task implements ITask {
 			webCrawlerConfig.setNumberOfCrawlers(config.getNumCrawlers());
 			webCrawlerConfig.setFollowRedirect(config.getFollowRedirect());
 			
-			IWebCrawler webCrawler = new Crawler4JAdapter(
+			webCrawler = new Crawler4JAdapter(
 					config,
 					generateCorpusState,
 					webCrawlerConfig, 
@@ -82,9 +82,12 @@ public class ReadURLsTask extends Task implements ITask {
 					urls,
 					urlsActive,
 					urlsNotActive);
-	
+			
 			// Start crawler
 			webCrawler.start();
+			
+			System.out.println("parando!!");
+			webCrawler.close();
 		}
 		
 		logger.info("Task completed");

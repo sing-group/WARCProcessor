@@ -10,8 +10,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.log4j.Logger;
 
+import com.sleepycat.je.DatabaseConfig;
+import com.sleepycat.je.Environment;
+import com.sleepycat.je.EnvironmentConfig;
+import com.sleepycat.je.Transaction;
 import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.config.AppConfig;
@@ -128,6 +133,33 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		}
 	}
 
+	public void close() {
+		EnvironmentConfig envConfig = new EnvironmentConfig();
+        envConfig.setAllowCreate(true);
+        envConfig.setTransactional(false);
+        envConfig.setLocking(false);
+        
+        File envHome = new File(controller.getConfig().getCrawlStorageFolder() 
+        		+"/frontier");
+        
+		Environment env = new Environment(envHome, envConfig);
+		DatabaseConfig dbConfig = new DatabaseConfig();
+        dbConfig.setAllowCreate(true);
+        dbConfig.setTransactional(true);
+        dbConfig.setDeferredWrite(true);
+        
+        try {
+	        for (String dbName : env.getDatabaseNames()) {
+	           env.removeDatabase(null, dbName); 
+	        }
+        } catch (Exception ex) {
+        	ex.printStackTrace();
+        }
+        
+        env.cleanLog();
+        env.close();
+	}
+	
 	public void stop () {
 		controller.shutdown();
 	}
