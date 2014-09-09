@@ -11,6 +11,10 @@ import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
+import com.warcgenerator.gui.common.Constants;
+import com.warcgenerator.gui.common.Session;
+import com.warcgenerator.gui.config.GUIConfig;
+import com.warcgenerator.gui.helper.GUIConfigHelper;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class SaveAsAppConfigAction
@@ -46,6 +50,7 @@ public class SaveAsAppConfigAction
 			if (message.equals(IAppLogic.APP_CONFIG_SAVED_AS_CALLBACK)) {
 				JOptionPane.showMessageDialog(view.getMainFrame(), 
 						"La configuracion se ha guardado con exito.");
+				view.loadRecentFiles();
 			}
 		}
 	}

@@ -21,7 +21,7 @@ import com.warcgenerator.core.exception.config.LoadDataSourceException;
  */
 
 public class ConfigHelper {
-	public static String configFilePath = null;
+	private static String configFilePath = null;
 
 	public static void configure(String path, AppConfig config) {	
 		AppConfig newConfig = new AppConfig();
@@ -40,6 +40,7 @@ public class ConfigHelper {
 	
 	public static void persistConfig(String path, AppConfig config) {
 		XMLConfigHelper.saveXMLFromAppConfig(path, config);
+		setConfigFilePath(path);
 	}
 	
 	// Add DSHandlers to each configuration data source

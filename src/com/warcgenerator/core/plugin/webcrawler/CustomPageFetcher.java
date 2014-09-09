@@ -1,6 +1,6 @@
 package com.warcgenerator.core.plugin.webcrawler;
 
-import com.warcgenerator.core.common.GenerateCorpusState;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;

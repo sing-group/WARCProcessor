@@ -5,12 +5,12 @@ import java.io.File;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.exception.WarcException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.logic.AppLogicImpl;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 /**
  * AppWarc is an application used to generate Webspam Corpus.

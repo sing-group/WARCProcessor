@@ -1,4 +1,4 @@
-package com.warcgenerator.core.common;
+package com.warcgenerator.core.task.generateCorpus.state;
 
 import java.util.Observable;
 

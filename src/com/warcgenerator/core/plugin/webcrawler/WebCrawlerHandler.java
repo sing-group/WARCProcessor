@@ -71,22 +71,51 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 				
 			urlsActive.add(htmlParseData.getUrl());
 		} else if (htmlParseData.getUrl() != null &&
-				existPreviousWarcBean &&
-				!config.getFollowRedirect() &&
+				//existPreviousWarcBean &&
 				(htmlParseData.getHttpStatus() == HttpStatus.SC_MOVED_PERMANENTLY ||
 				htmlParseData.getHttpStatus() == HttpStatus.SC_MOVED_TEMPORARILY)) {
-			
-				if (!config.getDownloadAgain()) {
-					warcDS.write(previousWarcBean);
-					OutputHelper.writeLabeled(domainsLabeledDS, htmlParseData.getUrl(),
-							this.isSpam);
+		
+				if (!config.getFollowRedirect()) {
+					if (!existPreviousWarcBean) {
+						OutputHelper.writeNotFound(domainsNotFoundDS,
+						htmlParseData.getUrl(), htmlParseData.getHttpStatus(),
+						htmlParseData.getHttpStatusDescription());
+					} else {
+						// Check if the url has data
+						if (previousWarcBean.getData() != null) {
+							warcDS.write(previousWarcBean);
+							OutputHelper.writeLabeled(domainsLabeledDS, htmlParseData.getUrl(),
+									this.isSpam);
+						} else {
+							logger.info("URL: " + previousWarcBean.getUrl() + " doesn't have data.");
+						}
+					}
+					
 				}
-	
-		} else {
-			urlsNotActive.add(htmlParseData.getUrl());
-			OutputHelper.writeNotFound(domainsNotFoundDS,
+			
+				// Opcion 2
+				/*
+				if (config.getFollowRedirect()) {
+					OutputHelper.writeNotFound(domainsNotFoundDS,
 					htmlParseData.getUrl(), htmlParseData.getHttpStatus(),
 					htmlParseData.getHttpStatusDescription());
+				} else {
+					if (!existPreviousWarcBean || config.getOnlyActiveSites()) {
+						OutputHelper.writeNotFound(domainsNotFoundDS,
+						htmlParseData.getUrl(), htmlParseData.getHttpStatus(),
+						htmlParseData.getHttpStatusDescription());
+					}
+					urlsNotActive.add(htmlParseData.getUrl());
+				}*/
+					
+		} else {
+			urlsNotActive.add(htmlParseData.getUrl());
+			
+			if (!existPreviousWarcBean) {
+				OutputHelper.writeNotFound(domainsNotFoundDS,
+						htmlParseData.getUrl(), htmlParseData.getHttpStatus(),
+						htmlParseData.getHttpStatusDescription());
+			}
 		}
 	}
 

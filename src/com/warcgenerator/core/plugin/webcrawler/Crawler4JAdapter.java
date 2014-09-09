@@ -1,7 +1,6 @@
 package com.warcgenerator.core.plugin.webcrawler;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,15 +9,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.log4j.Logger;
 
 import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
-import com.sleepycat.je.Transaction;
-import com.warcgenerator.core.common.GenerateCorpusState;
-import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.config.WebCrawlerConfig;
@@ -27,6 +22,8 @@ import com.warcgenerator.core.datasource.WarcDS;
 import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.plugin.PluginException;
 import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;

@@ -44,14 +44,9 @@ public class LoadRecentConfigAction extends AbstractAction {
 	}
 	
 	private void loadConfig() {
-		// Add config file path
-		GUIConfig guiConfig = (GUIConfig) Session
-				.get(Constants.GUI_CONFIG_SESSION_KEY);
-		guiConfig.addRecentConfigFile(path);
-		GUIConfigHelper.persistConfig(Constants.DEFAULT_GUI_CONFIG_XML,
-				guiConfig);
-
 		logic.loadAppConfig(path);
+		
+		view.loadRecentFiles();
 		// Load App Config catchs the callback and show a info panel
 	}
 }

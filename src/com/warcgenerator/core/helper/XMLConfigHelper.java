@@ -129,7 +129,9 @@ public class XMLConfigHelper {
 					"numCrawlers")));
 			config.setWebCrawlerTmpStorePath(getValueFromElement(doc,
 					"webCrawlerDirTmpStorePath"));
-
+			config.setFollowRedirect(Boolean.valueOf(getValueFromElement(doc,
+					"followRedirect")));
+			
 			// Read datasources
 			NodeList listOfDS = doc.getElementsByTagName("dataSource");
 			int totalDS = listOfDS.getLength();

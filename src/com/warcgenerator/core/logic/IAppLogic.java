@@ -3,9 +3,9 @@ package com.warcgenerator.core.logic;
 import java.util.Collection;
 import java.util.Observer;
 
-import com.warcgenerator.core.common.GenerateCorpusState;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 /**
  * Business logic layer interface
@@ -26,6 +26,7 @@ public interface IAppLogic {
 	void loadNewAppConfig();
 	void saveAppConfig();
 	void saveAsAppConfig(String path);
+	String getConfigFilePath();
 	void loadAppConfig(String path);
 	void updateAppConfig(AppConfig appConfig);
 	AppConfig getAppConfig();

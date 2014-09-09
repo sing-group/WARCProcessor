@@ -1,4 +1,4 @@
-package com.warcgenerator.core.common;
+package com.warcgenerator.core.task.generateCorpus.state;
 
 public enum GenerateCorpusStates {
 	GETTING_URLS_FROM_DS,

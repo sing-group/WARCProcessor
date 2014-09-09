@@ -49,14 +49,6 @@ public class LoadAppConfigAction extends AbstractAction implements Observer {
 		int userSelection = fileChooser.showOpenDialog(view.getMainFrame());
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			fileToSave = fileChooser.getSelectedFile();
-			
-			// Add config file path
-			GUIConfig guiConfig = (GUIConfig) Session
-					.get(Constants.GUI_CONFIG_SESSION_KEY);
-			guiConfig.addRecentConfigFile(fileToSave.getAbsolutePath());
-			GUIConfigHelper.persistConfig(Constants.DEFAULT_GUI_CONFIG_XML,
-					guiConfig);
-			
 			logic.loadAppConfig(fileToSave.getAbsolutePath());
 		}
 	}

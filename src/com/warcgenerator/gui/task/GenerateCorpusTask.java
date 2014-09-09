@@ -8,9 +8,9 @@ import javax.swing.SwingWorker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.warcgenerator.core.common.GenerateCorpusState;
-import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
 

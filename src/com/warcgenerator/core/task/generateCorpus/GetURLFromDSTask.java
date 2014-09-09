@@ -8,14 +8,14 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.warcgenerator.core.common.GenerateCorpusState;
-import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.core.task.ITask;
 import com.warcgenerator.core.task.Task;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
 public class GetURLFromDSTask extends Task implements ITask {
 	private GenerateCorpusState generateCorpusState;

@@ -12,8 +12,6 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import com.warcgenerator.core.common.GenerateCorpusState;
-import com.warcgenerator.core.common.GenerateCorpusStates;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -22,8 +20,8 @@ import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.GenericDS;
 import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.bean.DataBean;
-import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.LoadDataSourceException;
+import com.warcgenerator.core.exception.logic.ConfigFilePathIsNullException;
 import com.warcgenerator.core.exception.logic.LogicException;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
@@ -34,6 +32,8 @@ import com.warcgenerator.core.task.Task;
 import com.warcgenerator.core.task.generateCorpus.CheckActiveSitesConfigTask;
 import com.warcgenerator.core.task.generateCorpus.GetURLFromDSTask;
 import com.warcgenerator.core.task.generateCorpus.ReadURLsTask;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
 /**
  * Business logic layer
@@ -81,11 +81,15 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 */
 	public void saveAppConfig() {
 		String configFilePath = ConfigHelper.getConfigFilePath();
-		ConfigHelper.persistConfig(configFilePath, config);
-	
-		// Notify observers
-		setChanged();
-		notifyObservers(new LogicCallback(APP_CONFIG_SAVED_CALLBACK));
+		if (configFilePath != null) {
+			ConfigHelper.persistConfig(configFilePath, config);
+		
+			// Notify observers
+			setChanged();
+			notifyObservers(new LogicCallback(APP_CONFIG_SAVED_CALLBACK));
+		} else {
+			throw new ConfigFilePathIsNullException();
+		}
 	}
 	
 	/**
@@ -93,12 +97,19 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 */
 	public void saveAsAppConfig(String path) {
 		ConfigHelper.persistConfig(path, config);
-	
+		
 		// Notify observers
 		setChanged();
 		notifyObservers(new LogicCallback(APP_CONFIG_SAVED_AS_CALLBACK));
 	}
 
+	/**
+	 * Return Filepath of the current Config file.
+	 */
+	public String getConfigFilePath() {
+		return ConfigHelper.getConfigFilePath();
+	}
+	
 	public void loadAppConfig(String path) {
 		ConfigHelper.configure(path, config);
 		config.init();
@@ -111,6 +122,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public void loadNewAppConfig() {
 		config = new AppConfig();
 		config.init();
+		
+		// The filePath of this configuracion is not set yet.
+		ConfigHelper.setConfigFilePath(null);
 	}
 
 	public void updateAppConfig(AppConfig appConfig) throws LogicException {

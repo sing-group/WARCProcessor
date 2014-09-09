@@ -62,6 +62,7 @@ import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.components.CustomTreeNode;
 import com.warcgenerator.gui.config.GUIConfig;
+import com.warcgenerator.gui.helper.GUIConfigHelper;
 import com.warcgenerator.gui.helper.MenuHelper;
 import com.warcgenerator.gui.view.common.InitPanel;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
@@ -431,6 +432,16 @@ public class WarcGeneratorGUI extends Observable {
 	}
 
 	public void loadRecentFiles() {
+		// Add config file path
+		String configFilePath = logic.getConfigFilePath();
+		if (configFilePath != null) {
+			GUIConfig guiConfig = (GUIConfig) Session
+					.get(Constants.GUI_CONFIG_SESSION_KEY);
+			guiConfig.addRecentConfigFile(configFilePath);
+			GUIConfigHelper.persistConfig(Constants.DEFAULT_GUI_CONFIG_XML,
+					guiConfig);
+		}
+			
 		recentFilesMI.removeAll();
 		for (String configFile : guiConfig.getRecentConfigFilesReversed()) {
 			final String configFileName = configFile;

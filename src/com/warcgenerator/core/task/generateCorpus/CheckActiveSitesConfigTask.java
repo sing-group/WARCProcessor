@@ -45,37 +45,40 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 		logger.info("Task start");
 
 		if (!config.getOnlyActiveSites()) {
-			for (String url : urlsInactives) {
-				DataBean data = urls.get(url);
-
-				DataSource warcDS = outputDS.get(FileHelper
-						.getDomainNameFromURL(url));
-
-				if (warcDS == null) {
-					StringBuilder warcFileName = new StringBuilder();
-
-					StringBuilder outputWarcPath = new StringBuilder();
-					if (data.isSpam()) {
-						outputWarcPath.append(outputCorpusConfig.getSpamDir());
-					} else {
-						outputWarcPath.append(outputCorpusConfig.getHamDir());
+			//for (String url : urlsInactives) {
+			for (String url:urls.keySet()) {
+				if (urlsInactives.contains(url)) {
+					DataBean data = urls.get(url);
+	
+					DataSource warcDS = outputDS.get(FileHelper
+							.getDomainNameFromURL(url));
+	
+					if (warcDS == null) {
+						StringBuilder warcFileName = new StringBuilder();
+	
+						StringBuilder outputWarcPath = new StringBuilder();
+						if (data.isSpam()) {
+							outputWarcPath.append(outputCorpusConfig.getSpamDir());
+						} else {
+							outputWarcPath.append(outputCorpusConfig.getHamDir());
+						}
+						outputWarcPath.append(File.separator);
+						
+	
+						warcFileName.append(outputWarcPath.toString()).append(
+								FileHelper.getOutputFileName(url));
+	
+						warcDS = new WarcDS(new OutputWarcConfig(true,
+								warcFileName.toString()));
+	
+						outputDS.put(
+								FileHelper.getDomainNameFromURL(data.getUrl()),
+								warcDS);
 					}
-					outputWarcPath.append(File.separator);
-					
-
-					warcFileName.append(outputWarcPath.toString()).append(
-							FileHelper.getOutputFileName(url));
-
-					warcDS = new WarcDS(new OutputWarcConfig(true,
-							warcFileName.toString()));
-
-					outputDS.put(
-							FileHelper.getDomainNameFromURL(data.getUrl()),
-							warcDS);
+					warcDS.write(data);
+					OutputHelper.writeLabeled(domainsLabeledDS, data.getUrl(),
+							data.isSpam());
 				}
-				warcDS.write(data);
-				OutputHelper.writeLabeled(domainsLabeledDS, data.getUrl(),
-						data.isSpam());
 			}
 		}
 
