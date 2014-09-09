@@ -1,6 +1,9 @@
 package com.warcgenerator.gui.common;
 
 public interface Constants {
+	String APP_NAME = "WARC Processor";
+	String APP_VERSION = "3.0";
+	
 	String DATASOURCE_FORM_SESSION_KEY = "datasource_form_session_key";
 	String GUI_CONFIG_SESSION_KEY = "gui_config_session_key";
 	String DEFAULT_GUI_CONFIG_XML= ".//config//gui-config.xml";

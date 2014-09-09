@@ -188,6 +188,7 @@ public class OutputConfigPanel extends CustomJPanel {
 		panel_2.add(outputDirTField, gbc_outputDirTField);
 		
 		JButton examineBtn = new JButton("Examinar"); //$NON-NLS-1$
+		examineBtn.setIcon(new ImageIcon(OutputConfigPanel.class.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 		examineBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

@@ -1,0 +1,1 @@
+java -cp .\target\WarcProject-3.0.1-SNAPSHOT.jar;.\lib\* com.warcgenerator.AppWarcGeneratorGUI .\config\config.xml

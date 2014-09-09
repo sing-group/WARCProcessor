@@ -31,6 +31,7 @@ import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
 import com.warcgenerator.gui.components.CustomComboBoxRenderer;
 import com.warcgenerator.gui.components.CustomJDialog;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
+import javax.swing.ImageIcon;
 
 public class InitConfigDialog extends CustomJDialog {
 	private final JPanel contentPanel = new JPanel();
@@ -78,23 +79,41 @@ public class InitConfigDialog extends CustomJDialog {
 		this.view = view;
 		
 		setTitle("Cargar configuracion");
-		setBounds(100, 100, 449, 212);
+		setBounds(100, 100, 449, 174);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] {0, 220, 80, 30, 0};
-		gbl_contentPanel.rowHeights = new int[]{14, 0, 0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] {0, 0, 220, 80, 30, 0};
+		gbl_contentPanel.rowHeights = new int[]{0, 14, 0, 0, 0, 0};
+		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
+		{
+			Component horizontalStrut = Box.createHorizontalStrut(20);
+			GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
+			gbc_horizontalStrut.gridwidth = 4;
+			gbc_horizontalStrut.insets = new Insets(0, 0, 5, 5);
+			gbc_horizontalStrut.gridx = 1;
+			gbc_horizontalStrut.gridy = 0;
+			contentPanel.add(horizontalStrut, gbc_horizontalStrut);
+		}
 		{
 			Component verticalStrut = Box.createVerticalStrut(20);
 			GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
 			gbc_verticalStrut.insets = new Insets(0, 0, 5, 5);
 			gbc_verticalStrut.gridx = 0;
-			gbc_verticalStrut.gridy = 0;
+			gbc_verticalStrut.gridy = 1;
 			contentPanel.add(verticalStrut, gbc_verticalStrut);
+		}
+		{
+			JLabel lblNewLabel_1 = new JLabel("");
+			lblNewLabel_1.setIcon(new ImageIcon(InitConfigDialog.class.getResource("/com/warcgenerator/gui/resources/img/script.png")));
+			GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+			gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+			gbc_lblNewLabel_1.gridx = 1;
+			gbc_lblNewLabel_1.gridy = 1;
+			contentPanel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		}
 		{
 			JLabel lblNewLabel = new JLabel("Selecciona una configuracion");
@@ -102,45 +121,56 @@ public class InitConfigDialog extends CustomJDialog {
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-			gbc_lblNewLabel.gridx = 1;
-			gbc_lblNewLabel.gridy = 0;
+			gbc_lblNewLabel.gridx = 2;
+			gbc_lblNewLabel.gridy = 1;
 			contentPanel.add(lblNewLabel, gbc_lblNewLabel);
 		}
 		{
 			JLabel lblDetermineLaConfiguracin = new JLabel("Determine la configuraci\u00F3n a usar en la aplicaci\u00F3n.");
 			GridBagConstraints gbc_lblDetermineLaConfiguracin = new GridBagConstraints();
+			gbc_lblDetermineLaConfiguracin.gridwidth = 4;
 			gbc_lblDetermineLaConfiguracin.anchor = GridBagConstraints.WEST;
-			gbc_lblDetermineLaConfiguracin.insets = new Insets(0, 0, 5, 5);
+			gbc_lblDetermineLaConfiguracin.insets = new Insets(0, 0, 5, 0);
 			gbc_lblDetermineLaConfiguracin.gridx = 1;
-			gbc_lblDetermineLaConfiguracin.gridy = 1;
+			gbc_lblDetermineLaConfiguracin.gridy = 2;
 			contentPanel.add(lblDetermineLaConfiguracin, gbc_lblDetermineLaConfiguracin);
 		}
 		{
 			configFilesList = new Vector<String>();
 			comboBoxModel = new DefaultComboBoxModel<>(configFilesList);
+		}
+		{
+			Component horizontalStrut = Box.createHorizontalStrut(20);
+			GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
+			gbc_horizontalStrut.gridwidth = 3;
+			gbc_horizontalStrut.insets = new Insets(0, 0, 5, 0);
+			gbc_horizontalStrut.gridx = 2;
+			gbc_horizontalStrut.gridy = 3;
+			contentPanel.add(horizontalStrut, gbc_horizontalStrut);
+		}
+		{
 			configFilesCBox = new JComboBox(comboBoxModel);
 			configFilesCBox.setRenderer(new CustomComboBoxRenderer<String>());
 			GridBagConstraints gbc_configFilesList = new GridBagConstraints();
-			gbc_configFilesList.gridwidth = 2;
+			gbc_configFilesList.gridwidth = 3;
 			gbc_configFilesList.insets = new Insets(0, 0, 0, 5);
 			gbc_configFilesList.fill = GridBagConstraints.HORIZONTAL;
 			gbc_configFilesList.gridx = 1;
-			gbc_configFilesList.gridy = 3;
+			gbc_configFilesList.gridy = 4;
 			contentPanel.add(configFilesCBox, gbc_configFilesList);
 		}
-		{
-			JButton examineBtn = new JButton("Examinar");
-			examineBtn.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					searchInitConfigAction.actionPerformed(e);
-				}
-			});
-			GridBagConstraints gbc_examineBtn = new GridBagConstraints();
-			gbc_examineBtn.anchor = GridBagConstraints.WEST;
-			gbc_examineBtn.gridx = 3;
-			gbc_examineBtn.gridy = 3;
-			contentPanel.add(examineBtn, gbc_examineBtn);
-		}
+		JButton examineBtn = new JButton("Examinar");
+		examineBtn.setIcon(new ImageIcon(InitConfigDialog.class.getResource("/com/warcgenerator/gui/resources/img/find.png")));
+		examineBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				searchInitConfigAction.actionPerformed(e);
+			}
+		});
+		GridBagConstraints gbc_examineBtn = new GridBagConstraints();
+		gbc_examineBtn.anchor = GridBagConstraints.WEST;
+		gbc_examineBtn.gridx = 4;
+		gbc_examineBtn.gridy = 4;
+		contentPanel.add(examineBtn, gbc_examineBtn);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));

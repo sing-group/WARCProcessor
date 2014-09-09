@@ -213,6 +213,7 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 								folderJTField.setColumns(10);
 						
 								JButton btnBuscar = new JButton("Examinar");
+								btnBuscar.setIcon(new ImageIcon(DSAssistantStep1Panel.class.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 								GridBagConstraints gbc_btnBuscar = new GridBagConstraints();
 								gbc_btnBuscar.insets = new Insets(0, 0, 5, 0);
 								gbc_btnBuscar.gridx = 2;

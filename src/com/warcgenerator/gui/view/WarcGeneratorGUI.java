@@ -14,6 +14,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.List;
 import java.util.Observable;
 
@@ -196,7 +197,7 @@ public class WarcGeneratorGUI extends Observable {
 						.getImage(
 								WarcGeneratorGUI.class
 										.getResource("/com/warcgenerator/gui/resources/img/warc.png")));
-		frmWarcgenerator.setTitle("WarcGenerator GUI");
+		frmWarcgenerator.setTitle(Constants.APP_NAME);
 		frmWarcgenerator.setBounds(100, 100, 630, 470);
 		frmWarcgenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -406,6 +407,18 @@ public class WarcGeneratorGUI extends Observable {
 		frmWarcgenerator.setLocationRelativeTo(null);
 	}
 
+	public void refreshTitle() {
+		StringBuffer title = new StringBuffer(Constants.APP_NAME);
+		String configFilePath = logic.getConfigFilePath();
+		
+		if (configFilePath != null) { 
+			File file = new File(logic.getConfigFilePath());
+			title.append(" - ").append(file.getName());
+		}
+		frmWarcgenerator.setTitle(title.toString());
+		
+	}
+	
 	public void buildTree() {
 		final CustomTreeNode general = new CustomTreeNode("General");
 
@@ -464,6 +477,8 @@ public class WarcGeneratorGUI extends Observable {
 				recentFilesMI.add(recentConfig);
 			}
 		}
+		
+		refreshTitle();
 	}
 
 	public void selectFirstSelectionableItem() {

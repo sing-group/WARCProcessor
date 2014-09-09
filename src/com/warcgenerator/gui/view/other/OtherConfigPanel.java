@@ -185,6 +185,7 @@ public class OtherConfigPanel extends CustomJPanel {
 		tempDirTField.setColumns(10);
 		
 		JButton examineBtn = new JButton(Messages.getString("OtherConfigPanel.btnExaminar.text")); //$NON-NLS-1$
+		examineBtn.setIcon(new ImageIcon(OtherConfigPanel.class.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 		GridBagConstraints gbc_examineBtn = new GridBagConstraints();
 		gbc_examineBtn.insets = new Insets(0, 0, 5, 0);
 		gbc_examineBtn.gridx = 2;

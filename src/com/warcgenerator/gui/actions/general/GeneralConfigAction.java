@@ -1,6 +1,8 @@
 package com.warcgenerator.gui.actions.general;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -64,6 +66,21 @@ public class GeneralConfigAction
 				config.getOnlyActiveSites());
 		configPanel.getDownloadAgainEnabledCBox().setSelected(
 				config.getDownloadAgain());
+		
+		
+		configPanel.getSpamHamRationValueTField().addPropertyChangeListener("value", 
+				new PropertyChangeListener() {
+					
+					@Override
+					public void propertyChange(PropertyChangeEvent arg0) {
+						System.out.println("cambiando!!!");
+						configPanel.getSlider().setValue(
+							Integer.valueOf(
+									(String)configPanel.
+										getSpamHamRationValueTField().getValue()));
+					}
+				});
+		
 		
 		configPanel.commit();
 		view.loadMainPanel(configPanel);

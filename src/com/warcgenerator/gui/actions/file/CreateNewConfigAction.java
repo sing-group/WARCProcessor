@@ -31,6 +31,7 @@ public class CreateNewConfigAction extends AbstractAction {
 		logic.loadNewAppConfig();
 		
 		view.buildTree();
+		view.loadRecentFiles();
 		view.selectFirstSelectionableItem();
 	}
 }
