@@ -1,8 +1,10 @@
 package com.warcgenerator.gui.config;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.warcgenerator.gui.actions.common.RecentFileCBItem;
 import com.warcgenerator.gui.common.Constants;
 
 /**
@@ -54,7 +56,7 @@ public class GUIConfig {
 			if (recentConfigFiles.size() >= 
 					Constants.NUM_MAX_RECENT_CONFIG_FILES) {
 				// Remove the oldest value
-				recentConfigFiles.remove(recentConfigFiles.size());
+				recentConfigFiles.remove(0);
 				// Add new value
 				recentConfigFiles.add(configFilePath);
 			} else {
@@ -63,10 +65,14 @@ public class GUIConfig {
 		}
 	}
 	
-	public List<String> getRecentConfigFilesReversed() {
-		List<String> reversedArray = new ArrayList<String>();
+	public List<RecentFileCBItem> getRecentConfigFilesReversed() {
+		List<RecentFileCBItem> reversedArray = new ArrayList<RecentFileCBItem>();
+		int i = recentConfigFiles.size();
 		for (String text:recentConfigFiles) {
-			reversedArray.add(0, text);
+			File f = new File(text);
+			RecentFileCBItem configFileName = new RecentFileCBItem(i--, 
+					f.getName(), f.getAbsolutePath());
+			reversedArray.add(0, configFileName);
 		}
 		return reversedArray;
 	}

@@ -47,7 +47,7 @@ public class StartGUIAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		window.setVisible(true);
 		
-		for(String configFile:guiConfig.getRecentConfigFilesReversed()) {
+		for(RecentFileCBItem configFile:guiConfig.getRecentConfigFilesReversed()) {
 			initConfigDialog.addConfigFile(configFile);
 		}
 		initConfigDialog.setVisible(true);

@@ -14,6 +14,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Observable;
 
 import javax.swing.Action;
@@ -46,6 +47,7 @@ import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.common.AboutOfAction;
 import com.warcgenerator.gui.actions.common.ExitAction;
+import com.warcgenerator.gui.actions.common.RecentFileCBItem;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCreateAction;
 import com.warcgenerator.gui.actions.datasource.DSourcesAction;
 import com.warcgenerator.gui.actions.file.CreateNewConfigAction;
@@ -443,17 +445,24 @@ public class WarcGeneratorGUI extends Observable {
 		}
 			
 		recentFilesMI.removeAll();
-		for (String configFile : guiConfig.getRecentConfigFilesReversed()) {
-			final String configFileName = configFile;
-			JMenuItem recentConfig = new JMenuItem(configFile);
-			recentConfig.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Action loadRecentConfigAction = new LoadRecentConfigAction(
-							logic, WarcGeneratorGUI.this, configFileName, true);
-					loadRecentConfigAction.actionPerformed(e);
-				}
-			});
+		List<RecentFileCBItem> recentFiles = guiConfig.getRecentConfigFilesReversed();
+		if (recentFiles.size() == 0) {
+			JMenuItem recentConfig = new JMenuItem("[Ninguna]");
+			recentConfig.setEnabled(false);
 			recentFilesMI.add(recentConfig);
+		} else {
+			for (RecentFileCBItem configFile : recentFiles) {
+				final String configFilePathRecent = configFile.getPath();
+				JMenuItem recentConfig = new JMenuItem(configFile.toString());
+				recentConfig.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Action loadRecentConfigAction = new LoadRecentConfigAction(
+								logic, WarcGeneratorGUI.this, configFilePathRecent, true);
+						loadRecentConfigAction.actionPerformed(e);
+					}
+				});
+				recentFilesMI.add(recentConfig);
+			}
 		}
 	}
 

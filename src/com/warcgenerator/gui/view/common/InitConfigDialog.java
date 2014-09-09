@@ -9,6 +9,10 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -21,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.common.RecentFileCBItem;
 import com.warcgenerator.gui.actions.common.SearchInitConfigAction;
 import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
 import com.warcgenerator.gui.components.CustomComboBoxRenderer;
@@ -35,21 +40,28 @@ public class InitConfigDialog extends CustomJDialog {
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;
 	private Action loadRecentConfigAction;
-	private Action searchInitConfigAction;;
+	private Action searchInitConfigAction;
+	private Map<String, RecentFileCBItem> recentFiles;
 	
-	public void addFirstConfigFile(String configFile) {
+	public void addFirstConfigFile(File configFile) {
 		if (comboBoxModel.getSize() > 0 && 
 				comboBoxModel.getElementAt(1).equals(CustomComboBoxRenderer.SEPARATOR)) {
 			configFilesList.remove(0);
 			configFilesList.remove(0);
 		}
-		comboBoxModel.insertElementAt(configFile, 0);
+		
+		RecentFileCBItem recentFile = new RecentFileCBItem(0, configFile.getName(),
+				configFile.getAbsolutePath());
+		recentFiles.put(recentFile.getPath(), recentFile);
+		
+		comboBoxModel.insertElementAt(configFile.getAbsolutePath(), 0);
 		comboBoxModel.insertElementAt(CustomComboBoxRenderer.SEPARATOR, 1);
 		configFilesCBox.setSelectedIndex(0);
 	}
 	
-	public void addConfigFile(String configFile) {
-		configFilesCBox.addItem(configFile);
+	public void addConfigFile(RecentFileCBItem configFile) {
+		recentFiles.put(configFile.toString(), configFile);
+		configFilesCBox.addItem(configFile.toString());
 	}
 	
 	/**
@@ -60,6 +72,7 @@ public class InitConfigDialog extends CustomJDialog {
 		super(view.getMainFrame(), true);
 		
 		searchInitConfigAction = new SearchInitConfigAction(logic, view, this);
+		recentFiles = new HashMap<String, RecentFileCBItem>();
 		
 		this.logic = logic;
 		this.view = view;
@@ -136,9 +149,10 @@ public class InitConfigDialog extends CustomJDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						String configFilePath = recentFiles.get(
+								configFilesCBox.getSelectedItem().toString()).getPath();
 						loadRecentConfigAction = new LoadRecentConfigAction(logic,
-								view, configFilesCBox.getSelectedItem().toString(),
-								false);
+								view, configFilePath, false);
 						loadRecentConfigAction.actionPerformed(e);
 						InitConfigDialog.this.dispose();
 					}

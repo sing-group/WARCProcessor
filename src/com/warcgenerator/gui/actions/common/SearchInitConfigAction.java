@@ -30,7 +30,7 @@ public class SearchInitConfigAction extends AbstractAction {
 		int userSelection = fileChooser.showOpenDialog(view.getMainFrame());
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File fileToSave = fileChooser.getSelectedFile();
-			initConfigDialog.addFirstConfigFile(fileToSave.getAbsolutePath());
+			initConfigDialog.addFirstConfigFile(fileToSave);
 		}
 	}
 }
