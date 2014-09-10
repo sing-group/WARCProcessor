@@ -2,7 +2,10 @@ package com.warcgenerator.gui.task;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,7 +23,10 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 	private WarcGeneratorGUI view;
 	private GeneratingCorpusDialog gcd;
 	private GenerateCorpusState gcState;
-
+	
+	private boolean error;
+	private String errorMessage;
+	
 	private static Logger logger = Logger.getLogger(GenerateCorpusTask.class);
 
 	public GenerateCorpusTask(IAppLogic logic, WarcGeneratorGUI view,
@@ -40,6 +46,7 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 		setProgress(0);
 
 		logic.generateCorpus(gcState);
+		
 		// Initialize progress property.
 
 		/*
@@ -50,18 +57,29 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 		 */
 		return null;
 	}
-
+	
 	/*
 	 * Executed in event dispatching thread
 	 */
 	@Override
 	public void done() {
-		if (this.isCancelled()) {
-			gcState.setState(GenerateCorpusStates.CANCELlING_PROCESS);
-			logic.stopGenerateCorpus();
-			logger.info("Tarea cancelled");
-		} else {
+		try {
+			get();
+			
+			JOptionPane.showMessageDialog(view.getMainFrame(),
+					"El corpus se ha generado con exito.");
 			logger.info("Task completed");
+		} catch (ExecutionException e) {
+            String msg = String.format("Unexpected problem: %s", 
+                           e.getCause().toString());
+            JOptionPane.showMessageDialog(view.getAssistantPanel(),
+                msg, "Error", JOptionPane.ERROR_MESSAGE);
+            gcd.dispose();
+		} catch (InterruptedException e) {
+			logger.info("Task interrupted");
+		} catch (CancellationException e) {
+			logic.stopGenerateCorpus();
+			gcState.setState(GenerateCorpusStates.CANCELlING_PROCESS);
 		}
 	}
 
@@ -102,5 +120,21 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			setProgress(progress);
 			publish();
 		}
+	}
+
+	public boolean isError() {
+		return error;
+	}
+
+	public void setError(boolean error) {
+		this.error = error;
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 }

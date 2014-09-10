@@ -279,7 +279,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		FileHelper.createDirs(dirs);
 		
 		// Get dsHandlers
-		ConfigHelper.getDSHandlers(config, dataSourcesTypes);
+		try {
+			ConfigHelper.getDSHandlers(config, dataSourcesTypes);
+		} catch (LoadDataSourceException ex) {
+			throw new LogicException(ex);
+		}
 		
 		// Generate wars
 		IDataSource labeledDS = new GenericDS(new DataSourceConfig(

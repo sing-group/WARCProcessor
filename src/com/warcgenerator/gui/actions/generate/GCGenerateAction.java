@@ -40,12 +40,9 @@ public class GCGenerateAction extends AbstractAction {
 				if ("progress" == e.getPropertyName()) {
 					int progress = (Integer) e.getNewValue();
 					gcd.getProgressBar().setValue(progress);
-
+					
 					if (gcTask.isDone()) {
-						if (!gcTask.isCancelled()) {
-							JOptionPane.showMessageDialog(view.getMainFrame(),
-									"El corpus se ha generado con exito.");
-						} else {
+						if (gcTask.isCancelled()) {
 							JOptionPane.showMessageDialog(view.getMainFrame(),
 									"El proceso ha sido cancelado.");
 						}

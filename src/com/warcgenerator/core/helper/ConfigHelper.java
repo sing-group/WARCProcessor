@@ -109,7 +109,7 @@ public class ConfigHelper {
 		} catch (IllegalArgumentException e) {
 			throw new LoadDataSourceException(e);
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new LoadDataSourceException(e);
 		}
 	}

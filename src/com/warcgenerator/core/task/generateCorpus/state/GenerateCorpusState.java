@@ -7,6 +7,7 @@ public class GenerateCorpusState extends Observable {
 	private int websToVisitTotal;
 	private GenerateCorpusStates currentState;
 	private String currentUrlCrawled;
+	private String message;
 	
 	public GenerateCorpusState() {
 	}
@@ -47,5 +48,13 @@ public class GenerateCorpusState extends Observable {
 
 	public void setWebsToVisitTotal(int websToVisitTotal) {
 		this.websToVisitTotal = websToVisitTotal;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

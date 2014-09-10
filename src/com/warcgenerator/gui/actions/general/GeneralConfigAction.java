@@ -67,13 +67,10 @@ public class GeneralConfigAction
 		configPanel.getDownloadAgainEnabledCBox().setSelected(
 				config.getDownloadAgain());
 		
-		
 		configPanel.getSpamHamRationValueTField().addPropertyChangeListener("value", 
 				new PropertyChangeListener() {
-					
 					@Override
 					public void propertyChange(PropertyChangeEvent arg0) {
-						System.out.println("cambiando!!!");
 						configPanel.getSlider().setValue(
 							Integer.valueOf(
 									(String)configPanel.
