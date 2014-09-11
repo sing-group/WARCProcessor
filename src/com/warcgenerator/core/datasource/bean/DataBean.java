@@ -5,7 +5,7 @@ public class DataBean {
 	private Object data;
 	private String url;
 	private boolean spam;
-	private String typeDS;
+	private String typeDS = "";
 	
 	public DataBean() {}
 	

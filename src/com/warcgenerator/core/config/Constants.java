@@ -24,7 +24,7 @@ public interface Constants {
 		Boolean DOWNLOAD_AGAIN_DEFAULT = true;
 		Boolean FOLLOW_REDIRECT_DEFAULT = false;
 		Boolean RATIO_IS_PERCENTAGE_DEFAULT = true;
-		Integer RATIO_PERCENTAGE_SPAM_DEFAULT = 0;
+		Integer RATIO_PERCENTAGE_SPAM_DEFAULT = 50;
 		Integer RATIO_QUANTITY_SPAM_DEFAULT = 0;
 	}
 }
