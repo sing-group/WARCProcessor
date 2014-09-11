@@ -68,10 +68,14 @@ public class DSAsisstantStep1ContinueAction
 		dsConfig.setDsClassName(dsConfigTmp.getDsClassName());
 		dsConfig.setHandlerClassName(dsConfigTmp.getHandlerClassName());
 		
-		dsConfig.getCustomParams().clear();
-		for (String key: dsConfigTmp.getCustomParams().keySet()) {
-			dsConfig.getCustomParams().put(key, 
-					dsConfigTmp.getCustomParams().get(key));
+		// If we are create a new datasource 
+		if (dsConfig.getId() == null) {
+			dsConfig.getCustomParams().clear();
+			// Set default values to custom parameters
+			for (String key: dsConfigTmp.getCustomParams().keySet()) {
+				dsConfig.getCustomParams().put(key, 
+						dsConfigTmp.getCustomParams().get(key));
+			}
 		}
 		
 		if (validate(dsConfig)) {

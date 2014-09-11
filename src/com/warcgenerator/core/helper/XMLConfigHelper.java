@@ -187,6 +187,9 @@ public class XMLConfigHelper {
 										.getNodeName());
 								customParam.setValue(nodeCustomParamAux
 										.getTextContent().trim());
+								customParam.setType(((Element)nodeCustomParamAux)
+										.getAttribute("type"));
+								
 								// Caution!! We are not getting the defaultValue
 								// and type because already know it of
 								// datasources.xml
@@ -455,6 +458,11 @@ public class XMLConfigHelper {
 					Element customParam = doc.createElement(paramName);
 					customParam.setTextContent(
 							dsConfig.getCustomParams().get(paramName).getValue());
+					
+					attr = doc.createAttribute("type");
+					attr.setValue(dsConfig.getCustomParams().get(paramName).getType());
+					customParam.setAttributeNode(attr);
+					
 					customParams.appendChild(customParam);
 				}
 				

@@ -71,8 +71,8 @@ public class DSAsisstantCreateAction extends CustomAction {
 	@Override
 	public void action(ActionEvent e) {
 		init();
-		DataSourceConfig dsConfig = new DataSourceConfig();
-		Session.add(Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
+		/*DataSourceConfig dsConfig = new DataSourceConfig();
+		Session.add(Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);*/
 
 		((CardLayout) mainAssistantCreatePanel.getLayout()).show(
 				mainAssistantCreatePanel, dsAssistantCreatePanel.getName());

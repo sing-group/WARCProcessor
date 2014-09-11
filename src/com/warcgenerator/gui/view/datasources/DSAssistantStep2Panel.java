@@ -1,9 +1,14 @@
 package com.warcgenerator.gui.view.datasources;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -11,9 +16,8 @@ import java.awt.event.MouseEvent;
 import java.util.Map;
 
 import javax.swing.Action;
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -24,7 +28,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
 import com.warcgenerator.core.config.CustomParamConfig;
@@ -33,21 +36,16 @@ import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2ContinueAction;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.components.PropertiesJTable;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-import javax.swing.Box;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.Icon;
-import java.awt.FlowLayout;
 
 public class DSAssistantStep2Panel extends CustomJPanel {
 	private Action dsAssistantStep2BackAction;
 	private Action dsAssistantCancelAction;
 	private Action dsAssistantStep2ContinueAction;
-	
+
 	private JTable paramsTable;
+
 	public JTable getParamsTable() {
 		return paramsTable;
 	}
@@ -57,53 +55,54 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 	private JCheckBox maxElementsEnabledCBox;
 	private JRadioButton spamRButtom;
 	private JRadioButton hamRButtom;
-	
+
 	/**
 	 * Create the panel.
 	 */
-	public DSAssistantStep2Panel(IAppLogic logic, 
-			WarcGeneratorGUI view, JPanel parentAssistant) {
-		dsAssistantStep2ContinueAction =
-				new DSAsisstantStep2ContinueAction(logic, view, this,
-						parentAssistant);
-		dsAssistantStep2BackAction =
-				new DSAsisstantStep2BackAction(logic, view, parentAssistant);
-		dsAssistantCancelAction =
-				new DSAsisstantCancelAction(logic, view, parentAssistant);
-		
+	public DSAssistantStep2Panel(IAppLogic logic, WarcGeneratorGUI view,
+			JPanel parentAssistant) {
+		dsAssistantStep2ContinueAction = new DSAsisstantStep2ContinueAction(
+				logic, view, this, parentAssistant);
+		dsAssistantStep2BackAction = new DSAsisstantStep2BackAction(logic,
+				view, parentAssistant);
+		dsAssistantCancelAction = new DSAsisstantCancelAction(logic, view,
+				parentAssistant);
+
 		setName("DSAssistantStep2Panel");
-		
+
 		setPreferredSize(new Dimension(420, 300));
-		
-		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
-		
-		//setBackground(new Color(230, 230, 250));
-		
+
+		ImageIcon icon = new ImageIcon(
+				WarcGeneratorGUI.class
+						.getResource("/com/warcgenerator/gui/resources/img/database.png"));
+
+		// setBackground(new Color(230, 230, 250));
+
 		JTextPane txtpnunOrigenDe = new JTextPane();
 		txtpnunOrigenDe.setEditable(false);
 		txtpnunOrigenDe.setOpaque(false);
 		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
 		txtpnunOrigenDe.setText("Configure las opciones del origen de datos.");
-		
+
 		JButton btnNuevoOrigen = new JButton("Continuar");
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dsAssistantStep2ContinueAction.actionPerformed(e);
 			}
 		});
-		
+
 		JButton btnNewButton = new JButton("Cancelar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dsAssistantCancelAction.actionPerformed(e);
 			}
 		});
-		
+
 		JLabel lblPasoDe = new JLabel("Paso 2 de 3");
-		
-		 //Group the radio buttons.
-	    ButtonGroup group = new ButtonGroup();
-		
+
+		// Group the radio buttons.
+		ButtonGroup group = new ButtonGroup();
+
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,17 +110,17 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 			}
 		});
 		setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel = new JPanel();
-		//panel.setBackground(new Color(230, 230, 250));
+		// panel.setBackground(new Color(230, 230, 250));
 		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] {0, 0, 363};
-		gbl_panel.rowHeights = new int[]{0, 36, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWidths = new int[] { 0, 0, 363 };
+		gbl_panel.rowHeights = new int[] { 0, 36, 0, 0 };
+		gbl_panel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
+		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panel.setLayout(gbl_panel);
-		
+
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
 		gbc_horizontalStrut.gridwidth = 2;
@@ -129,7 +128,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_horizontalStrut.gridx = 1;
 		gbc_horizontalStrut.gridy = 0;
 		panel.add(horizontalStrut, gbc_horizontalStrut);
-		
+
 		Component verticalStrut = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
 		gbc_verticalStrut.gridheight = 2;
@@ -137,14 +136,14 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_verticalStrut.gridx = 0;
 		gbc_verticalStrut.gridy = 1;
 		panel.add(verticalStrut, gbc_verticalStrut);
-		
+
 		JLabel lblNewLabel_4 = new JLabel(icon);
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_4.gridx = 1;
 		gbc_lblNewLabel_4.gridy = 1;
 		panel.add(lblNewLabel_4, gbc_lblNewLabel_4);
-		
+
 		JLabel lblNewLabel = new JLabel("Origenes de datos");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
@@ -154,24 +153,27 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		panel.add(lblNewLabel, gbc_lblNewLabel);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		
-		JLabel label_2 = new JLabel("Seleccione los par\u00E1metros del corpus a generar.");
+
+		JLabel label_2 = new JLabel(
+				"Seleccione los par\u00E1metros del corpus a generar.");
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
 		gbc_label_2.anchor = GridBagConstraints.WEST;
 		gbc_label_2.gridwidth = 2;
 		gbc_label_2.gridx = 1;
 		gbc_label_2.gridy = 2;
 		panel.add(label_2, gbc_label_2);
-		
+
 		JPanel panel_2 = new JPanel();
 		add(panel_2, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[] {0, 0, 137, 54, 60, 39, 25};
-		gbl_panel_2.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_2.columnWidths = new int[] { 0, 0, 137, 54, 60, 39, 25 };
+		gbl_panel_2.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
+		gbl_panel_2.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0,
+				0.0, 0.0 };
+		gbl_panel_2.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0,
+				Double.MIN_VALUE };
 		panel_2.setLayout(gbl_panel_2);
-		
+
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_2 = new GridBagConstraints();
 		gbc_horizontalStrut_2.gridwidth = 5;
@@ -179,7 +181,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_horizontalStrut_2.gridx = 1;
 		gbc_horizontalStrut_2.gridy = 0;
 		panel_2.add(horizontalStrut_2, gbc_horizontalStrut_2);
-		
+
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_1 = new GridBagConstraints();
 		gbc_verticalStrut_1.gridheight = 3;
@@ -187,7 +189,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_verticalStrut_1.gridx = 0;
 		gbc_verticalStrut_1.gridy = 1;
 		panel_2.add(verticalStrut_1, gbc_verticalStrut_1);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Spam:");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
@@ -195,7 +197,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_lblNewLabel_1.gridx = 1;
 		gbc_lblNewLabel_1.gridy = 1;
 		panel_2.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
+
 		spamEnabledCBox = new JCheckBox("Habilitado");
 		GridBagConstraints gbc_spamEnabledCBox = new GridBagConstraints();
 		gbc_spamEnabledCBox.fill = GridBagConstraints.HORIZONTAL;
@@ -223,11 +225,11 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_spamRButtom.gridy = 1;
 		panel_2.add(spamRButtom, gbc_spamRButtom);
 		spamRButtom.setSelected(true);
-		
+
 		// Disabled buttoms
 		spamRButtom.setEnabled(false);
-		
-	    group.add(spamRButtom);
+
+		group.add(spamRButtom);
 		hamRButtom = new JRadioButton("No");
 		GridBagConstraints gbc_hamRButtom = new GridBagConstraints();
 		gbc_hamRButtom.anchor = GridBagConstraints.WEST;
@@ -237,7 +239,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		panel_2.add(hamRButtom, gbc_hamRButtom);
 		hamRButtom.setEnabled(false);
 		group.add(hamRButtom);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("Max. elementos:");
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
@@ -262,7 +264,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 				}
 			}
 		});
-		
+
 		quantityMaxElemsTField = new JFormattedTextField();
 		GridBagConstraints gbc_quantityMaxElemsTField = new GridBagConstraints();
 		gbc_quantityMaxElemsTField.fill = GridBagConstraints.HORIZONTAL;
@@ -271,10 +273,10 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_quantityMaxElemsTField.gridy = 2;
 		panel_2.add(quantityMaxElemsTField, gbc_quantityMaxElemsTField);
 		quantityMaxElemsTField.setColumns(10);
-		
+
 		// Disabled quantity
 		quantityMaxElemsTField.setEnabled(false);
-		
+
 		JLabel lblNewLabel_3 = new JLabel("Parametros:");
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
@@ -282,14 +284,13 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_lblNewLabel_3.gridx = 1;
 		gbc_lblNewLabel_3.gridy = 3;
 		panel_2.add(lblNewLabel_3, gbc_lblNewLabel_3);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
-		
-		paramsTable = new JTable();
-		loadTableModel(paramsTable);
-		
+
+		paramsTable = new PropertiesJTable();
+
 		scrollPane.setViewportView(paramsTable);
-		
+
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_1.gridwidth = 5;
@@ -297,7 +298,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_scrollPane_1.gridx = 2;
 		gbc_scrollPane_1.gridy = 3;
 		panel_2.add(scrollPane, gbc_scrollPane_1);
-		
+
 		JPanel panel_1 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
@@ -307,47 +308,38 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		panel_1.add(btnNewButton);
 		panel_1.add(btnNuevoOrigen);
 		panel_1.add(txtpnunOrigenDe);
-		
-		
+
 	}
 
-	private void loadTableModel(JTable paramsTable) {
-		paramsTable.setModel(new DefaultTableModel(
-				new Object[0][0],
-				new String[] {
-					"Nombre", "Valor"
-				}
-			) {
-				boolean[] columnEditables = new boolean[] {
-					false, true
-				};
-				public boolean isCellEditable(int row, int column) {
-					return columnEditables[column];
-				}
-				/*public void setValueAt(Object value, int row, int col) {
-					 super.setValueAt(value, row, col);
-					 fireTableCellUpdated(row, col);
-				}*/
-
-			}
-		);
-	}
-	
 	public void setTableModel(Map<String, CustomParamConfig> map) {
-		loadTableModel(paramsTable);
+		DefaultTableModel model = (DefaultTableModel) paramsTable.getModel();
+
+		// Remove contents
+		while(model.getRowCount() > 0) {
+			model.removeRow(0);
+		}
 		
-		DefaultTableModel model = (DefaultTableModel)paramsTable.getModel();
-		
-		for(String key:map.keySet()) {
-			model.addRow(new Object[]{key, map.get(key).getValue()});
-		}	
+		for (String key : map.keySet()) {
+			CustomParamConfig paramConfig = map.get(key);
+
+			Object obj = null;
+			if (paramConfig.getType().equals("java.lang.Boolean")) {
+				obj = Boolean.valueOf(paramConfig.getValue());
+				;
+			} else {
+				obj = paramConfig.getValue();
+			}
+
+			model.addRow(new Object[] { key, obj });
+		}
 	}
-	
+
 	public JFormattedTextField getQuantityMaxElemsTField() {
 		return quantityMaxElemsTField;
 	}
 
-	public void setQuantityMaxElemsTField(JFormattedTextField quantityMaxElemsTField) {
+	public void setQuantityMaxElemsTField(
+			JFormattedTextField quantityMaxElemsTField) {
 		this.quantityMaxElemsTField = quantityMaxElemsTField;
 	}
 
@@ -386,6 +378,6 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

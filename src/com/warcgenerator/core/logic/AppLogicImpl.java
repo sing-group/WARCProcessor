@@ -14,6 +14,7 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
+import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.datasource.DataSource;
@@ -160,13 +161,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		
 		for (DataSourceConfig dsConfig : dataSourcesTypes.values()) {
 			DataSourceConfig dsConfigCopy = new DataSourceConfig();
-			try {
-				BeanUtils.copyProperties(dsConfigCopy, dsConfig);
-			} catch (IllegalAccessException e) {
-				throw new LogicException(e);
-			} catch (InvocationTargetException e) {
-				throw new LogicException(e);
-			}
+			DataSourceConfig.copy(dsConfigCopy, dsConfig);
 			dataSourceTypesList.add(dsConfigCopy);
 		}
 
@@ -177,13 +172,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public DataSourceConfig getDataSourceType(String type) {
 		DataSourceConfig dsConfigCopy = new DataSourceConfig();
 		DataSourceConfig dsConfig = dataSourcesTypes.get(type);
-		try {
-			BeanUtils.copyProperties(dsConfigCopy, dsConfig);
-		} catch (IllegalAccessException e) {
-			throw new LogicException(e);
-		} catch (InvocationTargetException e) {
-			throw new LogicException(e);
-		}
+		DataSourceConfig.copy(dsConfigCopy, dsConfig);
 		return dsConfigCopy;
 	}
 
@@ -192,13 +181,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 		for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
 			DataSourceConfig dsConfigCopy = new DataSourceConfig();
-			try {
-				BeanUtils.copyProperties(dsConfigCopy, dsConfig);
-			} catch (IllegalAccessException e) {
-				throw new LogicException(e);
-			} catch (InvocationTargetException e) {
-				throw new LogicException(e);
-			}
+			DataSourceConfig.copy(dsConfigCopy, dsConfig);
 			dataSourceConfigsList.add(dsConfigCopy);
 		}
 
@@ -209,13 +192,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public DataSourceConfig getDataSourceConfig(String name) {
 		DataSourceConfig dsConfigCopy = new DataSourceConfig();
 		DataSourceConfig dsConfig = config.getDataSourceConfigs().get(name);
-		try {
-			BeanUtils.copyProperties(dsConfigCopy, dsConfig);
-		} catch (IllegalAccessException e) {
-			throw new LogicException(e);
-		} catch (InvocationTargetException e) {
-			throw new LogicException(e);
-		}
+		DataSourceConfig.copy(dsConfigCopy, dsConfig);
 		return dsConfigCopy;
 	}
 

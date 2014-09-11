@@ -3,11 +3,17 @@ package com.warcgenerator.gui.view.datasources;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,24 +21,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.actions.datasource.DSAssistantCreateNewDSAction;
+import com.warcgenerator.gui.actions.datasource.DSCreateAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import java.awt.GridBagLayout;
-import javax.swing.Box;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.Icon;
-import java.awt.FlowLayout;
 
 public class DSAssistantCreatePanel extends JPanel {
-	Action dsAssistantCreateNewDSAction;
+	Action dsCreateAction;
 
 	/**
 	 * Create the panel.
 	 */
 	public DSAssistantCreatePanel(IAppLogic logic, WarcGeneratorGUI view,
 			JPanel parentAssistant) {
-		dsAssistantCreateNewDSAction = new DSAssistantCreateNewDSAction(logic,
+		dsCreateAction = new DSCreateAction(logic,
 				view, parentAssistant);
 		this.setName("DSAssistantCreatePanel");
 
@@ -45,7 +45,7 @@ public class DSAssistantCreatePanel extends JPanel {
 		JButton btnNuevoOrigen = new JButton("Nuevo Origen");
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dsAssistantCreateNewDSAction.actionPerformed(e);
+				dsCreateAction.actionPerformed(e);
 			}
 		});
 		setLayout(new BorderLayout(0, 0));

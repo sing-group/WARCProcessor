@@ -1,12 +1,16 @@
 package com.warcgenerator.gui.actions.common;
 
 import java.awt.event.ActionEvent;
-import java.util.Collections;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import com.warcgenerator.AppWarc;
+import com.warcgenerator.gui.actions.file.SaveAppConfigAction;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.config.GUIConfig;
@@ -26,7 +30,7 @@ public class StartGUIAction extends AbstractAction {
 	private WarcGeneratorGUI window;
 	private InitConfigDialog initConfigDialog;
 	
-	public StartGUIAction(AppWarc appWarc) {
+	public StartGUIAction(final AppWarc appWarc) {
 		this.appWarc = appWarc;
 		
 		// Get the guiConfig
@@ -36,6 +40,16 @@ public class StartGUIAction extends AbstractAction {
 		Session.add(Constants.GUI_CONFIG_SESSION_KEY, guiConfig);
 		
 		window = new WarcGeneratorGUI(appWarc.getAppLogic());
+		
+		window.getMainFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		window.getMainFrame().addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				ExitAction exitAction = new ExitAction(appWarc.getAppLogic(),
+						window);
+				exitAction.actionPerformed(null);
+		    }
+			
+		});
 		
 		// Start config dialog
 		initConfigDialog = new InitConfigDialog(appWarc.getAppLogic(),

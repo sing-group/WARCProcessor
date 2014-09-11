@@ -1,11 +1,15 @@
 package com.warcgenerator.core.config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import com.warcgenerator.core.datasource.handler.IDSHandler;
+import com.warcgenerator.core.exception.logic.LogicException;
 
 /**
  * File with data source configuration
@@ -191,5 +195,31 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public int compareTo(DataSourceConfig obj) {
 		int lastCmp = name.compareTo(obj.name);
         return lastCmp;
+	}
+	
+	public static void copy(
+			DataSourceConfig dest, DataSourceConfig src) {
+		Map<String, CustomParamConfig> customParamsConfigCopy =
+				new HashMap<String, CustomParamConfig>();	
+		try {
+			BeanUtils.copyProperties(dest, src);
+			// Copy Custom params
+			for (String customParamConfig:
+				src.getCustomParams().keySet()) {
+				CustomParamConfig customParamConfigCopy =
+						new CustomParamConfig();
+				BeanUtils.copyProperties(customParamConfigCopy, 
+						src.getCustomParams().get(customParamConfig));
+				
+				customParamsConfigCopy.put(customParamConfig,
+						customParamConfigCopy);
+			}
+			
+			dest.setCustomParams(customParamsConfigCopy);
+		} catch (IllegalAccessException e) {
+			throw new LogicException(e);
+		} catch (InvocationTargetException e) {
+			throw new LogicException(e);
+		}
 	}
 }

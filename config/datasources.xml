@@ -15,6 +15,13 @@
  		</customParams>
  		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
  	</dataSource>
+ 	<dataSource name="WarcDS" 
+ 	 	class="com.warcgenerator.core.datasource.WarcDS" >
+ 		<customParams>
+ 			<urlTag type="java.lang.String">WARC-Target-URI</urlTag>
+ 		</customParams>
+ 		<handler>com.warcgenerator.core.datasource.handler.WarcDSHandler</handler>
+ 	</dataSource>
  	<dataSource name="ArffDS"
  		class="com.warcgenerator.datasources.ArffDS" >
  		<customParams>
@@ -30,7 +37,11 @@
  	<dataSource name="CSVDS" 
  		class="com.warcgenerator.datasources.CSVDS">
  		<customParams>
- 			<urlColNum type="java.lang.Integer">0</urlColNum>
+ 		    <fieldSeparator type="java.lang.String">;</fieldSeparator>
+ 		    <!-- Use the urlColNum to get de url col -->
+ 			<urlCol type="java.lang.String">0</urlCol>
+ 			<spamCol type="java.lang.String">LABEL</spamCol>
+ 			<spamColSpamValue type="java.lang.String">spam</spamColSpamValue>
  		</customParams>
  		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
  	</dataSource>

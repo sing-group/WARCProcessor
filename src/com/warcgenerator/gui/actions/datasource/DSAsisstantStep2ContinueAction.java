@@ -8,6 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -77,13 +78,25 @@ public class DSAsisstantStep2ContinueAction
 			dsConfig.setMaxElements(null);
 		}
 		
+		// Default information about this datasource.
+		DataSourceConfig dsConfigType = logic.getDataSourceType(dsConfig.getType());
+		
 		// Get params from the params tabled
 		Map<String, CustomParamConfig> customParams = dsConfig.getCustomParams();
 		for (int i = 0; i < panel.getParamsTable().getModel().getRowCount(); i++) {
 			String paramName = (String)panel.getParamsTable().getModel().getValueAt(i, 0);
-			String paramValue = (String)panel.getParamsTable().getModel().getValueAt(i, 1);
+		
+			String paramValue = "";
+			Object obj = panel.getParamsTable().getModel().getValueAt(i, 1);
+			if (obj instanceof Boolean) {
+				paramValue = Boolean.toString((Boolean)obj);
+			} else {
+				paramValue = (String)obj;
+			}
 			
-			customParams.get(paramName).setValue(paramValue);
+			CustomParamConfig customParamConfig = customParams.get(paramName);
+			customParamConfig.setValue(paramValue);
+			customParamConfig.setType(dsConfigType.getCustomParams().get(paramName).getType());
 		}
 
 		if (validate(dsConfig)) {

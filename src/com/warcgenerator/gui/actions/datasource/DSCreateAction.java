@@ -5,9 +5,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
+import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.common.Constants;
+import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 /**
@@ -17,25 +20,33 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
  *
  */
 public class DSCreateAction extends AbstractAction implements Observer {
-	private IAppLogic appLogic;
+	private IAppLogic logic;
 	private WarcGeneratorGUI view;
+	private JPanel parentAssistant;
 	
-	public DSCreateAction(IAppLogic appLogic, 
-			WarcGeneratorGUI view) {
-		this.appLogic = appLogic;
+	public DSCreateAction(IAppLogic logic, 
+			WarcGeneratorGUI view, JPanel parentAssistant) {
+		this.logic = logic;
 		this.view = view;
+		this.parentAssistant = parentAssistant;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		DataSourceConfig dsConfig = new DataSourceConfig();
-		appLogic.addDataSourceConfig(dsConfig);
+		Session.add(
+				Constants.DATASOURCE_FORM_SESSION_KEY,
+				dsConfig);
+		
+		DSAssistantCreateNewDSAction nextAction = new
+				DSAssistantCreateNewDSAction(logic, view, 
+						parentAssistant);
+		nextAction.actionPerformed(e);
 	}
 
 	@Override
 	public void update(Observable aPublisher, Object aData) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	 
