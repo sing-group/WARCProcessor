@@ -162,7 +162,14 @@ public class WarcDS extends DataSource implements IDataSource {
 				if (skip == false) {
 					dataBean = new DataBean();
 					dataBean.setUrl(url);
-					dataBean.setSpam(this.getDataSourceConfig().getSpam());
+					
+					boolean isSpam = false;
+					// If it's not specify either isSpam or not, set spam
+					if (this.getDataSourceConfig().getSpam() != null) {
+						isSpam = this.getDataSourceConfig().getSpam();
+					}
+					
+					dataBean.setSpam(isSpam);
 					dataBean.setData(ar);
 					dataBean.setTypeDS(DS_TYPE);
 					

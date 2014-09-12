@@ -69,7 +69,8 @@ public class DSAsisstantStep1ContinueAction
 		dsConfig.setHandlerClassName(dsConfigTmp.getHandlerClassName());
 		
 		// If we are create a new datasource 
-		if (dsConfig.getId() == null) {
+		if (dsConfig.getId() == null
+				|| !dsConfigSrc.getType().equals(dsType)) {
 			dsConfig.getCustomParams().clear();
 			// Set default values to custom parameters
 			for (String key: dsConfigTmp.getCustomParams().keySet()) {

@@ -70,8 +70,6 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 
 		setName("DSAssistantStep2Panel");
 
-		setPreferredSize(new Dimension(420, 300));
-
 		ImageIcon icon = new ImageIcon(
 				WarcGeneratorGUI.class
 						.getResource("/com/warcgenerator/gui/resources/img/database.png"));

@@ -62,19 +62,16 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			throw new OutCorpusCfgNotFoundException();
 		}
 
-		
 		/*
-		// Corpus Path dirs
-		String dirs[] = { outputCorpusConfig.getOutputDir(),
-				outputCorpusConfig.getSpamDir(), outputCorpusConfig.getHamDir() };
-
-		// Delete directories
-		if (config.getFlushOutputDir() != null && config.getFlushOutputDir()) {
-			FileHelper.removeDirsIfExist(dirs);
-		}
-
-		FileHelper.createDirs(dirs);
-		*/
+		 * // Corpus Path dirs String dirs[] = {
+		 * outputCorpusConfig.getOutputDir(), outputCorpusConfig.getSpamDir(),
+		 * outputCorpusConfig.getHamDir() };
+		 * 
+		 * // Delete directories if (config.getFlushOutputDir() != null &&
+		 * config.getFlushOutputDir()) { FileHelper.removeDirsIfExist(dirs); }
+		 * 
+		 * FileHelper.createDirs(dirs);
+		 */
 	}
 
 	/**
@@ -84,7 +81,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		String configFilePath = ConfigHelper.getConfigFilePath();
 		if (configFilePath != null) {
 			ConfigHelper.persistConfig(configFilePath, config);
-		
+
 			// Notify observers
 			setChanged();
 			notifyObservers(new LogicCallback(APP_CONFIG_SAVED_CALLBACK));
@@ -92,13 +89,13 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			throw new ConfigFilePathIsNullException();
 		}
 	}
-	
+
 	/**
 	 * Save configuration in a file
 	 */
 	public void saveAsAppConfig(String path) {
 		ConfigHelper.persistConfig(path, config);
-		
+
 		// Notify observers
 		setChanged();
 		notifyObservers(new LogicCallback(APP_CONFIG_SAVED_AS_CALLBACK));
@@ -110,20 +107,20 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public String getConfigFilePath() {
 		return ConfigHelper.getConfigFilePath();
 	}
-	
+
 	public void loadAppConfig(String path) {
 		ConfigHelper.configure(path, config);
 		config.init();
-		
+
 		// Notify observers
 		setChanged();
 		notifyObservers(new LogicCallback(APP_CONFIG_LOADED_CALLBACK));
 	}
-	
+
 	public void loadNewAppConfig() {
 		config = new AppConfig();
 		config.init();
-		
+
 		// The filePath of this configuracion is not set yet.
 		ConfigHelper.setConfigFilePath(null);
 	}
@@ -158,7 +155,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public List<DataSourceConfig> getDataSourceTypesList()
 			throws LogicException {
 		List<DataSourceConfig> dataSourceTypesList = new ArrayList<DataSourceConfig>();
-		
+
 		for (DataSourceConfig dsConfig : dataSourcesTypes.values()) {
 			DataSourceConfig dsConfigCopy = new DataSourceConfig();
 			DataSourceConfig.copy(dsConfigCopy, dsConfig);
@@ -246,93 +243,94 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			throws LogicException {
 		executorTasks = new ExecutionTaskBatch();
 
-		// Corpus Path dirs
-		String dirs[] = { outputCorpusConfig.getOutputDir(),
-				outputCorpusConfig.getSpamDir(), outputCorpusConfig.getHamDir() };
-		// Delete directories
-		if (config.getFlushOutputDir() != null && config.getFlushOutputDir()) {
-			FileHelper.removeDirsIfExist(dirs);
-		}
-		FileHelper.createDirs(dirs);
-		
-		// Get dsHandlers
-		try {
-			ConfigHelper.getDSHandlers(config, dataSourcesTypes);
-		} catch (LoadDataSourceException ex) {
-			throw new LogicException(ex);
-		}
-		
-		// Generate wars
-		IDataSource labeledDS = new GenericDS(new DataSourceConfig(
-				outputCorpusConfig.getDomainsLabeledFilePath()));
-		IDataSource notFoundDS = new GenericDS(new DataSourceConfig(
-				outputCorpusConfig.getDomainsNotFoundFilePath()));
-
 		// Init data structures
 		Map<String, DataBean> urlsSpam = new HashMap<String, DataBean>();
 		Map<String, DataBean> urlsHam = new HashMap<String, DataBean>();
 		Map<String, DataSource> outputDS = new HashMap<String, DataSource>();
 		Set<String> urlsActive = new HashSet<String>();
 		Set<String> urlsNotActive = new HashSet<String>();
-		
-		/*
-		 * Si solo activas (descarta estas urls)
-		 * 	-> Si descargar de nuevo
-		 * 		Coger de internet
-		 *  -> No descargar de nuevo
-		 * 		Coger del fichero
-		 * Si no solo activas
-		 *  -> Si descargar de nuevo
-		 * 		Coger de internet
-		 *  -> No descargar de nuevo
-		 * 		Coger del fichero		
-		 */
-		
-		// Init Task
-		Task t1 = new GetURLFromDSTask(config, generateCorpusState, urlsSpam,
-				urlsHam);
-		
-		// ////////// READING SPAM
-		Task t2 = new ReadURLsTask(config, outputCorpusConfig,
-				generateCorpusState, outputDS,
-				labeledDS, notFoundDS, urlsSpam, true, urlsActive,
-				urlsNotActive);
 
-		// ////////// READING HAM
-		Task t3 = new ReadURLsTask(config, outputCorpusConfig,
-				generateCorpusState, outputDS,
-				labeledDS, notFoundDS, urlsHam, false, urlsActive,
-				urlsNotActive);
-
-		// Read url that contains html
-		Task t4 = new CheckActiveSitesConfigTask(config,
-				urlsSpam, urlsNotActive,
-				outputDS, outputCorpusConfig, labeledDS);
+		IDataSource labeledDS = null;
+		IDataSource notFoundDS = null;
 		
-		Task t5 = new CheckActiveSitesConfigTask(config,
-				urlsHam, urlsNotActive,
-				outputDS, outputCorpusConfig, labeledDS);
+		try {
+			// Corpus Path dirs
+			String dirs[] = { outputCorpusConfig.getOutputDir(),
+					outputCorpusConfig.getSpamDir(),
+					outputCorpusConfig.getHamDir() };
+			// Delete directories
+			if (config.getFlushOutputDir() != null
+					&& config.getFlushOutputDir()) {
+				FileHelper.removeDirsIfExist(dirs);
+			}
+			FileHelper.createDirs(dirs);
 
-		executorTasks.addTask(t1);
-		executorTasks.addTask(t2);
-		executorTasks.addTask(t3);
-		executorTasks.addTask(t4);
-		executorTasks.addTask(t5);
-		
-		executorTasks.execution();
+			// Get dsHandlers
+			ConfigHelper.getDSHandlers(config, dataSourcesTypes);
 
-		if (executorTasks.isTerminate()) {
-			generateCorpusState
-					.setState(GenerateCorpusStates.PROCESS_CANCELLED);
+			// Generate wars
+			labeledDS = new GenericDS(new DataSourceConfig(
+					outputCorpusConfig.getDomainsLabeledFilePath()));
+			notFoundDS = new GenericDS(new DataSourceConfig(
+					outputCorpusConfig.getDomainsNotFoundFilePath()));
+
+			/*
+			 * Si solo activas (descarta estas urls) -> Si descargar de nuevo
+			 * Coger de internet -> No descargar de nuevo Coger del fichero Si
+			 * no solo activas -> Si descargar de nuevo Coger de internet -> No
+			 * descargar de nuevo Coger del fichero
+			 */
+
+			// Init Task
+			Task t1 = new GetURLFromDSTask(config, generateCorpusState,
+					urlsSpam, urlsHam);
+
+			// ////////// READING SPAM
+			Task t2 = new ReadURLsTask(config, outputCorpusConfig,
+					generateCorpusState, outputDS, labeledDS, notFoundDS,
+					urlsSpam, true, urlsActive, urlsNotActive);
+
+			// ////////// READING HAM
+			Task t3 = new ReadURLsTask(config, outputCorpusConfig,
+					generateCorpusState, outputDS, labeledDS, notFoundDS,
+					urlsHam, false, urlsActive, urlsNotActive);
+
+			// Read url that contains html
+			Task t4 = new CheckActiveSitesConfigTask(config, urlsSpam,
+					urlsNotActive, outputDS, outputCorpusConfig, labeledDS);
+
+			Task t5 = new CheckActiveSitesConfigTask(config, urlsHam,
+					urlsNotActive, outputDS, outputCorpusConfig, labeledDS);
+
+			executorTasks.addTask(t1);
+			executorTasks.addTask(t2);
+			executorTasks.addTask(t3);
+			executorTasks.addTask(t4);
+			executorTasks.addTask(t5);
+
+			executorTasks.execution();
+
+			if (executorTasks.isTerminate()) {
+				generateCorpusState
+						.setState(GenerateCorpusStates.PROCESS_CANCELLED);
+			}
+
+		} catch (LoadDataSourceException ex) {
+			throw new LogicException(ex);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			// Close all output datasources
+			for (DataSource ds : outputDS.values()) {
+				ds.close();
+			}
+			generateCorpusState.setState(GenerateCorpusStates.ENDING);
+
+			if (labeledDS != null)
+				labeledDS.close();
+			if (notFoundDS != null)
+				notFoundDS.close();
 		}
-
-		// Close all output datasources
-		for (DataSource ds : outputDS.values()) {
-			ds.close();
-		}
-		generateCorpusState.setState(GenerateCorpusStates.ENDING);
-		labeledDS.close();
-		notFoundDS.close();
 	}
 
 	private void stopWebCrawling() {

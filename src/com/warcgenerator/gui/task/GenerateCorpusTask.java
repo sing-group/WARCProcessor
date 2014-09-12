@@ -11,9 +11,11 @@ import javax.swing.SwingWorker;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
+import com.warcgenerator.gui.util.FileUtil;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
 
@@ -69,6 +71,13 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			JOptionPane.showMessageDialog(view.getMainFrame(),
 					"El corpus se ha generado con exito.");
 			logger.info("Task completed");
+			
+			if (gcd.getOpenOutputFolderCBox().isSelected()) {
+				// Open the output dir
+				AppConfig config = logic.getAppConfig();
+				FileUtil.
+					openInDefaultExplorer(config.getOutputConfig().getOutputDir());
+			}			
 		} catch (ExecutionException e) {
             String msg = String.format("Unexpected problem: %s", 
                            e.getCause().toString());
