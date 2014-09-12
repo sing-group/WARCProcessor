@@ -44,6 +44,8 @@ public class InitConfigDialog extends CustomJDialog {
 	private Action searchInitConfigAction;
 	private Map<String, RecentFileCBItem> recentFiles;
 	
+	private JButton okButton; 
+	
 	public void addFirstConfigFile(File configFile) {
 		if (comboBoxModel.getSize() > 0 && 
 				comboBoxModel.getElementAt(1).equals(CustomComboBoxRenderer.SEPARATOR)) {
@@ -58,11 +60,13 @@ public class InitConfigDialog extends CustomJDialog {
 		comboBoxModel.insertElementAt(configFile.getAbsolutePath(), 0);
 		comboBoxModel.insertElementAt(CustomComboBoxRenderer.SEPARATOR, 1);
 		configFilesCBox.setSelectedIndex(0);
+		okButton.setEnabled(true);
 	}
 	
 	public void addConfigFile(RecentFileCBItem configFile) {
 		recentFiles.put(configFile.toString(), configFile);
 		configFilesCBox.addItem(configFile.toString());
+		okButton.setEnabled(true);
 	}
 	
 	/**
@@ -176,7 +180,8 @@ public class InitConfigDialog extends CustomJDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				okButton = new JButton("OK");
+				okButton.setEnabled(false);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String configFilePath = recentFiles.get(

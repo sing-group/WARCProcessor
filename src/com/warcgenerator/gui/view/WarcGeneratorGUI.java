@@ -99,6 +99,7 @@ public class WarcGeneratorGUI extends Observable {
 	private JTree tree;
 	private GeneralConfigAction generalConfigAction;
 	private JMenu recentFilesMI;
+	private JMenuItem mntmSaveCG;
 
 	private IAppLogic logic;
 
@@ -238,8 +239,9 @@ public class WarcGeneratorGUI extends Observable {
 
 		mnInicio.add(new JSeparator());
 		
-		JMenuItem mntmSaveCG = new JMenuItem(
+		mntmSaveCG = new JMenuItem(
 				"Guardar");
+		mntmSaveCG.setEnabled(false);
 		mntmSaveCG.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				InputEvent.CTRL_MASK));
 		mntmSaveCG.addActionListener(new ActionListener() {
@@ -562,5 +564,12 @@ public class WarcGeneratorGUI extends Observable {
 	public void setAssistantPanel(JPanel assistantPanel) {
 		this.assistantPanel = assistantPanel;
 	}
+	
+	public JMenuItem getMntmSaveCG() {
+		return mntmSaveCG;
+	}
 
+	public void setMntmSaveCG(JMenuItem mntmSaveCG) {
+		this.mntmSaveCG = mntmSaveCG;
+	}
 }

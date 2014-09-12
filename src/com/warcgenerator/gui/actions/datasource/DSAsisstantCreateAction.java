@@ -88,7 +88,10 @@ public class DSAsisstantCreateAction extends CustomAction {
 							.equals(WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL)) {
 				int userSelection = JOptionPane.showConfirmDialog(
 						view.getMainFrame(),
-						"¿Esta seguro que desea salir del asistente?");
+						"Se perderan los cambios."
+								+ "¿Esta seguro que desea salir del asistente?",
+						"Elija una opción",
+						JOptionPane.OK_CANCEL_OPTION);
 
 				if (userSelection == JOptionPane.OK_OPTION) {
 					CustomJPanel panel = (CustomJPanel) cardLayout

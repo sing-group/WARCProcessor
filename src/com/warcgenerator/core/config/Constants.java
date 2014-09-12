@@ -16,7 +16,7 @@ public interface Constants {
 		String DOMAINS_LABELED_FILE_NAME_DEFAULT = "domains.labelled";
 		String DOMAINS_NOTFOUND_FILE_NAME_DEFAULT = "domains.notFound";
 		Boolean FLASH_OUTPUT_DIR_DEFAULT = true;
-		Integer MAX_DEPTH_OF_CRAWLING_DEFAULT = 2;
+		Integer MAX_DEPTH_OF_CRAWLING_DEFAULT = 0;
 		Integer NUM_CRAWLERS_DEFAULT = 1;
 		String WEB_CRAWLER_DIR_TMP_STORE_PATH_DEFAULT = ".";
 		Integer NUM_SITES_DEFAULT = 1000;

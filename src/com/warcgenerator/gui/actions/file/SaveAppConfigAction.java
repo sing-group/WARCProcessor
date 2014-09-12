@@ -53,6 +53,19 @@ public class SaveAppConfigAction
 				JOptionPane.showMessageDialog(view.getMainFrame(), 
 						"La configuracion se ha guardado con exito.");
 				view.loadRecentFiles();
+				view.getMntmSaveCG().setEnabled(false);
+			} else if (message.equals(IAppLogic.APP_CONFIG_LOADED_CALLBACK)) {
+				view.getMntmSaveCG().setEnabled(false);
+			} else if (message.equals(IAppLogic.APP_CONFIG_UPDATED_CALLBACK)) {
+				view.getMntmSaveCG().setEnabled(true);
+			} else if (message.equals(IAppLogic.APP_CONFIG_SAVED_AS_CALLBACK)) {
+				view.getMntmSaveCG().setEnabled(false);
+			} else if (message.equals(IAppLogic.DATASOURCE_CREATED_CALLBACK)) {
+				view.getMntmSaveCG().setEnabled(true);
+			} else if (message.equals(IAppLogic.DATASOURCE_UPDATED_CALLBACK)) {
+				view.getMntmSaveCG().setEnabled(true);
+			} else if (message.equals(IAppLogic.DATASOURCE_REMOVED_CALLBACK)) {
+				view.getMntmSaveCG().setEnabled(true);
 			}
 		}
 	}

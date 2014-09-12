@@ -2,17 +2,13 @@ package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
 import java.util.Observable;
-import java.util.Observer;
 
-import javax.swing.Action;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.components.CustomCardLayout;
-import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
@@ -88,31 +84,4 @@ public class DSDetailAction extends CustomAction {
 		// TODO Auto-generated method stub
 		
 	}	 
-	
-	
-	/*@Override
-	public void update(Observable obj, Object message) {
-		if (obj == view) {
-			if (this.isCurrentAction()
-					&& ((Object[])message)[0].
-						equals(WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL)) {
-				int userSelection = JOptionPane
-						.showConfirmDialog(view.getMainFrame(),
-								"Se perderan los cambios. "
-									+ "¿Esta seguro que desea salir del asistente?");
-				
-				if (userSelection == JOptionPane.OK_OPTION) {
-					CustomJPanel panel = 
-							(CustomJPanel)cardLayout.getCurrentPanel(
-									mainDetailPanel);
-					panel.rollback();
-					
-					//JPanel newPanel = (JPanel)((Object[])message)[1];
-					//view.loadMainPanel(newPanel);
-					Action nextAction = (Action)((Object[])message)[1];
-					nextAction.actionPerformed(null);
-				}
-			}
-		}
-	}*/
 }
