@@ -1,10 +1,12 @@
 package com.warcgenerator.core.logic;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Observer;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.core.datasource.bean.Country;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 /**
@@ -40,4 +42,7 @@ public interface IAppLogic {
 	void generateCorpus(GenerateCorpusState generateCorpusState);
 	void addObserver(Observer obs);
 	void deleteObserver(Observer obs);
+	List<Country> listAvailableLanguagesFilter();
+	List<Country> listNotSelectedLanguages(
+			List<Country> listSelectedCountries);
 }

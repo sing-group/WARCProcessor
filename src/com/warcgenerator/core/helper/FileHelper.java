@@ -100,6 +100,26 @@ public class FileHelper {
 	}
 	
 	/**
+	 * Used to avoid problems like "http://domain.es" and "http://domain.es/"
+	 * @return
+	 */
+	public static String normalizeURL(String url) {
+		// Normalize
+		if (url.endsWith("/"))
+			url = url.substring(0, url.length() - 1);
+		
+		return url;
+		/*URL urlNormalized = null;
+		try {
+			urlNormalized = new URL(url);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return urlNormalized.toString();*/ 
+	}
+	
+	/**
 	 * Create fileName from URL
 	 */
 	public static String getFileNameFromURL(String url) {

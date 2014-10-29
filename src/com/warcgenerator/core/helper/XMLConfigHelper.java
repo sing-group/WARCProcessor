@@ -2,6 +2,7 @@ package com.warcgenerator.core.helper;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.xml.XMLConstants;
@@ -33,6 +34,7 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.core.datasource.bean.Country;
 import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.ValidateXMLSchemaException;
 
@@ -131,7 +133,7 @@ public class XMLConfigHelper {
 					"webCrawlerDirTmpStorePath"));
 			config.setFollowRedirect(Boolean.valueOf(getValueFromElement(doc,
 					"followRedirect")));
-			
+
 			// Read datasources
 			NodeList listOfDS = doc.getElementsByTagName("dataSource");
 			int totalDS = listOfDS.getLength();
@@ -145,9 +147,9 @@ public class XMLConfigHelper {
 				if (dataSourceNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setName(dataSourceElement.getAttribute("name"));
-					//ds.setDsClassName(dataSourceElement.getAttribute("class"));
+					// ds.setDsClassName(dataSourceElement.getAttribute("class"));
 					ds.setType(dataSourceElement.getAttribute("type"));
-					
+
 					// Check if isSpam parameter exists
 					if (dataSourceElement.getAttribute("isSpam") != null) {
 						String isSpam = dataSourceElement
@@ -187,9 +189,10 @@ public class XMLConfigHelper {
 										.getNodeName());
 								customParam.setValue(nodeCustomParamAux
 										.getTextContent().trim());
-								customParam.setType(((Element)nodeCustomParamAux)
-										.getAttribute("type"));
-								
+								customParam
+										.setType(((Element) nodeCustomParamAux)
+												.getAttribute("type"));
+
 								// Caution!! We are not getting the defaultValue
 								// and type because already know it of
 								// datasources.xml
@@ -197,6 +200,21 @@ public class XMLConfigHelper {
 								ds.getCustomParams().put(
 										nodeCustomParamAux.getNodeName(),
 										customParam);
+							}
+						} else if (nodeAux.getNodeName().equals("languages")) {
+							NodeList languagesInfoNode = nodeAux
+									.getChildNodes();
+							for (int j = 0; j < languagesInfoNode.getLength(); j++) {
+								Node languageNodeAux = (Node) languagesInfoNode
+										.item(j);
+
+								Country country = new Country();
+								country.setCode(((Element) languageNodeAux)
+										.getAttribute("code"));
+								Locale l = new Locale(country.getCode());
+								country.setName(l.getDisplayName());
+
+								ds.getCountryList().add(country);
 							}
 						} else if (nodeAux.getNodeName().equals("srcDirPath")) {
 							ds.setFilePath(nodeAux.getTextContent().trim());
@@ -321,8 +339,7 @@ public class XMLConfigHelper {
 	 * @param config
 	 * @return
 	 */
-	public static void saveXMLFromAppConfig(String path, 
-			AppConfig config) {
+	public static void saveXMLFromAppConfig(String path, AppConfig config) {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory
 				.newInstance();
 		DocumentBuilder docBuilder;
@@ -360,7 +377,7 @@ public class XMLConfigHelper {
 				spam.setTextContent(config.getRatioPercentageSpam().toString());
 				ratio.appendChild(spam);
 			}
-			
+
 			if (config.getRatioQuantitySpam() != null) {
 				Element spam = doc.createElement("quantitySpam");
 				spam.setTextContent(config.getRatioQuantitySpam().toString());
@@ -392,7 +409,7 @@ public class XMLConfigHelper {
 			rootElement.appendChild(domainsNotFoundFileName);
 
 			Element flushOutputDir = doc.createElement("flushOutputDir");
-			
+
 			flushOutputDir
 					.setTextContent(config.getFlushOutputDir().toString());
 			rootElement.appendChild(flushOutputDir);
@@ -413,18 +430,17 @@ public class XMLConfigHelper {
 					.getWebCrawlerTmpStorePath());
 			rootElement.appendChild(webCrawlerDirTmpStorePath);
 
-			Element followRedirect = doc
-					.createElement("followRedirect");
+			Element followRedirect = doc.createElement("followRedirect");
 			followRedirect.setTextContent(Boolean.toString(config
 					.getFollowRedirect()));
 			rootElement.appendChild(followRedirect);
 
-			
 			Element dataSources = doc.createElement("dataSources");
 			rootElement.appendChild(dataSources);
 
 			// Start create datasource
-			for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
+			for (DataSourceConfig dsConfig : config.getDataSourceConfigs()
+					.values()) {
 
 				Element dataSource = doc.createElement("dataSource");
 				dataSources.appendChild(dataSource);
@@ -442,31 +458,43 @@ public class XMLConfigHelper {
 					attr.setValue(Boolean.toString(dsConfig.getSpam()));
 					dataSource.setAttributeNode(attr);
 				}
-				
+
 				if (dsConfig.getMaxElements() != null) {
 					attr = doc.createAttribute("maxElements");
 					attr.setValue(dsConfig.getMaxElements().toString());
 					dataSource.setAttributeNode(attr);
 				}
 
-				
 				Element customParams = doc.createElement("customParams");
 				dataSource.appendChild(customParams);
 
 				// Here we put the custom params
-				for (String paramName: dsConfig.getCustomParams().keySet()) {
+				for (String paramName : dsConfig.getCustomParams().keySet()) {
 					Element customParam = doc.createElement(paramName);
-					customParam.setTextContent(
-							dsConfig.getCustomParams().get(paramName).getValue());
-					
+					customParam.setTextContent(dsConfig.getCustomParams()
+							.get(paramName).getValue());
+
 					attr = doc.createAttribute("type");
-					attr.setValue(dsConfig.getCustomParams().get(paramName).getType());
+					attr.setValue(dsConfig.getCustomParams().get(paramName)
+							.getType());
 					customParam.setAttributeNode(attr);
-					
+
 					customParams.appendChild(customParam);
 				}
-				
+
+				Element languages = doc.createElement("languages");
+				dataSource.appendChild(languages);
+
 				// End custom params
+				for (Country country : dsConfig.getCountryList()) {
+					Element language = doc.createElement("language");
+
+					attr = doc.createAttribute("code");
+					attr.setValue(country.getCode());
+					language.setAttributeNode(attr);
+
+					languages.appendChild(language);
+				}
 
 				Element srcDirPath = doc.createElement("srcDirPath");
 				srcDirPath.setTextContent(dsConfig.getFilePath());
@@ -482,7 +510,7 @@ public class XMLConfigHelper {
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			
+
 			// At the moment we are not to validate Scheme
 			validateSchema(doc, Constants.configSchemaFilePath);
 

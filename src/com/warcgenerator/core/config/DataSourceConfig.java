@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 
+import com.warcgenerator.core.datasource.bean.Country;
 import com.warcgenerator.core.datasource.handler.IDSHandler;
 import com.warcgenerator.core.exception.logic.LogicException;
 
@@ -21,40 +22,39 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public static final boolean IS_SPAM = true;
 	public static final boolean IS_HAM = false;
 	public static int nextId = 1;
-	
+
 	private Integer id;
 	private String name = "";
 	private String type = "";
 	private Boolean spam;
 	private String filePath = "";
 	private String dsClassName = "";
-	private String handlerClassName ="";
+	private String handlerClassName = "";
+	private List<Country> countryList;
 	// Max number of elements to get from datasource
 	private Integer maxElements;
 	private Map<String, CustomParamConfig> customParams;
-	
+
 	// Parent datasource reference
 	private DataSourceConfig parent;
 	private List<DataSourceConfig> children;
-	
+
 	private IDSHandler handler;
-	
+
 	public DataSourceConfig() {
 		this.customParams = new HashMap<String, CustomParamConfig>();
 		this.children = new ArrayList<DataSourceConfig>();
+		this.setCountryList(new ArrayList<Country>());
 	}
-	
+
 	public DataSourceConfig(String filePath) {
+		this();
 		this.filePath = filePath;
-		this.customParams = new HashMap<String, CustomParamConfig>();
-		this.children = new ArrayList<DataSourceConfig>();
 	}
-	
+
 	public DataSourceConfig(Boolean spamOrHam, String filePath) {
+		this(filePath);
 		this.spam = spamOrHam;
-		this.filePath = filePath;
-		this.customParams = new HashMap<String, CustomParamConfig>();
-		this.children = new ArrayList<DataSourceConfig>();
 	}
 
 	public String getFilePath() {
@@ -93,11 +93,10 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 		return customParams;
 	}
 
-	public void setCustomParams(Map<String,
-			CustomParamConfig> customParams) {
+	public void setCustomParams(Map<String, CustomParamConfig> customParams) {
 		this.customParams = customParams;
 	}
-	
+
 	public Boolean getSpam() {
 		return spam;
 	}
@@ -105,31 +104,36 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public void setSpam(Boolean spam) {
 		this.spam = spam;
 	}
-	
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("-- DataSourceConfig --\n").
-		append("Name: ").append(name).append("\n").
-		append("Type: ").append(type).append("\n").
-		//append("DSClassName: ").append(dsClassName).append("\n").
-		//append("HandlerClassName: ").append(handlerClassName).append("\n").
-		append("FilePath: ").append(filePath).append("\n");
+		sb.append("-- DataSourceConfig --\n").append("Name: ").append(name)
+				.append("\n").append("Type: ").append(type).append("\n").
+				// append("DSClassName: ").append(dsClassName).append("\n").
+				// append("HandlerClassName: ").append(handlerClassName).append("\n").
+				append("FilePath: ").append(filePath).append("\n");
 		if (spam != null) {
 			sb.append("Spam: ").append(spam).append("\n");
 		}
 		if (maxElements != null) {
 			sb.append("MaxElements: ").append(maxElements).append("\n");
 		}
-		
+
 		if (!customParams.isEmpty()) {
 			sb.append("Custom params: \n");
-			for (String key: customParams.keySet()) {
-				CustomParamConfig customParam = 
-							customParams.get(key);
+			for (String key : customParams.keySet()) {
+				CustomParamConfig customParam = customParams.get(key);
 				String value = customParam.getValue();
 				if (value != null && !value.equals("")) {
 					sb.append(key).append(": ").append(value).append("\n");
 				}
+			}
+		}
+
+		if (!countryList.isEmpty()) {
+			sb.append("Countries: \n");
+			for (Country country : countryList) {
+				sb.append(country.getName()).append("\n");
 			}
 		}
 		return sb.toString();
@@ -174,9 +178,10 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * Request a new datasource Id
+	 * 
 	 * @return id @type of Integer
 	 */
 	public static int getNextId() {
@@ -191,31 +196,45 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 		this.type = type;
 	}
 
+	public List<Country> getCountryList() {
+		return countryList;
+	}
+
+	public void setCountryList(List<Country> countryList) {
+		this.countryList = countryList;
+	}
+
 	@Override
 	public int compareTo(DataSourceConfig obj) {
 		int lastCmp = name.compareTo(obj.name);
-        return lastCmp;
+		return lastCmp;
 	}
-	
-	public static void copy(
-			DataSourceConfig dest, DataSourceConfig src) {
-		Map<String, CustomParamConfig> customParamsConfigCopy =
-				new HashMap<String, CustomParamConfig>();	
+
+	public static void copy(DataSourceConfig dest, DataSourceConfig src) {
+		Map<String, CustomParamConfig> customParamsConfigCopy = new HashMap<String, CustomParamConfig>();
+		List<Country> countriesCopy = new ArrayList<Country>();
+
 		try {
 			BeanUtils.copyProperties(dest, src);
 			// Copy Custom params
-			for (String customParamConfig:
-				src.getCustomParams().keySet()) {
-				CustomParamConfig customParamConfigCopy =
-						new CustomParamConfig();
-				BeanUtils.copyProperties(customParamConfigCopy, 
-						src.getCustomParams().get(customParamConfig));
-				
+			for (String customParamConfig : src.getCustomParams().keySet()) {
+				CustomParamConfig customParamConfigCopy = new CustomParamConfig();
+				BeanUtils.copyProperties(customParamConfigCopy, src
+						.getCustomParams().get(customParamConfig));
+
 				customParamsConfigCopy.put(customParamConfig,
 						customParamConfigCopy);
 			}
-			
+
 			dest.setCustomParams(customParamsConfigCopy);
+
+			for (Country country : src.getCountryList()) {
+				Country countryCopy = new Country();
+				BeanUtils.copyProperties(countryCopy, country);
+				countriesCopy.add(countryCopy);
+			}
+			dest.setCountryList(countriesCopy);
+
 		} catch (IllegalAccessException e) {
 			throw new LogicException(e);
 		} catch (InvocationTargetException e) {

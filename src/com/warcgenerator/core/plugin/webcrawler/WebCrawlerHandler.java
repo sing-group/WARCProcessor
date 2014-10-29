@@ -1,5 +1,7 @@
 package com.warcgenerator.core.plugin.webcrawler;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,7 +11,11 @@ import org.apache.log4j.Logger;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.WarcDS;
+import com.warcgenerator.core.datasource.bean.Country;
 import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.exception.datasource.DSException;
+import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.helper.LangFilterHelper;
 import com.warcgenerator.core.helper.OutputHelper;
 
 public class WebCrawlerHandler implements IWebCrawlerHandler {
@@ -40,8 +46,11 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 	}
 
 	public void handle(HtmlParseData htmlParseData) {
+		
+		String url = FileHelper.normalizeURL(htmlParseData.getUrl());
+		
 		// Look for Warc Bean containing html of the urls
-		DataBean previousWarcBean = urls.get(htmlParseData.getUrl());
+		DataBean previousWarcBean = urls.get(url);
 		boolean existPreviousWarcBean = checkExistPreviousWarcBean(previousWarcBean);
 		
 		if (htmlParseData.getUrl() != null
@@ -49,6 +58,9 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 			// Es un fichero de tipo warc
 			// Busca el fichero warc al que pertenece la url
 			DataBean bean = new DataBean();
+			if (previousWarcBean != null) {
+				bean.setDsConfig(previousWarcBean.getDsConfig());
+			}
 			bean.setData(htmlParseData.getHtml());
 			bean.setUrl(htmlParseData.getUrl());
 			bean.setSpam(this.isSpam);
@@ -59,17 +71,36 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 				!config.getDownloadAgain()) {
 					bean = previousWarcBean;
 			}
+			
+			// Language filter
+			try {
+				logger.info("URL: " + bean.getUrl()); 
+				if (bean.getDsConfig() == null ||
+						LangFilterHelper.checkLanguageAllowed((String)bean.getData(),
+						bean.getDsConfig().getCountryList())) {
 
-			// Check if the url has data
-			if (bean.getData() != null) {
-				warcDS.write(bean);
-				OutputHelper.writeLabeled(domainsLabeledDS, htmlParseData.getUrl(),
-						this.isSpam);
-			} else {
-				logger.info("URL: " + bean.getUrl() + " doesn't have data.");
+					// Check if the url has data
+					if (bean.getData() != null) {
+						warcDS.write(bean);
+						OutputHelper.writeLabeled(domainsLabeledDS, htmlParseData.getUrl(),
+								this.isSpam);
+					} else {
+						logger.info("URL: " + bean.getUrl() + " doesn't have data.");
+					}
+						
+					urlsActive.add(htmlParseData.getUrl());
+				} else {
+					// TODO Write in some output file instead of the log
+					logger.info("URL Filtered. Available:");
+					StringBuffer sb = new StringBuffer();
+					for(Country country:bean.getDsConfig().getCountryList()) {
+						sb.append(country.getName()).append(" ");
+					}
+					logger.info(sb.toString());
+				}
+			} catch (Exception e) {
+				throw new DSException(e);
 			}
-				
-			urlsActive.add(htmlParseData.getUrl());
 		} else if (htmlParseData.getUrl() != null &&
 				//existPreviousWarcBean &&
 				(htmlParseData.getHttpStatus() == HttpStatus.SC_MOVED_PERMANENTLY ||

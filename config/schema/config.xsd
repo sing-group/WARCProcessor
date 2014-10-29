@@ -52,13 +52,30 @@ Schema for WarcGenerator XML Configuration
 	      <xs:element name="dataSources" minOccurs="1" maxOccurs="1">
 	        <xs:complexType>
 		      <xs:sequence>
-		         
 		      	 <xs:element name="dataSource" minOccurs="0" maxOccurs="unbounded">
 			        <xs:complexType>
 			          <xs:sequence>
 			            <!-- This tag allow to add new parameters in a customized datasource -->
 			            <xs:element name="customParams" 
 			            	minOccurs="0" maxOccurs="1" />
+			            <xs:element name="languages" 
+			            	minOccurs="0" maxOccurs="1" >
+			           		<xs:complexType>
+			            		<xs:sequence>
+			            			 <xs:element name="language" minOccurs="0" 
+			            			 maxOccurs="unbounded">
+			            			 	<xs:complexType>
+								          <xs:simpleContent>
+								            <xs:extension base="xs:string">
+									          	<xs:attribute name="code" type="xs:string" use="required" />
+								            </xs:extension>	
+								          </xs:simpleContent>
+								        </xs:complexType>
+									</xs:element>
+			             		</xs:sequence>
+			             	</xs:complexType>
+			            </xs:element>	
+			            	
 			            <!-- Input folder to get files with source urls -->
 			            <xs:element name="srcDirPath" type="xs:string" minOccurs="1" maxOccurs="1" />
 			            <!-- Fully qualified name of the class used for preprocesing source urls -->

@@ -1,5 +1,6 @@
 package com.warcgenerator.core.logic;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,12 +15,12 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
-import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.GenericDS;
 import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.bean.Country;
 import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.config.LoadDataSourceException;
 import com.warcgenerator.core.exception.logic.ConfigFilePathIsNullException;
@@ -27,6 +28,7 @@ import com.warcgenerator.core.exception.logic.LogicException;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.helper.LangFilterHelper;
 import com.warcgenerator.core.helper.XMLConfigHelper;
 import com.warcgenerator.core.task.ExecutionTaskBatch;
 import com.warcgenerator.core.task.Task;
@@ -252,7 +254,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 		IDataSource labeledDS = null;
 		IDataSource notFoundDS = null;
-		
+
 		try {
 			// Corpus Path dirs
 			String dirs[] = { outputCorpusConfig.getOutputDir(),
@@ -333,6 +335,41 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 	}
 
+	public List<Country> listNotSelectedLanguages(
+			List<Country> listSelectedCountries) {
+		List<Country> listCountries = null;
+		try {
+			listCountries = LangFilterHelper.
+					listNotSelectedLanguages(listSelectedCountries);
+		} catch (IOException e) {
+			throw new LogicException(e);
+		}
+		return listCountries;
+	}
+
+	@Override
+	public List<Country> listAvailableLanguagesFilter() {
+		List<Country> availableLangList = new ArrayList<Country>();
+		try {
+			List<Country> availableLang = LangFilterHelper
+					.listAvailableLanguagesFilter();
+
+			for (Country langBean : availableLang) {
+				Country langCopy = new Country();
+				BeanUtils.copyProperties(langCopy, langBean);
+				availableLangList.add(langCopy);
+			}
+		} catch (IOException e) {
+			throw new LogicException(e);
+		} catch (IllegalAccessException e) {
+			throw new LogicException(e);
+		} catch (InvocationTargetException e) {
+			throw new LogicException(e);
+		}
+
+		return availableLangList;
+	}
+
 	private void stopWebCrawling() {
 		if (executorTasks != null)
 			executorTasks.terminate();
@@ -342,4 +379,5 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		deleteObserver(obj);
 		super.addObserver(obj);
 	}
+
 }

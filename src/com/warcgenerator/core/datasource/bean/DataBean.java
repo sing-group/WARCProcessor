@@ -1,11 +1,14 @@
 package com.warcgenerator.core.datasource.bean;
 
+import com.warcgenerator.core.config.DataSourceConfig;
+
 public class DataBean {
 	private String filePath;
 	private Object data;
 	private String url;
 	private boolean spam;
 	private String typeDS = "";
+	private DataSourceConfig dsConfig;
 	
 	public DataBean() {}
 	
@@ -51,5 +54,13 @@ public class DataBean {
 
 	public void setTypeDS(String typeDS) {
 		this.typeDS = typeDS;
+	}
+
+	public DataSourceConfig getDsConfig() {
+		return dsConfig;
+	}
+
+	public void setDsConfig(DataSourceConfig dsConfig) {
+		this.dsConfig = dsConfig;
 	}
 }

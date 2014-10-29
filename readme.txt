@@ -1,6 +1,6 @@
 --> Version 2
 
-- Añadido soporte para nuevos formatos de entrada: Arff, CSV, Corpus Warc
+- Aï¿½adido soporte para nuevos formatos de entrada: Arff, CSV, Corpus Warc
 - Modificado el fichero de configuracion de la aplicacion para personalizar los
   origenes de datos
   
@@ -47,3 +47,6 @@ kryo-1.04-all.jar
 # Dependencias Weka
 # http://weka.wikispaces.com/
 weka.jar
+
+# Dependencias Lucene
+luceneTrigramsLanguageGuesser.jar

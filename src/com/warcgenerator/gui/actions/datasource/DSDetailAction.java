@@ -10,6 +10,7 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
+import com.warcgenerator.gui.view.datasources.DSAssistantLangPanel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep3Panel;
@@ -28,6 +29,7 @@ public class DSDetailAction extends CustomAction {
 	private JPanel mainDetailPanel;
 	private DSDetailPanel detailPanel;
 	private JPanel dsAssistantStep1Panel;
+	private JPanel dsAssistantLangPanel;
 	private JPanel dsAssistantStep2Panel;
 	private JPanel dsAssistantStep3Panel;
 	private CustomCardLayout cardLayout;
@@ -46,6 +48,8 @@ public class DSDetailAction extends CustomAction {
 				new DSDetailPanel(logic, view, config, mainDetailPanel);
 		dsAssistantStep1Panel = new DSAssistantStep1Panel(logic, view,
 				mainDetailPanel);
+		dsAssistantLangPanel = new DSAssistantLangPanel(logic, view,
+				mainDetailPanel);
 		dsAssistantStep2Panel = new DSAssistantStep2Panel(logic, view,
 				mainDetailPanel);
 		dsAssistantStep3Panel = new DSAssistantStep3Panel(logic, view,
@@ -61,6 +65,8 @@ public class DSDetailAction extends CustomAction {
 				detailPanel.getName());
 		mainDetailPanel.add(dsAssistantStep1Panel,
 				dsAssistantStep1Panel.getName());
+		mainDetailPanel.add(dsAssistantLangPanel,
+				dsAssistantLangPanel.getName());
 		mainDetailPanel.add(dsAssistantStep2Panel,
 				dsAssistantStep2Panel.getName());
 		mainDetailPanel.add(dsAssistantStep3Panel,

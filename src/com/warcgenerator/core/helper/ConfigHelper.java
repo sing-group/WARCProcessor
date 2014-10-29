@@ -66,6 +66,7 @@ public class ConfigHelper {
 					specificDsConfig.setSpam(ds.getSpam());
 					specificDsConfig.setMaxElements(ds.getMaxElements());
 					specificDsConfig.setCustomParams(ds.getCustomParams());
+					specificDsConfig.setCountryList(ds.getCountryList());
 					specificDsConfig.setParent(ds);
 					
 					// Get parameters from dataSourceTypes

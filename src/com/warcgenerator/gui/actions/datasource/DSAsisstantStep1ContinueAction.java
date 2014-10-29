@@ -28,7 +28,7 @@ public class DSAsisstantStep1ContinueAction
 	private WarcGeneratorGUI view;
 	private DSAssistantStep1Panel panel;
 	private IAppLogic logic;
-	private Action dsAsisstantStep2Action;
+	private Action dsAsisstantLangAction;
 	
 	public DSAsisstantStep1ContinueAction(IAppLogic logic,
 			WarcGeneratorGUI view,
@@ -39,8 +39,8 @@ public class DSAsisstantStep1ContinueAction
 		this.logic = logic;
 		this.panel = panel;
 		
-		dsAsisstantStep2Action =
-				new DSAsisstantStep2Action(logic, view, parentAssistant);
+		dsAsisstantLangAction =
+				new DSAsisstantLangAction(logic, view, parentAssistant);
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public class DSAsisstantStep1ContinueAction
 					Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
 			
 			((CustomJPanel)panel).commit();
-			dsAsisstantStep2Action.actionPerformed(e);
+			dsAsisstantLangAction.actionPerformed(e);
 		}
 	}
 

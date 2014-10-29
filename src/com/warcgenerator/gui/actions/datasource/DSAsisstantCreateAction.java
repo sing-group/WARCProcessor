@@ -3,21 +3,18 @@ package com.warcgenerator.gui.actions.datasource;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.CustomAction;
-import com.warcgenerator.gui.common.Constants;
-import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantCreatePanel;
+import com.warcgenerator.gui.view.datasources.DSAssistantLangPanel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep3Panel;
@@ -28,6 +25,7 @@ public class DSAsisstantCreateAction extends CustomAction {
 	private JPanel mainAssistantCreatePanel;
 	private DSAssistantCreatePanel dsAssistantCreatePanel;
 	private JPanel dsAssistantStep1Panel;
+	private JPanel dsAssistantLangPanel;
 	private JPanel dsAssistantStep2Panel;
 	private JPanel dsAssistantStep3Panel;
 	private CustomCardLayout cardLayout;
@@ -42,6 +40,8 @@ public class DSAsisstantCreateAction extends CustomAction {
 		dsAssistantCreatePanel = new DSAssistantCreatePanel(logic, view,
 				mainAssistantCreatePanel);
 		dsAssistantStep1Panel = new DSAssistantStep1Panel(logic, view,
+				mainAssistantCreatePanel);
+		dsAssistantLangPanel = new DSAssistantLangPanel(logic, view,
 				mainAssistantCreatePanel);
 		dsAssistantStep2Panel = new DSAssistantStep2Panel(logic, view,
 				mainAssistantCreatePanel);
@@ -59,6 +59,8 @@ public class DSAsisstantCreateAction extends CustomAction {
 				dsAssistantCreatePanel.getName());
 		mainAssistantCreatePanel.add(dsAssistantStep1Panel,
 				dsAssistantStep1Panel.getName());
+		mainAssistantCreatePanel.add(dsAssistantLangPanel,
+				dsAssistantLangPanel.getName());
 		mainAssistantCreatePanel.add(dsAssistantStep2Panel,
 				dsAssistantStep2Panel.getName());
 		mainAssistantCreatePanel.add(dsAssistantStep3Panel,
@@ -89,8 +91,8 @@ public class DSAsisstantCreateAction extends CustomAction {
 				int userSelection = JOptionPane.showConfirmDialog(
 						view.getMainFrame(),
 						"Se perderan los cambios."
-								+ "¿Esta seguro que desea salir del asistente?",
-						"Elija una opción",
+								+ "ï¿½Esta seguro que desea salir del asistente?",
+						"Elija una opciï¿½n",
 						JOptionPane.OK_CANCEL_OPTION);
 
 				if (userSelection == JOptionPane.OK_OPTION) {

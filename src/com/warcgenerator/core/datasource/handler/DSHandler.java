@@ -10,6 +10,7 @@ import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.WarcDS;
 import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
+import com.warcgenerator.core.helper.FileHelper;
 
 /**
  * Read the urls from the input datasources and
@@ -60,6 +61,9 @@ public abstract class DSHandler implements IDSHandler {
 				maxElements--;
 			}
 			
+			// Add DataSourceConfig
+			data.setDsConfig(dsConfig);
+			
 			// Method to implement
 			handle(data);
 			
@@ -74,14 +78,15 @@ public abstract class DSHandler implements IDSHandler {
 	private void addToUrls(Map<String, DataBean> urls, 
 			DataBean data) {
 		// check if this url already exists in the list
-		DataBean aux = urls.get(data.getUrl());
+		String url = FileHelper.normalizeURL(data.getUrl());
+		DataBean aux = urls.get(url);
 		if (aux == null) {
 			// If is a new url only add it
-			urls.put(data.getUrl(), data);
+			urls.put(url, data);
 		} else {
 			// If the url is not from warc type, add it
 			if (!aux.getTypeDS().equals(WarcDS.DS_TYPE)) {
-				urls.put(data.getUrl(), data);
+				urls.put(url, data);
 			}
 		}
 	}
