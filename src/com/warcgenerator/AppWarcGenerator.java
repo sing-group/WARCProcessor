@@ -1,10 +1,18 @@
 package com.warcgenerator;
 
+import gnu.getopt.Getopt;
+import gnu.getopt.LongOpt;
+
+import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.warcgenerator.core.exception.WarcException;
 import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.ReadException;
 import com.warcgenerator.core.exception.datasource.WriteException;
+import com.warcgenerator.gui.actions.common.StartGUIAction;
 
 /**
  * AppWarcGenerator
@@ -12,36 +20,141 @@ import com.warcgenerator.core.exception.datasource.WriteException;
  * @author Miguel Callon
  */
 public class AppWarcGenerator {
+	private static final String APP_NAME = "AppWarcGenerator";
+
 	/**
 	 * Main method
+	 * 
 	 * @param args
 	 */
-	public static void main (String args[]) {
-		String confFilePath = "";
-		if (args.length > 1) {
-			System.out.println("Wrong number of parameters");
-		} else if (args.length == 1) {
-			confFilePath = args[0];
-			System.out.println("Load configuration from:" + confFilePath);
-		} else {
-			System.out.println("Load default configuration");
-		}
-		
-		AppWarc app = AppWarc.getInstance();
+	public static void main(String args[]) {
+		List<LongOpt> options = new ArrayList<LongOpt>();
+		options.add(new LongOpt("help", LongOpt.NO_ARGUMENT, null, 'h'));
+		options.add(new LongOpt("nogui", LongOpt.NO_ARGUMENT, null, 'n'));
+		options.add(new LongOpt("config", LongOpt.REQUIRED_ARGUMENT, null, 'c'));
 
-		try {
-			app.init(confFilePath);
-			app.execute();
-		} catch (OpenException e) {
-			System.out.println("Is not posible open data source. Check config.xml");
-		} catch (ReadException e) {
-			System.out.println("Is not posible read from data source. Check permission.");
-		} catch (WriteException e) {
-			System.out.println("Is not posible write in data source. Check permission.");
-		} catch (ConfigException e) {
-			System.out.println("Is not posible read configuration. Check config.xml :"+e);
-		} catch (WarcException e) {
-			System.out.println(e);
+		CommandConfig config = handleOpt(args, options);
+		if (!config.isShowHelp()) {
+			final AppWarc app = AppWarc.getInstance();
+
+			try {
+				if (config.getConfigIni() != null
+						&& !config.getConfigIni().isEmpty()) {
+					app.init(config.getConfigIni());
+				} else {
+					app.init();
+				}
+
+				if (config.isUseGUI()) {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								StartGUIAction mainAction = new StartGUIAction(
+										app);
+								mainAction.actionPerformed(null);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				} else {
+					app.execute();
+				}
+			} catch (OpenException e) {
+				System.out
+						.println("Is not posible open data source. Check config.xml");
+			} catch (ReadException e) {
+				System.out
+						.println("Is not posible read from data source. Check permission.");
+			} catch (WriteException e) {
+				System.out
+						.println("Is not posible write in data source. Check permission.");
+			} catch (ConfigException e) {
+				System.out
+						.println("Is not posible read configuration. Check config.xml :"
+								+ e);
+			} catch (WarcException e) {
+				System.out.println(e);
+			}
 		}
+	}
+
+	private static CommandConfig handleOpt(String[] args, List<LongOpt> options) {
+		CommandConfig config = new CommandConfig();
+		int c;
+		LongOpt[] longopts = options.toArray(new LongOpt[options.size()]);
+		StringBuffer usageOptions = new StringBuffer(" ");
+		for (LongOpt longopt : longopts) {
+			usageOptions.append("[--").append(longopt.getName());
+			if (longopt.getHasArg() == LongOpt.REQUIRED_ARGUMENT) {
+				usageOptions.append(" <path>");
+			}
+			usageOptions.append("] ");
+		}
+
+		StringBuffer usage = new StringBuffer("Usage: ");
+		usage.append(APP_NAME).append(usageOptions.toString());
+
+		Getopt g = new Getopt("AppWarcGeneratorCustom", args, "c:nh", longopts);
+		while ((c = g.getopt()) != -1) {
+			switch (c) {
+			case 'c':
+				config.setConfigIni(g.getOptarg());
+				break;
+			case 'h':
+				System.out.println(usage);
+				config.setShowHelp(true);
+				break;
+			case 'n':
+				config.setUseGUI(false);
+				break;
+			case ':':
+				System.out.println("You need an argument for option "
+						+ (char) g.getOptopt());
+				System.out.println(usage);
+				break;
+			//
+			case '?':
+				System.out.println("The option '" + (char) g.getOptopt()
+						+ "' is not valid");
+				System.out.println(usage);
+				break;
+			default:
+				System.out.println("The option is not valid: " + c);
+				System.out.println(usage);
+				break;
+			}
+		}
+		return config;
+	}
+}
+
+class CommandConfig {
+	private boolean useGUI = true;
+	private String configIni = "";
+	private boolean showHelp = false;
+
+	public boolean isUseGUI() {
+		return useGUI;
+	}
+
+	public void setUseGUI(boolean useGUI) {
+		this.useGUI = useGUI;
+	}
+
+	public String getConfigIni() {
+		return configIni;
+	}
+
+	public void setConfigIni(String configIni) {
+		this.configIni = configIni;
+	}
+
+	public boolean isShowHelp() {
+		return showHelp;
+	}
+
+	public void setShowHelp(boolean showHelp) {
+		this.showHelp = showHelp;
 	}
 }

@@ -1,7 +1,6 @@
 package com.warcgenerator.gui.view;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -74,7 +73,6 @@ import com.warcgenerator.gui.view.output.OutputConfigPanel;
 
 public class WarcGeneratorGUI extends Observable {
 	private GUIConfig guiConfig;
-	private CardLayout cardLayout;
 
 	public static final String TRYING_CHANGE_MAIN_PANEL = "TRYING_CHANGE_MAIN_PANEL";
 
@@ -142,7 +140,6 @@ public class WarcGeneratorGUI extends Observable {
 				this);
 		OutputConfigPanel outputconfigPanel = new OutputConfigPanel(logic, this);
 		OtherConfigPanel otherConfigPanel = new OtherConfigPanel(logic, this);
-		
 		
 		addMainPanel(cleanPanel);
 		addMainPanel(generalConfigPanel);
@@ -287,7 +284,7 @@ public class WarcGeneratorGUI extends Observable {
 		mnLanguages.setHorizontalAlignment(SwingConstants.LEFT);
 		mnHelp.add(mnLanguages);
 
-		final JMenuItem mnSpanish = new JMenuItem("Español");
+		final JMenuItem mnSpanish = new JMenuItem("Espaï¿½ol");
 		mnSpanish.setHorizontalAlignment(SwingConstants.LEFT);
 
 		mnSpanish.addActionListener(new ActionListener() {
@@ -366,13 +363,7 @@ public class WarcGeneratorGUI extends Observable {
 
 				/* if nothing is selected */
 				if (node == null)
-					return;
-
-				/* retrieve the node that was selected */
-				Object nodeInfo = node.getUserObject();
-
-				/* React to the node selection. */
-				
+					return;				
 			}
 		});
 

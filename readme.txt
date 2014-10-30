@@ -40,7 +40,7 @@ fastutil-5.0.7.jar
 commons-io-1.4.jar
 
 # Dependencias Kryo
-https://code.google.com/p/kryo/
+# https://code.google.com/p/kryo/
 # Used to serialization for Warc reader
 kryo-1.04-all.jar
 
@@ -50,3 +50,13 @@ weka.jar
 
 # Dependencias Lucene
 luceneTrigramsLanguageGuesser.jar
+
+# Dependencias Jsoup
+# http://jsoup.org/
+# Used to extract text from html
+jsoup-1.8.1.jar
+
+# Dependencias GetOpt
+# www.urbanophile.com/arenn/hacking/download.html
+# Used to get options from command line
+java-getopt-1.0.13.jar

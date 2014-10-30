@@ -51,19 +51,26 @@ public class StartGUIAction extends AbstractAction {
 			
 		});
 		
-		// Start config dialog
-		initConfigDialog = new InitConfigDialog(appWarc.getAppLogic(),
-				window);
-		initConfigDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		// Start config dialog if there is not any config file specified
+		if (appWarc.getAppLogic().getConfigFilePath() == null ||
+				appWarc.getAppLogic().getConfigFilePath().isEmpty()) {
+			initConfigDialog = new InitConfigDialog(appWarc.getAppLogic(),
+					window);
+			initConfigDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		window.setVisible(true);
 		
-		for(RecentFileCBItem configFile:guiConfig.getRecentConfigFilesReversed()) {
-			initConfigDialog.addConfigFile(configFile);
+		if (initConfigDialog != null) {
+			for(RecentFileCBItem configFile:guiConfig.getRecentConfigFilesReversed()) {
+				initConfigDialog.addConfigFile(configFile);
+			}
+			initConfigDialog.setVisible(true);
+		} else {
+			window.selectFirstSelectionableItem();
 		}
-		initConfigDialog.setVisible(true);
 	}
 }
