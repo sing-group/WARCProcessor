@@ -3,6 +3,9 @@
   <groupId>WarcProject</groupId>
   <artifactId>WarcProject</artifactId>
   <version>3.0.1-SNAPSHOT</version>
+  <properties>
+	<install-dir>${build.directory}</install-dir>
+  </properties>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -14,6 +17,38 @@
           <target>1.7</target>
         </configuration>
       </plugin>
+      <plugin>
+			<artifactId>maven-jar-plugin</artifactId>
+			<version>2.2</version>
+			<configuration>
+				<archive>
+					<manifest>
+						<mainClass>com.warcgenerator.AppWarcGeneratorGUI</mainClass>
+						<addClasspath>true</addClasspath>
+						<classpathPrefix>lib</classpathPrefix>
+					</manifest>
+				</archive>
+			</configuration>
+		</plugin>
+		<plugin>
+			<artifactId>maven-dependency-plugin</artifactId>
+			<version>2.0</version>
+			<executions>
+				<execution>
+					<id>copy-dependencies</id>
+					<phase>install</phase>
+					<goals>
+						<goal>copy-dependencies</goal>
+					</goals>
+					<configuration>
+						<outputDirectory>${install-dir}/${artifactId}/lib</outputDirectory>
+						<overWriteReleases>false</overWriteReleases>
+						<overWriteSnapshots>false</overWriteSnapshots>
+						<overWriteIfNewer>true</overWriteIfNewer>
+					</configuration>
+				</execution>
+			</executions>
+		</plugin>
     </plugins>
   </build>
   <dependencies>
