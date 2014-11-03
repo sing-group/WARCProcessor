@@ -20,26 +20,27 @@ public class GUIConfig {
 	public GUIConfig() {
 		recentConfigFiles = new ArrayList<String>();
 	}
-		
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer("-- GUI-Config --");
-		
-		for (String configFile: recentConfigFiles) {
+
+		for (String configFile : recentConfigFiles) {
 			sb.append("-> Config File Path:  ").append(configFile).append("\n");
 		}
-			
+
 		return sb.toString();
 	}
-	
+
 	public boolean validate() {
 		// Check if ratioQuantity is bigger than numSites
-		/*if (!ratioIsPercentage && numSites < ratioSpam) {
-			throw new RatioQuantityUnexpectedValueException();
-		}*/
-		
+		/*
+		 * if (!ratioIsPercentage && numSites < ratioSpam) { throw new
+		 * RatioQuantityUnexpectedValueException(); }
+		 */
+
 		return true;
 	}
-	
+
 	public List<String> getRecentConfigFiles() {
 		return recentConfigFiles;
 	}
@@ -47,14 +48,13 @@ public class GUIConfig {
 	public void setRecentConfigFiles(List<String> recentConfigFiles) {
 		this.recentConfigFiles = recentConfigFiles;
 	}
-	
+
 	public void addRecentConfigFile(String configFilePath) {
 		if (recentConfigFiles.contains(configFilePath)) {
 			recentConfigFiles.remove(configFilePath);
 			recentConfigFiles.add(configFilePath);
 		} else {
-			if (recentConfigFiles.size() >= 
-					Constants.NUM_MAX_RECENT_CONFIG_FILES) {
+			if (recentConfigFiles.size() >= Constants.NUM_MAX_RECENT_CONFIG_FILES) {
 				// Remove the oldest value
 				recentConfigFiles.remove(0);
 				// Add new value
@@ -64,13 +64,13 @@ public class GUIConfig {
 			}
 		}
 	}
-	
+
 	public List<RecentFileCBItem> getRecentConfigFilesReversed() {
 		List<RecentFileCBItem> reversedArray = new ArrayList<RecentFileCBItem>();
 		int i = recentConfigFiles.size();
-		for (String text:recentConfigFiles) {
+		for (String text : recentConfigFiles) {
 			File f = new File(text);
-			RecentFileCBItem configFileName = new RecentFileCBItem(i--, 
+			RecentFileCBItem configFileName = new RecentFileCBItem(i--,
 					f.getName(), f.getAbsolutePath());
 			reversedArray.add(0, configFileName);
 		}

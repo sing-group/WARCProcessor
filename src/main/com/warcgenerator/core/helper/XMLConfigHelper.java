@@ -2,6 +2,7 @@ package com.warcgenerator.core.helper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.Map;
 
@@ -54,20 +55,18 @@ public class XMLConfigHelper {
 				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		// load a WXS schema, represented by a Schema instance
-		Source schemaFile = new StreamSource(new File(schemaFilePath));
-		Schema schema;
-		try {
+		try (InputStream is = factory.getClass().getResourceAsStream(
+				schemaFilePath)) {
+			Source schemaFile = new StreamSource(is);
+			Schema schema;
+
 			schema = factory.newSchema(schemaFile);
-		} catch (SAXException e) {
-			throw new ValidateXMLSchemaException(e);
-		}
 
-		// create a Validator instance, which can be used to validate an
-		// instance document
-		Validator validator = schema.newValidator();
+			// create a Validator instance, which can be used to validate an
+			// instance document
+			Validator validator = schema.newValidator();
 
-		// validate the DOM tree
-		try {
+			// validate the DOM tree
 			validator.validate(new DOMSource(document));
 		} catch (SAXException e) {
 			throw new ValidateXMLSchemaException(e);
@@ -81,6 +80,7 @@ public class XMLConfigHelper {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+
 			Document doc = docBuilder.parse(new File(path));
 
 			// At the moment we are not to validate Scheme
@@ -257,7 +257,12 @@ public class XMLConfigHelper {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-			Document doc = docBuilder.parse(new File(path));
+
+			Document doc = null;
+			try (InputStream is = docBuilder.getClass().getResourceAsStream(
+					path)) {
+				doc = docBuilder.parse(is);
+			}
 
 			// normalize text representation
 			doc.getDocumentElement().normalize();

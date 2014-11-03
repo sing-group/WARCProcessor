@@ -2,6 +2,7 @@ package com.warcgenerator.gui.helper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -48,7 +49,8 @@ public class XMLGUIConfigHelper {
 				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		// load a WXS schema, represented by a Schema instance
-		Source schemaFile = new StreamSource(new File(schemaFilePath));
+		InputStream is = factory.getClass().getResourceAsStream(schemaFilePath);
+		Source schemaFile = new StreamSource(is);
 		Schema schema;
 		try {
 			schema = factory.newSchema(schemaFile);
@@ -70,12 +72,12 @@ public class XMLGUIConfigHelper {
 		}
 	}
 
-	public static void getGUIConfigFromXml(String path, GUIConfig config) {
+	public static void getGUIConfigFromXml(InputStream is, GUIConfig config) {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-			Document doc = docBuilder.parse(new File(path));
+			Document doc = docBuilder.parse(is);
 
 			validateSchema(doc, Constants.CONFIG_SCHEMA_FILE_PATH);
 

@@ -446,8 +446,7 @@ public class WarcGeneratorGUI extends Observable {
 			GUIConfig guiConfig = (GUIConfig) Session
 					.get(Constants.GUI_CONFIG_SESSION_KEY);
 			guiConfig.addRecentConfigFile(configFilePath);
-			GUIConfigHelper.persistConfig(Constants.DEFAULT_GUI_CONFIG_XML,
-					guiConfig);
+			GUIConfigHelper.persistConfig(guiConfig);
 		}
 			
 		recentFilesMI.removeAll();
