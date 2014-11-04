@@ -68,7 +68,8 @@ public class AppWarc {
 	 */
 	public void init(String pathConfig) throws WarcException {
 		// Configure Log4j.xml
-		DOMConfigurator.configure("config" + File.separator + "log4j.xml");
+		DOMConfigurator.configure(this.getClass()
+				.getResource("/config/log4j.xml"));
 
 		// Properties properties = ConfigHelper.loadParams(pathConfig);
 		logger.info("Loading configuration...");
