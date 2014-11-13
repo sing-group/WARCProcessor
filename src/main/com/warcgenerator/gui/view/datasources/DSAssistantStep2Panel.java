@@ -3,7 +3,6 @@ package com.warcgenerator.gui.view.datasources;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -13,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Map;
 
 import javax.swing.Action;
@@ -323,7 +323,8 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 			Object obj = null;
 			if (paramConfig.getType().equals("java.lang.Boolean")) {
 				obj = Boolean.valueOf(paramConfig.getValue());
-				;
+			} else if (paramConfig.getType().equals("java.io.File")) {
+					obj = new File(paramConfig.getValue());
 			} else {
 				obj = paramConfig.getValue();
 			}

@@ -1,4 +1,4 @@
-package com.warcgenerator.datasources;
+package com.warcgenerator.datasources.arff;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

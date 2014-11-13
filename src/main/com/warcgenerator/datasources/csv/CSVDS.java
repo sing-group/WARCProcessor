@@ -1,4 +1,4 @@
-package com.warcgenerator.datasources;
+package com.warcgenerator.datasources.csv;
 
 import java.io.File;
 import java.util.Iterator;

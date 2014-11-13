@@ -1,4 +1,4 @@
-package com.warcgenerator.datasources;
+package com.warcgenerator.datasources.file;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

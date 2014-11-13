@@ -63,4 +63,15 @@ public class DataBean {
 	public void setDsConfig(DataSourceConfig dsConfig) {
 		this.dsConfig = dsConfig;
 	}
+	
+	public String toString() {
+		StringBuffer sb = new StringBuffer("------ DataBean ------");
+		
+		sb.append("filePath: ").append(filePath)
+		.append(", data: ").append(data)
+		.append(", url: ").append(url)
+		.append(", spam: ").append(spam);
+		
+		return sb.toString();
+	}
 }

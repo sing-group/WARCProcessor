@@ -1,4 +1,4 @@
-package com.warcgenerator.datasources;
+package com.warcgenerator.datasources.corpus;
 
 import java.io.File;
 
@@ -11,7 +11,7 @@ import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.WarcDS;
 import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.DSException;
-import com.warcgenerator.datasources.bean.CorpusFileBean;
+import com.warcgenerator.datasources.corpus.bean.CorpusFileBean;
 
 /**
  * DataSource used to read Corpus files

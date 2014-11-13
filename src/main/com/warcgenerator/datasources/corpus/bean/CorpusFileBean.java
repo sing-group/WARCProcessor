@@ -1,4 +1,4 @@
-package com.warcgenerator.datasources.bean;
+package com.warcgenerator.datasources.corpus.bean;
 
 import java.io.File;
 import java.util.ArrayList;

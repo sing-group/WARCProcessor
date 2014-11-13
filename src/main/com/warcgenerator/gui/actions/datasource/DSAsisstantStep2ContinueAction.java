@@ -1,6 +1,7 @@
 package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -89,6 +90,8 @@ public class DSAsisstantStep2ContinueAction
 			Object obj = panel.getParamsTable().getModel().getValueAt(i, 1);
 			if (obj instanceof Boolean) {
 				paramValue = Boolean.toString((Boolean)obj);
+			} else if (obj instanceof File) {
+				paramValue = ((File)obj).getAbsolutePath();
 			} else {
 				paramValue = (String)obj;
 			}

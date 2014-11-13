@@ -7,13 +7,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 >
  	 <dataSource name="CorpusDS" 
- 	 	class="com.warcgenerator.datasources.CorpusDS" >
+ 	 	class="com.warcgenerator.datasources.corpus.CorpusDS" >
  		<customParams>
  			<urlTag type="java.lang.String">WARC-Target-URI</urlTag>
  			<spamDir type="java.lang.String">_spam_</spamDir>
  			<hamDir type="java.lang.String">_ham_</hamDir>
  		</customParams>
- 		<handler>com.warcgenerator.datasources.handler.CorpusDSHandler</handler>
+ 		<handler>com.warcgenerator.datasources.corpus.handler.CorpusDSHandler</handler>
  	</dataSource>
  	<dataSource name="WarcDS" 
  	 	class="com.warcgenerator.core.datasource.WarcDS" >
@@ -23,19 +23,19 @@
  		<handler>com.warcgenerator.core.datasource.handler.WarcDSHandler</handler>
  	</dataSource>
  	<dataSource name="ArffDS"
- 		class="com.warcgenerator.datasources.ArffDS" >
+ 		class="com.warcgenerator.datasources.arff.ArffDS" >
  		<customParams>
  			<spamTag type="java.lang.String">LABEL</spamTag>
  			<urlTag type="java.lang.String">URL</urlTag>
  		</customParams>
- 		<handler>com.warcgenerator.datasources.handler.ArffDSHandler</handler>
+ 		<handler>com.warcgenerator.datasources.arff.handler.ArffDSHandler</handler>
  	</dataSource>
  	<dataSource name="FileDS" 
  		class="com.warcgenerator.datasources.FileDS">
  		<handler>com.warcgenerator.datasources.handler.FileDSHandler</handler>
  	</dataSource>
  	<dataSource name="CSVDS" 
- 		class="com.warcgenerator.datasources.CSVDS">
+ 		class="com.warcgenerator.datasources.csv.CSVDS">
  		<customParams>
  		    <fieldSeparator type="java.lang.String">;</fieldSeparator>
  		    <!-- Use the urlColNum to get de url col -->
@@ -43,6 +43,19 @@
  			<spamCol type="java.lang.String">LABEL</spamCol>
  			<spamColSpamValue type="java.lang.String">spam</spamColSpamValue>
  		</customParams>
- 		<handler>com.warcgenerator.datasources.handler.CSVDSHandler</handler>
+ 		<handler>com.warcgenerator.datasources.csv.handler.CSVDSHandler</handler>
+ 	</dataSource>
+ 	<dataSource name="WarcCSVDS" 
+ 		class="com.warcgenerator.datasources.warccsv.WarcCSVDS">
+ 		<customParams>
+ 		    <fieldSeparator type="java.lang.String">;</fieldSeparator>
+ 		    <!-- Use the urlColNum to get de url col -->
+ 			<urlCol type="java.lang.String">0</urlCol>
+ 			<spamCol type="java.lang.String">LABEL</spamCol>
+ 			<spamColSpamValue type="java.lang.String">spam</spamColSpamValue>
+ 			<urlTag type="java.lang.String">WARC-Target-URI</urlTag>
+ 			<fileCSV type="java.io.File">index.csv</fileCSV>
+ 		</customParams>
+ 		<handler>com.warcgenerator.datasources.warccsv.handler.WarcCSVDSHandler</handler>
  	</dataSource>
  </dataSources>
