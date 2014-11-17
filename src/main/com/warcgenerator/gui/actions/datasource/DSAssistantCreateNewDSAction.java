@@ -1,9 +1,9 @@
 package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.Collection;
 import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -16,10 +16,10 @@ import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
-import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 
+@SuppressWarnings("serial")
 public class DSAssistantCreateNewDSAction 
 	extends CustomAction {	
 	private WarcGeneratorGUI view;
@@ -72,6 +72,12 @@ public class DSAssistantCreateNewDSAction
 			panel.getTipoDSCBox().getModel().
 				setSelectedItem(dsConfig.getType());
 		}
+		
+		if (dsConfig.getFilePath() != null &&
+				!dsConfig.getFilePath().isEmpty()) {
+			panel.getFileChooser().setCurrentDirectory(new File(
+					dsConfig.getFilePath()));
+		}
 	}
 	
 	@Override
@@ -83,8 +89,8 @@ public class DSAssistantCreateNewDSAction
 				int userSelection = JOptionPane
 						.showConfirmDialog(view.getMainFrame(),
 								"Se perderan los cambios. "
-									+ "¿Esta seguro que desea salir del asistente?",
-									"Elija una opción",
+									+ "Â¿Esta seguro que desea salir del asistente?",
+									"Elija una opciï¿½n",
 									JOptionPane.OK_CANCEL_OPTION);
 				
 				if (userSelection == JOptionPane.OK_OPTION) {

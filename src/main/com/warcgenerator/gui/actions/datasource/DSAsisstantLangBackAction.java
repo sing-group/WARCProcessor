@@ -5,17 +5,21 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JPanel;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public class DSAsisstantLangBackAction 
 	extends AbstractAction implements Observer {	
+
+	@SuppressWarnings("unused")
 	private WarcGeneratorGUI view;
+	@SuppressWarnings("unused")
 	private IAppLogic logic;
+	
 	private JPanel parentAssistant;
 	
 	public DSAsisstantLangBackAction(IAppLogic logic,

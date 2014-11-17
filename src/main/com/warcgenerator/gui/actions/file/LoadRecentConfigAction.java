@@ -1,21 +1,14 @@
 package com.warcgenerator.gui.actions.file;
 
 import java.awt.event.ActionEvent;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import com.warcgenerator.core.logic.AppLogic;
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.core.logic.LogicCallback;
-import com.warcgenerator.gui.common.Constants;
-import com.warcgenerator.gui.common.Session;
-import com.warcgenerator.gui.config.GUIConfig;
-import com.warcgenerator.gui.helper.GUIConfigHelper;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public class LoadRecentConfigAction extends AbstractAction {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;

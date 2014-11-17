@@ -13,6 +13,7 @@ import com.warcgenerator.gui.actions.generate.GenerateCorpusAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 
+@SuppressWarnings("serial")
 public class GCSaveAndGenerateAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;

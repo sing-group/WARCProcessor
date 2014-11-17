@@ -8,6 +8,7 @@ import javax.swing.JSeparator;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class CustomComboBoxRenderer<E> extends JLabel implements ListCellRenderer<E> {
     public static final String SEPARATOR = "SEPARATOR";
 	

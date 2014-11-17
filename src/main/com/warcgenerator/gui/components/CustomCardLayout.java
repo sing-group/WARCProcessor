@@ -5,6 +5,7 @@ import java.awt.Component;
 
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class CustomCardLayout extends CardLayout {
 	public CustomCardLayout() {
 		super();

@@ -17,9 +17,6 @@ public class CustomPropertyChangeListener implements
 		JComponent component = (JComponent) e.getSource();
 
 		if (component instanceof JFormattedTextField) {
-			JFormattedTextField textField =
-					(JFormattedTextField)component;
-			
 			if (e.getPropertyName().equals("value")) {
 				if (e.getOldValue() != null &&
 						!e.getOldValue().equals(e.getNewValue())) {

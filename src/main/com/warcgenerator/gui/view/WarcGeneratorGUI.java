@@ -412,6 +412,7 @@ public class WarcGeneratorGUI extends Observable {
 		
 	}
 	
+	@SuppressWarnings("serial")
 	public void buildTree() {
 		final CustomTreeNode general = new CustomTreeNode("General");
 

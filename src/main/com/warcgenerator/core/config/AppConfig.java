@@ -1,11 +1,9 @@
 package com.warcgenerator.core.config;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.warcgenerator.core.datasource.bean.Country;
 import com.warcgenerator.core.exception.config.validation.RatioQuantityUnexpectedValueException;
 import com.warcgenerator.core.util.Validator;
 
@@ -38,7 +36,7 @@ public class AppConfig {
 	private Integer ratioQuantitySpam;
 
 	public AppConfig() {
-		setDataSourceConfigs(new HashMap<Integer, DataSourceConfig>());
+		setDataSourceConfigs(new LinkedHashMap<Integer, DataSourceConfig>());
 	}
 
 	public void init() {

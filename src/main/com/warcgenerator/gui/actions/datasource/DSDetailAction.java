@@ -22,6 +22,7 @@ import com.warcgenerator.gui.view.datasources.DSDetailPanel;
  * @author amparop
  *
  */
+@SuppressWarnings("serial")
 public class DSDetailAction extends CustomAction {
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;

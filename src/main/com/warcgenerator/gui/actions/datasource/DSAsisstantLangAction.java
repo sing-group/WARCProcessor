@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Observable;
 
 import javax.swing.Action;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -20,6 +19,7 @@ import com.warcgenerator.gui.components.SortedListModel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantLangPanel;
 
+@SuppressWarnings("serial")
 public class DSAsisstantLangAction extends CustomAction {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
@@ -60,11 +60,13 @@ public class DSAsisstantLangAction extends CustomAction {
 			modelSelected.add(country);
 		}
 		
+		panel.enableLangSelection(false);
 		// If there is some country selected, not all languages option
 		// is selected
 		if (dsConfig.getCountryList().size() > 0) {
 			panel.getRdbtnAllLang().setSelected(false);
 			panel.getRdbtnNoAllLang().setSelected(true);
+			panel.enableLangSelection(true);
 		}
 		panel.getListCandidates().setModel(model);
 		panel.getListSelected().setModel(modelSelected);

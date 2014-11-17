@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Action;
 import javax.swing.Box;
-import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +29,7 @@ import com.warcgenerator.gui.actions.datasource.DSRemoveAction;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public class DSDetailPanel extends JPanel {
 	
 	private JTextArea summaryConfigTField;
@@ -58,11 +58,6 @@ public class DSDetailPanel extends JPanel {
 		setName("DSDetailPanel" + config.getId());
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
-		
-		//setBackground(new Color(230, 230, 250));
-		
-		 //Group the radio buttons.
-	    ButtonGroup group = new ButtonGroup();
 		
 		scrollPane = new JScrollPane();
 		

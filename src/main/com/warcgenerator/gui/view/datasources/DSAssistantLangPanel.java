@@ -406,7 +406,7 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		return rdbtnNoAllLang;
 	}
 
-	void enableLangSelection(boolean enable) {
+	public void enableLangSelection(boolean enable) {
 		listCandidates.setEnabled(enable);
 		listSelected.setEnabled(enable);
 		listCandidates.clearSelection();

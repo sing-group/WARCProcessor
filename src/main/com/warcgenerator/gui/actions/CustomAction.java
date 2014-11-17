@@ -12,6 +12,7 @@ import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public abstract class CustomAction extends AbstractAction implements Observer {
 	private JPanel panel;
 	private WarcGeneratorGUI view;

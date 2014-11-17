@@ -7,8 +7,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.warcgenerator.core.datasource.bean.Country;
 
+@SuppressWarnings("serial")
 public class CountryRenderer extends JLabel implements
 		ListCellRenderer<Country> {
 
@@ -21,12 +24,12 @@ public class CountryRenderer extends JLabel implements
 			JList<? extends Country> list, Country country, int index,
 			boolean isSelected, boolean cellHasFocus) {
 
-		String code = country.getCode();
+		//String code = country.getCode();
 		// ImageIcon imageIcon = new ImageIcon(getClass().getResource("/images/"
 		// + code + ".png"));
 
 		// setIcon(imageIcon);
-		setText(country.getName());
+		setText(StringUtils.capitalize(country.getName()));
 
 		if (isSelected) {
 			setBackground(list.getSelectionBackground());

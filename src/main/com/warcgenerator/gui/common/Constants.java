@@ -12,4 +12,7 @@ public interface Constants {
 	String CONFIG_SCHEMA_FILE_PATH = "/config/schema/gui-config.xsd";
 	String FORM_MODIFIED_SESSION_KEY = "form_modified_session_key";
 	Integer NUM_MAX_RECENT_CONFIG_FILES = 4;
+
+	String FILE_CFG_EXTENSION = "wpg";
+	String FILTER_FILE_CFG_DESCRIPTION = "fileFilter.fileCfg";
 }

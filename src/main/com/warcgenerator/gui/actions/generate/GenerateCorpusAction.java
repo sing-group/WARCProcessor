@@ -9,6 +9,7 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GenerateCorpusDialog;
 
+@SuppressWarnings("serial")
 public class GenerateCorpusAction 
 	extends AbstractAction {	
 	private WarcGeneratorGUI view;

@@ -20,6 +20,7 @@ import com.warcgenerator.gui.view.datasources.DSDetailPanel;
  * @author amparop
  *
  */
+@SuppressWarnings("serial")
 public class DSRemoveAction extends AbstractAction implements Observer {
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;

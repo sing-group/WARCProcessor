@@ -12,6 +12,7 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public class DSAsisstantStep2BackAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;

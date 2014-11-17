@@ -2,7 +2,7 @@ package com.warcgenerator.core.config;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +42,7 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	private IDSHandler handler;
 
 	public DataSourceConfig() {
-		this.customParams = new HashMap<String, CustomParamConfig>();
+		this.customParams = new LinkedHashMap<String, CustomParamConfig>();
 		this.children = new ArrayList<DataSourceConfig>();
 		this.setCountryList(new ArrayList<Country>());
 	}
@@ -211,7 +211,8 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	}
 
 	public static void copy(DataSourceConfig dest, DataSourceConfig src) {
-		Map<String, CustomParamConfig> customParamsConfigCopy = new HashMap<String, CustomParamConfig>();
+		Map<String, CustomParamConfig> customParamsConfigCopy = 
+				new LinkedHashMap<String, CustomParamConfig>();
 		List<Country> countriesCopy = new ArrayList<Country>();
 
 		try {

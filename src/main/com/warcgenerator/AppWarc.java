@@ -1,8 +1,5 @@
 package com.warcgenerator;
 
-import java.io.File;
-import java.io.InputStream;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 

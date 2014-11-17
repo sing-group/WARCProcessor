@@ -3,6 +3,7 @@ package com.warcgenerator.gui.components;
 import javax.swing.Action;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+@SuppressWarnings("serial")
 public class CustomTreeNode extends DefaultMutableTreeNode {
 	private Integer id;
 	private Action action;

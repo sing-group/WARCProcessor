@@ -2,8 +2,8 @@ package com.warcgenerator.core.plugin.webcrawler;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +26,6 @@ import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
-import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -36,8 +35,9 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	private AppConfig appConfig;
+	@SuppressWarnings("unused")
 	private GenerateCorpusState generateCorpusState;
-	private CrawlController controller;
+	private CustomCrawlController controller;
 	private Map<String, IWebCrawlerHandler> handlers;
 	private WebCrawlerBean webCrawlerBean;
 	private int numberOfCrawlers;
@@ -61,9 +61,9 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	private static Set<String> urlsAllowed;
 
 	public Crawler4JAdapter() {
-		parseDataMap = new HashMap<String, 
+		parseDataMap = new LinkedHashMap<String, 
 				com.warcgenerator.core.plugin.webcrawler.HtmlParseData>();
-		handlers = new HashMap<String, IWebCrawlerHandler>();
+		handlers = new LinkedHashMap<String, IWebCrawlerHandler>();
 	}
 
 	public Crawler4JAdapter(
@@ -79,7 +79,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		super();
 		this.appConfig = appConfig;
 		this.generateCorpusState = generateCorpusState;
-		this.handlers = new HashMap<String, IWebCrawlerHandler>();
+		this.handlers = new LinkedHashMap<String, IWebCrawlerHandler>();
 		this.webCrawlerBean = webCrawlerBean;
 		this.outputDS = outputDS;
 		this.urls = urls;
@@ -114,7 +114,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 				pageFetcher);
 
 		try {
-			controller = new CrawlController(config, pageFetcher,
+			controller = new CustomCrawlController(config, pageFetcher,
 					robotstxtServer);
 		} catch (Exception e) {
 			throw new PluginException(e);

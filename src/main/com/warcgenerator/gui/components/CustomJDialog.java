@@ -2,11 +2,11 @@ package com.warcgenerator.gui.components;
 
 import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.WindowListener;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 public class CustomJDialog extends JDialog {
 	public CustomJDialog(JFrame frame, boolean modal) {
 		super(frame, modal);

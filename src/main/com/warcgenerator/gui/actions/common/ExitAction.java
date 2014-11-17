@@ -16,6 +16,7 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
  * @author amparop
  *
  */
+@SuppressWarnings("serial")
 public class ExitAction extends AbstractAction implements Observer {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;

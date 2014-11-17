@@ -22,11 +22,11 @@ import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.components.SortedListModel;
-import com.warcgenerator.gui.helper.ValidatorHelper;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.datasources.DSAssistantLangPanel;
 
+@SuppressWarnings("serial")
 public class DSAsisstantLangContinueAction extends AbstractAction implements
 		Observer {
 	private WarcGeneratorGUI view;

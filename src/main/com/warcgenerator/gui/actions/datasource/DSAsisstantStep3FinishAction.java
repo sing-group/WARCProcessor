@@ -1,7 +1,6 @@
 package com.warcgenerator.gui.actions.datasource;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,6 +16,7 @@ import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep3Panel;
 
+@SuppressWarnings("serial")
 public class DSAsisstantStep3FinishAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;

@@ -19,6 +19,7 @@ import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep3Panel;
 
+@SuppressWarnings("serial")
 public class DSAsisstantCreateAction extends CustomAction {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;

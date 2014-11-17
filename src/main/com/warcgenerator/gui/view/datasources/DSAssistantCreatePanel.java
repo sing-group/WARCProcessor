@@ -24,6 +24,7 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSCreateAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public class DSAssistantCreatePanel extends JPanel {
 	Action dsCreateAction;
 

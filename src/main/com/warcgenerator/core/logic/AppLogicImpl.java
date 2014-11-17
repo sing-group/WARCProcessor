@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observer;
@@ -53,7 +54,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
 
-		dataSourcesTypes = new HashMap<String, DataSourceConfig>();
+		dataSourcesTypes = new LinkedHashMap<String, DataSourceConfig>();
 		XMLConfigHelper.getDataSources(Constants.dataSourcesTypesXML,
 				dataSourcesTypes);
 
@@ -246,9 +247,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		executorTasks = new ExecutionTaskBatch();
 
 		// Init data structures
-		Map<String, DataBean> urlsSpam = new HashMap<String, DataBean>();
-		Map<String, DataBean> urlsHam = new HashMap<String, DataBean>();
-		Map<String, DataSource> outputDS = new HashMap<String, DataSource>();
+		Map<String, DataBean> urlsSpam = new LinkedHashMap<String, DataBean>();
+		Map<String, DataBean> urlsHam = new LinkedHashMap<String, DataBean>();
+		Map<String, DataSource> outputDS = new LinkedHashMap<String, DataSource>();
 		Set<String> urlsActive = new HashSet<String>();
 		Set<String> urlsNotActive = new HashSet<String>();
 

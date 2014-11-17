@@ -3,13 +3,13 @@ package com.warcgenerator.gui.actions.datasource;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JPanel;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public class DSAsisstantStep3BackAction 
 	extends AbstractAction {	
 	private WarcGeneratorGUI view;

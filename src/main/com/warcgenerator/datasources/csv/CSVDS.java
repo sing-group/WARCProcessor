@@ -18,10 +18,10 @@ import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 
 public class CSVDS extends DataSource implements IDataSource {
-	private static final String SPAM_COL = "spamCol";
-	private static final String URL_COL = "urlCol";
-	private static final String FIELD_SEPARATOR = "fieldSeparator";
-	private static final String SPAM_COL_SPAM_VALUE = "spamColSpamValue";
+	private static final String SPAM_COL = "SpamAttribute";
+	private static final String URL_COL = "URLAttribute";
+	private static final String FIELD_SEPARATOR = "FieldSeparator";
+	private static final String SPAM_COL_SPAM_VALUE = "SpamValue";
 
 	private CSVLoader loader;
 	private Instances data;

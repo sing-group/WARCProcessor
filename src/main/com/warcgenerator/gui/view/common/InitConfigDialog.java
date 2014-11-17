@@ -10,14 +10,14 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -31,14 +31,16 @@ import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
 import com.warcgenerator.gui.components.CustomComboBoxRenderer;
 import com.warcgenerator.gui.components.CustomJDialog;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import javax.swing.ImageIcon;
 
+@SuppressWarnings("serial")
 public class InitConfigDialog extends CustomJDialog {
 	private final JPanel contentPanel = new JPanel();
 	private Vector<String> configFilesList;
 	private DefaultComboBoxModel<String> comboBoxModel; 
 	private JComboBox<String> configFilesCBox;
+	@SuppressWarnings("unused")
 	private IAppLogic logic;
+	@SuppressWarnings("unused")
 	private WarcGeneratorGUI view;
 	private Action loadRecentConfigAction;
 	private Action searchInitConfigAction;
@@ -77,7 +79,7 @@ public class InitConfigDialog extends CustomJDialog {
 		super(view.getMainFrame(), true);
 		
 		searchInitConfigAction = new SearchInitConfigAction(logic, view, this);
-		recentFiles = new HashMap<String, RecentFileCBItem>();
+		recentFiles = new LinkedHashMap<String, RecentFileCBItem>();
 		
 		this.logic = logic;
 		this.view = view;
@@ -153,7 +155,7 @@ public class InitConfigDialog extends CustomJDialog {
 			contentPanel.add(horizontalStrut, gbc_horizontalStrut);
 		}
 		{
-			configFilesCBox = new JComboBox(comboBoxModel);
+			configFilesCBox = new JComboBox<String>(comboBoxModel);
 			configFilesCBox.setRenderer(new CustomComboBoxRenderer<String>());
 			GridBagConstraints gbc_configFilesList = new GridBagConstraints();
 			gbc_configFilesList.gridwidth = 3;

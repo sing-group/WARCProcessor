@@ -1,24 +1,27 @@
 package com.warcgenerator.gui.view.other;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.other.OtherSaveAction;
@@ -28,22 +31,17 @@ import com.warcgenerator.gui.components.listener.CustomDocumentListener;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.validator.NaturalNumberAndZeroValidator;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.Box;
-import java.awt.FlowLayout;
-import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class OtherConfigPanel extends CustomJPanel {
 	private JFormattedTextField tempDirTField;
 	private JFormattedTextField deepCrawlerTField;
 	private JFormattedTextField numberOfCrawlersTField;
 	private JCheckBox chckbxFollowRedirect;
 
+	@SuppressWarnings("unused")
 	private IAppLogic logic;
+	@SuppressWarnings("unused")
 	private WarcGeneratorGUI view;
 	
 	private OtherSaveAction otherSaveAction;
@@ -67,8 +65,6 @@ public class OtherConfigPanel extends CustomJPanel {
 		otherSaveAndGenerateAction = new OtherSaveAndGenerateAction(
 				logic, view, this, otherSaveAction);
 		
-		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/save.png"));
-		
 		setBackground(new Color(230, 230, 250));
 		
 		JButton saveAndGenerateBtn = new JButton("Guardar y generar"); //$NON-NLS-1$
@@ -77,9 +73,6 @@ public class OtherConfigPanel extends CustomJPanel {
 				otherSaveAndGenerateAction.actionPerformed(e);
 			}
 		});
-		
-		 //Group the radio buttons.
-	    ButtonGroup group = new ButtonGroup();
 		
 		JButton saveBtn = new JButton(Messages.getString("OtherConfigPanel.saveBtn.text")); //$NON-NLS-1$ //$NON-NLS-1$
 		saveBtn.addActionListener(new ActionListener() {

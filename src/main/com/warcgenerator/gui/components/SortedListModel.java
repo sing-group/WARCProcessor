@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import javax.swing.AbstractListModel;
 
+@SuppressWarnings("serial")
 public class SortedListModel<T> extends AbstractListModel<T> {
 	private SortedSet<T> modelo;
 

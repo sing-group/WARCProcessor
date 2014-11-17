@@ -19,8 +19,10 @@ import com.warcgenerator.gui.actions.generate.CancelGenerateCorpusAction;
 import com.warcgenerator.gui.actions.generate.GCGenerateAction;
 import com.warcgenerator.gui.components.CustomJDialog;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
+
 import javax.swing.JCheckBox;
 
+@SuppressWarnings("serial")
 public class GeneratingCorpusDialog extends CustomJDialog {
 	private JProgressBar progressBar;
 	private JLabel stateLbl;

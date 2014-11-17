@@ -3,7 +3,6 @@ package com.warcgenerator.gui.actions.common;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
@@ -24,7 +23,9 @@ import com.warcgenerator.gui.view.common.InitConfigDialog;
  * @author amparop
  *
  */
+@SuppressWarnings("serial")
 public class StartGUIAction extends AbstractAction {
+	@SuppressWarnings("unused")
 	private AppWarc appWarc;
 	private GUIConfig guiConfig;
 	private WarcGeneratorGUI window;

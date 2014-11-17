@@ -1,23 +1,26 @@
 package com.warcgenerator.gui.view.output;
 
-import java.awt.Color;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JTextPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.output.OutputSaveAction;
@@ -26,16 +29,6 @@ import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.validator.NotNullOREmptyValidator;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import javax.swing.SwingConstants;
 
 public class OutputConfigPanel extends CustomJPanel {
 	/**
@@ -47,7 +40,9 @@ public class OutputConfigPanel extends CustomJPanel {
 	private JFormattedTextField hamDirTField;
 	private JCheckBox chckbxEliminarLaSalida;
 	
+	@SuppressWarnings("unused")
 	private IAppLogic logic;
+	@SuppressWarnings("unused")
 	private WarcGeneratorGUI view;
 	
 	private OutputSaveAction outputSaveAction;
@@ -78,9 +73,6 @@ public class OutputConfigPanel extends CustomJPanel {
 				outputSaveAndGenerateAction.actionPerformed(e);
 			}
 		});
-		
-		 //Group the radio buttons.
-	    ButtonGroup group = new ButtonGroup();
 		
 		JButton saveBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNewButton.text")); //$NON-NLS-1$
 		saveBtn.addActionListener(new ActionListener() {

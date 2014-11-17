@@ -19,6 +19,7 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
  * @author amparop
  *
  */
+@SuppressWarnings("serial")
 public class DSCreateAction extends AbstractAction implements Observer {
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;

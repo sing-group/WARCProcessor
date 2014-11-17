@@ -1,34 +1,33 @@
 package com.warcgenerator.gui.view.generate;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.ScrollPane;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.generate.GCGenerateAction;
 import com.warcgenerator.gui.components.CustomJDialog;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.Box;
-import javax.swing.UIManager;
-import javax.swing.SwingConstants;
-import java.awt.FlowLayout;
-import javax.swing.ImageIcon;
 
+@SuppressWarnings("serial")
 public class GenerateCorpusDialog extends CustomJDialog {
 	private GCGenerateAction gcGenerateAction;
 	

@@ -21,8 +21,10 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class AboutOfDialog extends CustomJDialog {
 	private JLabel stateLbl;
+	@SuppressWarnings("unused")
 	private WarcGeneratorGUI view;
 	private JButton okBtn;
 

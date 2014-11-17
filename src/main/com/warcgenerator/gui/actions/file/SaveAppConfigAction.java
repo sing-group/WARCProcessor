@@ -10,12 +10,9 @@ import javax.swing.JOptionPane;
 import com.warcgenerator.core.exception.logic.ConfigFilePathIsNullException;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
-import com.warcgenerator.gui.common.Constants;
-import com.warcgenerator.gui.common.Session;
-import com.warcgenerator.gui.config.GUIConfig;
-import com.warcgenerator.gui.helper.GUIConfigHelper;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public class SaveAppConfigAction
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;

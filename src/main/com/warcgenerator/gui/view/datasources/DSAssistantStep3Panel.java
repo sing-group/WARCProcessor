@@ -29,6 +29,7 @@ import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3FinishAction;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+@SuppressWarnings("serial")
 public class DSAssistantStep3Panel extends CustomJPanel {
 	private Action dsAssistantStep3BackAction;
 	private Action dsAssistantCancelAction;
@@ -86,10 +87,7 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 			}
 		});
 		
-		JLabel lblPasoDe = new JLabel("Paso 3 de 3");
-		
-		 //Group the radio buttons.
-	    ButtonGroup group = new ButtonGroup();
+		JLabel lblPasoDe = new JLabel("Paso 4 de 4");
 		
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {

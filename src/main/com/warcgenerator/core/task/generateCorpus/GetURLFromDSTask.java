@@ -1,8 +1,8 @@
 package com.warcgenerator.core.task.generateCorpus;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,8 +37,8 @@ public class GetURLFromDSTask extends Task implements ITask {
 	
 	public void execute() {
 		logger.info("Task start");
-		Map<String, DataBean> urlsSpamTmp = new HashMap<String, DataBean>();
-		Map<String, DataBean> urlsHamTmp = new HashMap<String, DataBean>();
+		Map<String, DataBean> urlsSpamTmp = new LinkedHashMap<String, DataBean>();
+		Map<String, DataBean> urlsHamTmp = new LinkedHashMap<String, DataBean>();
 		
 		generateCorpusState
 				.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);

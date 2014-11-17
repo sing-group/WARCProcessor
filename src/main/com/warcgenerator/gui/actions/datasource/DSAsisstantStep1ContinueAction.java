@@ -23,6 +23,7 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep1Panel;
 
+@SuppressWarnings("serial")
 public class DSAsisstantStep1ContinueAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;

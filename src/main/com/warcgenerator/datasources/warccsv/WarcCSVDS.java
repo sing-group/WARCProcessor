@@ -35,13 +35,13 @@ import com.warcgenerator.datasources.warccsv.util.ConnectionUtil;
 public class WarcCSVDS extends DataSource implements IDataSource {
 	public static final String DS_TYPE = "WarcCSVDS";
 
-	private static final String URL_TAG = "urlTag";
+	private static final String URL_TAG = "WarcURLTag";
 
-	private static final String SPAM_COL = "spamCol";
-	private static final String URL_COL = "urlCol";
-	private static final String FIELD_SEPARATOR = "fieldSeparator";
-	private static final String SPAM_COL_SPAM_VALUE = "spamColSpamValue";
-	private static final String FILE_CSV = "fileCSV";
+	private static final String SPAM_COL = "SpamAttribute";
+	private static final String URL_COL = "URLAttribute";
+	private static final String FIELD_SEPARATOR = "FieldSeparator";
+	private static final String SPAM_COL_SPAM_VALUE = "SpamValue";
+	private static final String FILE_CSV = "FileCSV";
 	
 	
 	private CSVLoader loader;

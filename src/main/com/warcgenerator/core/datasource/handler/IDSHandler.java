@@ -1,7 +1,6 @@
 package com.warcgenerator.core.datasource.handler;
 
 import java.util.Map;
-import java.util.Set;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.bean.DataBean;

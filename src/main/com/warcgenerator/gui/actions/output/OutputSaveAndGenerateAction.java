@@ -11,12 +11,14 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
 import com.warcgenerator.gui.actions.generate.GenerateCorpusAction;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 import com.warcgenerator.gui.view.output.OutputConfigPanel;
 
+@SuppressWarnings("serial")
 public class OutputSaveAndGenerateAction 
 	extends AbstractAction implements Observer {	
+	@SuppressWarnings("unused")
 	private WarcGeneratorGUI view;
+	@SuppressWarnings("unused")
 	private OutputConfigPanel panel;
 	private IAppLogic logic;
 	private Action generateCorpusAction;

@@ -1,12 +1,9 @@
 package com.warcgenerator.gui.actions.common;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
 
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.AboutOfDialog;
@@ -17,7 +14,9 @@ import com.warcgenerator.gui.view.common.AboutOfDialog;
  * @author amparop
  *
  */
+@SuppressWarnings("serial")
 public class AboutOfAction extends AbstractAction {
+	@SuppressWarnings("unused")
 	private WarcGeneratorGUI view;
 	private AboutOfDialog aboutOfDialog;
 	

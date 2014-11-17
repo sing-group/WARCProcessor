@@ -19,8 +19,9 @@ import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 
 public class ArffDS extends DataSource implements IDataSource {
-	private static final String LABEL_TAG = "spamTag";
-	private static final String URL_TAG = "urlTag";
+	private static final String LABEL_TAG = "SpamAttribute";
+	private static final String URL_TAG = "URLAttribute";
+	private static final String SPAM_COL_SPAM_VALUE = "SpamValue";
 	
 	private ArffReader arff;
 	private Instances data;
@@ -68,13 +69,16 @@ public class ArffDS extends DataSource implements IDataSource {
 				data.add(inst);
 
 				boolean isSpam = false;
-				String label = inst.stringValue(inst.dataset().attribute(
+				String textoSpamLabel = inst.stringValue(inst.dataset().attribute(
 						this.getDataSourceConfig().getCustomParams().
 						get(LABEL_TAG).getValue()));
-				if (label.toLowerCase().equals("spam")) {
+				// Set the value that must be considerec to be a spam row
+				String spamColSpamValue = this.getDataSourceConfig()
+						.getCustomParams().get(SPAM_COL_SPAM_VALUE).getValue();
+				if (textoSpamLabel.toLowerCase().equals(spamColSpamValue)) {
 					isSpam = true;
 				}
-
+				
 				String url = inst.stringValue(inst.dataset()
 						.attribute(this.getDataSourceConfig().getCustomParams().
 						get(URL_TAG).getValue()));

@@ -10,8 +10,10 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.InitConfigDialog;
 
+@SuppressWarnings("serial")
 public class SearchInitConfigAction extends AbstractAction {
 	private WarcGeneratorGUI view;
+	@SuppressWarnings("unused")
 	private IAppLogic logic;
 	private InitConfigDialog initConfigDialog;
 	

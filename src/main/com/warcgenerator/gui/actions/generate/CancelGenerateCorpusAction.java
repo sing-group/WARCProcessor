@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
 
+@SuppressWarnings("serial")
 public class CancelGenerateCorpusAction 
 	extends AbstractAction {	
 	private WarcGeneratorGUI view;

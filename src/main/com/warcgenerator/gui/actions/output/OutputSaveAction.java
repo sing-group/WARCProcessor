@@ -16,6 +16,7 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.output.OutputConfigPanel;
 
+@SuppressWarnings("serial")
 public class OutputSaveAction 
 	extends AbstractAction implements Observer {	
 	private WarcGeneratorGUI view;

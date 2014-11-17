@@ -8,14 +8,13 @@ import java.util.Observer;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.warcgenerator.core.logic.AppLogic;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
-import com.warcgenerator.gui.config.GUIConfig;
-import com.warcgenerator.gui.helper.GUIConfigHelper;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
@@ -25,6 +24,7 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
  * @author Miguel Callon
  *
  */
+@SuppressWarnings("serial")
 public class LoadAppConfigAction extends AbstractAction implements Observer {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
@@ -46,6 +46,11 @@ public class LoadAppConfigAction extends AbstractAction implements Observer {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Specify a file to load");
 
+		fileChooser.setFileFilter(new FileNameExtensionFilter(
+				 Messages.getString(Constants.FILTER_FILE_CFG_DESCRIPTION) +
+				" (." + Constants.FILE_CFG_EXTENSION + ")", 
+				Constants.FILE_CFG_EXTENSION));
+		
 		int userSelection = fileChooser.showOpenDialog(view.getMainFrame());
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			fileToSave = fileChooser.getSelectedFile();

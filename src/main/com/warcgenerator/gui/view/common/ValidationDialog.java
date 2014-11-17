@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.warcgenerator.gui.components.CustomJDialog;
 
+@SuppressWarnings("serial")
 public class ValidationDialog extends CustomJDialog {
 	private static ValidationDialog dialog;
 	private final JPanel contentPanel = new JPanel();
