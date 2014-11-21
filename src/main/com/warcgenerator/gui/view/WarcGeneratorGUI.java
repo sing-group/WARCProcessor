@@ -34,6 +34,7 @@ import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.TreeSelectionEvent;
@@ -62,6 +63,7 @@ import com.warcgenerator.gui.actions.output.OutputConfigAction;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
+import com.warcgenerator.gui.components.CustomTreeCellRenderer;
 import com.warcgenerator.gui.components.CustomTreeNode;
 import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.helper.GUIConfigHelper;
@@ -340,18 +342,18 @@ public class WarcGeneratorGUI extends Observable {
 		splitPane.setEnabled(false);
 		frmWarcgenerator.getContentPane().add(splitPane, BorderLayout.CENTER);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(150, 2));
-		splitPane.setLeftComponent(scrollPane);
-
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
-		panel.setPreferredSize(new Dimension(140, 10));
 		panel.setBackground(Color.WHITE);
-		scrollPane.setViewportView(panel);
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.getViewport().setView(panel);
+		splitPane.setLeftComponent(scrollPane);
+		
 		tree = new JTree();
+		ToolTipManager.sharedInstance().registerComponent(tree);
+		tree.setCellRenderer(new CustomTreeCellRenderer());
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -410,6 +412,14 @@ public class WarcGeneratorGUI extends Observable {
 		}
 		frmWarcgenerator.setTitle(title.toString());
 		
+	}
+	
+	/**
+	 * Update only the tree
+	 */
+	public void updateTree() {
+		tree.updateUI();
+		tree.repaint();
 	}
 	
 	@SuppressWarnings("serial")

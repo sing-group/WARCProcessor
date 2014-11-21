@@ -81,6 +81,7 @@ public class DSDetailAction extends CustomAction {
 	public void action(ActionEvent e) {
 		init();
 		detailPanel.setSummaryText(config.toString());
+		detailPanel.getChckbxEnableDS().setSelected(config.getEnabled());
 		((CustomCardLayout)mainDetailPanel.getLayout()).show(mainDetailPanel,
 				detailPanel.getName());
 		view.loadMainPanel(mainDetailPanel);

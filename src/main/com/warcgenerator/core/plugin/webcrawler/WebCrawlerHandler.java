@@ -119,7 +119,6 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 							logger.info("URL: " + previousWarcBean.getUrl() + " doesn't have data.");
 						}
 					}
-					
 				}
 			
 				// Opcion 2

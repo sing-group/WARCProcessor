@@ -281,7 +281,7 @@ public class AppConfig {
 	}
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer("-- AppConfig -- \n");
+		StringBuilder sb = new StringBuilder("-- AppConfig -- \n");
 		sb.append("corpusDirPath:  ").append(corpusDirPath).append("\n");
 		sb.append("spamDirName:  ").append(spamDirName).append("\n");
 		sb.append("hamDirName:  ").append(hamDirName).append("\n");
@@ -304,6 +304,7 @@ public class AppConfig {
 			sb.append(dsConfig.toString());
 			sb.append("\n");
 		}
+		sb.append("-- END AppConfig --\n");
 		return sb.toString();
 	}
 	

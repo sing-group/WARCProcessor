@@ -2,6 +2,8 @@ package com.warcgenerator.core.datasource.handler;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
@@ -11,6 +13,8 @@ import com.warcgenerator.core.datasource.WarcDS;
 import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
 /**
  * Read the urls from the input datasources and
@@ -25,6 +29,8 @@ public abstract class DSHandler implements IDSHandler {
 	protected OutputWarcConfig outputWarcConfig;
 	protected OutputCorpusConfig outputCorpusConfig;
 	protected AppConfig config;
+	
+	private static Logger logger = Logger.getLogger(DSHandler.class);
 
 	public DSHandler(IDataSource ds, AppConfig config) {
 		this.ds = ds;
@@ -47,7 +53,7 @@ public abstract class DSHandler implements IDSHandler {
 	public abstract void handle(DataBean data);
 	
 	public void toHandle(Map<String, DataBean> urlsSpam,
-			Map<String, DataBean> urlsHam) {
+			Map<String, DataBean> urlsHam, GenerateCorpusState auditor) {
 		DataBean data = null;
 		boolean stop = false;
 		Integer maxElements = dsConfig.getMaxElements();
@@ -55,10 +61,18 @@ public abstract class DSHandler implements IDSHandler {
 		// Read a block from datasource
 		while ((data = ds.read()) != null
 				&& !stop) {
+			auditor.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
+			auditor.incUrlReadedFromDS();
+			auditor.setCurrentUrlReadedFromDS(data.getUrl());
+			
 			// Check if there is a limit
 			if (maxElements != null) {
 				stop = maxElements == 0?true:false;
 				maxElements--;
+			}
+			// Check if all sites were read
+			if (auditor.getNumUrlReadedFromDS() == config.getNumSites()) {
+				stop = true;
 			}
 			
 			// Add DataSourceConfig

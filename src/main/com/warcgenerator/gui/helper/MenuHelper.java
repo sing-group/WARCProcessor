@@ -14,6 +14,7 @@ import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSDetailAction;
 import com.warcgenerator.gui.components.CustomTreeNode;
+import com.warcgenerator.gui.components.CustomTreeNodeType;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class MenuHelper {
@@ -23,11 +24,13 @@ public class MenuHelper {
 	public static void loadDS(DefaultMutableTreeNode treeNode, 
 			WarcGeneratorGUI view,
 			IAppLogic logic) {
-		for (DataSourceConfig config : logic.getDataSourceConfigList()) {
-			CustomTreeNode treeNodeDS = new CustomTreeNode(config.getName());
-			DSDetailAction newAction = new DSDetailAction(logic, view, config);
-			treeNodeDS.setId(config.getId());
+		for (DataSourceConfig dsConfig : logic.getDataSourceConfigList()) {
+			CustomTreeNode treeNodeDS = new CustomTreeNode(dsConfig.getName());
+			DSDetailAction newAction = new DSDetailAction(logic, view, dsConfig);
+			treeNodeDS.setId(dsConfig.getId());
 			treeNodeDS.setAction(newAction);
+			treeNodeDS.setType(CustomTreeNodeType.DATASOURCE_NODE);
+			treeNodeDS.setReferencedObject(dsConfig);
 			treeNode.add(treeNodeDS);
 		}
 	}
@@ -39,6 +42,8 @@ public class MenuHelper {
 			CustomTreeNode treeNodeDS = new CustomTreeNode(config.getName());
 			treeNodeDS.setId(config.getId());
 			treeNodeDS.setAction(new DSDetailAction(logic, view, config));
+			treeNodeDS.setType(CustomTreeNodeType.DATASOURCE_NODE);
+			treeNodeDS.setReferencedObject(config);
 
 			// Insert at the end of datasources
 			node.insert(treeNodeDS, node.getChildCount());

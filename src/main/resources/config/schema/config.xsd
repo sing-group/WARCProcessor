@@ -85,6 +85,8 @@ Schema for WarcGenerator XML Configuration
 			          <xs:attribute name="name" type="xs:string" use="required" />
 			          <!-- Fully qualified name of the class that implements this datasource -->
 			          <xs:attribute name="type" type="xs:string" use="required" />
+			          <!-- Used for specify if datasource is enabled -->
+			          <xs:attribute name="enabled" type="xs:boolean" use="required" />
 			          <!-- Max number of url to read from this datasource -->
 			          <xs:attribute name="maxElements" type="xs:integer" use="optional" />
 			          <!-- Used for specify if all urls from this datasource are spam or ham -->

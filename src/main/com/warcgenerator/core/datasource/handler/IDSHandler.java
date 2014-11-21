@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 /**
  * Read the urls from the input datasources and
@@ -15,5 +16,5 @@ import com.warcgenerator.core.datasource.bean.DataBean;
 public interface IDSHandler {
 	public DataSourceConfig getDSConfig();
 	public void toHandle(Map<String, DataBean> urlsSpam,
-			Map<String, DataBean> urlsHam);
+			Map<String, DataBean> urlsHam, GenerateCorpusState auditor);
 }

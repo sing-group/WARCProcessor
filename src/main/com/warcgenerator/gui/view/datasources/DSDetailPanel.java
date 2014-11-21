@@ -16,6 +16,7 @@ import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,6 +25,7 @@ import javax.swing.JTextPane;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.actions.datasource.DSEnableAction;
 import com.warcgenerator.gui.actions.datasource.DSModifyAction;
 import com.warcgenerator.gui.actions.datasource.DSRemoveAction;
 import com.warcgenerator.gui.util.Messages;
@@ -34,16 +36,10 @@ public class DSDetailPanel extends JPanel {
 	
 	private JTextArea summaryConfigTField;
 	private JScrollPane scrollPane;
+	private JCheckBox chckbxEnableDS;
 	private Action dsModifyAction;
 	private Action dsRemoveAction;
-	
-	public void setSummaryText(String text) {
-		summaryConfigTField.setText(text);
-		summaryConfigTField.updateUI();
-		summaryConfigTField.repaint();
-		scrollPane.updateUI();
-		scrollPane.repaint();
-	}
+	private Action dsEnableAction;
 
 	/**
 	 * Create the panel.
@@ -54,6 +50,7 @@ public class DSDetailPanel extends JPanel {
 			JPanel parentAssistant) {
 		dsModifyAction = new DSModifyAction(logic, view, config, parentAssistant);
 		dsRemoveAction = new DSRemoveAction(logic, view, config, this);
+		dsEnableAction = new DSEnableAction(logic, view, config, this);
 		
 		setName("DSDetailPanel" + config.getId());
 		
@@ -144,6 +141,14 @@ public class DSDetailPanel extends JPanel {
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		add(panel_1, BorderLayout.SOUTH);
 		
+		chckbxEnableDS = new JCheckBox("Habilitado");
+		panel_1.add(chckbxEnableDS);
+		chckbxEnableDS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsEnableAction.actionPerformed(e);
+			}
+		});	
+	
 		JButton removeBtn = new JButton(Messages.getString("DSDetailPanel.removeBtn.text")); //$NON-NLS-1$
 		panel_1.add(removeBtn);
 		removeBtn.addActionListener(new ActionListener() {
@@ -191,6 +196,19 @@ public class DSDetailPanel extends JPanel {
 		panel_2.add(scrollPane, gbc_scrollPane_1);
 		//add(scrollPane);
 
+	}
+	
+	
+	public void setSummaryText(String text) {
+		summaryConfigTField.setText(text);
+		summaryConfigTField.updateUI();
+		summaryConfigTField.repaint();
+		scrollPane.updateUI();
+		scrollPane.repaint();
+	}
+	
+	public JCheckBox getChckbxEnableDS() {
+		return chckbxEnableDS;
 	}
 
 	

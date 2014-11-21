@@ -6,6 +6,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 @SuppressWarnings("serial")
 public class CustomTreeNode extends DefaultMutableTreeNode {
 	private Integer id;
+	private CustomTreeNodeType type = CustomTreeNodeType.DEFAULT_NODE;
+	// Used for referring an object which is relationed with this tree node
+	private Object referencedObject;
 	private Action action;
 
 	public CustomTreeNode() {
@@ -34,5 +37,21 @@ public class CustomTreeNode extends DefaultMutableTreeNode {
 
 	public void setAction(Action action) {
 		this.action = action;
+	}
+	
+	public CustomTreeNodeType getType() {
+		return type;
+	}
+
+	public void setType(CustomTreeNodeType type) {
+		this.type = type;
+	}
+
+	public Object getReferencedObject() {
+		return referencedObject;
+	}
+
+	public void setReferencedObject(Object referencedObject) {
+		this.referencedObject = referencedObject;
 	}
 }

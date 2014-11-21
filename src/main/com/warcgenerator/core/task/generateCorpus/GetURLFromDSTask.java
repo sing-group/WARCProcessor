@@ -46,7 +46,10 @@ public class GetURLFromDSTask extends Task implements ITask {
 		// First the ham
 		for (DataSourceConfig dsConfig : config.getDataSourceConfigs()
 				.values()) {
-			getUrls(dsConfig, urlsSpamTmp, urlsHamTmp);
+			// Only get enabled DS
+			if (dsConfig.getEnabled()) {
+				getUrls(dsConfig, urlsSpamTmp, urlsHamTmp);
+			}
 		}
 		
 		int numSitesSpam = 0;
@@ -105,7 +108,7 @@ public class GetURLFromDSTask extends Task implements ITask {
 	private void getUrls(DataSourceConfig dsConfig, Map<String, DataBean> urlsSpam,
 			Map<String, DataBean> urlsHam) {
 		if (dsConfig.getHandler() != null) {
-			dsConfig.getHandler().toHandle(urlsSpam, urlsHam);
+			dsConfig.getHandler().toHandle(urlsSpam, urlsHam, generateCorpusState);
 		}
 		for (DataSourceConfig dsChild : dsConfig.getChildren()) {
 			getUrls(dsChild, urlsSpam, urlsHam);

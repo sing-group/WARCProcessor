@@ -25,10 +25,10 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 	private WarcGeneratorGUI view;
 	private GeneratingCorpusDialog gcd;
 	private GenerateCorpusState gcState;
-	
+
 	private boolean error;
 	private String errorMessage;
-	
+
 	private static Logger logger = Logger.getLogger(GenerateCorpusTask.class);
 
 	public GenerateCorpusTask(IAppLogic logic, WarcGeneratorGUI view,
@@ -48,7 +48,7 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 		setProgress(0);
 
 		logic.generateCorpus(gcState);
-		
+
 		// Initialize progress property.
 
 		/*
@@ -59,7 +59,7 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 		 */
 		return null;
 	}
-	
+
 	/*
 	 * Executed in event dispatching thread
 	 */
@@ -67,23 +67,23 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 	public void done() {
 		try {
 			get();
-			
+
 			JOptionPane.showMessageDialog(view.getMainFrame(),
 					"El corpus se ha generado con exito.");
 			logger.info("Task completed");
-			
+
 			if (gcd.getOpenOutputFolderCBox().isSelected()) {
 				// Open the output dir
 				AppConfig config = logic.getAppConfig();
-				FileUtil.
-					openInDefaultExplorer(config.getOutputConfig().getOutputDir());
-			}			
+				FileUtil.openInDefaultExplorer(config.getOutputConfig()
+						.getOutputDir());
+			}
 		} catch (ExecutionException e) {
-            String msg = String.format("Unexpected problem: %s", 
-                           e.getCause().toString());
-            JOptionPane.showMessageDialog(view.getAssistantPanel(),
-                msg, "Error", JOptionPane.ERROR_MESSAGE);
-            gcd.dispose();
+			String msg = String.format("Unexpected problem: %s", e.getCause()
+					.toString());
+			JOptionPane.showMessageDialog(view.getAssistantPanel(), msg,
+					"Error", JOptionPane.ERROR_MESSAGE);
+			gcd.dispose();
 		} catch (InterruptedException e) {
 			logger.info("Task interrupted");
 		} catch (CancellationException e) {
@@ -102,8 +102,14 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			int progress = getProgress();
 			switch (gcState.getState()) {
 			case GETTING_URLS_FROM_DS:
-				gcd.getStateLbl().setText("Obteniendo urls de los datasources");
-				progress += inc;
+				//gcd.getStateLbl().setText("Obteniendo urls de los datasources");
+				int numSitesTotal = logic.getAppConfig().getNumSites();
+				StringBuilder sb = new StringBuilder("Obteniendo urls " +
+				"(" + gcState.getNumUrlReadedFromDS() + " de " + numSitesTotal + ")");
+				gcd.getStateLbl().setText(
+						StringUtils.abbreviate(
+								sb.toString(),
+								38));
 				break;
 			case CRAWLING_URLS:
 				gcd.getStateLbl().setText(

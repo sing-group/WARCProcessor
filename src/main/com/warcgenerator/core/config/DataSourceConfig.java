@@ -33,6 +33,7 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	private List<Country> countryList;
 	// Max number of elements to get from datasource
 	private Integer maxElements;
+	private Boolean enabled = true;
 	private Map<String, CustomParamConfig> customParams;
 
 	// Parent datasource reference
@@ -107,11 +108,18 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("-- DataSourceConfig --\n").append("Name: ").append(name)
-				.append("\n").append("Type: ").append(type).append("\n").
-				// append("DSClassName: ").append(dsClassName).append("\n").
-				// append("HandlerClassName: ").append(handlerClassName).append("\n").
-				append("FilePath: ").append(filePath).append("\n");
+		
+		sb.append("-- DataSourceConfig");
+		if (!enabled) {
+			sb.append(" (DISABLED)");
+		}
+		sb.append(" --\n");
+		sb.append("Name: ").append(name).append("\n").
+		   append("Type: ").append(type).append("\n").
+		   append("Enabled: ").append(enabled).append("\n").
+		   append("FilePath: ").append(filePath).append("\n");
+		   // append("DSClassName: ").append(dsClassName).append("\n").
+		   // append("HandlerClassName: ").append(handlerClassName).append("\n").
 		if (spam != null) {
 			sb.append("Spam: ").append(spam).append("\n");
 		}
@@ -125,7 +133,7 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 				CustomParamConfig customParam = customParams.get(key);
 				String value = customParam.getValue();
 				if (value != null && !value.equals("")) {
-					sb.append(key).append(": ").append(value).append("\n");
+					sb.append(" - ").append(key).append(": ").append(value).append("\n");
 				}
 			}
 		}
@@ -136,6 +144,7 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 				sb.append(country.getName()).append("\n");
 			}
 		}
+		sb.append("-- END DataSourceConfig --\n");
 		return sb.toString();
 	}
 
@@ -177,6 +186,14 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	/**

@@ -8,7 +8,9 @@ public class GenerateCorpusState extends Observable {
 	private GenerateCorpusStates currentState;
 	private String currentUrlCrawled;
 	private String message;
-	
+	private String currentUrlReadedFromDS;
+	private int numUrlReadedFromDS;
+
 	public GenerateCorpusState() {
 	}
 	
@@ -24,6 +26,10 @@ public class GenerateCorpusState extends Observable {
 	
 	public void incWebsVisited() {
 		setWebsVisited(getWebsVisited() + 1);
+	}
+	
+	public void incUrlReadedFromDS() {
+		setNumUrlReadedFromDS(getNumUrlReadedFromDS() + 1);
 	}
 
 	public int getWebsVisited() {
@@ -56,5 +62,21 @@ public class GenerateCorpusState extends Observable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getCurrentUrlReadedFromDS() {
+		return currentUrlReadedFromDS;
+	}
+
+	public void setCurrentUrlReadedFromDS(String currentUrlReadedFromDS) {
+		this.currentUrlReadedFromDS = currentUrlReadedFromDS;
+	}
+	
+	public int getNumUrlReadedFromDS() {
+		return numUrlReadedFromDS;
+	}
+
+	public void setNumUrlReadedFromDS(int numUrlReadedFromDS) {
+		this.numUrlReadedFromDS = numUrlReadedFromDS;
 	}
 }

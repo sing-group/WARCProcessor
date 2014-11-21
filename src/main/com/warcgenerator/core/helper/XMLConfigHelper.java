@@ -147,18 +147,13 @@ public class XMLConfigHelper {
 				if (dataSourceNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setName(dataSourceElement.getAttribute("name"));
-					// ds.setDsClassName(dataSourceElement.getAttribute("class"));
 					ds.setType(dataSourceElement.getAttribute("type"));
-
+					ds.setEnabled(Boolean.parseBoolean(dataSourceElement.getAttribute("enabled")));
+					
 					// Check if isSpam parameter exists
 					if (dataSourceElement.getAttribute("isSpam") != null) {
-						String isSpam = dataSourceElement
-								.getAttribute("isSpam");
-						if (isSpam.toLowerCase().equals("true")) {
-							ds.setSpam(true);
-						} else {
-							ds.setSpam(false);
-						}
+						ds.setSpam(Boolean.parseBoolean(dataSourceElement
+								.getAttribute("isSpam")));
 					}
 
 					if (dataSourceElement.getAttribute("maxElements") != null
@@ -457,7 +452,11 @@ public class XMLConfigHelper {
 				attr = doc.createAttribute("type");
 				attr.setValue(dsConfig.getType());
 				dataSource.setAttributeNode(attr);
-
+				
+				attr = doc.createAttribute("enabled");
+				attr.setValue(Boolean.toString(dsConfig.getEnabled()));
+				dataSource.setAttributeNode(attr);
+				
 				if (dsConfig.getSpam() != null) {
 					attr = doc.createAttribute("isSpam");
 					attr.setValue(Boolean.toString(dsConfig.getSpam()));

@@ -48,7 +48,10 @@ public class ConfigHelper {
 			Map<String, DataSourceConfig> dataSourcesTypes) 
 		throws LoadDataSourceException {
 		for (DataSourceConfig ds : config.getDataSourceConfigs().values()) {
-			getDSHandler(ds, config, dataSourcesTypes);
+			// Check if datasource is enabled
+			if (ds.getEnabled()) {
+				getDSHandler(ds, config, dataSourcesTypes);
+			}
 		}
 	}
 
