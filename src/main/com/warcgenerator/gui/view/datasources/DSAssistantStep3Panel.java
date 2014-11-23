@@ -1,7 +1,6 @@
 package com.warcgenerator.gui.view.datasources;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -13,14 +12,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Action;
 import javax.swing.Box;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
@@ -64,37 +61,6 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		setName("DSAssistantStep3Panel");
 		
 		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
-		
-		//setBackground(new Color(230, 230, 250));
-		
-		JTextPane txtpnunOrigenDe = new JTextPane();
-		txtpnunOrigenDe.setEditable(false);
-		txtpnunOrigenDe.setOpaque(false);
-		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
-		txtpnunOrigenDe.setText("Asegurese que la informaci\u00F3n es correcta y pulse en \"Finalizar\".");
-		
-		JButton btnNuevoOrigen = new JButton("Finalizar");
-		btnNuevoOrigen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dsAssistantStep3FinishAction.actionPerformed(e);
-			}
-		});
-		
-		JButton btnNewButton = new JButton("Cancelar");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dsAssistantCancelAction.actionPerformed(e);
-			}
-		});
-		
-		JLabel lblPasoDe = new JLabel("Paso 4 de 4");
-		
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dsAssistantStep3BackAction.actionPerformed(e);
-			}
-		});
 		
 		scrollPane = new JScrollPane();
 		
@@ -165,14 +131,43 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		panel.add(horizontalStrut_1, gbc_horizontalStrut_1);
 		
 		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
 		add(panel_1, BorderLayout.SOUTH);
-		panel_1.add(lblPasoDe);
-		panel_1.add(btnVolver);
-		panel_1.add(btnNewButton);
-		panel_1.add(btnNuevoOrigen);
-		panel_1.add(txtpnunOrigenDe);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_3 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
+		flowLayout.setVgap(10);
+		panel_1.add(panel_3, BorderLayout.WEST);
+		
+		JLabel lblPasoDe = new JLabel("Paso 4 de 4");
+		panel_3.add(lblPasoDe);
+		
+		JPanel panel_4 = new JPanel();
+		panel_1.add(panel_4, BorderLayout.EAST);
+		
+		JButton btnVolver = new JButton("Volver");
+		panel_4.add(btnVolver);
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantStep3BackAction.actionPerformed(e);
+			}
+		});
+		
+		JButton btnNewButton = new JButton("Cancelar");
+		panel_4.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantCancelAction.actionPerformed(e);
+			}
+		});
+		
+		JButton btnNuevoOrigen = new JButton("Finalizar");
+		panel_4.add(btnNuevoOrigen);
+		btnNuevoOrigen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantStep3FinishAction.actionPerformed(e);
+			}
+		});
 		//panel_1.add(scrollPane);
 		
 		JPanel panel_2 = new JPanel();

@@ -16,8 +16,6 @@ public class DBManager {
 	public void put(URLInfo urlInfo) {
 		try {
 			dao.put(urlInfo);
-
-			System.out.println("Dato insertado: " + urlInfo);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

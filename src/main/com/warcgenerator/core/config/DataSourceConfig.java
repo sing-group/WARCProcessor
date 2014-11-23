@@ -35,6 +35,7 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	private Integer maxElements;
 	private Boolean enabled = true;
 	private Map<String, CustomParamConfig> customParams;
+	private Boolean useRecursiveFolders = true;
 
 	// Parent datasource reference
 	private DataSourceConfig parent;
@@ -225,6 +226,14 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public int compareTo(DataSourceConfig obj) {
 		int lastCmp = name.compareTo(obj.name);
 		return lastCmp;
+	}
+	
+	public Boolean getUseRecursiveFolders() {
+		return useRecursiveFolders;
+	}
+
+	public void setUseRecursiveFolders(Boolean useRecursiveFolders) {
+		this.useRecursiveFolders = useRecursiveFolders;
 	}
 
 	public static void copy(DataSourceConfig dest, DataSourceConfig src) {

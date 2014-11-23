@@ -87,6 +87,8 @@ Schema for WarcGenerator XML Configuration
 			          <xs:attribute name="type" type="xs:string" use="required" />
 			          <!-- Used for specify if datasource is enabled -->
 			          <xs:attribute name="enabled" type="xs:boolean" use="required" />
+			          <!-- Used for specify if all the folder contained in filePath must be treated with the same DS -->
+			          <xs:attribute name="useRecursiveFolders" type="xs:boolean" use="required" />
 			          <!-- Max number of url to read from this datasource -->
 			          <xs:attribute name="maxElements" type="xs:integer" use="optional" />
 			          <!-- Used for specify if all urls from this datasource are spam or ham -->

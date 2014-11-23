@@ -7,55 +7,69 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 >
  	 <dataSource name="CorpusDS" 
- 	 	class="com.warcgenerator.datasources.corpus.CorpusDS" >
+ 	 	class="com.warcgenerator.datasources.corpus.CorpusDS"
+ 	 	useRecursiveFolders="true" >
  		<customParams>
  			<WarcURLTag type="java.lang.String">WARC-Target-URI</WarcURLTag>
+ 			<RegExpURLAttribute type="java.lang.String">(.*)</RegExpURLAttribute>
  			<SpamDir type="java.lang.String">_spam_</SpamDir>
  			<HamDir type="java.lang.String">_ham_</HamDir>
  		</customParams>
  		<handler>com.warcgenerator.datasources.corpus.handler.CorpusDSHandler</handler>
  	</dataSource>
  	<dataSource name="WarcDS" 
- 	 	class="com.warcgenerator.core.datasource.WarcDS" >
+ 	 	class="com.warcgenerator.core.datasource.WarcDS"
+ 	 	useRecursiveFolders="true" >
  		<customParams>
  			<WarcURLTag type="java.lang.String">WARC-Target-URI</WarcURLTag>
+ 			<RegExpURLAttribute type="java.lang.String">(.*)</RegExpURLAttribute>
  		</customParams>
  		<handler>com.warcgenerator.core.datasource.handler.WarcDSHandler</handler>
  	</dataSource>
  	<dataSource name="ArffDS"
- 		class="com.warcgenerator.datasources.arff.ArffDS" >
+ 		class="com.warcgenerator.datasources.arff.ArffDS" 
+ 		useRecursiveFolders="true">
  		<customParams>
  			<SpamAttribute type="java.lang.String">LABEL</SpamAttribute>
  			<SpamValue type="java.lang.String">spam</SpamValue>
  			<URLAttribute type="java.lang.String">URL</URLAttribute>
+ 			<RegExpURLAttribute type="java.lang.String">URL_(.*)</RegExpURLAttribute>
  		</customParams>
  		<handler>com.warcgenerator.datasources.arff.handler.ArffDSHandler</handler>
  	</dataSource>
  	<dataSource name="FileDS" 
- 		class="com.warcgenerator.datasources.file.FileDS">
+ 		class="com.warcgenerator.datasources.file.FileDS"
+ 		useRecursiveFolders="true">
  		<handler>com.warcgenerator.datasources.file.handler.FileDSHandler</handler>
  	</dataSource>
  	<dataSource name="CSVDS" 
- 		class="com.warcgenerator.datasources.csv.CSVDS">
+ 		class="com.warcgenerator.datasources.csv.CSVDS"
+ 		useRecursiveFolders="true">
  		<customParams>
  		    <FieldSeparator type="java.lang.String">;</FieldSeparator>
  		    <!-- Use the urlColNum to get de url col -->
  			<URLAttribute type="java.lang.String">0</URLAttribute>
+ 			<RegExpURLAttribute type="java.lang.String">(.*)</RegExpURLAttribute>
  			<SpamAttribute type="java.lang.String">LABEL</SpamAttribute>
  			<SpamValue type="java.lang.String">spam</SpamValue>
+ 			<HeaderRowPresent type="java.lang.Boolean">true</HeaderRowPresent>
  		</customParams>
  		<handler>com.warcgenerator.datasources.csv.handler.CSVDSHandler</handler>
  	</dataSource>
  	<dataSource name="WarcCSVDS" 
- 		class="com.warcgenerator.datasources.warccsv.WarcCSVDS">
+ 		class="com.warcgenerator.datasources.warccsv.WarcCSVDS"
+ 		useRecursiveFolders="false" >
  		<customParams>
  		    <FieldSeparator type="java.lang.String">;</FieldSeparator>
  		    <!-- Use the urlColNum to get de url col -->
  			<URLAttribute type="java.lang.String">0</URLAttribute>
+ 			<RegExpURLAttribute type="java.lang.String">(.*)</RegExpURLAttribute>
  			<SpamAttribute type="java.lang.String">LABEL</SpamAttribute>
  			<SpamValue type="java.lang.String">spam</SpamValue>
- 			<WarcURLTag type="java.lang.String">WARC-Target-URI</WarcURLTag>
+ 			<HeaderRowPresent type="java.lang.Boolean">true</HeaderRowPresent>
  			<FileCSV type="java.io.File">index.csv</FileCSV>
+ 			<WarcURLTag type="java.lang.String">WARC-Target-URI</WarcURLTag>
+ 			
  		</customParams>
  		<handler>com.warcgenerator.datasources.warccsv.handler.WarcCSVDSHandler</handler>
  	</dataSource>

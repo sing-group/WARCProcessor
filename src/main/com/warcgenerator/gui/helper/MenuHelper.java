@@ -18,12 +18,10 @@ import com.warcgenerator.gui.components.CustomTreeNodeType;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class MenuHelper {
-	private static Logger logger = Logger.getLogger
-            (MenuHelper.class);
-	
-	public static void loadDS(DefaultMutableTreeNode treeNode, 
-			WarcGeneratorGUI view,
-			IAppLogic logic) {
+	private static Logger logger = Logger.getLogger(MenuHelper.class);
+
+	public static void loadDS(DefaultMutableTreeNode treeNode,
+			WarcGeneratorGUI view, IAppLogic logic) {
 		for (DataSourceConfig dsConfig : logic.getDataSourceConfigList()) {
 			CustomTreeNode treeNodeDS = new CustomTreeNode(dsConfig.getName());
 			DSDetailAction newAction = new DSDetailAction(logic, view, dsConfig);
@@ -34,10 +32,10 @@ public class MenuHelper {
 			treeNode.add(treeNodeDS);
 		}
 	}
-	
+
 	public static void addDS(JTree tree, DefaultMutableTreeNode node,
 			DataSourceConfig config, WarcGeneratorGUI view, IAppLogic logic) {
-		
+
 		if (node != null) {
 			CustomTreeNode treeNodeDS = new CustomTreeNode(config.getName());
 			treeNodeDS.setId(config.getId());
@@ -51,61 +49,61 @@ public class MenuHelper {
 			tree.repaint();
 		}
 	}
-	
-	public static void updateDS(JTree tree, Integer id, DataSourceConfig config,
-			WarcGeneratorGUI view, IAppLogic logic) {
+
+	public static void updateDS(JTree tree, Integer id,
+			DataSourceConfig config, WarcGeneratorGUI view, IAppLogic logic) {
 		DefaultMutableTreeNode node = searchNodeById(tree, id);
 		if (node != null) {
 			if (node instanceof CustomTreeNode) {
 				node.setUserObject(config.getName());
-				((CustomTreeNode) node).setAction(new DSDetailAction(logic,
-						view, config));
+				CustomTreeNode treeNodeDS = (CustomTreeNode) node;
+				treeNodeDS.setId(config.getId());
+				treeNodeDS.setType(CustomTreeNodeType.DATASOURCE_NODE);
+				treeNodeDS.setAction(new DSDetailAction(logic, view, config));
+				treeNodeDS.setReferencedObject(config);
 				tree.updateUI();
 				tree.repaint();
 			}
 		}
 	}
-	
+
 	public static void removeDS(JTree tree, Integer id) {
 		DefaultMutableTreeNode node = searchNodeById(tree, id);
-		DefaultMutableTreeNode previousNode = 
-				node.getPreviousNode();
-		DefaultMutableTreeNode nextNode = 
-				node.getNextNode();
-		DefaultMutableTreeNode parentNode = 
-				(DefaultMutableTreeNode)node.getParent();
-		
+		DefaultMutableTreeNode previousNode = node.getPreviousNode();
+		DefaultMutableTreeNode nextNode = node.getNextNode();
+		DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) node
+				.getParent();
+
 		if (node != null) {
 			if (node instanceof CustomTreeNode) {
-				if (((CustomTreeNode)node).getId() != null &&
-						((CustomTreeNode)node).getId().equals(id)) {	
-					((DefaultMutableTreeNode)node.getParent()).remove(node);
-						
+				if (((CustomTreeNode) node).getId() != null
+						&& ((CustomTreeNode) node).getId().equals(id)) {
+					((DefaultMutableTreeNode) node.getParent()).remove(node);
+
 					tree.updateUI();
 					tree.repaint();
-					
+
 					// Select a datasource
 					if (parentNode.getChildCount() > 0) {
 						if (previousNode == parentNode) {
-							selectAndExecuteLeftMenu(
-									tree, (String)nextNode.getUserObject());
+							selectAndExecuteLeftMenu(tree,
+									(String) nextNode.getUserObject());
 						} else {
-							selectAndExecuteLeftMenu(
-									tree, (String)previousNode.getUserObject());
+							selectAndExecuteLeftMenu(tree,
+									(String) previousNode.getUserObject());
 						}
 					} else {
-						selectAndExecuteLeftMenu(
-								tree, (String)parentNode.getUserObject());
+						selectAndExecuteLeftMenu(tree,
+								(String) parentNode.getUserObject());
 					}
 				}
 			}
 		}
 	}
-	
-	public static DefaultMutableTreeNode searchNodeById(
-			JTree tree, Integer id) {
-		DefaultMutableTreeNode m_rootNode =
-				(DefaultMutableTreeNode)tree.getModel().getRoot();
+
+	public static DefaultMutableTreeNode searchNodeById(JTree tree, Integer id) {
+		DefaultMutableTreeNode m_rootNode = (DefaultMutableTreeNode) tree
+				.getModel().getRoot();
 		DefaultMutableTreeNode node = null;
 		Enumeration e = m_rootNode.breadthFirstEnumeration();
 		while (e.hasMoreElements()) {
@@ -119,11 +117,10 @@ public class MenuHelper {
 		}
 		return null;
 	}
-	
-	public static DefaultMutableTreeNode searchNode(JTree tree, 
-			String nodeStr) {
-		DefaultMutableTreeNode m_rootNode =
-				(DefaultMutableTreeNode)tree.getModel().getRoot();
+
+	public static DefaultMutableTreeNode searchNode(JTree tree, String nodeStr) {
+		DefaultMutableTreeNode m_rootNode = (DefaultMutableTreeNode) tree
+				.getModel().getRoot();
 		DefaultMutableTreeNode node = null;
 		Enumeration e = m_rootNode.breadthFirstEnumeration();
 		while (e.hasMoreElements()) {
@@ -134,7 +131,7 @@ public class MenuHelper {
 		}
 		return null;
 	}
-	
+
 	public static TreePath getLeftMenu(JTree tree, String search) {
 		DefaultMutableTreeNode node = searchNode(tree, search);
 		TreePath tp = null;
@@ -147,9 +144,9 @@ public class MenuHelper {
 		}
 		return tp;
 	}
-	
+
 	public static void selectLeftMenu(JTree tree, TreePath tp) {
-		//TreePath tp = getLeftMenu(tree, search);
+		// TreePath tp = getLeftMenu(tree, search);
 		if (tree != null && tp != null) {
 			tree.scrollPathToVisible(tp);
 			tree.setSelectionPath(tp);
@@ -158,9 +155,9 @@ public class MenuHelper {
 			tree.repaint();
 		}
 	}
-	
+
 	public static void selectAndExecuteLeftMenu(JTree tree, String search) {
-		TreePath tp = getLeftMenu(tree,  search);
+		TreePath tp = getLeftMenu(tree, search);
 		if (tp != null) {
 			Object obj = tp.getLastPathComponent();
 			if (obj instanceof CustomTreeNode) {

@@ -76,8 +76,8 @@ public class DSAsisstantStep2Action extends CustomAction {
 				int userSelection = JOptionPane
 						.showConfirmDialog(view.getMainFrame(),
 								"Se perderan los cambios. "
-									+ "�Esta seguro que desea salir del asistente?",
-									"Elija una opci�n",
+									+ "¿Está seguro que desea salir del asistente?",
+									"Elija una opción",
 								JOptionPane.OK_CANCEL_OPTION);
 				
 				if (userSelection == JOptionPane.OK_OPTION) {

@@ -22,24 +22,26 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSEnableAction;
 import com.warcgenerator.gui.actions.datasource.DSModifyAction;
 import com.warcgenerator.gui.actions.datasource.DSRemoveAction;
+import com.warcgenerator.gui.actions.datasource.OpenInputFolderAction;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
 public class DSDetailPanel extends JPanel {
-	
 	private JTextArea summaryConfigTField;
 	private JScrollPane scrollPane;
 	private JCheckBox chckbxEnableDS;
 	private Action dsModifyAction;
 	private Action dsRemoveAction;
 	private Action dsEnableAction;
+	private Action openInputFolderAction;
 
 	/**
 	 * Create the panel.
@@ -51,6 +53,8 @@ public class DSDetailPanel extends JPanel {
 		dsModifyAction = new DSModifyAction(logic, view, config, parentAssistant);
 		dsRemoveAction = new DSRemoveAction(logic, view, config, this);
 		dsEnableAction = new DSEnableAction(logic, view, config, this);
+		openInputFolderAction = new OpenInputFolderAction(config, view);
+		
 		
 		setName("DSDetailPanel" + config.getId());
 		
@@ -65,7 +69,6 @@ public class DSDetailPanel extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
-		//panel.setBackground(new Color(230, 230, 250));
 		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] {0, 0, 363};
@@ -137,31 +140,49 @@ public class DSDetailPanel extends JPanel {
 		panel.add(horizontalStrut_1, gbc_horizontalStrut_1);
 		
 		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
 		add(panel_1, BorderLayout.SOUTH);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_3 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
+		flowLayout.setHgap(0);
+		panel_3.setBorder(null);
+		panel_1.add(panel_3, BorderLayout.WEST);
+		
+		JButton btnNewButton = new JButton("Abrir origen");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openInputFolderAction.actionPerformed(null);
+			}
+		});
+		btnNewButton.setHorizontalAlignment(SwingConstants.LEADING);
+		btnNewButton.setIcon(new ImageIcon(DSDetailPanel.class.getResource("/resources/com/warcgenerator/gui/resources/img/folder16x16.png")));
+		panel_3.add(btnNewButton);
+		
+		JPanel panel_4 = new JPanel();
+		panel_1.add(panel_4, BorderLayout.EAST);
 		
 		chckbxEnableDS = new JCheckBox("Habilitado");
-		panel_1.add(chckbxEnableDS);
+		panel_4.add(chckbxEnableDS);
+		
+			JButton removeBtn = new JButton(Messages.getString("DSDetailPanel.removeBtn.text"));
+			panel_4.add(removeBtn);
+			
+			JButton btnNuevoOrigen = new JButton(Messages.getString("DSDetailPanel.btnNuevoOrigen.text"));
+			panel_4.add(btnNuevoOrigen);
+			btnNuevoOrigen.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dsModifyAction.actionPerformed(e);
+				}
+			});
+			removeBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					dsRemoveAction.actionPerformed(e);
+				}
+			});
 		chckbxEnableDS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dsEnableAction.actionPerformed(e);
-			}
-		});	
-	
-		JButton removeBtn = new JButton(Messages.getString("DSDetailPanel.removeBtn.text")); //$NON-NLS-1$
-		panel_1.add(removeBtn);
-		removeBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dsRemoveAction.actionPerformed(e);
-			}
-		});
-		
-		JButton btnNuevoOrigen = new JButton(Messages.getString("DSDetailPanel.btnNuevoOrigen.text")); //$NON-NLS-1$
-		panel_1.add(btnNuevoOrigen);
-		btnNuevoOrigen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dsModifyAction.actionPerformed(e);
 			}
 		});
 		
@@ -169,9 +190,9 @@ public class DSDetailPanel extends JPanel {
 		add(panel_2, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_panel_2.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_panel_2.rowHeights = new int[]{0, 0};
 		gbl_panel_2.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_2.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
 		
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
@@ -185,14 +206,14 @@ public class DSDetailPanel extends JPanel {
 		GridBagConstraints gbc_horizontalStrut_2 = new GridBagConstraints();
 		gbc_horizontalStrut_2.insets = new Insets(0, 0, 0, 5);
 		gbc_horizontalStrut_2.gridx = 1;
-		gbc_horizontalStrut_2.gridy = 2;
+		gbc_horizontalStrut_2.gridy = 1;
 		panel_2.add(horizontalStrut_2, gbc_horizontalStrut_2);
 		
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
 		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_1.gridx = 1;
-		gbc_scrollPane_1.gridy = 1;
+		gbc_scrollPane_1.gridy = 0;
 		panel_2.add(scrollPane, gbc_scrollPane_1);
 		//add(scrollPane);
 

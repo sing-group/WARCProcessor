@@ -148,8 +148,12 @@ public class XMLConfigHelper {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setName(dataSourceElement.getAttribute("name"));
 					ds.setType(dataSourceElement.getAttribute("type"));
-					ds.setEnabled(Boolean.parseBoolean(dataSourceElement.getAttribute("enabled")));
-					
+					ds.setEnabled(Boolean.parseBoolean(dataSourceElement
+							.getAttribute("enabled")));
+					ds.setUseRecursiveFolders(Boolean
+							.parseBoolean(dataSourceElement
+									.getAttribute("useRecursiveFolders")));
+
 					// Check if isSpam parameter exists
 					if (dataSourceElement.getAttribute("isSpam") != null) {
 						ds.setSpam(Boolean.parseBoolean(dataSourceElement
@@ -272,6 +276,9 @@ public class XMLConfigHelper {
 					Element dataSourceElement = (Element) dataSourceNode;
 					ds.setName(dataSourceElement.getAttribute("name"));
 					ds.setDsClassName(dataSourceElement.getAttribute("class"));
+					ds.setUseRecursiveFolders(Boolean
+							.parseBoolean(dataSourceElement
+									.getAttribute("useRecursiveFolders")));
 
 					// NodeList nodeList = dataSourceElement.getChildNodes();
 					NodeList dataSourceInfoNode = dataSourceNode
@@ -452,11 +459,16 @@ public class XMLConfigHelper {
 				attr = doc.createAttribute("type");
 				attr.setValue(dsConfig.getType());
 				dataSource.setAttributeNode(attr);
-				
+
 				attr = doc.createAttribute("enabled");
 				attr.setValue(Boolean.toString(dsConfig.getEnabled()));
 				dataSource.setAttributeNode(attr);
-				
+
+				attr = doc.createAttribute("useRecursiveFolders");
+				attr.setValue(Boolean.toString(dsConfig
+						.getUseRecursiveFolders()));
+				dataSource.setAttributeNode(attr);
+
 				if (dsConfig.getSpam() != null) {
 					attr = doc.createAttribute("isSpam");
 					attr.setValue(Boolean.toString(dsConfig.getSpam()));

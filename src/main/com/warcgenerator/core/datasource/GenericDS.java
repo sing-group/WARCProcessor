@@ -45,7 +45,7 @@ public class GenericDS extends DataSource implements IDataSource {
 			if (line != null) {
 				dataBean = new DataBean();
 				dataBean.setUrl(line);
-				dataBean.setSpam(this.getDataSourceConfig().getSpam());
+				//dataBean.setSpam(this.getDataSourceConfig().getSpam());
 			} 
 		} catch (IOException e) {
 			throw new ReadException(e);

@@ -13,8 +13,8 @@ import com.warcgenerator.core.helper.FileHelper;
  * @author Miguel Callon
  */
 public class CorpusFileBean {
-	private final String SPAM_DIR = "spamDir";
-	private final String HAM_DIR = "hamDir";
+	private final String SPAM_DIR = "SpamDir";
+	private final String HAM_DIR = "HamDir";
 	
 	private Iterator<File> spamFiles;
 	private Iterator<File> hamFiles;

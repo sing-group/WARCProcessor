@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.archive.io.ArchiveRecord;
@@ -36,8 +38,8 @@ import com.warcgenerator.core.helper.FileHelper;
 
 public class WarcDS extends DataSource implements IDataSource {
 	public static final String DS_TYPE = "WarcDS";
-	
-	private static final String URL_TAG = "urlTag";
+	private static final String URL_TAG = "WarcURLTag";
+	private static final String REGEXP_URL_TAG = "RegExpURLAttribute";
 	
 	@SuppressWarnings("unused")
 	private OutputWarcConfig config;
@@ -58,8 +60,11 @@ public class WarcDS extends DataSource implements IDataSource {
 		super(dsConfig);
 		try {
 			logger.info("Openning file: " + dsConfig.getFilePath());
-			reader = WARCReaderFactory.get(dsConfig.getFilePath());
-	
+			reader = WARCReaderFactory.get(new File(dsConfig.getFilePath()), 0);
+			
+			reader.setStrict(true);
+			reader.setDigest(true);
+			
 			archIt = reader.iterator();
 		} catch (IOException e) {
 			throw new OpenException(e);
@@ -163,13 +168,13 @@ public class WarcDS extends DataSource implements IDataSource {
 					dataBean = new DataBean();
 					dataBean.setUrl(url);
 					
-					boolean isSpam = false;
+					//boolean isSpam = false;
 					// If it's not specify either isSpam or not, set spam
-					if (this.getDataSourceConfig().getSpam() != null) {
-						isSpam = this.getDataSourceConfig().getSpam();
-					}
+					//if (this.getDataSourceConfig().getSpam() != null) {
+					//	isSpam = this.getDataSourceConfig().getSpam();
+					//}
 					
-					dataBean.setSpam(isSpam);
+					//dataBean.setSpam(isSpam);
 					dataBean.setData(ar);
 					dataBean.setTypeDS(DS_TYPE);
 					
@@ -185,9 +190,16 @@ public class WarcDS extends DataSource implements IDataSource {
 					}
 					dataBean.setData(sb.toString());
 					
+					Pattern pattern = Pattern.compile(this.getDataSourceConfig()
+							.getCustomParams().get(REGEXP_URL_TAG).getValue());
+					Matcher matcher = pattern.matcher(url);
+					if (matcher.matches()) {
+						url = matcher.group(1);
+					}
+
 					// Turn the out file to the warc file name
 					this.setOutputFilePath(
-							FileHelper.getOutputFileName(dataBean.getUrl()));
+							FileHelper.getOutputFileName(url));
 					
 					try {
 						ar.close();

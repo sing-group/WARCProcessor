@@ -23,7 +23,6 @@ public class DBDAO implements DAO {
 
 	public DBDAO(Connection connection) throws SQLException {
 		this.connection = connection;
-		// TODO create if not exist
 		createMetadata();
 	}
 

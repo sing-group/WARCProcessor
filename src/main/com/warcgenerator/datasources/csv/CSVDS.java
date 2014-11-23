@@ -2,6 +2,8 @@ package com.warcgenerator.datasources.csv;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -17,11 +19,18 @@ import com.warcgenerator.core.datasource.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 
+/**
+ * CSV DataSource
+ * 
+ * @author Miguel Callon
+ */
 public class CSVDS extends DataSource implements IDataSource {
 	private static final String SPAM_COL = "SpamAttribute";
 	private static final String URL_COL = "URLAttribute";
 	private static final String FIELD_SEPARATOR = "FieldSeparator";
 	private static final String SPAM_COL_SPAM_VALUE = "SpamValue";
+	private static final String HEADER_ROW_PRESENT = "HeaderRowPresent";
+	private static final String REGEXP_URL_TAG = "RegExpURLAttribute";
 
 	private CSVLoader loader;
 	private Instances data;
@@ -51,15 +60,14 @@ public class CSVDS extends DataSource implements IDataSource {
 							.get(FIELD_SEPARATOR).getValue());
 			loader.setOptions(options);
 
+			// Set if datasource has header
+			loader.setNoHeaderRowPresent(!Boolean.parseBoolean(this
+					.getDataSourceConfig().getCustomParams()
+					.get(HEADER_ROW_PRESENT).getValue()));
+
 			loader.setSource(new File(this.getDataSourceConfig().getFilePath()));
 			data = loader.getDataSet();
 			readIterator = data.iterator();
-
-			// setting class attribute if the data format does not provide this
-			// information
-			// For example, the XRFF format saves the class attribute
-			// information as well
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OpenException(e);
@@ -69,60 +77,53 @@ public class CSVDS extends DataSource implements IDataSource {
 	public DataBean read() throws DSException {
 		DataBean dataBean = null;
 
-		/*
-		 * Instance inst = null; if (data.numInstances() > 0) { inst =
-		 * data.firstInstance(); }
-		 */
-
-		// if (inst != null) {
-		// data.add(inst);
 		if (readIterator.hasNext()) {
 			Instance inst = readIterator.next();
 			boolean isSpam = false;
-			// TODO Customize this, How can I know if this is spam or ham ?
-			/*
-			 * String label =
-			 * inst.stringValue(inst.dataset().attribute("LABEL")); if
-			 * (label.toLowerCase().equals("spam")) { isSpam = true; }
-			 */
-		
-				
-			Object urlCol = this.getDataSourceConfig()
-					.getCustomParams().get(URL_COL).getValue();
-			
+			Object urlCol = this.getDataSourceConfig().getCustomParams()
+					.get(URL_COL).getValue();
+
 			String url = null;
-			try { 
-				Integer urlColNum = Integer.valueOf((String)urlCol);
-				
+			try {
+				Integer urlColNum = Integer.valueOf((String) urlCol);
+
 				url = inst.stringValue(inst.dataset().attribute(urlColNum));
 			} catch (NumberFormatException ex) {
-				String urlColName = (String)urlCol;
+				String urlColName = (String) urlCol;
 				url = inst.stringValue(inst.dataset().attribute(urlColName));
 			}
+
+			Object spamCol = this.getDataSourceConfig().getCustomParams()
+					.get(SPAM_COL).getValue();
 			
-			Object spamCol = this.getDataSourceConfig()
-					.getCustomParams().get(SPAM_COL).getValue();
 			String textoSpamLabel = "";
-			try { 
-				Integer spamColNum = Integer.valueOf((String)spamCol);
-				
-				textoSpamLabel = String.valueOf(
-						inst.stringValue(inst.dataset().attribute(spamColNum)));
+			Attribute attribute = null;
+			try {
+				Integer spamColNum = Integer.valueOf((String) spamCol);
+				attribute = inst.dataset().attribute(spamColNum);
 			} catch (NumberFormatException ex) {
-				String spamColName = (String)spamCol;
-				Attribute attr = inst.dataset().attribute(spamColName);
-				if (attr != null) {
-					textoSpamLabel = String.valueOf(inst.stringValue(attr));
+				String spamColName = (String) spamCol;
+				attribute = inst.dataset().attribute(spamColName);
+			}
+			
+			if (attribute != null) {
+				textoSpamLabel = String.valueOf(inst.toString(attribute));
+
+				// Set the value that must be considerec to be a spam row
+				String spamColSpamValue = this.getDataSourceConfig()
+						.getCustomParams().get(SPAM_COL_SPAM_VALUE).getValue();
+				if (textoSpamLabel.toLowerCase().equals(spamColSpamValue)) {
+					isSpam = true;
 				}
 			}
-			
-			// Set the value that must be considerec to be a spam row
-			String spamColSpamValue = this.getDataSourceConfig()
-					.getCustomParams().get(SPAM_COL_SPAM_VALUE).getValue();
-			if (textoSpamLabel.toLowerCase().equals(spamColSpamValue)) {
-				isSpam = true;
-			}
 
+			Pattern pattern = Pattern.compile(this.getDataSourceConfig()
+					.getCustomParams().get(REGEXP_URL_TAG).getValue());
+			Matcher matcher = pattern.matcher(url);
+			if (matcher.matches()) {
+				url = matcher.group(1);
+			}
+			
 			dataBean = new DataBean();
 			dataBean.setUrl(url);
 			dataBean.setSpam(isSpam);
@@ -138,5 +139,4 @@ public class CSVDS extends DataSource implements IDataSource {
 	public void close() throws DSException {
 		// It's not necesary to implement it at the moment
 	}
-
 }

@@ -86,7 +86,7 @@ public class FileDS extends DataSource implements IDataSource {
 		DataBean data = new DataBean();
 		String[] array = line.split(" ");
 		data.setUrl(array[0]);
-		data.setSpam(this.getDataSourceConfig().getSpam());
+		//data.setSpam(this.getDataSourceConfig().getSpam());
 		return data;
 	}
 }

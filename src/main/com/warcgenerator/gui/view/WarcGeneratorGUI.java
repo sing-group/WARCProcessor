@@ -48,6 +48,7 @@ import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.common.AboutOfAction;
 import com.warcgenerator.gui.actions.common.ExitAction;
+import com.warcgenerator.gui.actions.common.OpenOutputFolderAction;
 import com.warcgenerator.gui.actions.common.RecentFileCBItem;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCreateAction;
 import com.warcgenerator.gui.actions.datasource.DSourcesAction;
@@ -80,6 +81,7 @@ public class WarcGeneratorGUI extends Observable {
 
 	private Action assistantCreateDSAction;
 	private Action generateCorpusAction;
+	private Action openOutputFolderAction;
 	private OutputConfigAction outputConfigAction;
 	private OtherConfigAction otherConfigAction;
 	private Action saveAsAppConfigAction;
@@ -142,7 +144,7 @@ public class WarcGeneratorGUI extends Observable {
 				this);
 		OutputConfigPanel outputconfigPanel = new OutputConfigPanel(logic, this);
 		OtherConfigPanel otherConfigPanel = new OtherConfigPanel(logic, this);
-		
+
 		addMainPanel(cleanPanel);
 		addMainPanel(generalConfigPanel);
 		addMainPanel(outputconfigPanel);
@@ -151,6 +153,7 @@ public class WarcGeneratorGUI extends Observable {
 
 		assistantCreateDSAction = new DSAsisstantCreateAction(logic, this);
 		generateCorpusAction = new GenerateCorpusAction(logic, this);
+		openOutputFolderAction = new OpenOutputFolderAction(logic, this);
 		generalConfigAction = new GeneralConfigAction(logic, this,
 				generalConfigPanel);
 		outputConfigAction = new OutputConfigAction(logic, this,
@@ -204,6 +207,10 @@ public class WarcGeneratorGUI extends Observable {
 		String label = "Nuevo origen";
 		final JPopupMenu popup = new JPopupMenu();
 		JMenuItem menuItemPopup = new JMenuItem(label);
+		menuItemPopup
+				.setIcon(new ImageIcon(
+						WarcGeneratorGUI.class
+								.getResource("/com/warcgenerator/gui/resources/img/database16x16.png")));
 		menuItemPopup.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -227,8 +234,7 @@ public class WarcGeneratorGUI extends Observable {
 		});
 		mnInicio.add(mntmCreateNewConfig);
 
-		JMenuItem mntmCargarConfiguracionGeneral = new JMenuItem(
-				"Cargar");
+		JMenuItem mntmCargarConfiguracionGeneral = new JMenuItem("Cargar");
 		mntmCargarConfiguracionGeneral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadAppConfigAction.actionPerformed(e);
@@ -237,9 +243,8 @@ public class WarcGeneratorGUI extends Observable {
 		mnInicio.add(mntmCargarConfiguracionGeneral);
 
 		mnInicio.add(new JSeparator());
-		
-		mntmSaveCG = new JMenuItem(
-				"Guardar");
+
+		mntmSaveCG = new JMenuItem("Guardar");
 		mntmSaveCG.setEnabled(false);
 		mntmSaveCG.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				InputEvent.CTRL_MASK));
@@ -249,9 +254,8 @@ public class WarcGeneratorGUI extends Observable {
 			}
 		});
 		mnInicio.add(mntmSaveCG);
-		
-		JMenuItem mntmSaveAsCG = new JMenuItem(
-				"Guardar como");
+
+		JMenuItem mntmSaveAsCG = new JMenuItem("Guardar como");
 		mntmSaveAsCG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveAsAppConfigAction.actionPerformed(e);
@@ -278,36 +282,50 @@ public class WarcGeneratorGUI extends Observable {
 		});
 		mnInicio.add(mntmSalir);
 
+		JMenu mnDataSources = new JMenu("Orígenes");
+		mnDataSources.setMnemonic('O');
+		menuBar.add(mnDataSources);
+
+		JMenuItem mntmCreateNewDS = new JMenuItem("Nuevo origen");
+		mntmCreateNewDS
+				.setIcon(new ImageIcon(
+						WarcGeneratorGUI.class
+								.getResource("/com/warcgenerator/gui/resources/img/database16x16.png")));
+		mntmCreateNewDS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				assistantCreateDSAction.actionPerformed(null);
+			}
+		});
+		mnDataSources.add(mntmCreateNewDS);
+
 		final JMenu mnHelp = new JMenu("Ayuda");
 		mnHelp.setMnemonic('A');
 		menuBar.add(mnHelp);
 
-		/*final JMenu mnLanguages = new JMenu("Idiomas");
-		mnLanguages.setHorizontalAlignment(SwingConstants.LEFT);
-		mnHelp.add(mnLanguages);
+		/*
+		 * final JMenu mnLanguages = new JMenu("Idiomas");
+		 * mnLanguages.setHorizontalAlignment(SwingConstants.LEFT);
+		 * mnHelp.add(mnLanguages);
+		 * 
+		 * final JMenuItem mnSpanish = new JMenuItem("Espa�ol");
+		 * mnSpanish.setHorizontalAlignment(SwingConstants.LEFT);
+		 * 
+		 * mnSpanish.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) {
+		 * 
+		 * } }); mnLanguages.add(mnSpanish);
+		 * 
+		 * final JMenuItem mnEnglish = new JMenuItem("Ingles");
+		 * mnEnglish.setHorizontalAlignment(SwingConstants.LEFT);
+		 * 
+		 * mnEnglish.addActionListener(new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) {
+		 * 
+		 * } }); mnLanguages.add(mnEnglish);
+		 */
 
-		final JMenuItem mnSpanish = new JMenuItem("Espa�ol");
-		mnSpanish.setHorizontalAlignment(SwingConstants.LEFT);
-
-		mnSpanish.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		mnLanguages.add(mnSpanish);		
-		
-		final JMenuItem mnEnglish = new JMenuItem("Ingles");
-		mnEnglish.setHorizontalAlignment(SwingConstants.LEFT);
-
-		mnEnglish.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		mnLanguages.add(mnEnglish);	*/
-		
 		final JMenuItem mnAboutOf = new JMenuItem("Acerca De ...");
 		mnAboutOf.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -321,6 +339,24 @@ public class WarcGeneratorGUI extends Observable {
 		mnHelp.add(mnAboutOf);
 
 		menuBar.add(Box.createHorizontalGlue());
+
+		JMenuItem mnOpenOutputFolder = new JMenuItem(
+				new ImageIcon(
+						WarcGeneratorGUI.class
+								.getResource("/com/warcgenerator/gui/resources/img/output.png")));
+		mnOpenOutputFolder.setToolTipText("Muestra el directorio de salida");
+		mnOpenOutputFolder.setMaximumSize(new Dimension(100, 26));
+		mnOpenOutputFolder.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		mnOpenOutputFolder.setHorizontalAlignment(SwingConstants.LEFT);
+		mnOpenOutputFolder.setMnemonic('G');
+		mnOpenOutputFolder.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openOutputFolderAction.actionPerformed(null);
+			}
+		});
+		menuBar.add(mnOpenOutputFolder);
 
 		JButton mnGenerarCorpus = new JButton("Generar corpus");
 		mnGenerarCorpus.setMinimumSize(new Dimension(114, 26));
@@ -350,22 +386,22 @@ public class WarcGeneratorGUI extends Observable {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.getViewport().setView(panel);
 		splitPane.setLeftComponent(scrollPane);
-		
+
 		tree = new JTree();
 		ToolTipManager.sharedInstance().registerComponent(tree);
 		tree.setCellRenderer(new CustomTreeCellRenderer());
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		
+		tree.getSelectionModel().setSelectionMode(
+				TreeSelectionModel.SINGLE_TREE_SELECTION);
+
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
-				
-				
+
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
 						.getLastSelectedPathComponent();
 
 				/* if nothing is selected */
 				if (node == null)
-					return;				
+					return;
 			}
 		});
 
@@ -405,15 +441,15 @@ public class WarcGeneratorGUI extends Observable {
 	public void refreshTitle() {
 		StringBuffer title = new StringBuffer(Constants.APP_NAME);
 		String configFilePath = logic.getConfigFilePath();
-		
-		if (configFilePath != null) { 
+
+		if (configFilePath != null) {
 			File file = new File(logic.getConfigFilePath());
 			title.append(" - ").append(file.getName());
 		}
 		frmWarcgenerator.setTitle(title.toString());
-		
+
 	}
-	
+
 	/**
 	 * Update only the tree
 	 */
@@ -421,7 +457,7 @@ public class WarcGeneratorGUI extends Observable {
 		tree.updateUI();
 		tree.repaint();
 	}
-	
+
 	@SuppressWarnings("serial")
 	public void buildTree() {
 		final CustomTreeNode general = new CustomTreeNode("General");
@@ -439,7 +475,7 @@ public class WarcGeneratorGUI extends Observable {
 				CustomTreeNode other = new CustomTreeNode("Otros");
 				other.setAction(otherConfigAction);
 				add(other);
-				
+
 				node_1 = new CustomTreeNode("Origenes");
 				node_1.setAction(dsourcesAction);
 				add(node_1);
@@ -459,9 +495,10 @@ public class WarcGeneratorGUI extends Observable {
 			guiConfig.addRecentConfigFile(configFilePath);
 			GUIConfigHelper.persistConfig(guiConfig);
 		}
-			
+
 		recentFilesMI.removeAll();
-		List<RecentFileCBItem> recentFiles = guiConfig.getRecentConfigFilesReversed();
+		List<RecentFileCBItem> recentFiles = guiConfig
+				.getRecentConfigFilesReversed();
 		if (recentFiles.size() == 0) {
 			JMenuItem recentConfig = new JMenuItem("[Ninguna]");
 			recentConfig.setEnabled(false);
@@ -473,14 +510,15 @@ public class WarcGeneratorGUI extends Observable {
 				recentConfig.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						Action loadRecentConfigAction = new LoadRecentConfigAction(
-								logic, WarcGeneratorGUI.this, configFilePathRecent, true);
+								logic, WarcGeneratorGUI.this,
+								configFilePathRecent, true);
 						loadRecentConfigAction.actionPerformed(e);
 					}
 				});
 				recentFilesMI.add(recentConfig);
 			}
 		}
-		
+
 		refreshTitle();
 	}
 
@@ -504,28 +542,27 @@ public class WarcGeneratorGUI extends Observable {
 	public void selectLeftMenu(TreePath tp) {
 		MenuHelper.selectLeftMenu(tree, tp);
 	}
-	
+
 	public DefaultMutableTreeNode getSelectedNode() {
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
 				.getLastSelectedPathComponent();
 		return node;
 	}
-	
+
 	public TreePath getSelectedMenu(DefaultMutableTreeNode node) {
-		/*TreePath treePaths[] = tree.getSelectionPaths();
+		/*
+		 * TreePath treePaths[] = tree.getSelectionPaths(); TreePath treePath =
+		 * null; if (treePaths != null) { treePath = new TreePath(treePaths); }
+		 */
 		TreePath treePath = null;
-		if (treePaths != null) {
-			treePath = new TreePath(treePaths);
-		}*/
-		TreePath treePath = null;
-		
+
 		if (node != null) {
 			treePath = new TreePath(node.getPath());
 		}
-		
+
 		return treePath;
 	}
-	
+
 	public void selectAndExecuteLeftMenu(String search) {
 		MenuHelper.selectAndExecuteLeftMenu(tree, search);
 	}
@@ -537,18 +574,18 @@ public class WarcGeneratorGUI extends Observable {
 	public void addMainPanel(JPanel panel) {
 		mainPanel.add(panel, panel.getName());
 	}
-	
+
 	public void tryChangeMainPanel(Action nextAction) {
 		setChanged();
-		notifyObservers(new Object[] { 
-				WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL,  nextAction} );
+		notifyObservers(new Object[] {
+				WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL, nextAction });
 	}
-	
+
 	public void loadMainPanel(JPanel newPanel) {
-				CustomCardLayout cardLayout = ((CustomCardLayout) mainPanel.getLayout());
+		CustomCardLayout cardLayout = ((CustomCardLayout) mainPanel.getLayout());
 		cardLayout.show(mainPanel, newPanel.getName());
 	}
-	
+
 	public void setVisible(boolean visible) {
 		frmWarcgenerator.setVisible(visible);
 		frmWarcgenerator.pack();
@@ -565,7 +602,7 @@ public class WarcGeneratorGUI extends Observable {
 	public void setAssistantPanel(JPanel assistantPanel) {
 		this.assistantPanel = assistantPanel;
 	}
-	
+
 	public JMenuItem getMntmSaveCG() {
 		return mntmSaveCG;
 	}

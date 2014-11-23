@@ -2,3 +2,5 @@
 /out/
 /in/
 /.settings/
+/config/
+/derbyDB/

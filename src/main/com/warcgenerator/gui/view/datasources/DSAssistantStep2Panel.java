@@ -75,39 +75,8 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 				WarcGeneratorGUI.class
 						.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 
-		// setBackground(new Color(230, 230, 250));
-
-		JTextPane txtpnunOrigenDe = new JTextPane();
-		txtpnunOrigenDe.setEditable(false);
-		txtpnunOrigenDe.setOpaque(false);
-		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
-		txtpnunOrigenDe.setText("Configure las opciones del origen de datos.");
-
-		JButton btnNuevoOrigen = new JButton("Continuar");
-		btnNuevoOrigen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dsAssistantStep2ContinueAction.actionPerformed(e);
-			}
-		});
-
-		JButton btnNewButton = new JButton("Cancelar");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dsAssistantCancelAction.actionPerformed(e);
-			}
-		});
-
-		JLabel lblPasoDe = new JLabel("Paso 3 de 4");
-
 		// Group the radio buttons.
 		ButtonGroup group = new ButtonGroup();
-
-		JButton btnVolver = new JButton("Volver");
-		btnVolver.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				dsAssistantStep2BackAction.actionPerformed(e);
-			}
-		});
 		setLayout(new BorderLayout(0, 0));
 
 		JPanel panel = new JPanel();
@@ -299,14 +268,43 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		panel_2.add(scrollPane, gbc_scrollPane_1);
 
 		JPanel panel_1 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
 		add(panel_1, BorderLayout.SOUTH);
-		panel_1.add(lblPasoDe);
-		panel_1.add(btnVolver);
-		panel_1.add(btnNewButton);
-		panel_1.add(btnNuevoOrigen);
-		panel_1.add(txtpnunOrigenDe);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_3 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
+		flowLayout.setVgap(10);
+		panel_1.add(panel_3, BorderLayout.WEST);
+		
+				JLabel lblPasoDe = new JLabel("Paso 3 de 4");
+				panel_3.add(lblPasoDe);
+				
+				JPanel panel_4 = new JPanel();
+				panel_1.add(panel_4, BorderLayout.EAST);
+						
+								JButton btnVolver = new JButton("Volver");
+								panel_4.add(btnVolver);
+								btnVolver.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										dsAssistantStep2BackAction.actionPerformed(e);
+									}
+								});
+						
+								JButton btnNewButton = new JButton("Cancelar");
+								panel_4.add(btnNewButton);
+								btnNewButton.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										dsAssistantCancelAction.actionPerformed(e);
+									}
+								});
+				
+						JButton btnNuevoOrigen = new JButton("Continuar");
+						panel_4.add(btnNuevoOrigen);
+						btnNuevoOrigen.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								dsAssistantStep2ContinueAction.actionPerformed(e);
+							}
+						});
 
 	}
 

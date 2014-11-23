@@ -2,25 +2,24 @@ package com.warcgenerator.gui.components;
 
 import java.awt.Component;
 import java.awt.Toolkit;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
+/**
+ * Renderer for tree cells
+ * 
+ * @author Miguel Callon
+ *
+ */
 @SuppressWarnings("serial")
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
-
-	// ds_tree_node_disabled_16x16.png
-
 	private Icon loadIcon;
 
 	@Override
@@ -46,9 +45,12 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 							Toolkit.getDefaultToolkit()
 									.getImage(
 											WarcGeneratorGUI.class
-													.getResource("/com/warcgenerator/gui/resources/img/ds_tree_node_disabled_16x16.png")));
+													.getResource("/com/warcgenerator/gui/resources/img/database16x16_disabled.png")));
 					setIcon(loadIcon);
 					setToolTipText("Deshabilitado");
+				} else {
+					setIcon(new ImageIcon(WarcGeneratorGUI.class
+							.getResource("/com/warcgenerator/gui/resources/img/database16x16.png")));
 				}
 			}
 		}

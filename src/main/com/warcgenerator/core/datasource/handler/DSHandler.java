@@ -60,6 +60,7 @@ public abstract class DSHandler implements IDSHandler {
 		
 		// Read a block from datasource
 		while ((data = ds.read()) != null
+				&& auditor.getNumUrlReadedFromDS() != config.getNumSites()
 				&& !stop) {
 			auditor.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
 			auditor.incUrlReadedFromDS();
@@ -70,13 +71,14 @@ public abstract class DSHandler implements IDSHandler {
 				stop = maxElements == 0?true:false;
 				maxElements--;
 			}
-			// Check if all sites were read
-			if (auditor.getNumUrlReadedFromDS() == config.getNumSites()) {
-				stop = true;
-			}
 			
 			// Add DataSourceConfig
 			data.setDsConfig(dsConfig);
+			
+			// Force to be spam/ham
+			if (dsConfig.getSpam() != null) {
+				data.setSpam(dsConfig.getSpam());
+			}
 			
 			// Method to implement
 			handle(data);
