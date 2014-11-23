@@ -13,6 +13,7 @@ import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.ReadException;
 import com.warcgenerator.core.exception.datasource.WriteException;
 import com.warcgenerator.gui.actions.common.StartGUIAction;
+import com.warcgenerator.gui.common.Constants;
 
 /**
  * AppWarcGenerator
@@ -20,8 +21,6 @@ import com.warcgenerator.gui.actions.common.StartGUIAction;
  * @author Miguel Callon
  */
 public class AppWarcGenerator {
-	private static final String APP_NAME = "AppWarcGenerator";
-
 	/**
 	 * Main method
 	 * 
@@ -93,38 +92,37 @@ public class AppWarcGenerator {
 		}
 
 		StringBuffer usage = new StringBuffer("Usage: ");
-		usage.append(APP_NAME).append(usageOptions.toString());
+		usage.append(usageOptions.toString());
 
-		Getopt g = new Getopt("AppWarcGeneratorCustom", args, "c:nh", longopts);
+		Getopt g = new Getopt("", args, "c:nh", longopts);
 		while ((c = g.getopt()) != -1) {
 			switch (c) {
 			case 'c':
 				config.setConfigIni(g.getOptarg());
 				break;
 			case 'h':
-				System.out.println(usage);
 				config.setShowHelp(true);
 				break;
 			case 'n':
 				config.setUseGUI(false);
 				break;
 			case ':':
-				System.out.println("You need an argument for option "
+				System.out.println("Falta algumento para la opción: "
 						+ (char) g.getOptopt());
-				System.out.println(usage);
+				config.setShowHelp(true);
 				break;
-			//
 			case '?':
-				System.out.println("The option '" + (char) g.getOptopt()
-						+ "' is not valid");
-				System.out.println(usage);
+				config.setShowHelp(true);
 				break;
 			default:
-				System.out.println("The option is not valid: " + c);
-				System.out.println(usage);
+				config.setShowHelp(true);
 				break;
 			}
 		}
+		if (config.isShowHelp()) {
+			System.out.println(usage);
+		}
+		
 		return config;
 	}
 }
