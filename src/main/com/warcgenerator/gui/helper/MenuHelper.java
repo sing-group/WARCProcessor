@@ -156,8 +156,7 @@ public class MenuHelper {
 		}
 	}
 
-	public static void selectAndExecuteLeftMenu(JTree tree, String search) {
-		TreePath tp = getLeftMenu(tree, search);
+	public static void selectAndExecuteLeftMenu(JTree tree, TreePath tp) {
 		if (tp != null) {
 			Object obj = tp.getLastPathComponent();
 			if (obj instanceof CustomTreeNode) {
@@ -167,5 +166,10 @@ public class MenuHelper {
 				selectLeftMenu(tree, tp);
 			}
 		}
+	}
+	
+	public static void selectAndExecuteLeftMenu(JTree tree, String search) {
+		TreePath tp = getLeftMenu(tree, search);
+		selectAndExecuteLeftMenu(tree, tp);
 	}
 }

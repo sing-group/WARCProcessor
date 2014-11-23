@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -395,15 +396,27 @@ public class WarcGeneratorGUI extends Observable {
 
 		tree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
-
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
 						.getLastSelectedPathComponent();
-
-				/* if nothing is selected */
+				// if nothing is selected 
 				if (node == null)
 					return;
 			}
 		});
+		
+		tree.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				MenuHelper.selectAndExecuteLeftMenu(tree, tree.getSelectionPath());
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {}
+		});
+		
 
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
