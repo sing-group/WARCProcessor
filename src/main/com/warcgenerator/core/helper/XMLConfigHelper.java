@@ -155,7 +155,9 @@ public class XMLConfigHelper {
 									.getAttribute("useRecursiveFolders")));
 
 					// Check if isSpam parameter exists
-					if (dataSourceElement.getAttribute("isSpam") != null) {
+					if (dataSourceElement.getAttribute("isSpam") != null
+							&& !dataSourceElement.getAttribute("isSpam")
+							.equals("")) {
 						ds.setSpam(Boolean.parseBoolean(dataSourceElement
 								.getAttribute("isSpam")));
 					}

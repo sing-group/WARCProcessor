@@ -213,12 +213,28 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			dsConfig.setId(DataSourceConfig.getNextId());
 			callback_message = DATASOURCE_CREATED_CALLBACK;
 		}
+		
+		// Expand changes to all children
+		expandChanges(dsConfig);
+		
 		// ConfigHelper.getDSHandler(dsConfig, config);
 		config.getDataSourceConfigs().put(dsConfig.getId(), dsConfig);
 		// Notify observers
 		setChanged();
 		notifyObservers(new LogicCallback(callback_message,
 				new Object[] { dsConfig.getId() }));
+	}
+	
+	/**
+	 * Expand changes to all children
+	 * @param dsConfigParent
+	 */
+	private void expandChanges(DataSourceConfig dsConfigParent) {
+		for(DataSourceConfig specificDsConfig:dsConfigParent.getChildren()) {
+			ConfigHelper.copyProperties(specificDsConfig, 
+					dsConfigParent);
+			expandChanges(specificDsConfig);
+		}
 	}
 
 	/**

@@ -1,16 +1,61 @@
+Modo de empleo
+=======================
+java -jar WarcProject-4.X.X-X.jar [--help] [--nogui] [--config <path>]
+
+--help: Muestra las opciones de arranque.
+--nogui: Ejecuta la aplicación sin interface de usuario.
+--config <path>: Arranca la aplicación con el fichero de configuración especificado.
+
+Actualizaciones
+=======================
+--> Versión 4
+
+- Modificaciones en la vista que incluyen accesos directos al directorio
+  de entrada del DS y al directorio de salida. Se incluye el
+  control por teclado para desplazarse en el árbol del menú y
+  un enlace desde el menú principal para crear orígenes de datos.
+- Opción de deshabilitar DS a través de la vista
+- Corpus a partir de CSV + múltiples WARC ó WARC.gz
+- Ejecutar sin guí (Usando GetOpt)
+- Filtrar por idioma
+- Un simple jar ejecutable con java -jar
+- Unificar nombres en Datasource CSV y ARFF
+- Incluir en ARFF el atributo SpamValue
+- Guardar la configuración con una extensión del programa
+
+--> Versión 3
+
+- Añadido interfaz gráfico.
+- Añadido DataSource para directorios Warc (WarcDS). A diferencia de CorpusDS,
+este busca en un directorio ficheros .warc, y delega al usuario que configura
+el DS la responsabilidad de indicar si los ficheros Warc que encontrará
+en dicho directorio son Spam o Ham. 
+- (Incidencia Cod. 2.01) Cuando se establece una profuncidad mayor que 0 en
+el crawler, los enlaces rastreados sólo serán los que pertenezcan a los
+sitios web originales.
+- (Incidencia Cod. 2.02) En el DataSource se pueden establecer el
+ parámetro “spamCol” con el valor de un campo del CSV que indique si la url
+ de esa fila corresponde a un sitio web spam o ham, así pues en el
+ parámetro “spamColSpamValue” se puede indicar el valor de ese campo
+ que se tomará como spam. Cualquier otro valor corresponderá a ham.
+- (Incidencia Cod. 2.03) Corregido. En el DataSource CSVDS se ha
+ establecido el parámetro “fieldSeparator” donde se puede configurar el
+ caracter que corresponderá al separador de columnas.
+
+
 --> Version 2
 
-- A�adido soporte para nuevos formatos de entrada: Arff, CSV, Corpus Warc
+- Añadido soporte para nuevos formatos de entrada: Arff, CSV, Corpus Warc
 - Modificado el fichero de configuracion de la aplicacion para personalizar los
   origenes de datos
   
 
 Creditos
--------------------------------------------------------------------------------
+=======================
 Iconos: www.aha-soft.com - Creative Commons Attribution-Share Alike 3.0 License
 
 Dependencias
--------------------------------------------------------------------------------
+=======================
 # Dependencias WarcProject
 commons-beanutils-1.9.2.jar
 commons-validator-1.4.0.jar

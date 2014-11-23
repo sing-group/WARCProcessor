@@ -23,7 +23,7 @@ import com.warcgenerator.core.exception.config.LoadDataSourceException;
 public class ConfigHelper {
 	private static String configFilePath = null;
 
-	public static void configure(String path, AppConfig config) {	
+	public static void configure(String path, AppConfig config) {
 		AppConfig newConfig = new AppConfig();
 		try {
 			// Store old config
@@ -35,18 +35,18 @@ public class ConfigHelper {
 			throw new ConfigException(e);
 		} catch (InvocationTargetException e) {
 			throw new ConfigException(e);
-		} 
+		}
 	}
-	
+
 	public static void persistConfig(String path, AppConfig config) {
 		XMLConfigHelper.saveXMLFromAppConfig(path, config);
 		setConfigFilePath(path);
 	}
-	
+
 	// Add DSHandlers to each configuration data source
 	public static void getDSHandlers(AppConfig config,
-			Map<String, DataSourceConfig> dataSourcesTypes) 
-		throws LoadDataSourceException {
+			Map<String, DataSourceConfig> dataSourcesTypes)
+			throws LoadDataSourceException {
 		for (DataSourceConfig ds : config.getDataSourceConfigs().values()) {
 			// Check if datasource is enabled
 			if (ds.getEnabled()) {
@@ -56,8 +56,8 @@ public class ConfigHelper {
 	}
 
 	public static void getDSHandler(DataSourceConfig ds, AppConfig config,
-			Map<String, DataSourceConfig> dataSourcesTypes) 
-					throws LoadDataSourceException {
+			Map<String, DataSourceConfig> dataSourcesTypes)
+			throws LoadDataSourceException {
 		try {
 			File dirSrc = new File(ds.getFilePath());
 			if (dirSrc.exists()) {
@@ -65,36 +65,35 @@ public class ConfigHelper {
 						.getGeneralFileFilter())) {
 					DataSourceConfig specificDsConfig = new DataSourceConfig(
 							f.getPath());
-					
-					specificDsConfig.setSpam(ds.getSpam());
-					specificDsConfig.setMaxElements(ds.getMaxElements());
-					specificDsConfig.setUseRecursiveFolders(ds.getUseRecursiveFolders());
-					specificDsConfig.setCustomParams(ds.getCustomParams());
-					specificDsConfig.setCountryList(ds.getCountryList());
+
+					copyProperties(specificDsConfig,
+							ds);
 					specificDsConfig.setParent(ds);
-					
+
 					// Get parameters from dataSourceTypes
-					DataSourceConfig dataSourceType = 
-							dataSourcesTypes.get(ds.getType());
-					
-					specificDsConfig.setDsClassName(
-							dataSourceType.getDsClassName());
-					specificDsConfig.setHandlerClassName(
-							dataSourceType.getHandlerClassName());
-					
+					DataSourceConfig dataSourceType = dataSourcesTypes.get(ds
+							.getType());
+
+					specificDsConfig.setDsClassName(dataSourceType
+							.getDsClassName());
+					specificDsConfig.setHandlerClassName(dataSourceType
+							.getHandlerClassName());
+
 					Class<?> cArgs[] = { DataSourceConfig.class };
-					Class<?> clazz = Class.forName(specificDsConfig.getDsClassName());
+					Class<?> clazz = Class.forName(specificDsConfig
+							.getDsClassName());
 					Constructor<?> ctor = clazz.getConstructor(cArgs);
 					IDataSource dsSource = (DataSource) ctor
 							.newInstance(specificDsConfig);
-					
+
 					Class<?> cArgs2[] = { IDataSource.class, AppConfig.class };
-					Class<?> clazz2 = Class.forName(specificDsConfig.getHandlerClassName());
+					Class<?> clazz2 = Class.forName(specificDsConfig
+							.getHandlerClassName());
 					Constructor<?> ctor2 = clazz2.getConstructor(cArgs2);
-					
-					specificDsConfig.setHandler((IDSHandler) ctor2.newInstance(dsSource,
-							config));
-					
+
+					specificDsConfig.setHandler((IDSHandler) ctor2.newInstance(
+							dsSource, config));
+
 					ds.getChildren().add(specificDsConfig);
 				}
 			} else {
@@ -114,11 +113,20 @@ public class ConfigHelper {
 		} catch (IllegalArgumentException e) {
 			throw new LoadDataSourceException(e);
 		} catch (InvocationTargetException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 			throw new LoadDataSourceException(e);
 		}
 	}
-	
+
+	public static void copyProperties(DataSourceConfig specificDsConfig,
+			DataSourceConfig ds) {
+		specificDsConfig.setSpam(ds.getSpam());
+		specificDsConfig.setMaxElements(ds.getMaxElements());
+		specificDsConfig.setUseRecursiveFolders(ds.getUseRecursiveFolders());
+		specificDsConfig.setCustomParams(ds.getCustomParams());
+		specificDsConfig.setCountryList(ds.getCountryList());
+	}
+
 	public static String getConfigFilePath() {
 		return configFilePath;
 	}

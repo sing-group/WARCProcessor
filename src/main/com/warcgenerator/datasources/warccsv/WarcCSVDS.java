@@ -39,6 +39,8 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 	private static final String FILE_CSV = "FileCSV";
 	private static final String REGEXP_URL_TAG = "RegExpURLAttribute";
 
+	private static final String DB_TMP_DIR = "derbyDB";
+	
 	private static Logger logger = Logger.getLogger(WarcCSVDS.class);
 
 	private Map<String, Boolean> domainSpam;
@@ -216,7 +218,14 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 	}
 
 	public void close() throws DSException {
-		// It's not necesary to implement it at the moment
+		logger.info("Removing db temporary folder...");
+		File f = new File(DB_TMP_DIR);
+		if (f.exists()) {
+			f.delete();
+			logger.info("Removed...");
+		} else {
+			logger.info("Can't remove db temporary folder.");
+		}
 	}
 
 	public static void main(String args[]) {
