@@ -1,7 +1,6 @@
 package com.warcgenerator.gui.view.datasources;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -27,7 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.warcgenerator.core.config.CustomParamConfig;
@@ -37,6 +35,7 @@ import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2ContinueAction;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.components.PropertiesJTable;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
@@ -112,7 +111,8 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_lblNewLabel_4.gridy = 1;
 		panel.add(lblNewLabel_4, gbc_lblNewLabel_4);
 
-		JLabel lblNewLabel = new JLabel("Origenes de datos");
+		JLabel lblNewLabel = new JLabel(
+				Messages.getString("DSAssistantStep2Panel.lblNewLabel.text"));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -123,7 +123,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		JLabel label_2 = new JLabel(
-				"Seleccione los par\u00E1metros del corpus a generar.");
+				Messages.getString("DSAssistantStep2Panel.label_2.text"));
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
 		gbc_label_2.anchor = GridBagConstraints.WEST;
 		gbc_label_2.gridwidth = 2;
@@ -166,7 +166,8 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_lblNewLabel_1.gridy = 1;
 		panel_2.add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-		spamEnabledCBox = new JCheckBox("Habilitado");
+		spamEnabledCBox = new JCheckBox(
+				Messages.getString("DSAssistantStep2Panel.spamEnabledCBox.text"));
 		GridBagConstraints gbc_spamEnabledCBox = new GridBagConstraints();
 		gbc_spamEnabledCBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spamEnabledCBox.insets = new Insets(0, 0, 5, 5);
@@ -185,7 +186,8 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 				}
 			}
 		});
-		spamRButtom = new JRadioButton("S\u00ED");
+		spamRButtom = new JRadioButton(
+				Messages.getString("DSAssistantStep2Panel.spamRButtom.text"));
 		GridBagConstraints gbc_spamRButtom = new GridBagConstraints();
 		gbc_spamRButtom.anchor = GridBagConstraints.WEST;
 		gbc_spamRButtom.insets = new Insets(0, 0, 5, 5);
@@ -198,7 +200,8 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		spamRButtom.setEnabled(false);
 
 		group.add(spamRButtom);
-		hamRButtom = new JRadioButton("No");
+		hamRButtom = new JRadioButton(
+				Messages.getString("DSAssistantStep2Panel.hamRButtom.text"));
 		GridBagConstraints gbc_hamRButtom = new GridBagConstraints();
 		gbc_hamRButtom.anchor = GridBagConstraints.WEST;
 		gbc_hamRButtom.insets = new Insets(0, 0, 5, 5);
@@ -208,14 +211,16 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		hamRButtom.setEnabled(false);
 		group.add(hamRButtom);
 
-		JLabel lblNewLabel_2 = new JLabel("Max. elementos:");
+		JLabel lblNewLabel_2 = new JLabel(
+				Messages.getString("DSAssistantStep2Panel.lblNewLabel_2.text"));
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_2.gridx = 1;
 		gbc_lblNewLabel_2.gridy = 2;
 		panel_2.add(lblNewLabel_2, gbc_lblNewLabel_2);
-		maxElementsEnabledCBox = new JCheckBox("Habilitado");
+		maxElementsEnabledCBox = new JCheckBox(
+				Messages.getString("DSAssistantStep2Panel.maxElementsEnabledCBox.text"));
 		GridBagConstraints gbc_maxElementsEnabledCBox = new GridBagConstraints();
 		gbc_maxElementsEnabledCBox.anchor = GridBagConstraints.WEST;
 		gbc_maxElementsEnabledCBox.insets = new Insets(0, 0, 5, 5);
@@ -245,7 +250,8 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		// Disabled quantity
 		quantityMaxElemsTField.setEnabled(false);
 
-		JLabel lblNewLabel_3 = new JLabel("Parametros:");
+		JLabel lblNewLabel_3 = new JLabel(
+				Messages.getString("DSAssistantStep2Panel.lblNewLabel_3.text"));
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_3.anchor = GridBagConstraints.NORTHEAST;
@@ -270,41 +276,45 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel_3 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
 		flowLayout.setVgap(10);
 		panel_1.add(panel_3, BorderLayout.WEST);
-		
-				JLabel lblPasoDe = new JLabel("Paso 3 de 4");
-				panel_3.add(lblPasoDe);
-				
-				JPanel panel_4 = new JPanel();
-				panel_1.add(panel_4, BorderLayout.EAST);
-						
-								JButton btnVolver = new JButton("Volver");
-								panel_4.add(btnVolver);
-								btnVolver.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										dsAssistantStep2BackAction.actionPerformed(e);
-									}
-								});
-						
-								JButton btnNewButton = new JButton("Cancelar");
-								panel_4.add(btnNewButton);
-								btnNewButton.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										dsAssistantCancelAction.actionPerformed(e);
-									}
-								});
-				
-						JButton btnNuevoOrigen = new JButton("Continuar");
-						panel_4.add(btnNuevoOrigen);
-						btnNuevoOrigen.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								dsAssistantStep2ContinueAction.actionPerformed(e);
-							}
-						});
+
+		JLabel lblPasoDe = new JLabel(
+				Messages.getString("DSAssistantStep2Panel.lblPasoDe.text"));
+		panel_3.add(lblPasoDe);
+
+		JPanel panel_4 = new JPanel();
+		panel_1.add(panel_4, BorderLayout.EAST);
+
+		JButton btnVolver = new JButton(
+				Messages.getString("DSAssistantStep2Panel.btnVolver.text"));
+		panel_4.add(btnVolver);
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantStep2BackAction.actionPerformed(e);
+			}
+		});
+
+		JButton btnNewButton = new JButton(
+				Messages.getString("DSAssistantStep2Panel.btnNewButton.text"));
+		panel_4.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantCancelAction.actionPerformed(e);
+			}
+		});
+
+		JButton btnNuevoOrigen = new JButton(
+				Messages.getString("DSAssistantStep2Panel.btnNuevoOrigen.text"));
+		panel_4.add(btnNuevoOrigen);
+		btnNuevoOrigen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantStep2ContinueAction.actionPerformed(e);
+			}
+		});
 
 	}
 
@@ -312,10 +322,10 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		DefaultTableModel model = (DefaultTableModel) paramsTable.getModel();
 
 		// Remove contents
-		while(model.getRowCount() > 0) {
+		while (model.getRowCount() > 0) {
 			model.removeRow(0);
 		}
-		
+
 		for (String key : map.keySet()) {
 			CustomParamConfig paramConfig = map.get(key);
 
@@ -323,7 +333,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 			if (paramConfig.getType().equals("java.lang.Boolean")) {
 				obj = Boolean.valueOf(paramConfig.getValue());
 			} else if (paramConfig.getType().equals("java.io.File")) {
-					obj = new File(paramConfig.getValue());
+				obj = new File(paramConfig.getValue());
 			} else {
 				obj = paramConfig.getValue();
 			}

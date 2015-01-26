@@ -13,7 +13,6 @@ import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.ReadException;
 import com.warcgenerator.core.exception.datasource.WriteException;
 import com.warcgenerator.gui.actions.common.StartGUIAction;
-import com.warcgenerator.gui.common.Constants;
 
 /**
  * AppWarcGenerator

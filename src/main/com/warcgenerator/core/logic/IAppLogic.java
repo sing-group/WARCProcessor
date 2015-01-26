@@ -6,7 +6,7 @@ import java.util.Observer;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.bean.Country;
+import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 /**

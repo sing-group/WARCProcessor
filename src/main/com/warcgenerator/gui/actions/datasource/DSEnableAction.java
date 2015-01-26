@@ -7,8 +7,6 @@ import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
-import com.warcgenerator.gui.common.Constants;
-import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSDetailPanel;
 

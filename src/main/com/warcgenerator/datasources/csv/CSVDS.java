@@ -15,7 +15,7 @@ import weka.core.converters.CSVLoader;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 

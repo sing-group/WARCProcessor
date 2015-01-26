@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.core.task.ITask;
 import com.warcgenerator.core.task.Task;

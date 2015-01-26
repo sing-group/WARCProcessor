@@ -1,4 +1,4 @@
-package com.warcgenerator.core.datasource;
+package com.warcgenerator.core.datasource.generic;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,7 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.DataSource;
+import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.exception.datasource.CloseException;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;

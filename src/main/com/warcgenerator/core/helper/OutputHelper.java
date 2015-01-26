@@ -3,7 +3,7 @@ package com.warcgenerator.core.helper;
 import org.apache.http.HttpStatus;
 
 import com.warcgenerator.core.datasource.IDataSource;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
 
 public class OutputHelper {
 	public static void writeLabeled(IDataSource domainsLabeledDS,

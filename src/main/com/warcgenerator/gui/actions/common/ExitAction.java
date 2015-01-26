@@ -29,7 +29,7 @@ public class ExitAction extends AbstractAction implements Observer {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int userSelection = JOptionPane.showConfirmDialog(view.getMainFrame(), 
-				"Esta seguro que desea salir?");
+				"Esta seguro que desea salir?", "Elija una opción", JOptionPane.OK_CANCEL_OPTION);
 		if (userSelection == JOptionPane.OK_OPTION) {
 			// Exit from the application
 			System.exit(0);

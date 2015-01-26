@@ -1,9 +1,9 @@
-package com.warcgenerator.core.datasource.handler;
+package com.warcgenerator.core.datasource.common.handler;
 
 import java.util.Map;
 
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 /**

@@ -1,4 +1,4 @@
-package com.warcgenerator.core.datasource.bean;
+package com.warcgenerator.core.datasource.common.bean;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 

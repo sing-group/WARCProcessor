@@ -191,9 +191,9 @@ public class WarcGeneratorGUI extends Observable {
 			e1.printStackTrace();
 		}
 
-		loadPanels();
-
 		frmWarcgenerator = new JFrame();
+		loadPanels();
+		
 		frmWarcgenerator.setResizable(false);
 		frmWarcgenerator
 				.setIconImage(Toolkit
@@ -302,30 +302,6 @@ public class WarcGeneratorGUI extends Observable {
 		final JMenu mnHelp = new JMenu("Ayuda");
 		mnHelp.setMnemonic('A');
 		menuBar.add(mnHelp);
-
-		/*
-		 * final JMenu mnLanguages = new JMenu("Idiomas");
-		 * mnLanguages.setHorizontalAlignment(SwingConstants.LEFT);
-		 * mnHelp.add(mnLanguages);
-		 * 
-		 * final JMenuItem mnSpanish = new JMenuItem("Espa�ol");
-		 * mnSpanish.setHorizontalAlignment(SwingConstants.LEFT);
-		 * 
-		 * mnSpanish.addActionListener(new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * 
-		 * } }); mnLanguages.add(mnSpanish);
-		 * 
-		 * final JMenuItem mnEnglish = new JMenuItem("Ingles");
-		 * mnEnglish.setHorizontalAlignment(SwingConstants.LEFT);
-		 * 
-		 * mnEnglish.addActionListener(new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * 
-		 * } }); mnLanguages.add(mnEnglish);
-		 */
 
 		final JMenuItem mnAboutOf = new JMenuItem("Acerca De ...");
 		mnAboutOf.setHorizontalAlignment(SwingConstants.LEFT);
@@ -563,16 +539,10 @@ public class WarcGeneratorGUI extends Observable {
 	}
 
 	public TreePath getSelectedMenu(DefaultMutableTreeNode node) {
-		/*
-		 * TreePath treePaths[] = tree.getSelectionPaths(); TreePath treePath =
-		 * null; if (treePaths != null) { treePath = new TreePath(treePaths); }
-		 */
 		TreePath treePath = null;
-
 		if (node != null) {
 			treePath = new TreePath(node.getPath());
 		}
-
 		return treePath;
 	}
 

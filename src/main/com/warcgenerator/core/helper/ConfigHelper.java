@@ -11,7 +11,7 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
-import com.warcgenerator.core.datasource.handler.IDSHandler;
+import com.warcgenerator.core.datasource.common.handler.IDSHandler;
 import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.LoadDataSourceException;
 

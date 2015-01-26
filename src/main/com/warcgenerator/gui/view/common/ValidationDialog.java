@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.warcgenerator.gui.components.CustomJDialog;
+import com.warcgenerator.gui.util.Messages;
 
 @SuppressWarnings("serial")
 public class ValidationDialog extends CustomJDialog {
@@ -47,7 +48,7 @@ public class ValidationDialog extends CustomJDialog {
 		}
 		return dialog;
 	}
-	
+
 	/**
 	 * Create the dialog.
 	 */
@@ -59,13 +60,16 @@ public class ValidationDialog extends CustomJDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] {-39, 66, 297, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 34, 39, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { -39, 66, 297, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 0, 34, 39, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			lblNewLabel = new JLabel("Por favor, revise los siguientes campos:");
+			lblNewLabel = new JLabel(
+					Messages.getString("ValidationDialog.lblNewLabel.text"));
 		}
 		{
 			Component horizontalStrut = Box.createHorizontalStrut(20);
@@ -85,7 +89,10 @@ public class ValidationDialog extends CustomJDialog {
 		}
 		{
 			JLabel lblNewLabel_1 = new JLabel("");
-			lblNewLabel_1.setIcon(new ImageIcon(ValidationDialog.class.getResource("/com/warcgenerator/gui/resources/img/alert.png")));
+			lblNewLabel_1
+					.setIcon(new ImageIcon(
+							ValidationDialog.class
+									.getResource("/com/warcgenerator/gui/resources/img/alert.png")));
 			GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 			gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 			gbc_lblNewLabel_1.gridx = 1;
@@ -99,7 +106,8 @@ public class ValidationDialog extends CustomJDialog {
 		gbc_lblNewLabel.gridy = 1;
 		contentPanel.add(lblNewLabel, gbc_lblNewLabel);
 		{
-			erroresLabel = new JLabel("errores");
+			erroresLabel = new JLabel(
+					Messages.getString("ValidationDialog.erroresLabel.text"));
 			erroresLabel.setVerticalAlignment(SwingConstants.TOP);
 		}
 		GridBagConstraints gbc_erroresLabel = new GridBagConstraints();
@@ -125,13 +133,13 @@ public class ValidationDialog extends CustomJDialog {
 			}
 		}
 	}
-	
+
 	@Override
 	public void setVisible(boolean visible) {
 		this.setModal(true);
 		super.setVisible(visible);
 	}
-	
+
 	public void setErroresLabel(String messages) {
 		this.erroresLabel.setText(messages);
 	}

@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.bean.Country;
+import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.common.Constants;

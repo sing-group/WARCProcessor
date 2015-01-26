@@ -1,23 +1,23 @@
-package com.warcgenerator.core.datasource;
+package com.warcgenerator.core.datasource.warc;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.log4j.Logger;
 import org.archive.io.ArchiveRecord;
 import org.archive.io.arc.ARCConstants;
-import org.archive.io.warc.WARCReader;
-import org.archive.io.warc.WARCReaderFactory;
 import org.archive.io.warc.WARCWriter;
 import org.archive.io.warc.WARCWriterPoolSettings;
 import org.archive.uid.RecordIDGenerator;
@@ -26,27 +26,30 @@ import org.archive.util.ArchiveUtils;
 import org.archive.util.anvl.ANVLRecord;
 
 import com.warcgenerator.core.config.Constants;
-import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.DataSource;
+import com.warcgenerator.core.datasource.IDataSource;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
+import com.warcgenerator.core.datasource.warc.ext.WarcRecord;
 import com.warcgenerator.core.exception.datasource.CloseException;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.WriteException;
-import com.warcgenerator.core.helper.FileHelper;
 
 public class WarcDS extends DataSource implements IDataSource {
 	public static final String DS_TYPE = "WarcDS";
 	private static final String URL_TAG = "WarcURLTag";
 	private static final String REGEXP_URL_TAG = "RegExpURLAttribute";
-	
+
 	@SuppressWarnings("unused")
 	private OutputWarcConfig config;
 	private WARCWriter writer;
-	private WARCReader reader;
+	//private WARCReader reader;
 	private Iterator<ArchiveRecord> archIt;
 	private File warc;
+
+	private DataInputStream dis;
 
 	private static Logger logger = Logger.getLogger(WarcDS.class);
 
@@ -60,12 +63,32 @@ public class WarcDS extends DataSource implements IDataSource {
 		super(dsConfig);
 		try {
 			logger.info("Openning file: " + dsConfig.getFilePath());
-			reader = WARCReaderFactory.get(new File(dsConfig.getFilePath()), 0);
-			
-			reader.setStrict(true);
-			reader.setDigest(true);
-			
-			archIt = reader.iterator();
+
+			/*
+			 * WARCReader readerHeader = WARCReaderFactory.get(new
+			 * File(dsConfig.getFilePath()), 0); ArchiveRecord ar =
+			 * readerHeader.iterator().next(); int size = ar.available();
+			 * readerHeader.close();
+			 */
+
+			if (dsConfig.getFilePath().toLowerCase().endsWith(".gz")) {
+				dis = new DataInputStream(new GZIPInputStream(
+						new FileInputStream(dsConfig.getFilePath())));
+			} else {
+				dis = new DataInputStream(new FileInputStream(
+						dsConfig.getFilePath()));
+			}
+
+			// Bueno! reader = WARCReaderFactory.get(new
+			// File(dsConfig.getFilePath()), 0);
+			// reader = WARCReaderFactory.get("", new
+			// FileInputStream(dsConfig.getFilePath()), true);
+
+			// reader.setStrict(true);
+			// reader.setDigest(true);
+			// boolean isValid = reader.isValid();
+
+			// archIt = reader.iterator();
 		} catch (IOException e) {
 			throw new OpenException(e);
 		}
@@ -147,101 +170,89 @@ public class WarcDS extends DataSource implements IDataSource {
 
 	public DataBean read() throws DSException {
 		DataBean dataBean = null;
-		ArchiveRecord ar = null;
-		boolean skip = false;
-		
-		do {
-			skip = false;
-			if (archIt.hasNext()) {
-				ar = archIt.next();
-			}
-			if (ar != null) {
-				// Get the filename
-				String url = (String) ar.getHeader()
-						.getHeaderFields().get(((CustomParamConfig)this.getDataSourceConfig().getCustomParams()
-								.get(URL_TAG)).getValue());
-				if (url == null || url.equals("")) {
-					skip = true;
+		try {
+			WarcRecord warcRecord = null;
+			String url = null;
+
+			do {
+				warcRecord = WarcRecord.readNextWarcRecord(dis);
+				if (warcRecord == null)
+					return null;
+				
+				for (Entry<String,String> entries:warcRecord.getHeaderMetadata()) {
+					System.out.println("clave: " + entries.getKey() + ", value: " + entries.getValue());
 				}
 				
-				if (skip == false) {
-					dataBean = new DataBean();
-					dataBean.setUrl(url);
-					
-					boolean isSpam = false;
-					// If it's not specify either isSpam or not, set spam
-					if (this.getDataSourceConfig().getSpam() != null) {
-						isSpam = this.getDataSourceConfig().getSpam();
-					}
-					
-					dataBean.setSpam(isSpam);
-					dataBean.setData(ar);
-					dataBean.setTypeDS(DS_TYPE);
-					
-					StringBuffer sb = new StringBuffer();
-					try {
-						for (byte[] buffer = new byte[1024];
-								ar.read(buffer) != -1;) {
-							sb.append(new String(buffer));
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					dataBean.setData(sb.toString());
-					
-					Pattern pattern = Pattern.compile(this.getDataSourceConfig()
-							.getCustomParams().get(REGEXP_URL_TAG).getValue());
-					Matcher matcher = pattern.matcher(url);
-					if (matcher.matches()) {
-						url = matcher.group(1);
-					}
+				System.out.println("mi param uri: " + this
+						.getDataSourceConfig().getCustomParams()
+						.get(URL_TAG).getValue());
+				
+				url = warcRecord.getHeaderMetadataItem(this
+						.getDataSourceConfig().getCustomParams()
+						.get(URL_TAG).getValue());
+			} while (url == null);
 
-					// Turn the out file to the warc file name
-					this.setOutputFilePath(
-							FileHelper.getOutputFileName(url));
-					
-					try {
-						ar.close();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		} while (skip != false);
+			// The header file contains information such as the type of record,
+			// size, creation time, and URL
+			System.out.println("Header: " + warcRecord.getHeaderString());
+			System.out.println("URL: " + url);
+
+			dataBean = new DataBean();
+			dataBean.setUrl(url);
 			
+			dataBean.setData(warcRecord.getContent());
+
+			boolean isSpam = false;
+			// If it's not specify either isSpam or not, set spam
+			if (this.getDataSourceConfig().getSpam() != null) {
+				isSpam = this.getDataSourceConfig().getSpam();
+			}
+
+			dataBean.setSpam(isSpam);
+			dataBean.setTypeDS(DS_TYPE);
+
+		} catch (IOException e) {
+			throw new DSException(e);
+		}
+
 		return dataBean;
 	}
 
 	public void write(DataBean bean) throws DSException {
-			// Write a warcinfo record with description about how this WARC
-			// was made.
-			try {
-				InputStream is = new ByteArrayInputStream(((String)bean.getData()).
-		            		getBytes(Constants.outputEnconding));
-				
-				ANVLRecord headers = new ANVLRecord(1);
-			    //headers.addLabelValue("mietiqueta", "127.0.0.1");
-			    writer.writeResourceRecord(bean.getUrl(),
-			                ArchiveUtils.get14DigitDate(), Constants.outputContentType,
-			                headers, is, is.available());
-
-			    is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new WriteException(e);
-			} catch (Exception e) {
-				e.printStackTrace();
+		// Write a warcinfo record with description about how this WARC
+		// was made.
+		try {
+			
+			System.out.println("bean.getData(): " + bean.getData().getClass().getName());
+			
+			InputStream is = null;
+			if (bean.getData() instanceof String) {
+				is = new ByteArrayInputStream(
+						((String)bean.getData())
+								.getBytes(Constants.outputEnconding));
+			} else {
+				is = new ByteArrayInputStream(
+						(byte[]) bean.getData());
 			}
+			
+			ANVLRecord headers = new ANVLRecord(1);
+			// headers.addLabelValue("mietiqueta", "127.0.0.1");
+			writer.writeResourceRecord(bean.getUrl(),
+					ArchiveUtils.get14DigitDate(), Constants.outputContentType,
+					headers, is, is.available());
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new WriteException(e);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void close() throws DSException {
 		try {
 			if (writer != null)
 				writer.close();
-			if (reader != null)
-				reader.close();
 
 			// Check if the output file is empty and remove it
 			if (warc != null && warc.length() == 0) {

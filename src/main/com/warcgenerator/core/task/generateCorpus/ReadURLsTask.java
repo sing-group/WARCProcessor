@@ -10,7 +10,7 @@ import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.config.WebCrawlerConfig;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.plugin.webcrawler.Crawler4JAdapter;
 import com.warcgenerator.core.plugin.webcrawler.IWebCrawler;
 import com.warcgenerator.core.plugin.webcrawler.WebCrawlerBean;

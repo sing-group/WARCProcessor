@@ -27,7 +27,8 @@ public class LoadRecentConfigAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		if (showConfirm) {
 			int userSelection = JOptionPane.showConfirmDialog(view.getMainFrame(),
-					"Esta seguro que desea cargar la configuracion? \n" + path);
+					"Esta seguro que desea cargar la configuracion? \n" + path,
+					"Elija una opción", JOptionPane.OK_CANCEL_OPTION);
 			if (userSelection == JOptionPane.YES_OPTION) {
 				loadConfig();
 			}

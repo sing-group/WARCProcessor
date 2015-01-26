@@ -8,8 +8,8 @@ import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
-import com.warcgenerator.core.datasource.WarcDS;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
+import com.warcgenerator.core.datasource.warc.WarcDS;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.datasources.corpus.bean.CorpusFileBean;
 

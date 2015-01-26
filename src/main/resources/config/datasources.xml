@@ -18,13 +18,13 @@
  		<handler>com.warcgenerator.datasources.corpus.handler.CorpusDSHandler</handler>
  	</dataSource>
  	<dataSource name="WarcDS" 
- 	 	class="com.warcgenerator.core.datasource.WarcDS"
+ 	 	class="com.warcgenerator.core.datasource.warc.WarcDS"
  	 	useRecursiveFolders="true" >
  		<customParams>
  			<WarcURLTag type="java.lang.String">WARC-Target-URI</WarcURLTag>
  			<RegExpURLAttribute type="java.lang.String">(.*)</RegExpURLAttribute>
  		</customParams>
- 		<handler>com.warcgenerator.core.datasource.handler.WarcDSHandler</handler>
+ 		<handler>com.warcgenerator.core.datasource.warc.handler.WarcDSHandler</handler>
  	</dataSource>
  	<dataSource name="ArffDS"
  		class="com.warcgenerator.datasources.arff.ArffDS" 

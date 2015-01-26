@@ -1,4 +1,4 @@
-package com.warcgenerator.core.datasource.bean;
+package com.warcgenerator.core.datasource.common.bean;
 
 
 public class Country implements Comparable<Country> {

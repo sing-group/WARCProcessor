@@ -31,8 +31,8 @@ public class CreateNewConfigAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		if (view.getMntmSaveCG().isEnabled()) {
 			int userSelection = JOptionPane.showConfirmDialog(view.getMainFrame(), 
-					"Existen cambios no guardados. ¿Está seguro que desea continuar?",
-					"Elija una opción", JOptionPane.YES_NO_OPTION);
+					"Existen cambios no guardados. Â¿EstÃ¡ seguro que desea continuar?",
+					"Elija una opciÃ³n", JOptionPane.YES_NO_OPTION);
 			if (userSelection == JOptionPane.OK_OPTION) {
 				loadNewAppConfig();
 			}

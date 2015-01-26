@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.misc.TrigramLanguageGuesser;
 import org.jsoup.Jsoup;
 
-import com.warcgenerator.core.datasource.bean.Country;
+import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.plugin.webcrawler.WebCrawlerHandler;
 
 public class LangFilterHelper {

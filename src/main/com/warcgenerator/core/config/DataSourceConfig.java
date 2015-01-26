@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import com.warcgenerator.core.datasource.bean.Country;
-import com.warcgenerator.core.datasource.handler.IDSHandler;
+import com.warcgenerator.core.datasource.common.bean.Country;
+import com.warcgenerator.core.datasource.common.handler.IDSHandler;
 import com.warcgenerator.core.exception.logic.LogicException;
 
 /**

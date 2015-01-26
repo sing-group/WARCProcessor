@@ -26,7 +26,8 @@ public class CancelGenerateCorpusAction
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int userSelection = JOptionPane.showConfirmDialog(view.getMainFrame(),
-				"Esta seguro que desea cancelar el proceso?");
+				"Esta seguro que desea cancelar el proceso?",
+				"Elija una opción", JOptionPane.OK_CANCEL_OPTION);
 		if (userSelection == JOptionPane.OK_OPTION) {
 			gcGenerateAction.getGcTask().cancel(true);
 			gcd.getCancelBtn().setEnabled(false);

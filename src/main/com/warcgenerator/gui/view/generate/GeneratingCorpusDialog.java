@@ -67,7 +67,7 @@ public class GeneratingCorpusDialog extends CustomJDialog {
 		getContentPane().add(lblGenerandoCorpusEn, gbc_lblGenerandoCorpusEn);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(GeneratingCorpusDialog.class.getResource("/com/warcgenerator/gui/resources/img/diagram.png")));
+		lblNewLabel.setIcon(new ImageIcon(GeneratingCorpusDialog.class.getResource("/resources/com/warcgenerator/gui/resources/img/imagen_gif.gif")));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.gridheight = 2;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);

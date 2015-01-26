@@ -24,6 +24,7 @@ import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3FinishAction;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
@@ -31,10 +32,10 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 	private Action dsAssistantStep3BackAction;
 	private Action dsAssistantCancelAction;
 	private Action dsAssistantStep3FinishAction;
-	
+
 	private JTextArea summaryConfigTField;
 	private JScrollPane scrollPane;
-	
+
 	public void setSummaryText(String text) {
 		summaryConfigTField.setText(text);
 		summaryConfigTField.updateUI();
@@ -46,40 +47,40 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 	/**
 	 * Create the panel.
 	 */
-	public DSAssistantStep3Panel(IAppLogic logic, 
-			WarcGeneratorGUI view,
+	public DSAssistantStep3Panel(IAppLogic logic, WarcGeneratorGUI view,
 			JPanel parentAssistant) {
-		dsAssistantStep3BackAction =
-				new DSAsisstantStep3BackAction(logic, view,
-						parentAssistant);
-		dsAssistantCancelAction =
-				new DSAsisstantCancelAction(logic, view,
-						parentAssistant);
-		dsAssistantStep3FinishAction =
-				new DSAsisstantStep3FinishAction(logic, view, this);
-		
+		dsAssistantStep3BackAction = new DSAsisstantStep3BackAction(logic,
+				view, parentAssistant);
+		dsAssistantCancelAction = new DSAsisstantCancelAction(logic, view,
+				parentAssistant);
+		dsAssistantStep3FinishAction = new DSAsisstantStep3FinishAction(logic,
+				view, this);
+
 		setName("DSAssistantStep3Panel");
-		
-		ImageIcon icon = new ImageIcon(WarcGeneratorGUI.class.getResource("/com/warcgenerator/gui/resources/img/database.png"));
-		
+
+		ImageIcon icon = new ImageIcon(
+				WarcGeneratorGUI.class
+						.getResource("/com/warcgenerator/gui/resources/img/database.png"));
+
 		scrollPane = new JScrollPane();
-		
+
 		summaryConfigTField = new JTextArea();
 		summaryConfigTField.setWrapStyleWord(true);
 		scrollPane.setViewportView(summaryConfigTField);
 		scrollPane.setBounds(23, 23, 404, 134);
 		setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel = new JPanel();
-		//panel.setBackground(new Color(230, 230, 250));
+		// panel.setBackground(new Color(230, 230, 250));
 		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] {0, 0, 363};
-		gbl_panel.rowHeights = new int[] {0, 36, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWidths = new int[] { 0, 0, 363 };
+		gbl_panel.rowHeights = new int[] { 0, 36, 0, 0, 0 };
+		gbl_panel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
+		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		panel.setLayout(gbl_panel);
-		
+
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
 		gbc_horizontalStrut.gridwidth = 2;
@@ -87,7 +88,7 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		gbc_horizontalStrut.gridx = 1;
 		gbc_horizontalStrut.gridy = 0;
 		panel.add(horizontalStrut, gbc_horizontalStrut);
-		
+
 		Component verticalStrut = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
 		gbc_verticalStrut.gridheight = 2;
@@ -95,15 +96,16 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		gbc_verticalStrut.gridx = 0;
 		gbc_verticalStrut.gridy = 1;
 		panel.add(verticalStrut, gbc_verticalStrut);
-		
+
 		JLabel lblNewLabel_1 = new JLabel(icon);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.gridx = 1;
 		gbc_lblNewLabel_1.gridy = 1;
 		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
-		JLabel lblNewLabel = new JLabel("Origenes de datos");
+
+		JLabel lblNewLabel = new JLabel(
+				Messages.getString("DSAssistantStep3Panel.lblNewLabel.text"));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -112,8 +114,9 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		panel.add(lblNewLabel, gbc_lblNewLabel);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		
-		JLabel label_3 = new JLabel("Seleccione los par\u00E1metros del corpus a generar.");
+
+		JLabel label_3 = new JLabel(
+				Messages.getString("DSAssistantStep3Panel.label_3.text"));
 		GridBagConstraints gbc_label_3 = new GridBagConstraints();
 		gbc_label_3.anchor = GridBagConstraints.WEST;
 		gbc_label_3.gridwidth = 2;
@@ -121,7 +124,7 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		gbc_label_3.gridx = 1;
 		gbc_label_3.gridy = 2;
 		panel.add(label_3, gbc_label_3);
-		
+
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1 = new GridBagConstraints();
 		gbc_horizontalStrut_1.insets = new Insets(10, 0, 0, 0);
@@ -129,70 +132,75 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		gbc_horizontalStrut_1.gridx = 1;
 		gbc_horizontalStrut_1.gridy = 3;
 		panel.add(horizontalStrut_1, gbc_horizontalStrut_1);
-		
+
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel_3 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
 		flowLayout.setVgap(10);
 		panel_1.add(panel_3, BorderLayout.WEST);
-		
-		JLabel lblPasoDe = new JLabel("Paso 4 de 4");
+
+		JLabel lblPasoDe = new JLabel(
+				Messages.getString("DSAssistantStep3Panel.lblPasoDe.text"));
 		panel_3.add(lblPasoDe);
-		
+
 		JPanel panel_4 = new JPanel();
 		panel_1.add(panel_4, BorderLayout.EAST);
-		
-		JButton btnVolver = new JButton("Volver");
+
+		JButton btnVolver = new JButton(
+				Messages.getString("DSAssistantStep3Panel.btnVolver.text"));
 		panel_4.add(btnVolver);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dsAssistantStep3BackAction.actionPerformed(e);
 			}
 		});
-		
-		JButton btnNewButton = new JButton("Cancelar");
+
+		JButton btnNewButton = new JButton(
+				Messages.getString("DSAssistantStep3Panel.btnNewButton.text"));
 		panel_4.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dsAssistantCancelAction.actionPerformed(e);
 			}
 		});
-		
-		JButton btnNuevoOrigen = new JButton("Finalizar");
+
+		JButton btnNuevoOrigen = new JButton(
+				Messages.getString("DSAssistantStep3Panel.btnNuevoOrigen.text"));
 		panel_4.add(btnNuevoOrigen);
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dsAssistantStep3FinishAction.actionPerformed(e);
 			}
 		});
-		//panel_1.add(scrollPane);
-		
+		// panel_1.add(scrollPane);
+
 		JPanel panel_2 = new JPanel();
 		add(panel_2, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[] {0, 0, 0, 0};
-		gbl_panel_2.rowHeights = new int[] {0, 168, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, 1.0, 0.0};
+		gbl_panel_2.columnWidths = new int[] { 0, 0, 0, 0 };
+		gbl_panel_2.rowHeights = new int[] { 0, 168, 0 };
+		gbl_panel_2.columnWeights = new double[] { 0.0, 1.0, 0.0,
+				Double.MIN_VALUE };
+		gbl_panel_2.rowWeights = new double[] { 0.0, 1.0, 0.0 };
 		panel_2.setLayout(gbl_panel_2);
-		
+
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_3 = new GridBagConstraints();
 		gbc_horizontalStrut_3.insets = new Insets(0, 0, 5, 5);
 		gbc_horizontalStrut_3.gridx = 1;
 		gbc_horizontalStrut_3.gridy = 0;
 		panel_2.add(horizontalStrut_3, gbc_horizontalStrut_3);
-		
+
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_2 = new GridBagConstraints();
 		gbc_horizontalStrut_2.insets = new Insets(0, 0, 0, 5);
 		gbc_horizontalStrut_2.gridx = 1;
 		gbc_horizontalStrut_2.gridy = 2;
 		panel_2.add(horizontalStrut_2, gbc_horizontalStrut_2);
-		
+
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
 		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
@@ -205,6 +213,5 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
 	}
 }

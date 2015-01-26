@@ -102,14 +102,13 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			int progress = getProgress();
 			switch (gcState.getState()) {
 			case GETTING_URLS_FROM_DS:
-				//gcd.getStateLbl().setText("Obteniendo urls de los datasources");
+				// gcd.getStateLbl().setText("Obteniendo urls de los datasources");
 				int numSitesTotal = logic.getAppConfig().getNumSites();
-				StringBuilder sb = new StringBuilder("Obteniendo urls " +
-				"(" + gcState.getNumUrlReadedFromDS() + " de " + numSitesTotal + ")");
+				StringBuilder sb = new StringBuilder("Obteniendo urls " + "("
+						+ gcState.getNumUrlReadedFromDS() + " de "
+						+ numSitesTotal + ")");
 				gcd.getStateLbl().setText(
-						StringUtils.abbreviate(
-								sb.toString(),
-								38));
+						StringUtils.abbreviate(sb.toString(), 38));
 				break;
 			case CRAWLING_URLS:
 				gcd.getStateLbl().setText(

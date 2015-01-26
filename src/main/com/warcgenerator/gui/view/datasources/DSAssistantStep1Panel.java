@@ -1,7 +1,6 @@
 package com.warcgenerator.gui.view.datasources;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -23,7 +22,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import com.warcgenerator.core.logic.IAppLogic;
@@ -106,7 +104,8 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		gbc_label.gridy = 1;
 		panel.add(label, gbc_label);
 
-		JLabel lblNewLabel = new JLabel("Origenes de datos");
+		JLabel lblNewLabel = new JLabel(
+				Messages.getString("DSAssistantStep1Panel.lblNewLabel.text"));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -117,7 +116,7 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		JLabel label_2 = new JLabel(
-				"Seleccione los par\u00E1metros del corpus a generar.");
+				Messages.getString("DSAssistantStep1Panel.label_2.text"));
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
 		gbc_label_2.anchor = GridBagConstraints.WEST;
 		gbc_label_2.gridwidth = 2;
@@ -128,34 +127,37 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel_3 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_3.getLayout();
 		flowLayout.setVgap(10);
 		panel_1.add(panel_3, BorderLayout.WEST);
-		
-				JLabel lblPasoDe = new JLabel("Paso 1 de 4");
-				panel_3.add(lblPasoDe);
-				lblPasoDe.setHorizontalAlignment(SwingConstants.LEFT);
-				
-				JPanel panel_4 = new JPanel();
-				panel_1.add(panel_4, BorderLayout.EAST);
-						
-								JButton btnNewButton = new JButton("Cancelar");
-								panel_4.add(btnNewButton);
-								btnNewButton.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										dsAssistantCancelAction.actionPerformed(e);
-									}
-								});
-				
-						JButton btnNuevoOrigen = new JButton("Continuar");
-						panel_4.add(btnNuevoOrigen);
-						btnNuevoOrigen.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent e) {
-								dsAssistantStep1ContinueAction.actionPerformed(e);
-							}
-						});
+
+		JLabel lblPasoDe = new JLabel(
+				Messages.getString("DSAssistantStep1Panel.lblPasoDe.text"));
+		panel_3.add(lblPasoDe);
+		lblPasoDe.setHorizontalAlignment(SwingConstants.LEFT);
+
+		JPanel panel_4 = new JPanel();
+		panel_1.add(panel_4, BorderLayout.EAST);
+
+		JButton btnNewButton = new JButton(
+				Messages.getString("DSAssistantStep1Panel.btnNewButton.text"));
+		panel_4.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantCancelAction.actionPerformed(e);
+			}
+		});
+
+		JButton btnNuevoOrigen = new JButton(
+				Messages.getString("DSAssistantStep1Panel.btnNuevoOrigen.text"));
+		panel_4.add(btnNuevoOrigen);
+		btnNuevoOrigen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantStep1ContinueAction.actionPerformed(e);
+			}
+		});
 
 		JPanel panel_2 = new JPanel();
 		add(panel_2, BorderLayout.CENTER);
@@ -190,11 +192,14 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		gbc_nameJTField.gridx = 1;
 		gbc_nameJTField.gridy = 1;
 		panel_2.add(nameJTField, gbc_nameJTField);
+
 		nameJTField.setInputVerifier(new NotNullOREmptyValidator(view
-				.getMainFrame(), nameJTField, "Debe especificar un nombre"));
+				.getMainFrame(), nameJTField, Messages
+				.getString("DSAssistantStep1Panel.nameJTField.verifier.text")));
 		nameJTField.setColumns(10);
 
-		JLabel lblNewLabel_2 = new JLabel("Carpeta:");
+		JLabel lblNewLabel_2 = new JLabel(
+				Messages.getString("DSAssistantStep1Panel.lblNewLabel_2.text"));
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
@@ -212,7 +217,8 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		folderJTField.setEditable(false);
 		folderJTField.setColumns(10);
 
-		JButton btnBuscar = new JButton("Examinar");
+		JButton btnBuscar = new JButton(
+				Messages.getString("DSAssistantStep1Panel.btnBuscar.text"));
 		btnBuscar.setIcon(new ImageIcon(DSAssistantStep1Panel.class
 				.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 		GridBagConstraints gbc_btnBuscar = new GridBagConstraints();
@@ -242,7 +248,8 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 			}
 		});
 
-		JLabel lblNewLabel_3 = new JLabel("Tipo:");
+		JLabel lblNewLabel_3 = new JLabel(
+				Messages.getString("DSAssistantStep1Panel.lblNewLabel_3.text"));
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);
@@ -287,7 +294,7 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 	public JComboBox<String> getTipoDSCBox() {
 		return tipoDSCBox;
 	}
-	
+
 	public JFileChooser getFileChooser() {
 		return fileChooser;
 	}

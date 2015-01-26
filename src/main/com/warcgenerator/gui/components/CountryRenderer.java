@@ -9,7 +9,7 @@ import javax.swing.ListCellRenderer;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.warcgenerator.core.datasource.bean.Country;
+import com.warcgenerator.core.datasource.common.bean.Country;
 
 @SuppressWarnings("serial")
 public class CountryRenderer extends JLabel implements

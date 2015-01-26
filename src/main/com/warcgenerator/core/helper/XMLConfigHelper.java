@@ -35,7 +35,7 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
 import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.bean.Country;
+import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.ValidateXMLSchemaException;
 

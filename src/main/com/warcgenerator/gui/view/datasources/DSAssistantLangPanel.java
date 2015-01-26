@@ -1,7 +1,6 @@
 package com.warcgenerator.gui.view.datasources;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -23,10 +22,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
 
-import com.warcgenerator.core.datasource.bean.Country;
+import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantLangBackAction;
@@ -34,6 +31,7 @@ import com.warcgenerator.gui.actions.datasource.DSAsisstantLangContinueAction;
 import com.warcgenerator.gui.components.CountryRenderer;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.components.SortedListModel;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class DSAssistantLangPanel extends CustomJPanel {
@@ -55,7 +53,7 @@ public class DSAssistantLangPanel extends CustomJPanel {
 
 	private JRadioButton rdbtnAllLang;
 	private JRadioButton rdbtnNoAllLang;
-	
+
 	/**
 	 * Create the panel.
 	 */
@@ -115,7 +113,8 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		gbc_label.gridy = 1;
 		panel.add(label, gbc_label);
 
-		JLabel lblNewLabel = new JLabel("Origenes de datos");
+		JLabel lblNewLabel = new JLabel(
+				Messages.getString("DSAssistantLangPanel.lblNewLabel.text"));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -126,7 +125,7 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		JLabel label_2 = new JLabel(
-				"Seleccione los par\u00E1metros del corpus a generar.");
+				Messages.getString("DSAssistantLangPanel.label_2.text"));
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
 		gbc_label_2.anchor = GridBagConstraints.WEST;
 		gbc_label_2.gridwidth = 2;
@@ -137,40 +136,44 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.WEST);
-						panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
-				
-						JLabel lblPasoDe = new JLabel("Paso 2 de 4");
-						panel_3.add(lblPasoDe);
-				
-				JPanel panel_4 = new JPanel();
-				panel_1.add(panel_4, BorderLayout.EAST);
-						
-								JButton btnVolver = new JButton("Volver");
-								panel_4.add(btnVolver);
-								btnVolver.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent arg0) {
-										dsAssistantLangBackAction.actionPerformed(arg0);
-									}
-								});
-						
-								JButton btnNewButton = new JButton("Cancelar");
-								panel_4.add(btnNewButton);
-								
-										JButton btnNuevoOrigen = new JButton("Continuar");
-										panel_4.add(btnNuevoOrigen);
-										btnNuevoOrigen.addActionListener(new ActionListener() {
-											public void actionPerformed(ActionEvent e) {
-												dsAssistantLangContinueAction.actionPerformed(e);
-											}
-										});
-								btnNewButton.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										dsAssistantCancelAction.actionPerformed(e);
-									}
-								});
+		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
+
+		JLabel lblPasoDe = new JLabel(
+				Messages.getString("DSAssistantLangPanel.lblPasoDe.text"));
+		panel_3.add(lblPasoDe);
+
+		JPanel panel_4 = new JPanel();
+		panel_1.add(panel_4, BorderLayout.EAST);
+
+		JButton btnVolver = new JButton(
+				Messages.getString("DSAssistantLangPanel.btnVolver.text"));
+		panel_4.add(btnVolver);
+		btnVolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dsAssistantLangBackAction.actionPerformed(arg0);
+			}
+		});
+
+		JButton btnNewButton = new JButton(
+				Messages.getString("DSAssistantLangPanel.btnNewButton.text"));
+		panel_4.add(btnNewButton);
+
+		JButton btnNuevoOrigen = new JButton(
+				Messages.getString("DSAssistantLangPanel.btnNuevoOrigen.text"));
+		panel_4.add(btnNuevoOrigen);
+		btnNuevoOrigen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantLangContinueAction.actionPerformed(e);
+			}
+		});
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dsAssistantCancelAction.actionPerformed(e);
+			}
+		});
 
 		JPanel panel_2 = new JPanel();
 		add(panel_2, BorderLayout.CENTER);
@@ -199,7 +202,7 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		gbc_verticalStrut_1.gridy = 1;
 		panel_2.add(verticalStrut_1, gbc_verticalStrut_1);
 
-		JLabel lblNewLabel_1 = new JLabel("Todos los idiomas:");
+		JLabel lblNewLabel_1 = new JLabel(Messages.getString("DSAssistantLangPanel.lblNewLabel_1.text"));
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.gridwidth = 2;
 		gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
@@ -392,7 +395,7 @@ public class DSAssistantLangPanel extends CustomJPanel {
 	public JList<Country> getListSelected() {
 		return listSelected;
 	}
-	
+
 	public JRadioButton getRdbtnAllLang() {
 		return rdbtnAllLang;
 	}
@@ -410,6 +413,6 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		btnMoveOneLeft.setEnabled(enable);
 		btnMoveGrpRight.setEnabled(enable);
 		btnMoveGrpLeft.setEnabled(enable);
-		
+
 	}
 }

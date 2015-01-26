@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.datasource.IDataSource;
-import com.warcgenerator.core.datasource.WarcDS;
-import com.warcgenerator.core.datasource.bean.Country;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.common.bean.Country;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
+import com.warcgenerator.core.datasource.warc.WarcDS;
 import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.core.helper.LangFilterHelper;

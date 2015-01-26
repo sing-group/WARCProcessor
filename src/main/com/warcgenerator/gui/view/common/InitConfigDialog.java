@@ -30,13 +30,14 @@ import com.warcgenerator.gui.actions.common.SearchInitConfigAction;
 import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
 import com.warcgenerator.gui.components.CustomComboBoxRenderer;
 import com.warcgenerator.gui.components.CustomJDialog;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
 public class InitConfigDialog extends CustomJDialog {
 	private final JPanel contentPanel = new JPanel();
 	private Vector<String> configFilesList;
-	private DefaultComboBoxModel<String> comboBoxModel; 
+	private DefaultComboBoxModel<String> comboBoxModel;
 	private JComboBox<String> configFilesCBox;
 	@SuppressWarnings("unused")
 	private IAppLogic logic;
@@ -45,55 +46,57 @@ public class InitConfigDialog extends CustomJDialog {
 	private Action loadRecentConfigAction;
 	private Action searchInitConfigAction;
 	private Map<String, RecentFileCBItem> recentFiles;
-	
-	private JButton okButton; 
-	
+
+	private JButton okButton;
+
 	public void addFirstConfigFile(File configFile) {
-		if (comboBoxModel.getSize() > 0 && 
-				comboBoxModel.getElementAt(1).equals(CustomComboBoxRenderer.SEPARATOR)) {
+		if (comboBoxModel.getSize() > 0
+				&& comboBoxModel.getElementAt(1).equals(
+						CustomComboBoxRenderer.SEPARATOR)) {
 			configFilesList.remove(0);
 			configFilesList.remove(0);
 		}
-		
-		RecentFileCBItem recentFile = new RecentFileCBItem(0, configFile.getName(),
-				configFile.getAbsolutePath());
+
+		RecentFileCBItem recentFile = new RecentFileCBItem(0,
+				configFile.getName(), configFile.getAbsolutePath());
 		recentFiles.put(recentFile.getPath(), recentFile);
-		
+
 		comboBoxModel.insertElementAt(configFile.getAbsolutePath(), 0);
 		comboBoxModel.insertElementAt(CustomComboBoxRenderer.SEPARATOR, 1);
 		configFilesCBox.setSelectedIndex(0);
 		okButton.setEnabled(true);
 	}
-	
+
 	public void addConfigFile(RecentFileCBItem configFile) {
 		recentFiles.put(configFile.toString(), configFile);
 		configFilesCBox.addItem(configFile.toString());
 		okButton.setEnabled(true);
 	}
-	
+
 	/**
 	 * Create the dialog.
 	 */
-	public InitConfigDialog(final IAppLogic logic, 
-			final WarcGeneratorGUI view) {
+	public InitConfigDialog(final IAppLogic logic, final WarcGeneratorGUI view) {
 		super(view.getMainFrame(), true);
-		
+
 		searchInitConfigAction = new SearchInitConfigAction(logic, view, this);
 		recentFiles = new LinkedHashMap<String, RecentFileCBItem>();
-		
+
 		this.logic = logic;
 		this.view = view;
-		
+
 		setTitle("Cargar configuracion");
 		setBounds(100, 100, 449, 174);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] {0, 0, 220, 80, 30, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 14, 0, 0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 0, 0, 220, 80, 30, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 0, 14, 0, 0, 0, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0,
+				0.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			Component horizontalStrut = Box.createHorizontalStrut(20);
@@ -114,7 +117,10 @@ public class InitConfigDialog extends CustomJDialog {
 		}
 		{
 			JLabel lblNewLabel_1 = new JLabel("");
-			lblNewLabel_1.setIcon(new ImageIcon(InitConfigDialog.class.getResource("/com/warcgenerator/gui/resources/img/script.png")));
+			lblNewLabel_1
+					.setIcon(new ImageIcon(
+							InitConfigDialog.class
+									.getResource("/com/warcgenerator/gui/resources/img/script.png")));
 			GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 			gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 			gbc_lblNewLabel_1.gridx = 1;
@@ -122,7 +128,8 @@ public class InitConfigDialog extends CustomJDialog {
 			contentPanel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		}
 		{
-			JLabel lblNewLabel = new JLabel("Selecciona una configuracion");
+			JLabel lblNewLabel = new JLabel(
+					Messages.getString("InitConfigDialog.lblNewLabel.text"));
 			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
@@ -132,14 +139,16 @@ public class InitConfigDialog extends CustomJDialog {
 			contentPanel.add(lblNewLabel, gbc_lblNewLabel);
 		}
 		{
-			JLabel lblDetermineLaConfiguracin = new JLabel("Determine la configuraci\u00F3n a usar en la aplicaci\u00F3n.");
+			JLabel lblDetermineLaConfiguracin = new JLabel(
+					Messages.getString("InitConfigDialog.lblDetermineLaConfiguracin.text"));
 			GridBagConstraints gbc_lblDetermineLaConfiguracin = new GridBagConstraints();
 			gbc_lblDetermineLaConfiguracin.gridwidth = 4;
 			gbc_lblDetermineLaConfiguracin.anchor = GridBagConstraints.WEST;
 			gbc_lblDetermineLaConfiguracin.insets = new Insets(0, 0, 5, 0);
 			gbc_lblDetermineLaConfiguracin.gridx = 1;
 			gbc_lblDetermineLaConfiguracin.gridy = 2;
-			contentPanel.add(lblDetermineLaConfiguracin, gbc_lblDetermineLaConfiguracin);
+			contentPanel.add(lblDetermineLaConfiguracin,
+					gbc_lblDetermineLaConfiguracin);
 		}
 		{
 			configFilesList = new Vector<String>();
@@ -165,8 +174,10 @@ public class InitConfigDialog extends CustomJDialog {
 			gbc_configFilesList.gridy = 4;
 			contentPanel.add(configFilesCBox, gbc_configFilesList);
 		}
-		JButton examineBtn = new JButton("Examinar");
-		examineBtn.setIcon(new ImageIcon(InitConfigDialog.class.getResource("/com/warcgenerator/gui/resources/img/find.png")));
+		JButton examineBtn = new JButton(
+				Messages.getString("InitConfigDialog.examineBtn.text"));
+		examineBtn.setIcon(new ImageIcon(InitConfigDialog.class
+				.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 		examineBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				searchInitConfigAction.actionPerformed(e);
@@ -187,9 +198,10 @@ public class InitConfigDialog extends CustomJDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String configFilePath = recentFiles.get(
-								configFilesCBox.getSelectedItem().toString()).getPath();
-						loadRecentConfigAction = new LoadRecentConfigAction(logic,
-								view, configFilePath, false);
+								configFilesCBox.getSelectedItem().toString())
+								.getPath();
+						loadRecentConfigAction = new LoadRecentConfigAction(
+								logic, view, configFilePath, false);
 						loadRecentConfigAction.actionPerformed(e);
 						InitConfigDialog.this.dispose();
 					}
@@ -209,7 +221,6 @@ public class InitConfigDialog extends CustomJDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-		
-		
+
 	}
 }

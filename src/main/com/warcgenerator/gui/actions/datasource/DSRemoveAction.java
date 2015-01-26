@@ -44,7 +44,8 @@ public class DSRemoveAction extends AbstractAction implements Observer {
 		int dialogResult = JOptionPane.showConfirmDialog (
 				view.getMainFrame(),
 				"Esta seguro que desea eliminar el DS " 
-						+ config.getName());
+						+ config.getName(), "Elija una opción",
+						JOptionPane.OK_CANCEL_OPTION);
 		if(dialogResult == JOptionPane.YES_OPTION){
 			logic.removeDataSourceConfig(config.getId());
 		}

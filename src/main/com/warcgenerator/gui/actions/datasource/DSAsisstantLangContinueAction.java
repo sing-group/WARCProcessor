@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import org.apache.commons.beanutils.BeanUtils;
 
 import com.warcgenerator.core.config.DataSourceConfig;
-import com.warcgenerator.core.datasource.bean.Country;
+import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;

@@ -1,4 +1,4 @@
-package com.warcgenerator.core.datasource.handler;
+package com.warcgenerator.core.datasource.common.handler;
 
 import java.util.Map;
 
@@ -9,8 +9,8 @@ import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.datasource.IDataSource;
-import com.warcgenerator.core.datasource.WarcDS;
-import com.warcgenerator.core.datasource.bean.DataBean;
+import com.warcgenerator.core.datasource.common.bean.DataBean;
+import com.warcgenerator.core.datasource.warc.WarcDS;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
