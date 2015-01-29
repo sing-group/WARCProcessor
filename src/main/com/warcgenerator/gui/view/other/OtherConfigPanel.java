@@ -26,7 +26,9 @@ import javax.swing.SwingConstants;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.other.OtherSaveAction;
 import com.warcgenerator.gui.actions.other.OtherSaveAndGenerateAction;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.components.listener.CustomDocumentListener;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
@@ -74,7 +76,9 @@ public class OtherConfigPanel extends CustomJPanel {
 			}
 		});
 		
-		JButton saveBtn = new JButton(Messages.getString("OtherConfigPanel.saveBtn.text")); //$NON-NLS-1$ //$NON-NLS-1$
+		CustomButton saveBtn = new CustomButton();
+		saveBtn.setName("OtherConfigPanel.saveBtn.text"); //$NON-NLS-1$ //$NON-NLS-1$
+		view.addLocaleChangeListener(saveBtn);
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				save();
@@ -109,7 +113,9 @@ public class OtherConfigPanel extends CustomJPanel {
 		gbc_lblNewLabel_3.gridy = 1;
 		panel.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
-		JLabel lblNewLabel = new JLabel(Messages.getString("OtherConfigPanel.lblNewLabel.text")); //$NON-NLS-1$ //$NON-NLS-1$
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("OtherConfigPanel.lblNewLabel.text"); //$NON-NLS-1$ //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -127,7 +133,9 @@ public class OtherConfigPanel extends CustomJPanel {
 		gbc_verticalStrut.gridy = 1;
 		panel.add(verticalStrut, gbc_verticalStrut);
 		
-		JLabel lblOtrosParmetrosDe = new JLabel(Messages.getString("OtherConfigPanel.lblOtrosParmetrosDe.text")); //$NON-NLS-1$
+		CustomLabel lblOtrosParmetrosDe = new CustomLabel();
+		lblOtrosParmetrosDe.setName("OtherConfigPanel.lblOtrosParmetrosDe.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblOtrosParmetrosDe);
 		GridBagConstraints gbc_lblOtrosParmetrosDe = new GridBagConstraints();
 		gbc_lblOtrosParmetrosDe.anchor = GridBagConstraints.WEST;
 		gbc_lblOtrosParmetrosDe.gridwidth = 2;
@@ -159,7 +167,9 @@ public class OtherConfigPanel extends CustomJPanel {
 		gbc_horizontalStrut_2.gridy = 0;
 		panel_2.add(horizontalStrut_2, gbc_horizontalStrut_2);
 		
-		JLabel lblNewLabel_1 = new JLabel(Messages.getString("OtherConfigPanel.lblNewLabel_1.text")); //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
+		CustomLabel lblNewLabel_1 = new CustomLabel();
+		lblNewLabel_1.setName("OtherConfigPanel.lblNewLabel_1.text"); //$NON-NLS-1$ //$NON-NLS-1$ //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel_1);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
@@ -177,7 +187,9 @@ public class OtherConfigPanel extends CustomJPanel {
 		tempDirTField.setEditable(false);
 		tempDirTField.setColumns(10);
 		
-		JButton examineBtn = new JButton(Messages.getString("OtherConfigPanel.btnExaminar.text")); //$NON-NLS-1$
+		CustomButton examineBtn = new CustomButton();
+		examineBtn.setName("OtherConfigPanel.btnExaminar.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(examineBtn);
 		examineBtn.setIcon(new ImageIcon(OtherConfigPanel.class.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 		GridBagConstraints gbc_examineBtn = new GridBagConstraints();
 		gbc_examineBtn.insets = new Insets(0, 0, 5, 0);
@@ -196,7 +208,9 @@ public class OtherConfigPanel extends CustomJPanel {
 			}
 		});
 		
-		JLabel lblHam = new JLabel(Messages.getString("OtherConfigPanel.lblHam.text_1")); //$NON-NLS-1$ //$NON-NLS-1$
+		CustomLabel lblHam = new CustomLabel();
+		lblHam.setName("OtherConfigPanel.lblHam.text_1"); //$NON-NLS-1$ //$NON-NLS-1$
+		view.addLocaleChangeListener(lblHam);
 		GridBagConstraints gbc_lblHam = new GridBagConstraints();
 		gbc_lblHam.anchor = GridBagConstraints.EAST;
 		gbc_lblHam.insets = new Insets(0, 0, 5, 5);
@@ -214,7 +228,9 @@ public class OtherConfigPanel extends CustomJPanel {
 		numberOfCrawlersTField.setInputVerifier(new NaturalNumberAndZeroValidator(view.getMainFrame(), numberOfCrawlersTField, "Numero mayor que 0"));
 		numberOfCrawlersTField.setColumns(10);
 		
-		JLabel lblNewLabel_2 = new JLabel(Messages.getString("OtherConfigPanel.lblNewLabel_2.text")); //$NON-NLS-1$ //$NON-NLS-1$
+		CustomLabel lblNewLabel_2 = new CustomLabel();
+		lblNewLabel_2.setName("OtherConfigPanel.lblNewLabel_2.text"); //$NON-NLS-1$ //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel_2);
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);

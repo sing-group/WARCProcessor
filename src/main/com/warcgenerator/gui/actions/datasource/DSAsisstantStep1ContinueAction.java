@@ -121,7 +121,7 @@ public class DSAsisstantStep1ContinueAction
 		
 		if (errors.length() != 0) {
 			ValidationDialog dialog =
-					ValidationDialog.getInstance(view.getMainFrame());
+					ValidationDialog.getInstance(view);
 			dialog.setErroresLabel("<html>" + errors.toString() + "</html>");
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);

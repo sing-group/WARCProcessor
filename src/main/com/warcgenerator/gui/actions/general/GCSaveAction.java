@@ -74,9 +74,10 @@ public class GCSaveAction
 		
 		if (errors.length() != 0) {
 			ValidationDialog dialog =
-					ValidationDialog.getInstance(view.getMainFrame());
+					ValidationDialog.getInstance(view);
 			dialog.setErroresLabel(errors.toString());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			view.updateUI();
 			dialog.setVisible(true);
 			
 			return false;

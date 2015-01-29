@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,7 +22,9 @@ import javax.swing.SwingConstants;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.generate.GCGenerateAction;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomJDialog;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
@@ -130,7 +131,9 @@ public class GenerateCorpusDialog extends CustomJDialog {
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		getContentPane().add(foot, BorderLayout.SOUTH);
 		
-		JButton btnNuevoOrigen = new JButton(Messages.getString("GenerateCorpusPanel.btnNuevoOrigen.text")); //$NON-NLS-1$
+		CustomButton btnNuevoOrigen = new CustomButton(); //$NON-NLS-1$
+		btnNuevoOrigen.setName("GenerateCorpusPanel.btnNuevoOrigen.text");
+		view.addLocaleChangeListener(btnNuevoOrigen);
 		btnNuevoOrigen.setIcon(new ImageIcon(GenerateCorpusDialog.class.getResource("/com/warcgenerator/gui/resources/img/OK.png")));
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -138,7 +141,9 @@ public class GenerateCorpusDialog extends CustomJDialog {
 			}
 		});
 		
-		JButton cancelBtn = new JButton(Messages.getString("GenerateCorpusDialog.btnNewButton.text_1")); //$NON-NLS-1$
+		CustomButton cancelBtn = new CustomButton();
+		cancelBtn.setName("GenerateCorpusDialog.btnNewButton.text_1"); //$NON-NLS-1$
+		view.addLocaleChangeListener(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -148,12 +153,14 @@ public class GenerateCorpusDialog extends CustomJDialog {
 		btnNuevoOrigen.setHorizontalAlignment(SwingConstants.RIGHT);
 		foot.add(btnNuevoOrigen);
 		
-		JLabel lblNewLabel = new JLabel(Messages.getString("GenerateCorpusPanel.lblNewLabel.text")); //$NON-NLS-1$ //$NON-NLS-1$
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("GenerateCorpusPanel.lblNewLabel.text"); //$NON-NLS-1$ //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
-		JLabel txtpnunOrigenDe = new JLabel();
-		txtpnunOrigenDe.setText(Messages.getString("GenerateCorpusPanel.txtpnunOrigenDe.text")); //$NON-NLS-1$ //$NON-NLS-1$
+		CustomLabel txtpnunOrigenDe = new CustomLabel();
+		txtpnunOrigenDe.setName("GenerateCorpusPanel.txtpnunOrigenDe.text"); //$NON-NLS-1$ //$NON-NLS-1$
 		
 		this.getRootPane().setDefaultButton(btnNuevoOrigen);
 		btnNuevoOrigen.requestFocusInWindow();

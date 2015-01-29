@@ -23,7 +23,9 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep3FinishAction;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
@@ -104,8 +106,9 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		gbc_lblNewLabel_1.gridy = 1;
 		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-		JLabel lblNewLabel = new JLabel(
-				Messages.getString("DSAssistantStep3Panel.lblNewLabel.text"));
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("DSAssistantStep3Panel.lblNewLabel.text");
+		view.addLocaleChangeListener(lblNewLabel);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -115,8 +118,9 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-		JLabel label_3 = new JLabel(
-				Messages.getString("DSAssistantStep3Panel.label_3.text"));
+		CustomLabel label_3 = new CustomLabel();
+		label_3.setName("DSAssistantStep3Panel.label_3.text");
+		view.addLocaleChangeListener(label_3);
 		GridBagConstraints gbc_label_3 = new GridBagConstraints();
 		gbc_label_3.anchor = GridBagConstraints.WEST;
 		gbc_label_3.gridwidth = 2;
@@ -142,15 +146,17 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 		flowLayout.setVgap(10);
 		panel_1.add(panel_3, BorderLayout.WEST);
 
-		JLabel lblPasoDe = new JLabel(
-				Messages.getString("DSAssistantStep3Panel.lblPasoDe.text"));
+		CustomLabel lblPasoDe = new CustomLabel();
+		lblPasoDe.setName("DSAssistantStep3Panel.lblPasoDe.text");
+		view.addLocaleChangeListener(lblPasoDe);
 		panel_3.add(lblPasoDe);
 
 		JPanel panel_4 = new JPanel();
 		panel_1.add(panel_4, BorderLayout.EAST);
 
-		JButton btnVolver = new JButton(
-				Messages.getString("DSAssistantStep3Panel.btnVolver.text"));
+		CustomButton btnVolver = new CustomButton();
+		btnVolver.setName("DSAssistantStep3Panel.btnVolver.text");
+		view.addLocaleChangeListener(btnVolver);
 		panel_4.add(btnVolver);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,8 +164,9 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 			}
 		});
 
-		JButton btnNewButton = new JButton(
-				Messages.getString("DSAssistantStep3Panel.btnNewButton.text"));
+		CustomButton btnNewButton = new CustomButton();
+		btnNewButton.setName("DSAssistantStep3Panel.btnNewButton.text");
+		view.addLocaleChangeListener(btnNewButton);
 		panel_4.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,8 +174,9 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 			}
 		});
 
-		JButton btnNuevoOrigen = new JButton(
-				Messages.getString("DSAssistantStep3Panel.btnNuevoOrigen.text"));
+		CustomButton btnNuevoOrigen = new CustomButton();
+		btnNuevoOrigen.setName("DSAssistantStep3Panel.btnNuevoOrigen.text");
+		view.addLocaleChangeListener(btnNuevoOrigen);
 		panel_4.add(btnNuevoOrigen);
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

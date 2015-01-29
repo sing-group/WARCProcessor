@@ -26,6 +26,7 @@ public class AboutOfAction extends AbstractAction {
 		// Start config dialog
 		aboutOfDialog = new AboutOfDialog(view);
 		aboutOfDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		view.updateUI();
 	}
 
 	@Override

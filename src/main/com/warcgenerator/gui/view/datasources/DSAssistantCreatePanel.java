@@ -15,14 +15,14 @@ import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSCreateAction;
-import com.warcgenerator.gui.util.Messages;
+import com.warcgenerator.gui.components.CustomButton;
+import com.warcgenerator.gui.components.CustomLabel;
+import com.warcgenerator.gui.components.CustomTextPane;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
@@ -41,8 +41,9 @@ public class DSAssistantCreatePanel extends JPanel {
 				WarcGeneratorGUI.class
 						.getResource("/com/warcgenerator/gui/resources/img/database.png"));
 
-		JButton btnNuevoOrigen = new JButton(
-				Messages.getString("DSAssistantCreatePanel.btnNuevoOrigen.text"));
+		CustomButton btnNuevoOrigen = new CustomButton();
+		btnNuevoOrigen.setName("DSAssistantCreatePanel.btnNuevoOrigen.text");
+		view.addLocaleChangeListener(btnNuevoOrigen);
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dsCreateAction.actionPerformed(e);
@@ -89,7 +90,9 @@ public class DSAssistantCreatePanel extends JPanel {
 		gbc_label.gridy = 1;
 		panel.add(label, gbc_label);
 
-		JLabel lblNewLabel = new JLabel(Messages.getString("DSAssistantCreatePanel.lblNewLabel.text"));
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("DSAssistantCreatePanel.lblNewLabel.text");
+		view.addLocaleChangeListener(lblNewLabel);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -128,7 +131,9 @@ public class DSAssistantCreatePanel extends JPanel {
 		gbc_verticalStrut_1.gridy = 0;
 		panel_2.add(verticalStrut_1, gbc_verticalStrut_1);
 
-		JTextPane txtpnunOrigenDe = new JTextPane();
+		CustomTextPane txtpnunOrigenDe = new CustomTextPane();
+		txtpnunOrigenDe.setName("DSAssistantCreatePanel.txtpnunOrigenDe.text");
+		view.addLocaleChangeListener(txtpnunOrigenDe);
 		GridBagConstraints gbc_txtpnunOrigenDe = new GridBagConstraints();
 		gbc_txtpnunOrigenDe.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtpnunOrigenDe.gridx = 1;
@@ -137,7 +142,5 @@ public class DSAssistantCreatePanel extends JPanel {
 		txtpnunOrigenDe.setEditable(false);
 		txtpnunOrigenDe.setOpaque(false);
 		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
-		txtpnunOrigenDe
-				.setText(Messages.getString("DSAssistantCreatePanel.txtpnunOrigenDe.text"));
 	}
 }

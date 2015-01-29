@@ -20,14 +20,18 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.warcgenerator.gui.components.CustomJDialog;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.util.Messages;
+import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
 public class ValidationDialog extends CustomJDialog {
 	private static ValidationDialog dialog;
 	private final JPanel contentPanel = new JPanel();
-	private JLabel erroresLabel;
-	private JLabel lblNewLabel;
+	private CustomLabel erroresLabel;
+	private CustomLabel lblNewLabel;
+	@SuppressWarnings("unused")
+	private WarcGeneratorGUI view;
 
 	/**
 	 * Launch the application.
@@ -42,9 +46,9 @@ public class ValidationDialog extends CustomJDialog {
 		}
 	}
 
-	public static ValidationDialog getInstance(JFrame frame) {
+	public static ValidationDialog getInstance(WarcGeneratorGUI view) {
 		if (dialog == null) {
-			dialog = new ValidationDialog(frame);
+			dialog = new ValidationDialog(view);
 		}
 		return dialog;
 	}
@@ -52,8 +56,9 @@ public class ValidationDialog extends CustomJDialog {
 	/**
 	 * Create the dialog.
 	 */
-	private ValidationDialog(JFrame frame) {
-		super(frame, true);
+	private ValidationDialog(WarcGeneratorGUI view) {
+		super(view.getMainFrame(), true);
+		this.view = view;
 		setTitle("Existen errores");
 		setBounds(100, 100, 410, 186);
 		getContentPane().setLayout(new BorderLayout());
@@ -68,8 +73,10 @@ public class ValidationDialog extends CustomJDialog {
 				Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			lblNewLabel = new JLabel(
-					Messages.getString("ValidationDialog.lblNewLabel.text"));
+			lblNewLabel = new CustomLabel();
+			lblNewLabel.setName("ValidationDialog.lblNewLabel.text");
+			view.addLocaleChangeListener(lblNewLabel);
+			
 		}
 		{
 			Component horizontalStrut = Box.createHorizontalStrut(20);
@@ -106,8 +113,9 @@ public class ValidationDialog extends CustomJDialog {
 		gbc_lblNewLabel.gridy = 1;
 		contentPanel.add(lblNewLabel, gbc_lblNewLabel);
 		{
-			erroresLabel = new JLabel(
-					Messages.getString("ValidationDialog.erroresLabel.text"));
+			erroresLabel = new CustomLabel();
+			erroresLabel.setName("ValidationDialog.erroresLabel.text");
+			view.addLocaleChangeListener(erroresLabel);
 			erroresLabel.setVerticalAlignment(SwingConstants.TOP);
 		}
 		GridBagConstraints gbc_erroresLabel = new GridBagConstraints();

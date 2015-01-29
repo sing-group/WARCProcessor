@@ -170,7 +170,7 @@ public class DSAsisstantStep2ContinueAction
 				
 		if (errors.length() != 0) {
 			ValidationDialog dialog =
-					ValidationDialog.getInstance(view.getMainFrame());
+					ValidationDialog.getInstance(view);
 			dialog.setErroresLabel(errors.toString());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);

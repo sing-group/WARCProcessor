@@ -32,9 +32,10 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 		
 		JComponent c = (JComponent)super.getTreeCellRendererComponent(
 				tree, value, selected, expanded, isLeaf, row, focused);
-
+		
 		if (value instanceof CustomTreeNode) {
 			CustomTreeNode customTreeNode = (CustomTreeNode) value;
+			
 			if (customTreeNode.getType().equals(
 					CustomTreeNodeType.DATASOURCE_NODE)) {
 				DataSourceConfig dsConfig = (DataSourceConfig) customTreeNode

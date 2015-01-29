@@ -3,6 +3,8 @@ package com.warcgenerator.gui.components;
 import javax.swing.Action;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.warcgenerator.gui.util.Messages;
+
 @SuppressWarnings("serial")
 public class CustomTreeNode extends DefaultMutableTreeNode {
 	private Integer id;
@@ -53,5 +55,9 @@ public class CustomTreeNode extends DefaultMutableTreeNode {
 
 	public void setReferencedObject(Object referencedObject) {
 		this.referencedObject = referencedObject;
+	}
+	
+	public String toString() {
+		return Messages.getString((String)this.getUserObject());
 	}
 }

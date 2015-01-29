@@ -21,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -30,6 +29,9 @@ import com.warcgenerator.gui.actions.datasource.DSEnableAction;
 import com.warcgenerator.gui.actions.datasource.DSModifyAction;
 import com.warcgenerator.gui.actions.datasource.DSRemoveAction;
 import com.warcgenerator.gui.actions.datasource.OpenInputFolderAction;
+import com.warcgenerator.gui.components.CustomButton;
+import com.warcgenerator.gui.components.CustomLabel;
+import com.warcgenerator.gui.components.CustomTextPane;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
@@ -107,8 +109,9 @@ public class DSDetailPanel extends JPanel {
 		gbc_lblNewLabel_1.gridy = 1;
 		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-		JLabel lblNewLabel = new JLabel(
-				Messages.getString("DSDetailPanel.lblNewLabel.text")); //$NON-NLS-1$
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("DSDetailPanel.lblNewLabel.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -118,7 +121,9 @@ public class DSDetailPanel extends JPanel {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-		JTextPane txtpnunOrigenDe = new JTextPane();
+		CustomTextPane txtpnunOrigenDe = new CustomTextPane();
+		txtpnunOrigenDe.setName("DSDetailPanel.txtpnunOrigenDe.text");
+		view.addLocaleChangeListener(txtpnunOrigenDe);
 		GridBagConstraints gbc_txtpnunOrigenDe = new GridBagConstraints();
 		gbc_txtpnunOrigenDe.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtpnunOrigenDe.anchor = GridBagConstraints.WEST;
@@ -130,8 +135,6 @@ public class DSDetailPanel extends JPanel {
 		txtpnunOrigenDe.setEditable(false);
 		txtpnunOrigenDe.setOpaque(false);
 		txtpnunOrigenDe.setBackground(new Color(255, 255, 255, 0));
-		txtpnunOrigenDe.setText(Messages
-				.getString("DSDetailPanel.txtpnunOrigenDe.text")); //$NON-NLS-1$
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1 = new GridBagConstraints();
@@ -151,8 +154,9 @@ public class DSDetailPanel extends JPanel {
 		panel_3.setBorder(null);
 		panel_1.add(panel_3, BorderLayout.WEST);
 
-		JButton btnNewButton = new JButton(
-				Messages.getString("DSDetailPanel.btnNewButton.text"));
+		CustomButton btnNewButton = new CustomButton();
+		btnNewButton.setName("DSDetailPanel.btnNewButton.text");
+		view.addLocaleChangeListener(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openInputFolderAction.actionPerformed(null);
@@ -172,12 +176,14 @@ public class DSDetailPanel extends JPanel {
 				Messages.getString("DSDetailPanel.chckbxEnableDS.text"));
 		panel_4.add(chckbxEnableDS);
 
-		JButton removeBtn = new JButton(
-				Messages.getString("DSDetailPanel.removeBtn.text"));
+		CustomButton removeBtn = new CustomButton();
+		removeBtn.setName("DSDetailPanel.removeBtn.text");
+		view.addLocaleChangeListener(removeBtn);
 		panel_4.add(removeBtn);
 
-		JButton btnNuevoOrigen = new JButton(
-				Messages.getString("DSDetailPanel.btnNuevoOrigen.text"));
+		CustomButton btnNuevoOrigen = new CustomButton();
+		btnNuevoOrigen.setName("DSDetailPanel.btnNuevoOrigen.text");
+		view.addLocaleChangeListener(btnNuevoOrigen);
 		panel_4.add(btnNuevoOrigen);
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

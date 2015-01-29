@@ -6,8 +6,12 @@ import java.awt.Point;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import com.warcgenerator.gui.util.Messages;
+import com.warcgenerator.gui.util.locale.LocaleChangeEvent;
+import com.warcgenerator.gui.util.locale.LocaleChangeListener;
+
 @SuppressWarnings("serial")
-public class CustomJDialog extends JDialog {
+public class CustomJDialog extends JDialog implements LocaleChangeListener {
 	public CustomJDialog(JFrame frame, boolean modal) {
 		super(frame, modal);
 		setResizable(false);
@@ -51,4 +55,9 @@ public class CustomJDialog extends JDialog {
 		    setBounds(loc.x, loc.y, size.width, size.height);
 		}
 	  }
+
+	@Override
+	public void localeChanged(LocaleChangeEvent e) {
+		this.setTitle(Messages.getString(this.getName()));
+	}
 }

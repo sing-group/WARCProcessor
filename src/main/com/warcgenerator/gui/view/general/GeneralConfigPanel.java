@@ -28,7 +28,10 @@ import javax.swing.event.ChangeListener;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.general.GCSaveAction;
 import com.warcgenerator.gui.actions.general.GCSaveAndGenerateAction;
+import com.warcgenerator.gui.components.CustomButton;
+import com.warcgenerator.gui.components.CustomCheckBox;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.validator.NaturalNumberAndZeroValidator;
@@ -43,24 +46,24 @@ public class GeneralConfigPanel extends CustomJPanel {
 	private JRadioButton spamHamRatioRBtn;
 	private JRadioButton quantityEnabledRBtn;
 	private JSlider slider;
-	private JCheckBox onlyActiveSitesEnabledCBox;
-	private JCheckBox downloadAgainEnabledCBox;
+	private CustomCheckBox onlyActiveSitesEnabledCBox;
+	private CustomCheckBox downloadAgainEnabledCBox;
 	private JLabel lblNewLabel_3;
-	private JButton saveAndGenerateBtn;
-	private JButton saveBtn;
+	private CustomButton saveAndGenerateBtn;
+	private CustomButton saveBtn;
 	private GCSaveAndGenerateAction gcSaveAndGenerateAction;
 	private GCSaveAction gcSaveAction;
-	
+
 	private IAppLogic logic;
 	private WarcGeneratorGUI view;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
-	private JLabel lblSeleccioneLosParmetros;
+	private CustomLabel lblSeleccioneLosParmetros;
 	private Component horizontalStrut;
 	private Component verticalStrut;
 	private Component horizontalStrut_2;
-		
+
 	/**
 	 * Create the panel.
 	 */
@@ -75,8 +78,10 @@ public class GeneralConfigPanel extends CustomJPanel {
 		
 		setBackground(new Color(230, 230, 250));
 		
-		saveAndGenerateBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNuevoOrigen.text")); //$NON-NLS-1$
-	
+		saveAndGenerateBtn = new CustomButton();
+		saveAndGenerateBtn.setName("GeneralConfigPanel.btnNuevoOrigen.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(saveAndGenerateBtn);
+		
 		gcSaveAndGenerateAction =
 				new GCSaveAndGenerateAction();
 						
@@ -93,7 +98,9 @@ public class GeneralConfigPanel extends CustomJPanel {
 		 //Group the radio buttons.
 	    ButtonGroup group = new ButtonGroup();
 		
-		saveBtn = new JButton(Messages.getString("GeneralConfigPanel.btnNewButton.text")); //$NON-NLS-1$
+		saveBtn = new CustomButton();
+		saveBtn.setName("GeneralConfigPanel.btnNewButton.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(saveBtn);
 		
 		gcSaveAction = new GCSaveAction();
 		
@@ -138,7 +145,9 @@ public class GeneralConfigPanel extends CustomJPanel {
 		gbc_lblNewLabel_3.gridy = 1;
 		panel.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
-		JLabel lblNewLabel = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel.text")); //$NON-NLS-1$
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("GeneralConfigPanel.lblNewLabel.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -148,7 +157,9 @@ public class GeneralConfigPanel extends CustomJPanel {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
-		lblSeleccioneLosParmetros = new JLabel(Messages.getString("GeneralConfigPanel.lblSeleccioneLosParmetros.text")); //$NON-NLS-1$
+		lblSeleccioneLosParmetros = new CustomLabel();
+		lblSeleccioneLosParmetros.setName("GeneralConfigPanel.lblSeleccioneLosParmetros.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblSeleccioneLosParmetros);
 		GridBagConstraints gbc_lblSeleccioneLosParmetros = new GridBagConstraints();
 		gbc_lblSeleccioneLosParmetros.anchor = GridBagConstraints.WEST;
 		gbc_lblSeleccioneLosParmetros.gridwidth = 2;
@@ -180,7 +191,9 @@ public class GeneralConfigPanel extends CustomJPanel {
 		gbc_horizontalStrut_2.gridy = 0;
 		panel_2.add(horizontalStrut_2, gbc_horizontalStrut_2);
 		
-		JLabel lblNewLabel_1 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_1.text")); //$NON-NLS-1$
+		CustomLabel lblNewLabel_1 = new CustomLabel();
+		lblNewLabel_1.setName("GeneralConfigPanel.lblNewLabel_1.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel_1);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
@@ -242,7 +255,9 @@ public class GeneralConfigPanel extends CustomJPanel {
 			}
 		});
 		
-		JLabel lblNewLabel_2 = new JLabel(Messages.getString("GeneralConfigPanel.lblNewLabel_2.text")); //$NON-NLS-1$
+		CustomLabel lblNewLabel_2 = new CustomLabel();
+		lblNewLabel_2.setName("GeneralConfigPanel.lblNewLabel_2.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel_2);
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 0);
@@ -277,7 +292,9 @@ public class GeneralConfigPanel extends CustomJPanel {
 				new NaturalNumberAndZeroValidator(view.getMainFrame(), spamQuantityTField, Messages.getString("GeneralConfigPanel.spamQuantityTField.error")));
 		spamQuantityTField.setColumns(10);
 		
-		onlyActiveSitesEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox.text")); //$NON-NLS-1$
+		onlyActiveSitesEnabledCBox = new CustomCheckBox();
+		onlyActiveSitesEnabledCBox.setName("GeneralConfigPanel.chckbxNewCheckBox.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(onlyActiveSitesEnabledCBox);
 		GridBagConstraints gbc_onlyActiveSitesEnabledCBox = new GridBagConstraints();
 		gbc_onlyActiveSitesEnabledCBox.gridwidth = 4;
 		gbc_onlyActiveSitesEnabledCBox.anchor = GridBagConstraints.EAST;
@@ -285,7 +302,10 @@ public class GeneralConfigPanel extends CustomJPanel {
 		gbc_onlyActiveSitesEnabledCBox.gridx = 0;
 		gbc_onlyActiveSitesEnabledCBox.gridy = 4;
 		panel_2.add(onlyActiveSitesEnabledCBox, gbc_onlyActiveSitesEnabledCBox);
-		downloadAgainEnabledCBox = new JCheckBox(Messages.getString("GeneralConfigPanel.chckbxNewCheckBox_1.text")); //$NON-NLS-1$
+		downloadAgainEnabledCBox = new CustomCheckBox();
+		downloadAgainEnabledCBox.setName(
+				"GeneralConfigPanel.chckbxNewCheckBox_1.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(downloadAgainEnabledCBox);
 		downloadAgainEnabledCBox.setVerticalAlignment(SwingConstants.TOP);
 		GridBagConstraints gbc_downloadAgainEnabledCBox = new GridBagConstraints();
 		gbc_downloadAgainEnabledCBox.gridwidth = 3;
@@ -296,13 +316,12 @@ public class GeneralConfigPanel extends CustomJPanel {
 		panel_2.add(downloadAgainEnabledCBox, gbc_downloadAgainEnabledCBox);
 		
 	}
-	
+
 	public void save() {
-		gcSaveAction.init(logic, view, 
-				GeneralConfigPanel.this);
+		gcSaveAction.init(logic, view, GeneralConfigPanel.this);
 		gcSaveAction.actionPerformed(null);
 	}
-	
+
 	public JFormattedTextField getNumSitesTField() {
 		return numSitesTField;
 	}
@@ -315,7 +334,8 @@ public class GeneralConfigPanel extends CustomJPanel {
 		return spamHamRationValueTField;
 	}
 
-	public void setSpamHamRationValueTField(JFormattedTextField spamHamRationValueTField) {
+	public void setSpamHamRationValueTField(
+			JFormattedTextField spamHamRationValueTField) {
 		this.spamHamRationValueTField = spamHamRationValueTField;
 	}
 
@@ -326,7 +346,7 @@ public class GeneralConfigPanel extends CustomJPanel {
 	public void setSpamQuantityTField(JFormattedTextField spamQuantityTField) {
 		this.spamQuantityTField = spamQuantityTField;
 	}
-	
+
 	public JRadioButton getSpamHamRatioRBtn() {
 		return spamHamRatioRBtn;
 	}
@@ -334,7 +354,7 @@ public class GeneralConfigPanel extends CustomJPanel {
 	public void setSpamHamRatioRBtn(JRadioButton spamHamRatioRBtn) {
 		this.spamHamRatioRBtn = spamHamRatioRBtn;
 	}
-	
+
 	public JRadioButton getQuantityEnabledRBtn() {
 		return quantityEnabledRBtn;
 	}
@@ -342,7 +362,7 @@ public class GeneralConfigPanel extends CustomJPanel {
 	public void setQuantityEnabledRBtn(JRadioButton quantityEnabledRBtn) {
 		this.quantityEnabledRBtn = quantityEnabledRBtn;
 	}
-	
+
 	public JSlider getSlider() {
 		return slider;
 	}
@@ -350,12 +370,13 @@ public class GeneralConfigPanel extends CustomJPanel {
 	public void setSlider(JSlider slider) {
 		this.slider = slider;
 	}
-	
+
 	public JCheckBox getOnlyActiveSitesEnabledCBox() {
 		return onlyActiveSitesEnabledCBox;
 	}
 
-	public void setOnlyActiveSitesEnabledCBox(JCheckBox onlyActiveSitesEnabledCBox) {
+	public void setOnlyActiveSitesEnabledCBox(
+			CustomCheckBox onlyActiveSitesEnabledCBox) {
 		this.onlyActiveSitesEnabledCBox = onlyActiveSitesEnabledCBox;
 	}
 
@@ -363,7 +384,7 @@ public class GeneralConfigPanel extends CustomJPanel {
 		return downloadAgainEnabledCBox;
 	}
 
-	public void setDownloadAgainEnabledCBox(JCheckBox downloadAgainEnabledCBox) {
+	public void setDownloadAgainEnabledCBox(CustomCheckBox downloadAgainEnabledCBox) {
 		this.downloadAgainEnabledCBox = downloadAgainEnabledCBox;
 	}
 

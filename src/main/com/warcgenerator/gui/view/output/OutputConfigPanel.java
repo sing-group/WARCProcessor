@@ -24,7 +24,9 @@ import javax.swing.SwingConstants;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.output.OutputSaveAction;
 import com.warcgenerator.gui.actions.output.OutputSaveAndGenerateAction;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.validator.NotNullOREmptyValidator;
@@ -68,16 +70,18 @@ public class OutputConfigPanel extends CustomJPanel {
 				WarcGeneratorGUI.class
 						.getResource("/com/warcgenerator/gui/resources/img/save.png"));
 
-		JButton saveAndGenerateBtn = new JButton(
-				Messages.getString("OutputConfigPanel.saveAndGenerateBtn.text")); //$NON-NLS-1$
+		CustomButton saveAndGenerateBtn = new CustomButton();
+		saveAndGenerateBtn.setName("OutputConfigPanel.saveAndGenerateBtn.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(saveAndGenerateBtn);
 		saveAndGenerateBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				outputSaveAndGenerateAction.actionPerformed(e);
 			}
 		});
 
-		JButton saveBtn = new JButton(
-				Messages.getString("GeneralConfigPanel.btnNewButton.text")); //$NON-NLS-1$
+		CustomButton saveBtn = new CustomButton();
+		saveBtn.setName("GeneralConfigPanel.btnNewButton.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(saveBtn);
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				save();
@@ -120,8 +124,9 @@ public class OutputConfigPanel extends CustomJPanel {
 		gbc_lblNewLabel_3.gridy = 1;
 		panel.add(lblNewLabel_3, gbc_lblNewLabel_3);
 
-		JLabel lblNewLabel = new JLabel(
-				Messages.getString("OutputConfigPanel.lblNewLabel.text")); //$NON-NLS-1$
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("OutputConfigPanel.lblNewLabel.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -131,8 +136,9 @@ public class OutputConfigPanel extends CustomJPanel {
 		gbc_lblNewLabel.gridy = 1;
 		panel.add(lblNewLabel, gbc_lblNewLabel);
 
-		JLabel lblConfigureLasCarpetas = new JLabel(
-				Messages.getString("OutputConfigPanel.lblConfigureLasCarpetas.text")); //$NON-NLS-1$
+		CustomLabel lblConfigureLasCarpetas = new CustomLabel();
+		lblConfigureLasCarpetas.setName("OutputConfigPanel.lblConfigureLasCarpetas.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblConfigureLasCarpetas);
 		lblConfigureLasCarpetas.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblConfigureLasCarpetas = new GridBagConstraints();
 		gbc_lblConfigureLasCarpetas.gridwidth = 2;
@@ -165,8 +171,9 @@ public class OutputConfigPanel extends CustomJPanel {
 		gbc_horizontalStrut.gridy = 0;
 		panel_2.add(horizontalStrut, gbc_horizontalStrut);
 
-		JLabel lblNewLabel_1 = new JLabel(
-				Messages.getString("OutputConfigPanel.lblNewLabel_1.text")); //$NON-NLS-1$ //$NON-NLS-1$
+		CustomLabel lblNewLabel_1 = new CustomLabel();
+		lblNewLabel_1.setName("OutputConfigPanel.lblNewLabel_1.text"); //$NON-NLS-1$ //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel_1);
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.fill = GridBagConstraints.BOTH;
@@ -185,8 +192,9 @@ public class OutputConfigPanel extends CustomJPanel {
 		gbc_outputDirTField.gridy = 1;
 		panel_2.add(outputDirTField, gbc_outputDirTField);
 
-		JButton examineBtn = new JButton(
-				Messages.getString("OutputConfigPanel.examineBtn.text")); //$NON-NLS-1$
+		CustomButton examineBtn = new CustomButton();
+		examineBtn.setName("OutputConfigPanel.examineBtn.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(examineBtn);
 		examineBtn.setIcon(new ImageIcon(OutputConfigPanel.class
 				.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 		examineBtn.addActionListener(new ActionListener() {
@@ -206,8 +214,9 @@ public class OutputConfigPanel extends CustomJPanel {
 		gbc_examineBtn.gridy = 1;
 		panel_2.add(examineBtn, gbc_examineBtn);
 
-		JLabel lblNewLabel_2 = new JLabel(
-				Messages.getString("OutputConfigPanel.lblNewLabel_2.text")); //$NON-NLS-1$
+		CustomLabel lblNewLabel_2 = new CustomLabel();
+		lblNewLabel_2.setName("OutputConfigPanel.lblNewLabel_2.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblNewLabel_2);
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.fill = GridBagConstraints.BOTH;
@@ -228,8 +237,9 @@ public class OutputConfigPanel extends CustomJPanel {
 		gbc_spamDirTField.gridy = 2;
 		panel_2.add(spamDirTField, gbc_spamDirTField);
 
-		JLabel lblHam = new JLabel(
-				Messages.getString("OutputConfigPanel.lblHam.text")); //$NON-NLS-1$
+		CustomLabel lblHam = new CustomLabel();
+		lblHam.setName("OutputConfigPanel.lblHam.text"); //$NON-NLS-1$
+		view.addLocaleChangeListener(lblHam);
 		lblHam.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblHam = new GridBagConstraints();
 		gbc_lblHam.fill = GridBagConstraints.BOTH;

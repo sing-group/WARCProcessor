@@ -13,18 +13,18 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.components.CustomJDialog;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
-import javax.swing.JPanel;
-
 @SuppressWarnings("serial")
 public class AboutOfDialog extends CustomJDialog {
-	private JLabel stateLbl;
+	private CustomLabel stateLbl;
 	@SuppressWarnings("unused")
 	private WarcGeneratorGUI view;
 	private JButton okBtn;
@@ -127,9 +127,9 @@ public class AboutOfDialog extends CustomJDialog {
 		gbc_horizontalBox.gridy = 4;
 		panelCenter.add(horizontalBox, gbc_horizontalBox);
 
-		JLabel lblGenerandoCorpusEn = new JLabel(
-				Messages.getString("AboutOfDialog.lblGenerandoCorpusEn.text")
-						+ Constants.APP_VERSION);
+		CustomLabel lblGenerandoCorpusEn = new CustomLabel();
+		lblGenerandoCorpusEn.setName("AboutOfDialog.lblGenerandoCorpusEn.text");
+		view.addLocaleChangeListener(lblGenerandoCorpusEn);
 		GridBagConstraints gbc_lblGenerandoCorpusEn = new GridBagConstraints();
 		gbc_lblGenerandoCorpusEn.insets = new Insets(0, 0, 5, 5);
 		gbc_lblGenerandoCorpusEn.anchor = GridBagConstraints.WEST;
@@ -144,8 +144,11 @@ public class AboutOfDialog extends CustomJDialog {
 		gbc_horizontalStrut_1.gridy = 6;
 		panelCenter.add(horizontalStrut_1, gbc_horizontalStrut_1);
 
-		JLabel lblDirectorDeProyecto = new JLabel(
-				Messages.getString("AboutOfDialog.lblDirectorDeProyecto.text"));
+		CustomLabel lblDirectorDeProyecto = new CustomLabel();
+		lblDirectorDeProyecto
+				.setName("AboutOfDialog.lblDirectorDeProyecto.text");
+		view.addLocaleChangeListener(lblDirectorDeProyecto);
+
 		GridBagConstraints gbc_lblDirectorDeProyecto = new GridBagConstraints();
 		gbc_lblDirectorDeProyecto.anchor = GridBagConstraints.WEST;
 		gbc_lblDirectorDeProyecto.insets = new Insets(0, 0, 5, 5);
@@ -162,8 +165,10 @@ public class AboutOfDialog extends CustomJDialog {
 		gbc_lblJosRamnMndez.gridy = 7;
 		panelCenter.add(lblJosRamnMndez, gbc_lblJosRamnMndez);
 
-		JLabel lblSubdirectorDeProyecto = new JLabel(
-				Messages.getString("AboutOfDialog.lblSubdirectorDeProyecto.text"));
+		CustomLabel lblSubdirectorDeProyecto = new CustomLabel();
+		lblSubdirectorDeProyecto
+				.setName("AboutOfDialog.lblSubdirectorDeProyecto.text");
+		view.addLocaleChangeListener(lblSubdirectorDeProyecto);
 		GridBagConstraints gbc_lblSubdirectorDeProyecto = new GridBagConstraints();
 		gbc_lblSubdirectorDeProyecto.anchor = GridBagConstraints.WEST;
 		gbc_lblSubdirectorDeProyecto.insets = new Insets(0, 0, 5, 5);
@@ -179,7 +184,9 @@ public class AboutOfDialog extends CustomJDialog {
 		gbc_lblDavidRuanoOrds.gridy = 8;
 		panelCenter.add(lblDavidRuanoOrds, gbc_lblDavidRuanoOrds);
 
-		stateLbl = new JLabel(Messages.getString("AboutOfDialog.stateLbl.text"));
+		stateLbl = new CustomLabel();
+		stateLbl.setName("AboutOfDialog.stateLbl.text");
+		view.addLocaleChangeListener(stateLbl);
 		GridBagConstraints gbc_stateLbl = new GridBagConstraints();
 		gbc_stateLbl.anchor = GridBagConstraints.WEST;
 		gbc_stateLbl.insets = new Insets(0, 0, 5, 5);

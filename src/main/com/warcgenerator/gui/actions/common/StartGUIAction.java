@@ -59,6 +59,9 @@ public class StartGUIAction extends AbstractAction {
 					window);
 			initConfigDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		}
+
+		// Refresh locals and IU components
+		window.updateUI();
 	}
 
 	@Override

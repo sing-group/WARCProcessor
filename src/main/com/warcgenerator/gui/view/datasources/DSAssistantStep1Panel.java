@@ -28,7 +28,9 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep1ContinueAction;
 import com.warcgenerator.gui.common.Constants;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.validator.NotNullOREmptyValidator;
@@ -104,8 +106,9 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		gbc_label.gridy = 1;
 		panel.add(label, gbc_label);
 
-		JLabel lblNewLabel = new JLabel(
-				Messages.getString("DSAssistantStep1Panel.lblNewLabel.text"));
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("DSAssistantStep1Panel.lblNewLabel.text");
+		view.addLocaleChangeListener(lblNewLabel);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -115,8 +118,9 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-		JLabel label_2 = new JLabel(
-				Messages.getString("DSAssistantStep1Panel.label_2.text"));
+		JLabel label_2 = new JLabel();
+		label_2.setName("DSAssistantStep1Panel.label_2.text");
+		view.addLocaleChangeListener(lblNewLabel);
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
 		gbc_label_2.anchor = GridBagConstraints.WEST;
 		gbc_label_2.gridwidth = 2;
@@ -133,16 +137,18 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		flowLayout.setVgap(10);
 		panel_1.add(panel_3, BorderLayout.WEST);
 
-		JLabel lblPasoDe = new JLabel(
-				Messages.getString("DSAssistantStep1Panel.lblPasoDe.text"));
+		CustomLabel lblPasoDe = new CustomLabel();
+		lblPasoDe.setName("DSAssistantStep1Panel.lblPasoDe.text");
+		view.addLocaleChangeListener(lblPasoDe);
 		panel_3.add(lblPasoDe);
 		lblPasoDe.setHorizontalAlignment(SwingConstants.LEFT);
 
 		JPanel panel_4 = new JPanel();
 		panel_1.add(panel_4, BorderLayout.EAST);
 
-		JButton btnNewButton = new JButton(
-				Messages.getString("DSAssistantStep1Panel.btnNewButton.text"));
+		CustomButton btnNewButton = new CustomButton();
+		btnNewButton.setName("DSAssistantStep1Panel.btnNewButton.text");
+		view.addLocaleChangeListener(btnNewButton);
 		panel_4.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -150,8 +156,9 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 			}
 		});
 
-		JButton btnNuevoOrigen = new JButton(
-				Messages.getString("DSAssistantStep1Panel.btnNuevoOrigen.text"));
+		CustomButton btnNuevoOrigen = new CustomButton();
+		btnNuevoOrigen.setName("DSAssistantStep1Panel.btnNuevoOrigen.text");
+		view.addLocaleChangeListener(btnNuevoOrigen);
 		panel_4.add(btnNuevoOrigen);
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -198,8 +205,9 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 				.getString("DSAssistantStep1Panel.nameJTField.verifier.text")));
 		nameJTField.setColumns(10);
 
-		JLabel lblNewLabel_2 = new JLabel(
-				Messages.getString("DSAssistantStep1Panel.lblNewLabel_2.text"));
+		CustomLabel lblNewLabel_2 = new CustomLabel();
+		lblNewLabel_2.setName("DSAssistantStep1Panel.lblNewLabel_2.text");
+		view.addLocaleChangeListener(lblNewLabel_2);
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
@@ -217,8 +225,9 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		folderJTField.setEditable(false);
 		folderJTField.setColumns(10);
 
-		JButton btnBuscar = new JButton(
-				Messages.getString("DSAssistantStep1Panel.btnBuscar.text"));
+		CustomButton btnBuscar = new CustomButton();
+		btnBuscar.setName("DSAssistantStep1Panel.btnBuscar.text");
+		view.addLocaleChangeListener(btnBuscar);
 		btnBuscar.setIcon(new ImageIcon(DSAssistantStep1Panel.class
 				.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 		GridBagConstraints gbc_btnBuscar = new GridBagConstraints();
@@ -248,8 +257,9 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 			}
 		});
 
-		JLabel lblNewLabel_3 = new JLabel(
-				Messages.getString("DSAssistantStep1Panel.lblNewLabel_3.text"));
+		CustomLabel lblNewLabel_3 = new CustomLabel();
+		lblNewLabel_3.setName("DSAssistantStep1Panel.lblNewLabel_3.text");
+		view.addLocaleChangeListener(lblNewLabel_3);
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 0, 5);

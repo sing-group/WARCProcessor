@@ -28,9 +28,10 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.common.RecentFileCBItem;
 import com.warcgenerator.gui.actions.common.SearchInitConfigAction;
 import com.warcgenerator.gui.actions.file.LoadRecentConfigAction;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomComboBoxRenderer;
 import com.warcgenerator.gui.components.CustomJDialog;
-import com.warcgenerator.gui.util.Messages;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
@@ -85,7 +86,8 @@ public class InitConfigDialog extends CustomJDialog {
 		this.logic = logic;
 		this.view = view;
 
-		setTitle("Cargar configuracion");
+		setName("InitConfigDialog.title.text");
+		view.addLocaleChangeListener(this);
 		setBounds(100, 100, 449, 174);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -128,8 +130,9 @@ public class InitConfigDialog extends CustomJDialog {
 			contentPanel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		}
 		{
-			JLabel lblNewLabel = new JLabel(
-					Messages.getString("InitConfigDialog.lblNewLabel.text"));
+			CustomLabel lblNewLabel = new CustomLabel();
+			lblNewLabel.setName("InitConfigDialog.lblNewLabel.text");
+			view.addLocaleChangeListener(lblNewLabel);
 			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
@@ -139,8 +142,10 @@ public class InitConfigDialog extends CustomJDialog {
 			contentPanel.add(lblNewLabel, gbc_lblNewLabel);
 		}
 		{
-			JLabel lblDetermineLaConfiguracin = new JLabel(
-					Messages.getString("InitConfigDialog.lblDetermineLaConfiguracin.text"));
+			CustomLabel lblDetermineLaConfiguracin = new CustomLabel();
+			lblDetermineLaConfiguracin
+					.setName("InitConfigDialog.lblDetermineLaConfiguracin.text");
+			view.addLocaleChangeListener(lblDetermineLaConfiguracin);
 			GridBagConstraints gbc_lblDetermineLaConfiguracin = new GridBagConstraints();
 			gbc_lblDetermineLaConfiguracin.gridwidth = 4;
 			gbc_lblDetermineLaConfiguracin.anchor = GridBagConstraints.WEST;
@@ -174,8 +179,9 @@ public class InitConfigDialog extends CustomJDialog {
 			gbc_configFilesList.gridy = 4;
 			contentPanel.add(configFilesCBox, gbc_configFilesList);
 		}
-		JButton examineBtn = new JButton(
-				Messages.getString("InitConfigDialog.examineBtn.text"));
+		CustomButton examineBtn = new CustomButton();
+		examineBtn.setName("InitConfigDialog.examineBtn.text");
+		view.addLocaleChangeListener(examineBtn);
 		examineBtn.setIcon(new ImageIcon(InitConfigDialog.class
 				.getResource("/com/warcgenerator/gui/resources/img/find.png")));
 		examineBtn.addActionListener(new ActionListener() {

@@ -29,9 +29,10 @@ import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantLangBackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantLangContinueAction;
 import com.warcgenerator.gui.components.CountryRenderer;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.components.SortedListModel;
-import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class DSAssistantLangPanel extends CustomJPanel {
@@ -113,8 +114,9 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		gbc_label.gridy = 1;
 		panel.add(label, gbc_label);
 
-		JLabel lblNewLabel = new JLabel(
-				Messages.getString("DSAssistantLangPanel.lblNewLabel.text"));
+		CustomLabel lblNewLabel = new CustomLabel();
+		lblNewLabel.setName("DSAssistantLangPanel.lblNewLabel.text");
+		view.addLocaleChangeListener(lblNewLabel);
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
@@ -124,8 +126,9 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-		JLabel label_2 = new JLabel(
-				Messages.getString("DSAssistantLangPanel.label_2.text"));
+		CustomLabel label_2 = new CustomLabel();
+		label_2.setName("DSAssistantLangPanel.label_2.text");
+		view.addLocaleChangeListener(label_2);
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
 		gbc_label_2.anchor = GridBagConstraints.WEST;
 		gbc_label_2.gridwidth = 2;
@@ -141,15 +144,17 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		panel_1.add(panel_3, BorderLayout.WEST);
 		panel_3.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
 
-		JLabel lblPasoDe = new JLabel(
-				Messages.getString("DSAssistantLangPanel.lblPasoDe.text"));
+		CustomLabel lblPasoDe = new CustomLabel();
+		lblPasoDe.setName("DSAssistantLangPanel.lblPasoDe.text");
+		view.addLocaleChangeListener(lblPasoDe);
 		panel_3.add(lblPasoDe);
 
 		JPanel panel_4 = new JPanel();
 		panel_1.add(panel_4, BorderLayout.EAST);
 
-		JButton btnVolver = new JButton(
-				Messages.getString("DSAssistantLangPanel.btnVolver.text"));
+		CustomButton btnVolver = new CustomButton();
+		btnVolver.setName("DSAssistantLangPanel.btnVolver.text");
+		view.addLocaleChangeListener(btnVolver);
 		panel_4.add(btnVolver);
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -157,12 +162,14 @@ public class DSAssistantLangPanel extends CustomJPanel {
 			}
 		});
 
-		JButton btnNewButton = new JButton(
-				Messages.getString("DSAssistantLangPanel.btnNewButton.text"));
+		CustomButton btnNewButton = new CustomButton();
+		btnNewButton.setName("DSAssistantLangPanel.btnNewButton.text");
+		view.addLocaleChangeListener(btnNewButton);
 		panel_4.add(btnNewButton);
 
-		JButton btnNuevoOrigen = new JButton(
-				Messages.getString("DSAssistantLangPanel.btnNuevoOrigen.text"));
+		CustomButton btnNuevoOrigen = new CustomButton();
+		btnNuevoOrigen.setName("DSAssistantLangPanel.btnNuevoOrigen.text");
+		view.addLocaleChangeListener(btnNuevoOrigen);
 		panel_4.add(btnNuevoOrigen);
 		btnNuevoOrigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -202,7 +209,10 @@ public class DSAssistantLangPanel extends CustomJPanel {
 		gbc_verticalStrut_1.gridy = 1;
 		panel_2.add(verticalStrut_1, gbc_verticalStrut_1);
 
-		JLabel lblNewLabel_1 = new JLabel(Messages.getString("DSAssistantLangPanel.lblNewLabel_1.text"));
+		CustomLabel lblNewLabel_1 = new CustomLabel();
+		lblNewLabel_1.setName(
+				"DSAssistantLangPanel.lblNewLabel_1.text");
+		view.addLocaleChangeListener(lblNewLabel_1);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.gridwidth = 2;
 		gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;

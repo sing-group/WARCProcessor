@@ -16,14 +16,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 import java.util.Observable;
 
 import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -64,12 +64,19 @@ import com.warcgenerator.gui.actions.other.OtherConfigAction;
 import com.warcgenerator.gui.actions.output.OutputConfigAction;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomCardLayout;
+import com.warcgenerator.gui.components.CustomMenu;
+import com.warcgenerator.gui.components.CustomMenuItem;
 import com.warcgenerator.gui.components.CustomTreeCellRenderer;
 import com.warcgenerator.gui.components.CustomTreeNode;
 import com.warcgenerator.gui.config.GUIConfig;
 import com.warcgenerator.gui.helper.GUIConfigHelper;
 import com.warcgenerator.gui.helper.MenuHelper;
+import com.warcgenerator.gui.util.Messages;
+import com.warcgenerator.gui.util.locale.LocaleChangeEvent;
+import com.warcgenerator.gui.util.locale.LocaleChangeHandler;
+import com.warcgenerator.gui.util.locale.LocaleChangeListener;
 import com.warcgenerator.gui.view.common.InitPanel;
 import com.warcgenerator.gui.view.general.GeneralConfigPanel;
 import com.warcgenerator.gui.view.other.OtherConfigPanel;
@@ -101,10 +108,12 @@ public class WarcGeneratorGUI extends Observable {
 	private DefaultMutableTreeNode m_rootNode;
 	private JTree tree;
 	private GeneralConfigAction generalConfigAction;
-	private JMenu recentFilesMI;
-	private JMenuItem mntmSaveCG;
+	private CustomMenu recentFilesMI;
+	private CustomMenuItem mntmSaveCG;
 
 	private IAppLogic logic;
+
+	private LocaleChangeHandler localeChangeHandler;
 
 	/**
 	 * Launch the application.
@@ -133,6 +142,18 @@ public class WarcGeneratorGUI extends Observable {
 	public WarcGeneratorGUI(IAppLogic logic) {
 		this.logic = logic;
 		initialize();
+
+		// Set default local
+		//Locale newLocale = new Locale("es_ES");
+		Locale newLocale = new Locale("en_GB");
+		Locale.setDefault(newLocale);
+	}
+	
+	public void updateUI() {
+		updateTree();
+		System.out.println("localeChangeHandler es " + localeChangeHandler);
+		localeChangeHandler.fireLocaleChanged(new LocaleChangeEvent(
+				this, Locale.getDefault()));
 	}
 
 	public void loadPanels() {
@@ -191,9 +212,12 @@ public class WarcGeneratorGUI extends Observable {
 			e1.printStackTrace();
 		}
 
+		// Handle changes in the locale
+		localeChangeHandler = new LocaleChangeHandler();
+
 		frmWarcgenerator = new JFrame();
 		loadPanels();
-		
+
 		frmWarcgenerator.setResizable(false);
 		frmWarcgenerator
 				.setIconImage(Toolkit
@@ -205,7 +229,8 @@ public class WarcGeneratorGUI extends Observable {
 		frmWarcgenerator.setBounds(100, 100, 630, 470);
 		frmWarcgenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		String label = "Nuevo origen";
+		String label = Messages
+				.getString("WarcGeneratorGUI.menuItemPopup.text");
 		final JPopupMenu popup = new JPopupMenu();
 		JMenuItem menuItemPopup = new JMenuItem(label);
 		menuItemPopup
@@ -223,11 +248,15 @@ public class WarcGeneratorGUI extends Observable {
 		JMenuBar menuBar = new JMenuBar();
 		frmWarcgenerator.setJMenuBar(menuBar);
 
-		JMenu mnInicio = new JMenu("Fichero");
-		mnInicio.setMnemonic('F');
+		CustomMenu mnInicio = new CustomMenu();
+		mnInicio.setName("WarcGeneratorGUI.mnInicio.text");
+		addLocaleChangeListener(mnInicio);
 		menuBar.add(mnInicio);
 
-		JMenuItem mntmCreateNewConfig = new JMenuItem("Nueva");
+		CustomMenuItem mntmCreateNewConfig = new CustomMenuItem();
+		mntmCreateNewConfig
+				.setName("WarcGeneratorGUI.mntmCreateNewConfig.text");
+		addLocaleChangeListener(mntmCreateNewConfig);
 		mntmCreateNewConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				createNewConfigAction.actionPerformed(e);
@@ -235,7 +264,10 @@ public class WarcGeneratorGUI extends Observable {
 		});
 		mnInicio.add(mntmCreateNewConfig);
 
-		JMenuItem mntmCargarConfiguracionGeneral = new JMenuItem("Cargar");
+		CustomMenuItem mntmCargarConfiguracionGeneral = new CustomMenuItem();
+		mntmCargarConfiguracionGeneral
+				.setName("WarcGeneratorGUI.mntmCargarConfiguracionGeneral.text");
+		addLocaleChangeListener(mntmCargarConfiguracionGeneral);
 		mntmCargarConfiguracionGeneral.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadAppConfigAction.actionPerformed(e);
@@ -245,7 +277,9 @@ public class WarcGeneratorGUI extends Observable {
 
 		mnInicio.add(new JSeparator());
 
-		mntmSaveCG = new JMenuItem("Guardar");
+		mntmSaveCG = new CustomMenuItem();
+		mntmSaveCG.setName("WarcGeneratorGUI.mntmSaveCG.text");
+		addLocaleChangeListener(mntmSaveCG);
 		mntmSaveCG.setEnabled(false);
 		mntmSaveCG.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				InputEvent.CTRL_MASK));
@@ -256,7 +290,9 @@ public class WarcGeneratorGUI extends Observable {
 		});
 		mnInicio.add(mntmSaveCG);
 
-		JMenuItem mntmSaveAsCG = new JMenuItem("Guardar como");
+		CustomMenuItem mntmSaveAsCG = new CustomMenuItem();
+		mntmSaveAsCG.setName("WarcGeneratorGUI.mntmSaveAsCG.text");
+		addLocaleChangeListener(mntmSaveAsCG);
 		mntmSaveAsCG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveAsAppConfigAction.actionPerformed(e);
@@ -267,13 +303,17 @@ public class WarcGeneratorGUI extends Observable {
 		JSeparator separator = new JSeparator();
 		mnInicio.add(separator);
 
-		recentFilesMI = new JMenu("Configuraciones recientes");
+		recentFilesMI = new CustomMenu();
+		recentFilesMI.setName("WarcGeneratorGUI.recentFilesMI.text");
+		addLocaleChangeListener(recentFilesMI);
 		loadRecentFiles();
 		mnInicio.add(recentFilesMI);
 
 		mnInicio.add(new JSeparator());
 
-		JMenuItem mntmSalir = new JMenuItem("Salir");
+		CustomMenuItem mntmSalir = new CustomMenuItem();
+		mntmSalir.setName("WarcGeneratorGUI.mntmSalir.text");
+		addLocaleChangeListener(mntmSalir);
 		mntmSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				InputEvent.CTRL_MASK));
 		mntmSalir.addActionListener(new ActionListener() {
@@ -283,11 +323,14 @@ public class WarcGeneratorGUI extends Observable {
 		});
 		mnInicio.add(mntmSalir);
 
-		JMenu mnDataSources = new JMenu("Orígenes");
-		mnDataSources.setMnemonic('O');
+		CustomMenu mnDataSources = new CustomMenu();
+		mnDataSources.setName("WarcGeneratorGUI.mnDataSources.text");
+		addLocaleChangeListener(mnDataSources);
 		menuBar.add(mnDataSources);
 
-		JMenuItem mntmCreateNewDS = new JMenuItem("Nuevo origen");
+		CustomMenuItem mntmCreateNewDS = new CustomMenuItem();
+		mntmCreateNewDS.setName("WarcGeneratorGUI.mntmCreateNewDS.text");
+		addLocaleChangeListener(mntmCreateNewDS);
 		mntmCreateNewDS
 				.setIcon(new ImageIcon(
 						WarcGeneratorGUI.class
@@ -299,11 +342,55 @@ public class WarcGeneratorGUI extends Observable {
 		});
 		mnDataSources.add(mntmCreateNewDS);
 
-		final JMenu mnHelp = new JMenu("Ayuda");
-		mnHelp.setMnemonic('A');
+		final CustomMenu mnHelp = new CustomMenu();
+		mnHelp.setName("WarcGeneratorGUI.mnHelp.text");
+		addLocaleChangeListener(mnHelp);
 		menuBar.add(mnHelp);
 
-		final JMenuItem mnAboutOf = new JMenuItem("Acerca De ...");
+		final CustomMenu mnLanguages = new CustomMenu();
+		mnLanguages.setName("WarcGeneratorGUI.mnLanguages.text");
+		addLocaleChangeListener(mnLanguages);
+		mnLanguages.setHorizontalAlignment(SwingConstants.LEFT);
+		mnHelp.add(mnLanguages);
+
+		final CustomMenuItem mnSpanish = new CustomMenuItem();
+		mnSpanish.setName("WarcGeneratorGUI.mnSpanish.text");
+		addLocaleChangeListener(mnSpanish);
+		mnSpanish.setHorizontalAlignment(SwingConstants.LEFT);
+
+		mnSpanish.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Locale newLocale = new Locale("es_ES");
+				Locale.setDefault(newLocale);
+				updateUI();
+			}
+		});
+		mnLanguages.add(mnSpanish);
+
+		final CustomMenuItem mnEnglish = new CustomMenuItem();
+		mnEnglish.setName("WarcGeneratorGUI.mnEnglish.text");
+		addLocaleChangeListener(mnEnglish);
+		mnEnglish.setHorizontalAlignment(SwingConstants.LEFT);
+
+		mnEnglish.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// JComponent.setDefaultLocale(Locale.ENGLISH);
+				Locale newLocale = new Locale("en_GB");
+				Locale.setDefault(newLocale);
+				updateUI();
+			}
+		});
+		mnLanguages.add(mnEnglish);
+		mnHelp.add(mnLanguages);
+
+		separator = new JSeparator();
+		mnHelp.add(separator);
+
+		final CustomMenuItem mnAboutOf = new CustomMenuItem();
+		mnAboutOf.setName("WarcGeneratorGUI.mnAboutOf.text");
+		addLocaleChangeListener(mnAboutOf);
 		mnAboutOf.setHorizontalAlignment(SwingConstants.LEFT);
 
 		mnAboutOf.addActionListener(new ActionListener() {
@@ -317,11 +404,13 @@ public class WarcGeneratorGUI extends Observable {
 
 		menuBar.add(Box.createHorizontalGlue());
 
-		JMenuItem mnOpenOutputFolder = new JMenuItem(
-				new ImageIcon(
+		CustomMenuItem mnOpenOutputFolder = new CustomMenuItem();
+		mnOpenOutputFolder.setIcon(new ImageIcon(
 						WarcGeneratorGUI.class
 								.getResource("/com/warcgenerator/gui/resources/img/output.png")));
-		mnOpenOutputFolder.setToolTipText("Muestra el directorio de salida");
+		mnOpenOutputFolder.setLocaleToolTipText(
+				"WarcGeneratorGUI.mnOpenOutputFolder.text");
+		addLocaleChangeListener(mnOpenOutputFolder);
 		mnOpenOutputFolder.setMaximumSize(new Dimension(100, 26));
 		mnOpenOutputFolder.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -335,7 +424,9 @@ public class WarcGeneratorGUI extends Observable {
 		});
 		menuBar.add(mnOpenOutputFolder);
 
-		JButton mnGenerarCorpus = new JButton("Generar corpus");
+		CustomButton mnGenerarCorpus = new CustomButton();
+		mnGenerarCorpus.setName("WarcGeneratorGUI.mnGenerarCorpus.text");
+		addLocaleChangeListener(mnGenerarCorpus);
 		mnGenerarCorpus.setMinimumSize(new Dimension(114, 26));
 		mnGenerarCorpus.setIcon(new ImageIcon(WarcGeneratorGUI.class
 				.getResource("/com/warcgenerator/gui/resources/img/load.png")));
@@ -374,25 +465,34 @@ public class WarcGeneratorGUI extends Observable {
 			public void valueChanged(TreeSelectionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
 						.getLastSelectedPathComponent();
-				// if nothing is selected 
+				// if nothing is selected
 				if (node == null)
 					return;
 			}
 		});
-		
+
 		tree.addKeyListener(new KeyListener() {
 			@Override
-			public void keyTyped(KeyEvent e) {}
-			
+			public void keyTyped(KeyEvent e) {
+			}
+
 			@Override
 			public void keyReleased(KeyEvent e) {
-				MenuHelper.selectAndExecuteLeftMenu(tree, tree.getSelectionPath());
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+					Object obj = tree.getSelectionPath().getLastPathComponent();
+					CustomTreeNode itemSelected = (CustomTreeNode) obj;
+					// itemSelected.getAction().
+
+				} else {
+					MenuHelper.selectAndExecuteLeftMenu(tree,
+							tree.getSelectionPath());
+				}
 			}
-			
+
 			@Override
-			public void keyPressed(KeyEvent e) {}
+			public void keyPressed(KeyEvent e) {
+			}
 		});
-		
 
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
@@ -449,23 +549,23 @@ public class WarcGeneratorGUI extends Observable {
 
 	@SuppressWarnings("serial")
 	public void buildTree() {
-		final CustomTreeNode general = new CustomTreeNode("General");
+		final CustomTreeNode general = new CustomTreeNode("WarcGeneratorGUI.tree.general.text");
 
-		m_rootNode = new DefaultMutableTreeNode("Configuracion") {
+		m_rootNode = new CustomTreeNode("WarcGeneratorGUI.tree.m_rootNode.text") {
 			{
 				CustomTreeNode node_1;
 
 				general.setAction(generalConfigAction);
 				add(general);
-				CustomTreeNode output = new CustomTreeNode("Salida");
+				CustomTreeNode output = new CustomTreeNode("WarcGeneratorGUI.tree.output.text");
 				output.setAction(outputConfigAction);
 				add(output);
 
-				CustomTreeNode other = new CustomTreeNode("Otros");
+				CustomTreeNode other = new CustomTreeNode("WarcGeneratorGUI.tree.other.text");
 				other.setAction(otherConfigAction);
 				add(other);
 
-				node_1 = new CustomTreeNode("Origenes");
+				node_1 = new CustomTreeNode("WarcGeneratorGUI.tree.node_1.text");
 				node_1.setAction(dsourcesAction);
 				add(node_1);
 				loadDS(node_1);
@@ -489,7 +589,8 @@ public class WarcGeneratorGUI extends Observable {
 		List<RecentFileCBItem> recentFiles = guiConfig
 				.getRecentConfigFilesReversed();
 		if (recentFiles.size() == 0) {
-			JMenuItem recentConfig = new JMenuItem("[Ninguna]");
+			JMenuItem recentConfig = new JMenuItem(
+					Messages.getString("WarcGeneratorGUI.tree.recentConfig.text"));
 			recentConfig.setEnabled(false);
 			recentFilesMI.add(recentConfig);
 		} else {
@@ -512,7 +613,8 @@ public class WarcGeneratorGUI extends Observable {
 	}
 
 	public void selectFirstSelectionableItem() {
-		MenuHelper.selectAndExecuteLeftMenu(tree, "General");
+		MenuHelper.selectAndExecuteLeftMenu(tree,
+				Messages.getString("WarcGeneratorGUI.tree.general.text"));
 	}
 
 	public void updateDS(Integer id, DataSourceConfig config) {
@@ -524,7 +626,8 @@ public class WarcGeneratorGUI extends Observable {
 	}
 
 	public void addDS(DataSourceConfig config) {
-		DefaultMutableTreeNode node = MenuHelper.searchNode(tree, "Origenes");
+		DefaultMutableTreeNode node = MenuHelper.searchNode(tree,
+				Messages.getString("WarcGeneratorGUI.tree.node_1.text"));
 		MenuHelper.addDS(tree, node, config, this, logic);
 	}
 
@@ -586,11 +689,15 @@ public class WarcGeneratorGUI extends Observable {
 		this.assistantPanel = assistantPanel;
 	}
 
-	public JMenuItem getMntmSaveCG() {
+	public CustomMenuItem getMntmSaveCG() {
 		return mntmSaveCG;
 	}
 
-	public void setMntmSaveCG(JMenuItem mntmSaveCG) {
+	public void setMntmSaveCG(CustomMenuItem mntmSaveCG) {
 		this.mntmSaveCG = mntmSaveCG;
+	}
+	
+	public void addLocaleChangeListener(LocaleChangeListener l) {
+		localeChangeHandler.addLocaleChangeListener(l);
 	}
 }
