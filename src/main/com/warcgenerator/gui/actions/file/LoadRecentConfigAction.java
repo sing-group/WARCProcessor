@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
@@ -26,9 +27,13 @@ public class LoadRecentConfigAction extends AbstractAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (showConfirm) {
-			int userSelection = JOptionPane.showConfirmDialog(view.getMainFrame(),
-					"Esta seguro que desea cargar la configuracion? \n" + path,
-					"Elija una opción", JOptionPane.OK_CANCEL_OPTION);
+			int userSelection = JOptionPane
+					.showConfirmDialog(
+							view.getMainFrame(),
+							Messages.getString("LoadRecentConfigAction.warning.text")
+									+ path,
+							Messages.getString("LoadRecentConfigAction.warning.title.text"),
+							JOptionPane.OK_CANCEL_OPTION);
 			if (userSelection == JOptionPane.YES_OPTION) {
 				loadConfig();
 			}
@@ -36,10 +41,9 @@ public class LoadRecentConfigAction extends AbstractAction {
 			loadConfig();
 		}
 	}
-	
+
 	private void loadConfig() {
 		logic.loadAppConfig(path);
-		
 		view.loadRecentFiles();
 		// Load App Config catchs the callback and show a info panel
 	}

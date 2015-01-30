@@ -12,6 +12,7 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.components.CustomCardLayout;
 import com.warcgenerator.gui.components.CustomJPanel;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantCreatePanel;
 import com.warcgenerator.gui.view.datasources.DSAssistantLangPanel;
@@ -89,9 +90,8 @@ public class DSAsisstantCreateAction extends CustomAction {
 							.equals(WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL)) {
 				int userSelection = JOptionPane.showConfirmDialog(
 						view.getMainFrame(),
-						"Se perderán los cambios."
-								+ "¿Esta seguro que desea salir del asistente?",
-						"Elija una opción",
+						Messages.getString("DSWizard.exit.message.text"),
+						Messages.getString("DSWizard.exit.title.text"),
 						JOptionPane.OK_CANCEL_OPTION);
 
 				if (userSelection == JOptionPane.OK_OPTION) {

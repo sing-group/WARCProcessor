@@ -5,29 +5,31 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
 
 @SuppressWarnings("serial")
-public class CancelGenerateCorpusAction 
-	extends AbstractAction {	
+public class CancelGenerateCorpusAction extends AbstractAction {
 	private WarcGeneratorGUI view;
 	private GCGenerateAction gcGenerateAction;
 	private GeneratingCorpusDialog gcd;
-	
+
 	public CancelGenerateCorpusAction(WarcGeneratorGUI view,
-			GeneratingCorpusDialog gcd,
-			GCGenerateAction gcGenerateAction) {
+			GeneratingCorpusDialog gcd, GCGenerateAction gcGenerateAction) {
 		this.view = view;
 		this.gcGenerateAction = gcGenerateAction;
 		this.gcd = gcd;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int userSelection = JOptionPane.showConfirmDialog(view.getMainFrame(),
-				"Esta seguro que desea cancelar el proceso?",
-				"Elija una opción", JOptionPane.OK_CANCEL_OPTION);
+		int userSelection = JOptionPane
+				.showConfirmDialog(
+						view.getMainFrame(),
+						Messages.getString("CancelGenerateCorpusAction.cancel.text"),
+						Messages.getString("CancelGenerateCorpusAction.cancel.title.text"),
+						JOptionPane.OK_CANCEL_OPTION);
 		if (userSelection == JOptionPane.OK_OPTION) {
 			gcGenerateAction.getGcTask().cancel(true);
 			gcd.getCancelBtn().setEnabled(false);

@@ -59,7 +59,8 @@ public class ValidationDialog extends CustomJDialog {
 	private ValidationDialog(WarcGeneratorGUI view) {
 		super(view.getMainFrame(), true);
 		this.view = view;
-		setTitle("Existen errores");
+		setName("ValidationDialog.title.text");
+		view.addLocaleChangeListener(this);
 		setBounds(100, 100, 410, 186);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -115,7 +116,6 @@ public class ValidationDialog extends CustomJDialog {
 		{
 			erroresLabel = new CustomLabel();
 			erroresLabel.setName("ValidationDialog.erroresLabel.text");
-			view.addLocaleChangeListener(erroresLabel);
 			erroresLabel.setVerticalAlignment(SwingConstants.TOP);
 		}
 		GridBagConstraints gbc_erroresLabel = new GridBagConstraints();

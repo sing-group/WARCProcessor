@@ -13,6 +13,7 @@ import com.warcgenerator.gui.actions.CustomAction;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
 
@@ -75,9 +76,8 @@ public class DSAsisstantStep2Action extends CustomAction {
 						equals(WarcGeneratorGUI.TRYING_CHANGE_MAIN_PANEL)) {
 				int userSelection = JOptionPane
 						.showConfirmDialog(view.getMainFrame(),
-								"Se perderan los cambios. "
-									+ "¿Está seguro que desea salir del asistente?",
-									"Elija una opción",
+								Messages.getString("DSWizard.exit.message.text"),
+								Messages.getString("DSWizard.exit.title.text"),
 								JOptionPane.OK_CANCEL_OPTION);
 				
 				if (userSelection == JOptionPane.OK_OPTION) {

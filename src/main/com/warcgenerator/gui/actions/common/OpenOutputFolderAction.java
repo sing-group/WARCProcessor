@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.util.FileUtil;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 /**
@@ -38,8 +39,9 @@ public class OpenOutputFolderAction extends AbstractAction {
 			FileUtil.openInDefaultExplorer(outputFolder.getAbsolutePath());
 		} else {
 			JOptionPane.showMessageDialog(view.getMainFrame(),
-					"El directorio de salida: \"" + outputFolder.getAbsolutePath() 
-							+ "\", aún no ha sido generado.");
+					Messages.getString("OpenOutputFolder.message1.text")
+						+ outputFolder.getAbsolutePath() +
+					Messages.getString("OpenOutputFolder.message2.text"));
 		}
 	}
 }

@@ -144,16 +144,24 @@ public class WarcGeneratorGUI extends Observable {
 		initialize();
 
 		// Set default local
-		//Locale newLocale = new Locale("es_ES");
+		// Locale newLocale = new Locale("es_ES");
 		Locale newLocale = new Locale("en_GB");
 		Locale.setDefault(newLocale);
 	}
-	
+
 	public void updateUI() {
 		updateTree();
 		System.out.println("localeChangeHandler es " + localeChangeHandler);
-		localeChangeHandler.fireLocaleChanged(new LocaleChangeEvent(
-				this, Locale.getDefault()));
+		localeChangeHandler.fireLocaleChanged(new LocaleChangeEvent(this,
+				Locale.getDefault()));
+
+		// Update UI properties
+		UIManager.put("OptionPane.noButtonText", 
+				Messages.getString("OptionPane.noButtonText.text"));
+		UIManager.put("OptionPane.okButtonText",
+				Messages.getString("OptionPane.okButtonText.text"));
+		UIManager.put("OptionPane.cancelButtonText",
+				Messages.getString("OptionPane.cancelButtonText.text"));
 	}
 
 	public void loadPanels() {
@@ -405,11 +413,12 @@ public class WarcGeneratorGUI extends Observable {
 		menuBar.add(Box.createHorizontalGlue());
 
 		CustomMenuItem mnOpenOutputFolder = new CustomMenuItem();
-		mnOpenOutputFolder.setIcon(new ImageIcon(
+		mnOpenOutputFolder
+				.setIcon(new ImageIcon(
 						WarcGeneratorGUI.class
 								.getResource("/com/warcgenerator/gui/resources/img/output.png")));
-		mnOpenOutputFolder.setLocaleToolTipText(
-				"WarcGeneratorGUI.mnOpenOutputFolder.text");
+		mnOpenOutputFolder
+				.setLocaleToolTipText("WarcGeneratorGUI.mnOpenOutputFolder.text");
 		addLocaleChangeListener(mnOpenOutputFolder);
 		mnOpenOutputFolder.setMaximumSize(new Dimension(100, 26));
 		mnOpenOutputFolder.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -543,13 +552,16 @@ public class WarcGeneratorGUI extends Observable {
 	 * Update only the tree
 	 */
 	public void updateTree() {
-		tree.updateUI();
-		tree.repaint();
+		if (tree != null) {
+			tree.updateUI();
+			tree.repaint();
+		}
 	}
 
 	@SuppressWarnings("serial")
 	public void buildTree() {
-		final CustomTreeNode general = new CustomTreeNode("WarcGeneratorGUI.tree.general.text");
+		final CustomTreeNode general = new CustomTreeNode(
+				"WarcGeneratorGUI.tree.general.text");
 
 		m_rootNode = new CustomTreeNode("WarcGeneratorGUI.tree.m_rootNode.text") {
 			{
@@ -557,11 +569,13 @@ public class WarcGeneratorGUI extends Observable {
 
 				general.setAction(generalConfigAction);
 				add(general);
-				CustomTreeNode output = new CustomTreeNode("WarcGeneratorGUI.tree.output.text");
+				CustomTreeNode output = new CustomTreeNode(
+						"WarcGeneratorGUI.tree.output.text");
 				output.setAction(outputConfigAction);
 				add(output);
 
-				CustomTreeNode other = new CustomTreeNode("WarcGeneratorGUI.tree.other.text");
+				CustomTreeNode other = new CustomTreeNode(
+						"WarcGeneratorGUI.tree.other.text");
 				other.setAction(otherConfigAction);
 				add(other);
 
@@ -610,6 +624,7 @@ public class WarcGeneratorGUI extends Observable {
 		}
 
 		refreshTitle();
+		updateUI();
 	}
 
 	public void selectFirstSelectionableItem() {
@@ -619,16 +634,19 @@ public class WarcGeneratorGUI extends Observable {
 
 	public void updateDS(Integer id, DataSourceConfig config) {
 		MenuHelper.updateDS(tree, id, config, this, logic);
+		updateUI();
 	}
 
 	public void removeDS(Integer id) {
 		MenuHelper.removeDS(tree, id);
+		updateUI();
 	}
 
 	public void addDS(DataSourceConfig config) {
 		DefaultMutableTreeNode node = MenuHelper.searchNode(tree,
-				Messages.getString("WarcGeneratorGUI.tree.node_1.text"));
+				"WarcGeneratorGUI.tree.node_1.text");
 		MenuHelper.addDS(tree, node, config, this, logic);
+		updateUI();
 	}
 
 	public void selectLeftMenu(TreePath tp) {
@@ -696,7 +714,7 @@ public class WarcGeneratorGUI extends Observable {
 	public void setMntmSaveCG(CustomMenuItem mntmSaveCG) {
 		this.mntmSaveCG = mntmSaveCG;
 	}
-	
+
 	public void addLocaleChangeListener(LocaleChangeListener l) {
 		localeChangeHandler.addLocaleChangeListener(l);
 	}

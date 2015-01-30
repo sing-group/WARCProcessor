@@ -12,6 +12,7 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.exception.logic.LogicException;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.output.OutputConfigPanel;
@@ -61,6 +62,7 @@ public class OutputSaveAction
 					ValidationDialog.getInstance(view);
 			dialog.setErroresLabel(errors.toString());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			view.updateUI();
 			dialog.setVisible(true);
 			
 			return false;
@@ -75,7 +77,7 @@ public class OutputSaveAction
 				String message = ((LogicCallback)logicCallback).getMessage();
 				if (message.equals(IAppLogic.APP_CONFIG_UPDATED_CALLBACK)) {
 					JOptionPane.showMessageDialog(view.getMainFrame(), 
-							"Los cambios se han guardado");
+							Messages.getString("OutputSaveAction.save.text"));
 					panel.commit();
 				}
 			}

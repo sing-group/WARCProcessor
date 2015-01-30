@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSDetailPanel;
 
@@ -37,32 +38,43 @@ public class DSEnableAction extends AbstractAction {
 		if (!detailPanel.getChckbxEnableDS().isSelected()) {
 			int userSelection = JOptionPane.showConfirmDialog(
 					view.getMainFrame(),
-					"¿Está seguro que desea deshabilitar el origen de datos: "
+					Messages.getString("DSEnableAction.disabled.text")
 							+ dsConfig.getName() + "?",
-							"Elija una opción",
-							JOptionPane.OK_CANCEL_OPTION);
+					Messages.getString("DSEnableAction.disabled.title.text"),
+					JOptionPane.OK_CANCEL_OPTION);
 
 			if (userSelection == JOptionPane.OK_OPTION) {
-				dsConfig.setEnabled(detailPanel.getChckbxEnableDS().isSelected());
-				JOptionPane.showMessageDialog(view.getMainFrame(),
-						"El origen de datos: " + dsConfig.getName()
-								+ " ha sido deshabilitado.");
+				dsConfig.setEnabled(detailPanel.getChckbxEnableDS()
+						.isSelected());
+				JOptionPane
+						.showMessageDialog(
+								view.getMainFrame(),
+								Messages.getString("DSEnableAction.datasource.text")
+										+ ": "
+										+ dsConfig.getName()
+										+ Messages
+												.getString("DSEnableAction.datasource.disabled.text"));
 				logic.addDataSourceConfig(dsConfig);
 			} else {
 				detailPanel.getChckbxEnableDS().setSelected(true);
-				JOptionPane.showMessageDialog(view.getMainFrame(),
-						"Operación cancelada.");
+				JOptionPane.showMessageDialog(view.getMainFrame(), Messages
+						.getString("DSEnableAction.datasource.cancelled.text"));
 			}
 		} else {
 			dsConfig.setEnabled(detailPanel.getChckbxEnableDS().isSelected());
-			JOptionPane.showMessageDialog(view.getMainFrame(),
-					"El origen de datos: " + dsConfig.getName()
-							+ " ha sido habilitado.");
+			JOptionPane
+					.showMessageDialog(
+							view.getMainFrame(),
+							Messages.getString("DSEnableAction.datasource.text")
+									+ ": "
+									+ dsConfig.getName()
+									+ Messages
+											.getString("DSEnableAction.datasource.enabled.text"));
 			logic.addDataSourceConfig(dsConfig);
 		}
-		
-		view.updateTree();
+
 		DSDetailAction modifyAction = new DSDetailAction(logic, view, dsConfig);
 		modifyAction.action(e);
+		view.updateUI();
 	}
 }

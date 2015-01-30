@@ -32,6 +32,7 @@ import com.warcgenerator.gui.components.CountryRenderer;
 import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.components.CustomLabel;
+import com.warcgenerator.gui.components.CustomRadioButton;
 import com.warcgenerator.gui.components.SortedListModel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
@@ -52,7 +53,7 @@ public class DSAssistantLangPanel extends CustomJPanel {
 	private JButton btnMoveGrpRight;
 	private JButton btnMoveGrpLeft;
 
-	private JRadioButton rdbtnAllLang;
+	private CustomRadioButton rdbtnAllLang;
 	private JRadioButton rdbtnNoAllLang;
 
 	/**
@@ -223,7 +224,9 @@ public class DSAssistantLangPanel extends CustomJPanel {
 
 		// Group the radio buttons.
 		ButtonGroup group = new ButtonGroup();
-		rdbtnAllLang = new JRadioButton("Sí");
+		rdbtnAllLang = new CustomRadioButton();
+		rdbtnAllLang.setName("DSAssistantLangPanel.rdbtnAllLang.text");
+		view.addLocaleChangeListener(rdbtnAllLang);
 		rdbtnAllLang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				enableLangSelection(false);

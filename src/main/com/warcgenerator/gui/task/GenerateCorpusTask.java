@@ -16,6 +16,7 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 import com.warcgenerator.gui.util.FileUtil;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
 
@@ -68,8 +69,8 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 		try {
 			get();
 
-			JOptionPane.showMessageDialog(view.getMainFrame(),
-					"El corpus se ha generado con exito.");
+			JOptionPane.showMessageDialog(view.getMainFrame(), Messages
+					.getString("GenerateCorpusTask.corpusgenerated.text"));
 			logger.info("Task completed");
 
 			if (gcd.getOpenOutputFolderCBox().isSelected()) {
@@ -104,31 +105,46 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			case GETTING_URLS_FROM_DS:
 				// gcd.getStateLbl().setText("Obteniendo urls de los datasources");
 				int numSitesTotal = logic.getAppConfig().getNumSites();
-				StringBuilder sb = new StringBuilder("Obteniendo urls " + "("
-						+ gcState.getNumUrlReadedFromDS() + " de "
-						+ numSitesTotal + ")");
+				StringBuilder sb = new StringBuilder(
+						Messages.getString("GenerateCorpusTask.progress.urls.text")
+								+ "("
+								+ gcState.getNumUrlReadedFromDS()
+								+ Messages
+										.getString("GenerateCorpusTask.progress2.urls.text")
+								+ numSitesTotal + ")");
 				gcd.getStateLbl().setText(
 						StringUtils.abbreviate(sb.toString(), 38));
 				break;
 			case CRAWLING_URLS:
-				gcd.getStateLbl().setText(
-						StringUtils.abbreviate(
-								"Leyendo: " + gcState.getCurrentUrlCrawled(),
-								38));
+				gcd.getStateLbl()
+						.setText(
+								StringUtils.abbreviate(
+										Messages.getString("GenerateCorpusTask.progress3.urls.text")
+												+ gcState
+														.getCurrentUrlCrawled(),
+										38));
 				break;
 			case READING_URLS:
-				gcd.getStateLbl().setText("Leyendo urls...");
+				gcd.getStateLbl()
+						.setText(
+								Messages.getString("GenerateCorpusTask.progress4.urls.text"));
 				progress += inc;
 				break;
 			case ENDING:
-				gcd.getStateLbl().setText("Finalizando la ejecucion...");
+				gcd.getStateLbl()
+						.setText(
+								Messages.getString("GenerateCorpusTask.progress5.urls.text"));
 				progress = 100;
 				break;
 			case CANCELlING_PROCESS:
-				gcd.getStateLbl().setText("Cancelando el proceso");
+				gcd.getStateLbl()
+						.setText(
+								Messages.getString("GenerateCorpusTask.progress6.urls.text"));
 				break;
 			case PROCESS_CANCELLED:
-				gcd.getStateLbl().setText("Proceso cancelado");
+				gcd.getStateLbl()
+						.setText(
+								Messages.getString("GenerateCorpusTask.progress7.urls.text"));
 				break;
 			}
 			setProgress(progress);

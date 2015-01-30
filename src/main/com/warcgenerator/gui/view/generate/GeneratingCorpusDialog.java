@@ -11,6 +11,7 @@ import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.WindowConstants;
@@ -18,9 +19,8 @@ import javax.swing.WindowConstants;
 import com.warcgenerator.gui.actions.generate.CancelGenerateCorpusAction;
 import com.warcgenerator.gui.actions.generate.GCGenerateAction;
 import com.warcgenerator.gui.components.CustomJDialog;
+import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
-
-import javax.swing.JCheckBox;
 
 @SuppressWarnings("serial")
 public class GeneratingCorpusDialog extends CustomJDialog {
@@ -40,7 +40,8 @@ public class GeneratingCorpusDialog extends CustomJDialog {
 		cancelGenerateCorpusAction = new CancelGenerateCorpusAction(view, this,
 				GCGenerateAction);
 		
-		setTitle("Por favor, espere...");
+		setName("GeneratingCorpusDialog.title.text");
+		view.addLocaleChangeListener(this);
 		this.view = view;
 		this.setBounds(0, 0, 359, 197);
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -58,7 +59,9 @@ public class GeneratingCorpusDialog extends CustomJDialog {
 		gbc_horizontalStrut_1.gridy = 0;
 		getContentPane().add(horizontalStrut_1, gbc_horizontalStrut_1);
 		
-		JLabel lblGenerandoCorpusEn = new JLabel("Este proceso puede durar unos minutos.");
+		CustomLabel lblGenerandoCorpusEn = new CustomLabel();
+		lblGenerandoCorpusEn.setName("GeneratingCorpusDialog.process.text");
+		view.addLocaleChangeListener(lblGenerandoCorpusEn);
 		GridBagConstraints gbc_lblGenerandoCorpusEn = new GridBagConstraints();
 		gbc_lblGenerandoCorpusEn.insets = new Insets(0, 0, 5, 5);
 		gbc_lblGenerandoCorpusEn.anchor = GridBagConstraints.WEST;

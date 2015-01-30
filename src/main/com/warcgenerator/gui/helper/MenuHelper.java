@@ -45,8 +45,6 @@ public class MenuHelper {
 
 			// Insert at the end of datasources
 			node.insert(treeNodeDS, node.getChildCount());
-			tree.updateUI();
-			tree.repaint();
 		}
 	}
 
@@ -61,8 +59,6 @@ public class MenuHelper {
 				treeNodeDS.setType(CustomTreeNodeType.DATASOURCE_NODE);
 				treeNodeDS.setAction(new DSDetailAction(logic, view, config));
 				treeNodeDS.setReferencedObject(config);
-				tree.updateUI();
-				tree.repaint();
 			}
 		}
 	}
@@ -79,9 +75,6 @@ public class MenuHelper {
 				if (((CustomTreeNode) node).getId() != null
 						&& ((CustomTreeNode) node).getId().equals(id)) {
 					((DefaultMutableTreeNode) node.getParent()).remove(node);
-
-					tree.updateUI();
-					tree.repaint();
 
 					// Select a datasource
 					if (parentNode.getChildCount() > 0) {

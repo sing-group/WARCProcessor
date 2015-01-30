@@ -13,7 +13,6 @@ import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
@@ -25,6 +24,7 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.output.OutputSaveAction;
 import com.warcgenerator.gui.actions.output.OutputSaveAndGenerateAction;
 import com.warcgenerator.gui.components.CustomButton;
+import com.warcgenerator.gui.components.CustomCheckBox;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.util.Messages;
@@ -39,7 +39,7 @@ public class OutputConfigPanel extends CustomJPanel {
 	private JFormattedTextField outputDirTField;
 	private JFormattedTextField spamDirTField;
 	private JFormattedTextField hamDirTField;
-	private JCheckBox chckbxEliminarLaSalida;
+	private CustomCheckBox chckbxEliminarLaSalida;
 
 	@SuppressWarnings("unused")
 	private IAppLogic logic;
@@ -137,7 +137,8 @@ public class OutputConfigPanel extends CustomJPanel {
 		panel.add(lblNewLabel, gbc_lblNewLabel);
 
 		CustomLabel lblConfigureLasCarpetas = new CustomLabel();
-		lblConfigureLasCarpetas.setName("OutputConfigPanel.lblConfigureLasCarpetas.text"); //$NON-NLS-1$
+		lblConfigureLasCarpetas
+				.setName("OutputConfigPanel.lblConfigureLasCarpetas.text"); //$NON-NLS-1$
 		view.addLocaleChangeListener(lblConfigureLasCarpetas);
 		lblConfigureLasCarpetas.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblConfigureLasCarpetas = new GridBagConstraints();
@@ -226,9 +227,12 @@ public class OutputConfigPanel extends CustomJPanel {
 		panel_2.add(lblNewLabel_2, gbc_lblNewLabel_2);
 
 		spamDirTField = new JFormattedTextField("");
-		spamDirTField.setInputVerifier(new NotNullOREmptyValidator(view
-				.getMainFrame(), spamDirTField, Messages
-				.getString("OutputConfigPanel.spamDirTField.verifier.text")));
+
+		NotNullOREmptyValidator validator = new NotNullOREmptyValidator(
+				view.getMainFrame(), spamDirTField,
+				"OutputConfigPanel.spamDirTField.verifier.text");
+		spamDirTField.setInputVerifier(validator);
+		view.addLocaleChangeListener(validator);
 		spamDirTField.setColumns(10);
 		GridBagConstraints gbc_spamDirTField = new GridBagConstraints();
 		gbc_spamDirTField.fill = GridBagConstraints.BOTH;
@@ -249,9 +253,12 @@ public class OutputConfigPanel extends CustomJPanel {
 		panel_2.add(lblHam, gbc_lblHam);
 
 		hamDirTField = new JFormattedTextField("");
-		hamDirTField.setInputVerifier(new NotNullOREmptyValidator(view
-				.getMainFrame(), hamDirTField, Messages
-				.getString("OutputConfigPanel.hamDirTField.verifier.text")));
+		NotNullOREmptyValidator validator2 = new NotNullOREmptyValidator(
+				view.getMainFrame(),
+				hamDirTField,
+				"OutputConfigPanel.hamDirTField.verifier.text");
+		hamDirTField.setInputVerifier(validator2);
+		view.addLocaleChangeListener(validator2);
 		hamDirTField.setColumns(10);
 		GridBagConstraints gbc_hamDirTField = new GridBagConstraints();
 		gbc_hamDirTField.fill = GridBagConstraints.BOTH;
@@ -260,8 +267,10 @@ public class OutputConfigPanel extends CustomJPanel {
 		gbc_hamDirTField.gridy = 3;
 		panel_2.add(hamDirTField, gbc_hamDirTField);
 
-		chckbxEliminarLaSalida = new JCheckBox(
-				Messages.getString("OutputConfigPanel.chckbxEliminarLaSalida.text"));
+		chckbxEliminarLaSalida = new CustomCheckBox();
+		chckbxEliminarLaSalida
+				.setName("OutputConfigPanel.chckbxEliminarLaSalida.text");
+		view.addLocaleChangeListener(chckbxEliminarLaSalida);
 		chckbxEliminarLaSalida.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_chckbxEliminarLaSalida = new GridBagConstraints();
 		gbc_chckbxEliminarLaSalida.insets = new Insets(0, 0, 0, 5);
@@ -289,7 +298,7 @@ public class OutputConfigPanel extends CustomJPanel {
 		return chckbxEliminarLaSalida;
 	}
 
-	public void setChckbxEliminarLaSalida(JCheckBox chckbxEliminarLaSalida) {
+	public void setChckbxEliminarLaSalida(CustomCheckBox chckbxEliminarLaSalida) {
 		this.chckbxEliminarLaSalida = chckbxEliminarLaSalida;
 	}
 

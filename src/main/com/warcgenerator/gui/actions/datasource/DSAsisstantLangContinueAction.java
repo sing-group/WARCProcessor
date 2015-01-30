@@ -22,6 +22,7 @@ import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.components.SortedListModel;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.datasources.DSAssistantLangPanel;
@@ -47,9 +48,8 @@ public class DSAsisstantLangContinueAction extends AbstractAction implements
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DataSourceConfig dsConfigSrc  = 
-				(DataSourceConfig)Session.get(
-						Constants.DATASOURCE_FORM_SESSION_KEY);
+		DataSourceConfig dsConfigSrc = (DataSourceConfig) Session
+				.get(Constants.DATASOURCE_FORM_SESSION_KEY);
 		DataSourceConfig dsConfig = new DataSourceConfig();
 		try {
 			BeanUtils.copyProperties(dsConfig, dsConfigSrc);
@@ -60,25 +60,24 @@ public class DSAsisstantLangContinueAction extends AbstractAction implements
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		List<Country> countryList = new ArrayList<Country>();
 		if (panel.getRdbtnNoAllLang().isSelected()) {
-			SortedListModel<Country> model = (SortedListModel<Country>)
-					panel.getListSelected().getModel();
+			SortedListModel<Country> model = (SortedListModel<Country>) panel
+					.getListSelected().getModel();
 			Iterator<Country> it = model.iterator();
-			
+
 			while (it.hasNext()) {
 				countryList.add(it.next());
 			}
 		}
 		dsConfig.setCountryList(countryList);
-		
+
 		if (validate(dsConfig)) {
 			// Escribiendo los datos en el nuevo panel
-			Session.add(
-					Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
-			
-			((CustomJPanel)panel).commit();
+			Session.add(Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
+
+			((CustomJPanel) panel).commit();
 			dsAsisstantStep2Action.actionPerformed(e);
 		}
 	}
@@ -86,15 +85,18 @@ public class DSAsisstantLangContinueAction extends AbstractAction implements
 	public boolean validate(DataSourceConfig dsConfig) {
 		StringBuilder errors = new StringBuilder();
 
-		if (panel.getRdbtnNoAllLang().isSelected() &&
-				dsConfig.getCountryList().size() == 0) {
-			errors.append("Seleccione idiomas<br>");
+		if (panel.getRdbtnNoAllLang().isSelected()
+				&& dsConfig.getCountryList().size() == 0) {
+			errors.append(
+					Messages.getString("DSAssistantLangContinueAction.error.text"))
+					.append("<br>");
 		}
 
 		if (errors.length() != 0) {
 			ValidationDialog dialog = ValidationDialog.getInstance(view);
 			dialog.setErroresLabel("<html>" + errors.toString() + "</html>");
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			view.updateUI();
 			dialog.setVisible(true);
 			return false;
 		}

@@ -11,12 +11,14 @@ import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.AppLogic;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.datasources.DSDetailPanel;
 
 /**
  * In java AbstractAction implements CommandPattern
  * http://www.javapractices.com/topic/TopicAction.do?Id=159
+ * 
  * @author amparop
  *
  */
@@ -26,27 +28,26 @@ public class DSRemoveAction extends AbstractAction implements Observer {
 	private WarcGeneratorGUI view;
 	private DataSourceConfig config;
 	private DSDetailPanel panel;
-	
-	public DSRemoveAction(IAppLogic logic, 
-			WarcGeneratorGUI view,
-			DataSourceConfig config,
-			DSDetailPanel panel) {
+
+	public DSRemoveAction(IAppLogic logic, WarcGeneratorGUI view,
+			DataSourceConfig config, DSDetailPanel panel) {
 		this.logic = logic;
 		this.view = view;
 		this.config = config;
 		this.panel = panel;
-		
+
 		logic.addObserver(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int dialogResult = JOptionPane.showConfirmDialog (
+		int dialogResult = JOptionPane.showConfirmDialog(
 				view.getMainFrame(),
-				"Esta seguro que desea eliminar el DS " 
-						+ config.getName(), "Elija una opción",
-						JOptionPane.OK_CANCEL_OPTION);
-		if(dialogResult == JOptionPane.YES_OPTION){
+				Messages.getString("DSRemoveAction.remove.text")
+						+ config.getName(),
+				Messages.getString("DSRemoveAction.remove.title.text"),
+				JOptionPane.OK_CANCEL_OPTION);
+		if (dialogResult == JOptionPane.YES_OPTION) {
 			logic.removeDataSourceConfig(config.getId());
 		}
 	}
@@ -55,17 +56,15 @@ public class DSRemoveAction extends AbstractAction implements Observer {
 	public void update(Observable aPublisher, Object logicCallback) {
 		// TODO Auto-generated method stub
 		if (panel.isShowing()) {
-			String message = ((LogicCallback)logicCallback).getMessage();
+			String message = ((LogicCallback) logicCallback).getMessage();
 			if (message.equals(AppLogic.DATASOURCE_REMOVED_CALLBACK)
-					&& ((LogicCallback)logicCallback).getParams()[0].equals(
-							config.getId())) {
-				JOptionPane.showMessageDialog(
-						view.getMainFrame(),
+					&& ((LogicCallback) logicCallback).getParams()[0]
+							.equals(config.getId())) {
+				JOptionPane.showMessageDialog(view.getMainFrame(),
 						"DS Eliminado: " + config.getName());
 				view.removeDS(config.getId());
 			}
 		}
 	}
-	
-	 
+
 }

@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.task.GenerateCorpusTask;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.generate.GenerateCorpusDialog;
 import com.warcgenerator.gui.view.generate.GeneratingCorpusDialog;
@@ -41,11 +42,12 @@ public class GCGenerateAction extends AbstractAction {
 				if ("progress" == e.getPropertyName()) {
 					int progress = (Integer) e.getNewValue();
 					gcd.getProgressBar().setValue(progress);
-					
+
 					if (gcTask.isDone()) {
 						if (gcTask.isCancelled()) {
-							JOptionPane.showMessageDialog(view.getMainFrame(),
-									"El proceso ha sido cancelado.");
+							JOptionPane.showMessageDialog(
+									view.getMainFrame(),
+									Messages.getString("GCGenerateAction.cancel.text"));
 						}
 						gcd.dispose();
 					}

@@ -30,6 +30,7 @@ public class GenerateCorpusAction
 		generateCorpusDialog = 
 				new GenerateCorpusDialog(logic, view);
 		generateCorpusDialog.setSummaryText(appConfig.toString());
+		view.updateUI();
 		generateCorpusDialog.setVisible(true);
 	}
 }

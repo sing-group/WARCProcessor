@@ -10,29 +10,26 @@ import javax.swing.JOptionPane;
 import com.warcgenerator.core.exception.logic.ConfigFilePathIsNullException;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.logic.LogicCallback;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 @SuppressWarnings("serial")
-public class SaveAppConfigAction
-	extends AbstractAction implements Observer {	
+public class SaveAppConfigAction extends AbstractAction implements Observer {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
 	private SaveAsAppConfigAction saveAsAppConfigAction;
-	
-	public SaveAppConfigAction(IAppLogic logic,
-			WarcGeneratorGUI view
-			) {
+
+	public SaveAppConfigAction(IAppLogic logic, WarcGeneratorGUI view) {
 		this.view = view;
 		this.logic = logic;
-		
-		saveAsAppConfigAction =
-				new SaveAsAppConfigAction(logic, view);
+
+		saveAsAppConfigAction = new SaveAsAppConfigAction(logic, view);
 		// Delete this observer to avoid its update method will be launched
 		logic.deleteObserver(saveAsAppConfigAction);
-		
+
 		logic.addObserver(this);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
@@ -45,10 +42,10 @@ public class SaveAppConfigAction
 	@Override
 	public void update(Observable obj, Object logicCallback) {
 		if (obj == logic) {
-			String message = ((LogicCallback)logicCallback).getMessage();
+			String message = ((LogicCallback) logicCallback).getMessage();
 			if (message.equals(IAppLogic.APP_CONFIG_SAVED_CALLBACK)) {
-				JOptionPane.showMessageDialog(view.getMainFrame(), 
-						"La configuracion se ha guardado con exito.");
+				JOptionPane.showMessageDialog(view.getMainFrame(),
+						Messages.getString("SaveAppConfigAction.success.text"));
 				view.loadRecentFiles();
 				view.getMntmSaveCG().setEnabled(false);
 			} else if (message.equals(IAppLogic.APP_CONFIG_LOADED_CALLBACK)) {

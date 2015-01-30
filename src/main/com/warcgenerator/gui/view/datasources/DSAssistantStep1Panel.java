@@ -184,7 +184,9 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		gbc_horizontalStrut_2.gridy = 0;
 		panel_2.add(horizontalStrut_2, gbc_horizontalStrut_2);
 
-		JLabel lblNewLabel_1 = new JLabel("Nombre:");
+		CustomLabel lblNewLabel_1 = new CustomLabel();
+		lblNewLabel_1.setName("DSAssistantStep1Panel.lblNewLabel_1.text");
+		view.addLocaleChangeListener(lblNewLabel_1);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
@@ -200,9 +202,11 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		gbc_nameJTField.gridy = 1;
 		panel_2.add(nameJTField, gbc_nameJTField);
 
-		nameJTField.setInputVerifier(new NotNullOREmptyValidator(view
-				.getMainFrame(), nameJTField, Messages
-				.getString("DSAssistantStep1Panel.nameJTField.verifier.text")));
+		NotNullOREmptyValidator validator = new NotNullOREmptyValidator(
+				view.getMainFrame(), nameJTField,
+				"DSAssistantStep1Panel.nameJTField.verifier.text");
+		nameJTField.setInputVerifier(validator);
+		view.addLocaleChangeListener(validator);
 		nameJTField.setColumns(10);
 
 		CustomLabel lblNewLabel_2 = new CustomLabel();

@@ -61,7 +61,7 @@ public class SaveAsAppConfigAction extends AbstractAction implements Observer {
 			String message = ((LogicCallback) logicCallback).getMessage();
 			if (message.equals(IAppLogic.APP_CONFIG_SAVED_AS_CALLBACK)) {
 				JOptionPane.showMessageDialog(view.getMainFrame(),
-						"La configuracion se ha guardado con exito.");
+						Messages.getString("SaveAppConfigAction.success.text"));
 				view.loadRecentFiles();
 			}
 		}

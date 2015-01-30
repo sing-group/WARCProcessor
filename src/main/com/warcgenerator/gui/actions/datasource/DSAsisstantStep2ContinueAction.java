@@ -20,34 +20,33 @@ import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.common.Constants;
 import com.warcgenerator.gui.common.Session;
 import com.warcgenerator.gui.components.CustomCardLayout;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 import com.warcgenerator.gui.view.common.ValidationDialog;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep2Panel;
 import com.warcgenerator.gui.view.datasources.DSAssistantStep3Panel;
 
 @SuppressWarnings("serial")
-public class DSAsisstantStep2ContinueAction 
-	extends AbstractAction implements Observer {	
+public class DSAsisstantStep2ContinueAction extends AbstractAction implements
+		Observer {
 	private WarcGeneratorGUI view;
 	private IAppLogic logic;
 	private DSAssistantStep2Panel panel;
 	private JPanel parentAssistant;
-	
+
 	public DSAsisstantStep2ContinueAction(IAppLogic logic,
-			WarcGeneratorGUI view,
-			DSAssistantStep2Panel panel,
+			WarcGeneratorGUI view, DSAssistantStep2Panel panel,
 			JPanel parentAssistant) {
 		this.view = view;
 		this.logic = logic;
 		this.panel = panel;
 		this.parentAssistant = parentAssistant;
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		DataSourceConfig dsConfigSrc  = 
-				(DataSourceConfig)Session.get(
-						Constants.DATASOURCE_FORM_SESSION_KEY);
+		DataSourceConfig dsConfigSrc = (DataSourceConfig) Session
+				.get(Constants.DATASOURCE_FORM_SESSION_KEY);
 		DataSourceConfig dsConfig = new DataSourceConfig();
 
 		try {
@@ -59,7 +58,7 @@ public class DSAsisstantStep2ContinueAction
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		// Check isSpam
 		if (panel.getSpamEnabledCBox().isSelected()) {
 			dsConfig.setSpam(panel.getSpamRButtom().isSelected());
@@ -69,8 +68,8 @@ public class DSAsisstantStep2ContinueAction
 		if (panel.getMaxElementsEnabledCBox().isSelected()) {
 			Integer intValue = null;
 			try {
-				intValue = Integer.parseInt(
-					panel.getQuantityMaxElemsTField().getText());
+				intValue = Integer.parseInt(panel.getQuantityMaxElemsTField()
+						.getText());
 			} catch (NumberFormatException ex) {
 				// TODO handle this
 			}
@@ -78,80 +77,92 @@ public class DSAsisstantStep2ContinueAction
 		} else {
 			dsConfig.setMaxElements(null);
 		}
-		
+
 		// Default information about this datasource.
-		DataSourceConfig dsConfigType = logic.getDataSourceType(dsConfig.getType());
-		
+		DataSourceConfig dsConfigType = logic.getDataSourceType(dsConfig
+				.getType());
+
 		// Get params from the params tabled
-		Map<String, CustomParamConfig> customParams = dsConfig.getCustomParams();
+		Map<String, CustomParamConfig> customParams = dsConfig
+				.getCustomParams();
 		for (int i = 0; i < panel.getParamsTable().getModel().getRowCount(); i++) {
-			String paramName = (String)panel.getParamsTable().getModel().getValueAt(i, 0);
-		
+			String paramName = (String) panel.getParamsTable().getModel()
+					.getValueAt(i, 0);
+
 			String paramValue = "";
 			Object obj = panel.getParamsTable().getModel().getValueAt(i, 1);
 			if (obj instanceof Boolean) {
-				paramValue = Boolean.toString((Boolean)obj);
+				paramValue = Boolean.toString((Boolean) obj);
 			} else if (obj instanceof File) {
-				paramValue = ((File)obj).getAbsolutePath();
+				paramValue = ((File) obj).getAbsolutePath();
 			} else {
-				paramValue = (String)obj;
+				paramValue = (String) obj;
 			}
-			
+
 			CustomParamConfig customParamConfig = customParams.get(paramName);
 			customParamConfig.setValue(paramValue);
-			customParamConfig.setType(dsConfigType.getCustomParams().get(paramName).getType());
+			customParamConfig.setType(dsConfigType.getCustomParams()
+					.get(paramName).getType());
 		}
 
 		if (validate(dsConfig)) {
-			Session.add(
-					Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
-			
-			CustomCardLayout cardLayout = 
-					((CustomCardLayout)parentAssistant.getLayout());
+			Session.add(Constants.DATASOURCE_FORM_SESSION_KEY, dsConfig);
+
+			CustomCardLayout cardLayout = ((CustomCardLayout) parentAssistant
+					.getLayout());
 			cardLayout.next(parentAssistant);
-			DSAssistantStep3Panel nextPanel = (DSAssistantStep3Panel)
-					cardLayout.getCurrentPanel(parentAssistant);
-			
+			DSAssistantStep3Panel nextPanel = (DSAssistantStep3Panel) cardLayout
+					.getCurrentPanel(parentAssistant);
+
 			nextPanel.setSummaryText(dsConfig.toString());
-			
+
 			cardLayout.show(parentAssistant, nextPanel.getName());
 		}
 	}
 
 	public boolean validate(DataSourceConfig config) {
 		StringBuilder errors = new StringBuilder();
-		
-		if (panel.getMaxElementsEnabledCBox().isSelected()) { 
-			if (config.getMaxElements() == null ||
-					config.getMaxElements() < 1) {
-				errors.append("-Cantidad");
+
+		if (panel.getMaxElementsEnabledCBox().isSelected()) {
+			if (config.getMaxElements() == null || config.getMaxElements() < 1) {
+				errors.append("-")
+						.append(Messages
+								.getString("DSAssistantStep2ContinueAction.error.quantity.text"));
 			}
 		}
-		
-		for (String key:config.getCustomParams().keySet()) {
+
+		for (String key : config.getCustomParams().keySet()) {
 			CustomParamConfig customParam = config.getCustomParams().get(key);
 			try {
 				Class<?> cArgs[] = { String.class };
-				
+
 				Class<?> clazz = Class.forName(customParam.getType());
 				Constructor<?> ctor = clazz.getConstructor(cArgs);
-				
-				if (customParam.getType().equals(
-						Integer.class.getName())) {
+
+				if (customParam.getType().equals(Integer.class.getName())) {
 					ctor.newInstance(customParam.getValue());
 				}
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				errors.append("-Parametro: " + customParam.getName());
+				errors.append("-")
+						.append(Messages
+								.getString("DSAssistantStep2ContinueAction.error.parameter.text"))
+						.append(": " + customParam.getName());
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				errors.append("-Parametro: " + customParam.getName());
+				errors.append("-")
+						.append(Messages
+								.getString("DSAssistantStep2ContinueAction.error.parameter.text"))
+						.append(": " + customParam.getName());
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				errors.append("-Parametro: " + customParam.getName());
+				errors.append("-")
+						.append(Messages
+								.getString("DSAssistantStep2ContinueAction.error.parameter.text"))
+						.append(": " + customParam.getName());
 			} catch (NoSuchMethodException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -164,26 +175,28 @@ public class DSAsisstantStep2ContinueAction
 			} catch (InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				errors.append("-Parametro: " + customParam.getName());
+				errors.append("-")
+						.append(Messages
+								.getString("DSAssistantStep2ContinueAction.error.parameter.text"))
+						.append(": " + customParam.getName());
 			}
 		}
-				
+
 		if (errors.length() != 0) {
-			ValidationDialog dialog =
-					ValidationDialog.getInstance(view);
+			ValidationDialog dialog = ValidationDialog.getInstance(view);
 			dialog.setErroresLabel(errors.toString());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			view.updateUI();
 			dialog.setVisible(true);
-			
 			return false;
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }
