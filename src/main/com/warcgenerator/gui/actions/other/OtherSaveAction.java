@@ -80,7 +80,9 @@ public class OtherSaveAction
 				String message = ((LogicCallback)logicCallback).getMessage();
 				if (message.equals(IAppLogic.APP_CONFIG_UPDATED_CALLBACK)) {
 					JOptionPane.showMessageDialog(view.getMainFrame(), 
-							Messages.getString("OtherSaveAction.save.text"));
+							Messages.getString("OtherSaveAction.save.text"),
+							Messages.getString("GeneralDialog.info.title.text"),
+							JOptionPane.INFORMATION_MESSAGE);
 					panel.commit();
 				}
 			}

@@ -17,8 +17,7 @@ public class CustomMenuItem extends JMenuItem implements LocaleChangeListener {
 	@Override
 	public void localeChanged(LocaleChangeEvent e) {
 		if (this.getName() != null) this.setText(Messages.getString(this.getName()));
-		System.out.println("buscndo: " + this.getLocaleToolTipText());
-		this.setToolTipText(Messages.getString(this.getLocaleToolTipText()));
+		if (this.getLocaleToolTipText() != null) this.setToolTipText(Messages.getString(this.getLocaleToolTipText()));
 	}
 
 	public String getLocaleToolTipText() {

@@ -84,6 +84,14 @@ public class XMLGUIConfigHelper {
 			// normalize text representation
 			doc.getDocumentElement().normalize();
 
+			NodeList language = doc.getElementsByTagName(
+					"language").item(0).getChildNodes();
+			for (int s = 0; s < language.getLength(); s++) {
+				Node nodeAux = language.item(s);
+				config.setLanguage(nodeAux
+									.getTextContent().trim());
+			}
+			
 			NodeList recentConfigFiles = doc.getElementsByTagName(
 					"recentConfigFiles").item(0).getChildNodes();
 
@@ -93,7 +101,7 @@ public class XMLGUIConfigHelper {
 					if (nodeAux.getNodeName().equals("configFile")) {
 						config.addRecentConfigFile(nodeAux
 								.getTextContent().trim());
-					} 
+					}
 				}
 			}
 
@@ -132,6 +140,10 @@ public class XMLGUIConfigHelper {
 			Element rootElement = doc.createElement("gui-configuration");
 			doc.appendChild(rootElement);
 
+			Element language = doc.createElement("language");
+			language.setTextContent(config.getLanguage());
+			rootElement.appendChild(language);
+			
 			Element recentConfigFiles = doc.createElement("recentConfigFiles");
 			rootElement.appendChild(recentConfigFiles);
 

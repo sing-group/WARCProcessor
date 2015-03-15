@@ -166,7 +166,7 @@ public class DSDetailPanel extends JPanel {
 		btnNewButton
 				.setIcon(new ImageIcon(
 						DSDetailPanel.class
-								.getResource("/resources/com/warcgenerator/gui/resources/img/folder16x16.png")));
+								.getResource("/com/warcgenerator/gui/resources/img/folder16x16.png")));
 		panel_3.add(btnNewButton);
 
 		JPanel panel_4 = new JPanel();

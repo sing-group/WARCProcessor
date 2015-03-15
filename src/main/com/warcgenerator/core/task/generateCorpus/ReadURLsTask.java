@@ -1,5 +1,6 @@
 package com.warcgenerator.core.task.generateCorpus;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,6 +31,7 @@ public class ReadURLsTask extends Task implements ITask {
 	private Set<String> urlsActive;
 	private Set<String> urlsNotActive;
 	private boolean isSpam;
+	private boolean terminate;
 	
 	private static Logger logger = Logger.getLogger
             (ReadURLsTask.class);
@@ -73,6 +75,8 @@ public class ReadURLsTask extends Task implements ITask {
 			webCrawlerConfig.setNumberOfCrawlers(config.getNumCrawlers());
 			webCrawlerConfig.setFollowRedirect(config.getFollowRedirect());
 			
+			System.out.println("Inicializar webCrawler....");
+			
 			webCrawler = new Crawler4JAdapter(
 					config,
 					generateCorpusState,
@@ -82,6 +86,14 @@ public class ReadURLsTask extends Task implements ITask {
 					urls,
 					urlsActive,
 					urlsNotActive);
+		
+			System.out.println("Inicializado....");
+
+			Iterator<String> urlList = webCrawlerConfig.getUrls().iterator();
+			while (urlList.hasNext() && !terminate) {
+				String url = urlList.next();
+				webCrawler.addSeed(url);
+			}
 			
 			// Start crawler
 			webCrawler.start();
@@ -90,6 +102,8 @@ public class ReadURLsTask extends Task implements ITask {
 			// There is a bug in crawler4j that consist in lock
 			// of frontier temp folder.
 			webCrawler.close();
+			
+			System.out.println("webCrawler1 es " + webCrawler);
 		}
 		
 		logger.info("Task completed");
@@ -97,6 +111,10 @@ public class ReadURLsTask extends Task implements ITask {
 	
 	public void rollback() {
 		logger.info("Rollback");
+		terminate = false;
+		
+		//webCrawler.stop();
+		//System.out.println("webCrawler2 es " + webCrawler);
 		if (webCrawler != null)
 			webCrawler.stop();
 	}

@@ -47,7 +47,9 @@ public class GCGenerateAction extends AbstractAction {
 						if (gcTask.isCancelled()) {
 							JOptionPane.showMessageDialog(
 									view.getMainFrame(),
-									Messages.getString("GCGenerateAction.cancel.text"));
+									Messages.getString("GCGenerateAction.cancel.text"),
+									Messages.getString("GeneralDialog.info.title.text"),
+									JOptionPane.INFORMATION_MESSAGE);
 						}
 						gcd.dispose();
 					}
@@ -55,6 +57,7 @@ public class GCGenerateAction extends AbstractAction {
 			}
 		});
 		gcTask.execute();
+		view.updateUI();
 		gcd.setVisible(true);
 	}
 

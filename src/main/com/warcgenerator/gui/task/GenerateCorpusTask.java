@@ -70,7 +70,9 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			get();
 
 			JOptionPane.showMessageDialog(view.getMainFrame(), Messages
-					.getString("GenerateCorpusTask.corpusgenerated.text"));
+					.getString("GenerateCorpusTask.corpusgenerated.text"),
+					Messages.getString("GeneralDialog.info.title.text"),
+					JOptionPane.INFORMATION_MESSAGE);
 			logger.info("Task completed");
 
 			if (gcd.getOpenOutputFolderCBox().isSelected()) {

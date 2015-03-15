@@ -9,6 +9,7 @@ public class ExecutionTaskBatch {
 	private boolean terminate;
 	public List<Task> tasks;
 	public Stack<Task> tasksExecutedList;
+	private Task currentTask;
 	
 	public ExecutionTaskBatch() {
 		this.tasks = new ArrayList<Task>();
@@ -24,13 +25,16 @@ public class ExecutionTaskBatch {
 		Iterator<Task> tasksIterator = tasks.iterator();
 		
 		while (tasksIterator.hasNext() && !terminate) {
-			Task currentTask = tasksIterator.next();
+			currentTask = tasksIterator.next();
 			currentTask.execute();
 		}
 	}
 
 	public void terminate() {
 		this.terminate = true;
+		if (currentTask != null) {
+			currentTask.rollback();
+		}
 	}
 	
 	public boolean isTerminate() {

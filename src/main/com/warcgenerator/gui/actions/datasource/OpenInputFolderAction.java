@@ -42,7 +42,9 @@ public class OpenInputFolderAction extends AbstractAction {
 							Messages.getString("OpenInputFolderAction.dirNotFound1.text")
 									+ inputFolder.getAbsolutePath()
 									+ Messages
-											.getString("OpenInputFolderAction.dirNotFound2.text"));
+											.getString("OpenInputFolderAction.dirNotFound2.text"),
+							Messages.getString("GeneralDialog.info.title.text"),
+							JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

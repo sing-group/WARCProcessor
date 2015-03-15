@@ -17,21 +17,20 @@ public class CustomCrawlController extends CrawlController {
 		super(config, pageFetcher, robotstxtServer);
 	}
 	
-	@Override
-	protected void sleep(int segundos) {
+	//@Override
+	/*protected void sleep(int segundos) {
 		try {
 			Thread.sleep(Math.round(segundos) * 1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public void shutdown() {
-		logger.info("Shutting down...");
-		
-		this.shuttingDown = true;
-		frontier.finish();
+		//this.frontier.finish();		
+		this.getPageFetcher().shutDown();
+		super.shutdown();
 	}
 	
 }

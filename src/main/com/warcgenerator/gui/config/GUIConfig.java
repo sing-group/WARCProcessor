@@ -15,6 +15,7 @@ import com.warcgenerator.gui.common.Constants;
  * @author Miguel Callon
  */
 public class GUIConfig {
+	private String language;
 	private List<String> recentConfigFiles;
 
 	public GUIConfig() {
@@ -23,7 +24,8 @@ public class GUIConfig {
 
 	public String toString() {
 		StringBuffer sb = new StringBuffer("-- GUI-Config --");
-
+		sb.append("--> Language:  ").append(language);
+		
 		for (String configFile : recentConfigFiles) {
 			sb.append("-> Config File Path:  ").append(configFile).append("\n");
 		}
@@ -32,12 +34,6 @@ public class GUIConfig {
 	}
 
 	public boolean validate() {
-		// Check if ratioQuantity is bigger than numSites
-		/*
-		 * if (!ratioIsPercentage && numSites < ratioSpam) { throw new
-		 * RatioQuantityUnexpectedValueException(); }
-		 */
-
 		return true;
 	}
 
@@ -75,5 +71,13 @@ public class GUIConfig {
 			reversedArray.add(0, configFileName);
 		}
 		return reversedArray;
+	}
+	
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

@@ -2,6 +2,7 @@
 	<xs:element name="gui-configuration">
 		<xs:complexType>
 	    	<xs:sequence>
+	    		<xs:element name="language" minOccurs="1" maxOccurs="1" />
 	  			<xs:element name="recentConfigFiles" minOccurs="1" maxOccurs="1">
 	  				<xs:complexType>
 	    				<xs:sequence>

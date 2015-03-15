@@ -49,7 +49,9 @@ public class DSAsisstantStep3FinishAction extends AbstractAction implements
 				String message = ((LogicCallback) logicCallack).getMessage();
 				if (message.equals(IAppLogic.DATASOURCE_UPDATED_CALLBACK)) {
 					JOptionPane.showMessageDialog(view.getMainFrame(),
-							Messages.getString("DSAssistantStep3FinishAction.update.text"));
+							Messages.getString("DSAssistantStep3FinishAction.update.text"),
+							Messages.getString("GeneralDialog.info.title.text"),
+							JOptionPane.INFORMATION_MESSAGE);
 					panel.commit();
 
 					view.updateDS(dsConfig.getId(), dsConfig);

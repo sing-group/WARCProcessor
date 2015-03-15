@@ -58,7 +58,9 @@ public class DSEnableAction extends AbstractAction {
 			} else {
 				detailPanel.getChckbxEnableDS().setSelected(true);
 				JOptionPane.showMessageDialog(view.getMainFrame(), Messages
-						.getString("DSEnableAction.datasource.cancelled.text"));
+						.getString("DSEnableAction.datasource.cancelled.text"), 
+						Messages.getString("GeneralDialog.info.title.text"),
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		} else {
 			dsConfig.setEnabled(detailPanel.getChckbxEnableDS().isSelected());

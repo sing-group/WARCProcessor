@@ -45,7 +45,9 @@ public class SaveAppConfigAction extends AbstractAction implements Observer {
 			String message = ((LogicCallback) logicCallback).getMessage();
 			if (message.equals(IAppLogic.APP_CONFIG_SAVED_CALLBACK)) {
 				JOptionPane.showMessageDialog(view.getMainFrame(),
-						Messages.getString("SaveAppConfigAction.success.text"));
+						Messages.getString("SaveAppConfigAction.success.text"),
+						Messages.getString("GeneralDialog.info.title.text"),
+								JOptionPane.INFORMATION_MESSAGE);
 				view.loadRecentFiles();
 				view.getMntmSaveCG().setEnabled(false);
 			} else if (message.equals(IAppLogic.APP_CONFIG_LOADED_CALLBACK)) {

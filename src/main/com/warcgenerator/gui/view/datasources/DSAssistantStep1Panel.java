@@ -118,9 +118,9 @@ public class DSAssistantStep1Panel extends CustomJPanel {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-		JLabel label_2 = new JLabel();
+		CustomLabel label_2 = new CustomLabel();
 		label_2.setName("DSAssistantStep1Panel.label_2.text");
-		view.addLocaleChangeListener(lblNewLabel);
+		view.addLocaleChangeListener(label_2);
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
 		gbc_label_2.anchor = GridBagConstraints.WEST;
 		gbc_label_2.gridwidth = 2;

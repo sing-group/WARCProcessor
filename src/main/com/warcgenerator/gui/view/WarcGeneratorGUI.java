@@ -23,7 +23,6 @@ import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -48,6 +47,7 @@ import javax.swing.tree.TreeSelectionModel;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.gui.actions.common.AboutOfAction;
+import com.warcgenerator.gui.actions.common.ChangeLanguageAction;
 import com.warcgenerator.gui.actions.common.ExitAction;
 import com.warcgenerator.gui.actions.common.OpenOutputFolderAction;
 import com.warcgenerator.gui.actions.common.RecentFileCBItem;
@@ -110,48 +110,33 @@ public class WarcGeneratorGUI extends Observable {
 	private GeneralConfigAction generalConfigAction;
 	private CustomMenu recentFilesMI;
 	private CustomMenuItem mntmSaveCG;
-
+	private CustomMenuItem mnSpanish;
+	private CustomMenuItem mnEnglish;
+	
 	private IAppLogic logic;
 
 	private LocaleChangeHandler localeChangeHandler;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					WarcGeneratorGUI window = new WarcGeneratorGUI();
-					window.frmWarcgenerator.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public WarcGeneratorGUI() {
-		super();
-		initialize();
-	}
-
+	
 	/**
 	 * Create the application.
 	 */
-	public WarcGeneratorGUI(IAppLogic logic) {
+	public WarcGeneratorGUI(GUIConfig guiConfig,
+			IAppLogic logic) {
 		this.logic = logic;
+		this.guiConfig = guiConfig;
 		initialize();
-
+		
 		// Set default local
-		// Locale newLocale = new Locale("es_ES");
-		Locale newLocale = new Locale("en_GB");
-		Locale.setDefault(newLocale);
+		/*Locale newLocale = new Locale("en_GB");
+		Locale.setDefault(newLocale);*/
+		
+		//guiConfig.
+		//Session.add(Constants.LOCALE_SELECTED, newLocale.toString());
+		
 	}
 
 	public void updateUI() {
 		updateTree();
-		System.out.println("localeChangeHandler es " + localeChangeHandler);
 		localeChangeHandler.fireLocaleChanged(new LocaleChangeEvent(this,
 				Locale.getDefault()));
 
@@ -196,7 +181,6 @@ public class WarcGeneratorGUI extends Observable {
 		dsourcesAction = new DSourcesAction(logic, this,
 				assistantCreateDSAction);
 		exitAction = new ExitAction(logic, this);
-		guiConfig = (GUIConfig) Session.get(Constants.GUI_CONFIG_SESSION_KEY);
 	}
 
 	/**
@@ -219,10 +203,10 @@ public class WarcGeneratorGUI extends Observable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
+		
 		// Handle changes in the locale
 		localeChangeHandler = new LocaleChangeHandler();
-
+		
 		frmWarcgenerator = new JFrame();
 		loadPanels();
 
@@ -237,10 +221,10 @@ public class WarcGeneratorGUI extends Observable {
 		frmWarcgenerator.setBounds(100, 100, 630, 470);
 		frmWarcgenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		String label = Messages
-				.getString("WarcGeneratorGUI.menuItemPopup.text");
 		final JPopupMenu popup = new JPopupMenu();
-		JMenuItem menuItemPopup = new JMenuItem(label);
+		CustomMenuItem menuItemPopup = new CustomMenuItem();
+		menuItemPopup.setName("WarcGeneratorGUI.menuItemPopup.text");
+		addLocaleChangeListener(menuItemPopup);
 		menuItemPopup
 				.setIcon(new ImageIcon(
 						WarcGeneratorGUI.class
@@ -361,7 +345,7 @@ public class WarcGeneratorGUI extends Observable {
 		mnLanguages.setHorizontalAlignment(SwingConstants.LEFT);
 		mnHelp.add(mnLanguages);
 
-		final CustomMenuItem mnSpanish = new CustomMenuItem();
+		mnSpanish = new CustomMenuItem();
 		mnSpanish.setName("WarcGeneratorGUI.mnSpanish.text");
 		addLocaleChangeListener(mnSpanish);
 		mnSpanish.setHorizontalAlignment(SwingConstants.LEFT);
@@ -370,13 +354,16 @@ public class WarcGeneratorGUI extends Observable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Locale newLocale = new Locale("es_ES");
-				Locale.setDefault(newLocale);
-				updateUI();
+				ChangeLanguageAction action =
+						new ChangeLanguageAction(newLocale,
+						mnSpanish,
+						logic, WarcGeneratorGUI.this);
+				action.actionPerformed(e);
 			}
 		});
 		mnLanguages.add(mnSpanish);
 
-		final CustomMenuItem mnEnglish = new CustomMenuItem();
+		mnEnglish = new CustomMenuItem();
 		mnEnglish.setName("WarcGeneratorGUI.mnEnglish.text");
 		addLocaleChangeListener(mnEnglish);
 		mnEnglish.setHorizontalAlignment(SwingConstants.LEFT);
@@ -384,10 +371,12 @@ public class WarcGeneratorGUI extends Observable {
 		mnEnglish.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// JComponent.setDefaultLocale(Locale.ENGLISH);
 				Locale newLocale = new Locale("en_GB");
-				Locale.setDefault(newLocale);
-				updateUI();
+				ChangeLanguageAction action =
+						new ChangeLanguageAction(newLocale,
+						mnEnglish,
+						logic, WarcGeneratorGUI.this);
+				action.actionPerformed(e);
 			}
 		});
 		mnLanguages.add(mnEnglish);
@@ -717,5 +706,13 @@ public class WarcGeneratorGUI extends Observable {
 
 	public void addLocaleChangeListener(LocaleChangeListener l) {
 		localeChangeHandler.addLocaleChangeListener(l);
+	}
+	
+	public void setLanguage(String language) {
+		if (language.toLowerCase().equals(Constants.SPANISH_LOCALE.toLowerCase())) {
+			mnSpanish.doClick();
+		} else {
+			mnEnglish.doClick();
+		}
 	}
 }

@@ -32,8 +32,11 @@ public class LoadAppConfigAction extends AbstractAction implements Observer {
 
 	/**
 	 * Default constructor
-	 * @param logic @type of IAppLogic
-	 * @param view @type of WarcGeneratorGUI
+	 * 
+	 * @param logic
+	 *            @type of IAppLogic
+	 * @param view
+	 *            @type of WarcGeneratorGUI
 	 */
 	public LoadAppConfigAction(IAppLogic logic, WarcGeneratorGUI view) {
 		this.view = view;
@@ -46,11 +49,12 @@ public class LoadAppConfigAction extends AbstractAction implements Observer {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setDialogTitle("Specify a file to load");
 
-		fileChooser.setFileFilter(new FileNameExtensionFilter(
-				 Messages.getString(Constants.FILTER_FILE_CFG_DESCRIPTION) +
-				" (." + Constants.FILE_CFG_EXTENSION + ")", 
+		fileChooser.setFileFilter(new FileNameExtensionFilter(Messages
+				.getString(Constants.FILTER_FILE_CFG_DESCRIPTION)
+				+ " (."
+				+ Constants.FILE_CFG_EXTENSION + ")",
 				Constants.FILE_CFG_EXTENSION));
-		
+
 		int userSelection = fileChooser.showOpenDialog(view.getMainFrame());
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			fileToSave = fileChooser.getSelectedFile();
@@ -66,15 +70,18 @@ public class LoadAppConfigAction extends AbstractAction implements Observer {
 				// Reload tree
 				view.buildTree();
 				view.loadRecentFiles();
-				
+
 				// Remove recent changes from the session
-				Session.add(Constants.FORM_MODIFIED_SESSION_KEY,
-						new Boolean(false));					
-				
+				Session.add(Constants.FORM_MODIFIED_SESSION_KEY, new Boolean(
+						false));
+
 				view.selectFirstSelectionableItem();
-				JOptionPane.showMessageDialog(view.getMainFrame(), 
-						Messages.getString(
-								"LoadAppConfigAction.confirmLoadConfiguration"));
+				JOptionPane
+						.showMessageDialog(
+								view.getMainFrame(),
+								Messages.getString("LoadAppConfigAction.confirmLoadConfiguration"),
+								Messages.getString("GeneralDialog.info.title.text"),
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

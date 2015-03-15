@@ -3,6 +3,7 @@ package com.warcgenerator.gui.actions.common;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
 
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
@@ -38,9 +39,18 @@ public class StartGUIAction extends AbstractAction {
 		guiConfig = new GUIConfig();
 		GUIConfigHelper.configure(guiConfig);
 		Session.add(Constants.GUI_CONFIG_SESSION_KEY, guiConfig);
-
-		window = new WarcGeneratorGUI(appWarc.getAppLogic());
-
+		
+		// Init GUI
+		window = new WarcGeneratorGUI(guiConfig,
+				appWarc.getAppLogic());
+		
+		// Select a default language
+		String languageSelected = guiConfig.getLanguage();
+		if (languageSelected == null) {
+			languageSelected = Constants.DEFAULT_LOCALE;
+		}
+		window.setLanguage(languageSelected);
+		
 		window.getMainFrame().setDefaultCloseOperation(
 				JFrame.DO_NOTHING_ON_CLOSE);
 		window.getMainFrame().addWindowListener(new WindowAdapter() {

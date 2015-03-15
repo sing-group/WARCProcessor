@@ -46,23 +46,21 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	private Map<String, DataBean> urls;
 	private Set<String> urlsActive;
 	private Set<String> urlsNotActive;
-	
-	private static Logger logger = Logger.getLogger
-            (Crawler4JAdapter.class);
 
-    // Currently it doesn't use any filter
+	private static Logger logger = Logger.getLogger(Crawler4JAdapter.class);
+
+	// Currently it doesn't use any filter
 	private final static Pattern FILTERS = Pattern
 			.compile(".*(\\.(css|js|bmp|gif|jpe?g"
 					+ "|png|tiff?|mid|mp2|mp3|mp4"
 					+ "|wav|avi|mov|mpeg|ram|m4v|pdf"
 					+ "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
-	
+
 	// Allow any urls
 	private static Set<String> urlsAllowed;
 
 	public Crawler4JAdapter() {
-		parseDataMap = new LinkedHashMap<String, 
-				com.warcgenerator.core.plugin.webcrawler.HtmlParseData>();
+		parseDataMap = new LinkedHashMap<String, com.warcgenerator.core.plugin.webcrawler.HtmlParseData>();
 		handlers = new LinkedHashMap<String, IWebCrawlerHandler>();
 	}
 
@@ -85,7 +83,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		this.urls = urls;
 		this.urlsActive = urlsActive;
 		this.urlsNotActive = urlsNotActive;
-	
+		
 		numberOfCrawlers = configWC.getNumberOfCrawlers();
 
 		// Ursls to avoid exit from the seed urls domains
@@ -119,48 +117,49 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		} catch (Exception e) {
 			throw new PluginException(e);
 		}
-		
+	}
+	
+	public void addSeed (String url) {
 		/*
 		 * For each crawl, you need to add some seed urls. These are the first
 		 * URLs that are fetched and then the crawler starts following links
 		 * which are found in these pages
 		 */
-		for (String url:configWC.getUrls()) {
-			controller.addSeed(url);
-		}
+		controller.addSeed(url);
 	}
 
 	public void close() {
 		EnvironmentConfig envConfig = new EnvironmentConfig();
-        envConfig.setAllowCreate(true);
-        envConfig.setTransactional(false);
-        envConfig.setLocking(false);
-        
-        File envHome = new File(controller.getConfig().getCrawlStorageFolder() 
-        		+"/frontier");
-        
+		envConfig.setAllowCreate(true);
+		envConfig.setTransactional(false);
+		envConfig.setLocking(false);
+
+		File envHome = new File(controller.getConfig().getCrawlStorageFolder()
+				+ "/frontier");
+
 		Environment env = new Environment(envHome, envConfig);
 		DatabaseConfig dbConfig = new DatabaseConfig();
-        dbConfig.setAllowCreate(true);
-        dbConfig.setTransactional(true);
-        dbConfig.setDeferredWrite(true);
-        
-        try {
-	        for (String dbName : env.getDatabaseNames()) {
-	           env.removeDatabase(null, dbName); 
-	        }
-        } catch (Exception ex) {
-        	ex.printStackTrace();
-        }
-        
-        env.cleanLog();
-        env.close();
+		dbConfig.setAllowCreate(true);
+		dbConfig.setTransactional(true);
+		dbConfig.setDeferredWrite(true);
+
+		try {
+			for (String dbName : env.getDatabaseNames()) {
+				env.removeDatabase(null, dbName);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		env.cleanLog();
+		env.close();
 	}
-	
-	public void stop () {
+
+	public void stop() {
+		System.out.println("Haciendo un stop");
 		controller.shutdown();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void start() {
 		/*
@@ -168,57 +167,53 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		 * will reach the line after this only when crawling is finished.
 		 */
 		controller.start(Crawler4JAdapter.class, numberOfCrawlers);
-		
+
 		List<Object> crawlersLocalData = controller.getCrawlersLocalData();
 		for (Object localData : crawlersLocalData) {
 			if (localData instanceof Collection<?>) {
-				for (com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData : 
-						(Collection<com.warcgenerator.core.plugin.webcrawler.HtmlParseData>) localData) {
-					IWebCrawlerHandler handler = handlers.get(
-							FileHelper.getDomainNameFromURL(parseData.getUrl()));
-					
-					DataSource warcDS = 
-							outputDS.get(FileHelper.getDomainNameFromURL(parseData.getUrl()));
-					
+				for (com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData : (Collection<com.warcgenerator.core.plugin.webcrawler.HtmlParseData>) localData) {
+					IWebCrawlerHandler handler = handlers.get(FileHelper
+							.getDomainNameFromURL(parseData.getUrl()));
+
+					DataSource warcDS = outputDS.get(FileHelper
+							.getDomainNameFromURL(parseData.getUrl()));
+
 					if (warcDS == null) {
 						StringBuilder warcFileName = new StringBuilder();
-						
+
 						StringBuilder outputWarcPath = new StringBuilder();
 						if (webCrawlerBean.isSpam()) {
-							outputWarcPath.append(webCrawlerBean.
-									getOutputCorpusConfig().getSpamDir());
+							outputWarcPath.append(webCrawlerBean
+									.getOutputCorpusConfig().getSpamDir());
 						} else {
-							outputWarcPath.append(webCrawlerBean.
-									getOutputCorpusConfig().getHamDir());
+							outputWarcPath.append(webCrawlerBean
+									.getOutputCorpusConfig().getHamDir());
 						}
 						outputWarcPath.append(File.separator);
-						
-						warcFileName.append(outputWarcPath.toString()).append(
-								FileHelper.getOutputFileName(parseData.getUrl()));
-						
-						warcDS = new WarcDS(
-								new OutputWarcConfig(webCrawlerBean.isSpam(),
-										warcFileName.toString()));
-						
-						outputDS.put(FileHelper.getDomainNameFromURL(parseData.getUrl()),
-								warcDS);
+
+						warcFileName.append(outputWarcPath.toString())
+								.append(FileHelper.getOutputFileName(parseData
+										.getUrl()));
+
+						warcDS = new WarcDS(new OutputWarcConfig(
+								webCrawlerBean.isSpam(),
+								warcFileName.toString()));
+
+						outputDS.put(FileHelper.getDomainNameFromURL(parseData
+								.getUrl()), warcDS);
 					}
-					
+
 					if (handler == null) {
-						handler = new WebCrawlerHandler(
-							appConfig,
-							webCrawlerBean.isSpam(),
-							webCrawlerBean.getDomainsNotFoundDS(), 
-							webCrawlerBean.getDomainsLabeledDS(),
-							warcDS, 
-							urls,
-							urlsActive,
-							urlsNotActive);
-						
-						handlers.put(FileHelper.getDomainNameFromURL(parseData.getUrl()),
-									handler);
+						handler = new WebCrawlerHandler(appConfig,
+								webCrawlerBean.isSpam(),
+								webCrawlerBean.getDomainsNotFoundDS(),
+								webCrawlerBean.getDomainsLabeledDS(), warcDS,
+								urls, urlsActive, urlsNotActive);
+
+						handlers.put(FileHelper.getDomainNameFromURL(parseData
+								.getUrl()), handler);
 					}
-					
+
 					handler.handle(parseData);
 				}
 			}
@@ -236,36 +231,34 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	@Override
 	public boolean shouldVisit(WebURL url) {
 		String href = url.getURL().toLowerCase();
-		
+
 		// Avoid that the crawler go out from the source domains.
 		boolean domainAllowed = false;
-		for(Iterator<String> it = urlsAllowed.iterator();
-			it.hasNext() && !domainAllowed;) {
+		for (Iterator<String> it = urlsAllowed.iterator(); it.hasNext()
+				&& !domainAllowed;) {
 			String urlAllowed = it.next();
-			
+
 			String domain = FileHelper.getURLWithoutParams(urlAllowed);
 			if (href.startsWith(domain)) {
-				domainAllowed = true;	                       
+				domainAllowed = true;
 			}
 		}
 
-		return !FILTERS.matcher(href).matches() &&
-				domainAllowed;
+		return !FILTERS.matcher(href).matches() && domainAllowed;
 	}
-	
+
 	@Override
 	protected void handlePageStatusCode(WebURL webUrl, int statusCode,
 			String statusDescription) {
-		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData =
-			getParseData(webUrl.getURL());
-		
-		GenerateCorpusState generateCorpusState =
-				((CustomPageFetcher)this.myController.getPageFetcher()).
-				getGenerateCorpusState();
+		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData = getParseData(webUrl
+				.getURL());
+
+		GenerateCorpusState generateCorpusState = ((CustomPageFetcher) this.myController
+				.getPageFetcher()).getGenerateCorpusState();
 		generateCorpusState.incWebsVisited();
 		generateCorpusState.setCurrentUrlCrawled(webUrl.getURL());
 		generateCorpusState.setState(GenerateCorpusStates.CRAWLING_URLS);
-		
+
 		parseData.setUrl(webUrl.getURL());
 		parseData.setHttpStatus(statusCode);
 		parseData.setHttpStatusDescription(statusDescription);
@@ -280,8 +273,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		// Check status
 		String url = page.getWebURL().getURL();
 		logger.info("URL: " + url);
-		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData =
-				getParseData(url);
+		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData = getParseData(url);
 
 		if (page.getParseData() instanceof HtmlParseData) {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
@@ -299,11 +291,12 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		}
 	}
 
-	private com.warcgenerator.core.plugin.webcrawler.HtmlParseData getParseData(String url) {
-		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData = 
-				parseDataMap.get(url);
+	private com.warcgenerator.core.plugin.webcrawler.HtmlParseData getParseData(
+			String url) {
+		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData = parseDataMap
+				.get(url);
 		if (parseData == null) {
-			parseData =  new com.warcgenerator.core.plugin.webcrawler.HtmlParseData();
+			parseData = new com.warcgenerator.core.plugin.webcrawler.HtmlParseData();
 			parseDataMap.put(url, parseData);
 		}
 		return parseData;

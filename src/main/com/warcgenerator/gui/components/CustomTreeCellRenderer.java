@@ -10,6 +10,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 /**
@@ -48,7 +49,8 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 											WarcGeneratorGUI.class
 													.getResource("/com/warcgenerator/gui/resources/img/database16x16_disabled.png")));
 					setIcon(loadIcon);
-					setToolTipText("Deshabilitado");
+					
+					setToolTipText(Messages.getString("DSEnableAction.datasource.tooltip.disabled.text"));
 				} else {
 					setIcon(new ImageIcon(WarcGeneratorGUI.class
 							.getResource("/com/warcgenerator/gui/resources/img/database16x16.png")));
