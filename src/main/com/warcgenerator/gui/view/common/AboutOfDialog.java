@@ -34,6 +34,9 @@ public class AboutOfDialog extends CustomJDialog {
 		// this.setUndecorated(true);
 		// this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+		System.out.println("titulo: AboutOfDialog.title.text");
+		System.out.println(Messages.getString("AboutOfDialog.title.text"));
+		
 		setTitle(Messages.getString("AboutOfDialog.title.text")
 				+ Constants.APP_NAME);
 		this.view = view;
@@ -137,6 +140,15 @@ public class AboutOfDialog extends CustomJDialog {
 		gbc_lblGenerandoCorpusEn.gridy = 5;
 		panelCenter.add(lblGenerandoCorpusEn, gbc_lblGenerandoCorpusEn);
 
+		JLabel lblVersion = new JLabel(
+				Constants.APP_VERSION);
+		GridBagConstraints gbc_version = new GridBagConstraints();
+		gbc_version.anchor = GridBagConstraints.WEST;
+		gbc_version.insets = new Insets(0, 0, 5, 5);
+		gbc_version.gridx = 3;
+		gbc_version.gridy = 5;
+		panelCenter.add(lblVersion, gbc_version);
+		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1 = new GridBagConstraints();
 		gbc_horizontalStrut_1.insets = new Insets(0, 0, 5, 5);

@@ -1,14 +1,22 @@
 package com.warcgenerator;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.archive.util.FileUtils;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.exception.WarcException;
+import com.warcgenerator.core.exception.config.Log4JConfigNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.logic.AppLogicImpl;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.gui.common.Constants;
 
 /**
  * AppWarc is an application used to generate Webspam Corpus.
@@ -22,7 +30,21 @@ public class AppWarc {
 
 	private static Logger logger = Logger.getLogger(AppWarc.class);
 
+	public static final String CUSTOM_GUI_CONFIG_XML_FULLPATH = Constants.DEFAULT_DIR_CUSTOM_GUI_CONFIG_XML
+			+ Constants.LOG4J_CONFIG_XML;
+
 	private AppWarc() {
+		// Check if exist Log4j configuration file
+		if (!Files.isReadable(FileSystems.getDefault().getPath(CUSTOM_GUI_CONFIG_XML_FULLPATH))) {
+			try {
+				FileUtils.readFullyToFile(
+						this.getClass().getResourceAsStream(
+								Constants.DEFAULT_LOG4J_CONFIG_XML), 
+								new File(CUSTOM_GUI_CONFIG_XML_FULLPATH));
+			} catch (IOException e) {
+				throw new Log4JConfigNotFoundException(e);
+			}
+		}
 	}
 
 	/**
@@ -39,8 +61,7 @@ public class AppWarc {
 
 	public void init() {
 		// Configure Log4j.xml
-		DOMConfigurator.configure(this.getClass()
-				.getResource("/config/log4j.xml"));
+		DOMConfigurator.configure(CUSTOM_GUI_CONFIG_XML_FULLPATH);
 
 		// Properties properties = ConfigHelper.loadParams(pathConfig);
 		logger.info("Loading default configuration...");
@@ -65,8 +86,7 @@ public class AppWarc {
 	 */
 	public void init(String pathConfig) throws WarcException {
 		// Configure Log4j.xml
-		DOMConfigurator.configure(this.getClass()
-				.getResource("/config/log4j.xml"));
+		DOMConfigurator.configure(CUSTOM_GUI_CONFIG_XML_FULLPATH);
 
 		// Properties properties = ConfigHelper.loadParams(pathConfig);
 		logger.info("Loading configuration...");

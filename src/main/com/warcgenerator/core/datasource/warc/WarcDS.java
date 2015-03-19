@@ -222,9 +222,6 @@ public class WarcDS extends DataSource implements IDataSource {
 		// Write a warcinfo record with description about how this WARC
 		// was made.
 		try {
-			
-			System.out.println("bean.getData(): " + bean.getData().getClass().getName());
-			
 			InputStream is = null;
 			if (bean.getData() instanceof String) {
 				is = new ByteArrayInputStream(

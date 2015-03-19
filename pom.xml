@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>WarcProject</groupId>
   <artifactId>WarcProject</artifactId>
-  <version>4.0.1-SNAPSHOT</version>
+  <version>4.1.0_beta-SNAPSHOT</version>
   <properties>
 	<install-dir>${project.build.directory}</install-dir>
 	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -167,7 +167,7 @@
   	<dependency>
 		<groupId>edu.uci.ics</groupId>
 		<artifactId>crawler4j</artifactId>
-		<version>3.4</version>
+		<version>3.5</version>
 	</dependency>	
   	<dependency>
 		<groupId>commons-validator</groupId>

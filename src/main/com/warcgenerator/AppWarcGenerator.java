@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.warcgenerator.core.exception.WarcException;
 import com.warcgenerator.core.exception.config.ConfigException;
+import com.warcgenerator.core.exception.config.Log4JConfigNotFoundException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.exception.datasource.ReadException;
 import com.warcgenerator.core.exception.datasource.WriteException;
@@ -60,16 +61,19 @@ public class AppWarcGenerator {
 				}
 			} catch (OpenException e) {
 				System.out
-						.println("Is not posible open data source. Check config.xml");
+						.println("It is not posible open data source. Check config.xml");
 			} catch (ReadException e) {
 				System.out
-						.println("Is not posible read from data source. Check permission.");
+						.println("It is not posible read from data source. Check permission.");
 			} catch (WriteException e) {
 				System.out
-						.println("Is not posible write in data source. Check permission.");
+						.println("It is not posible write in data source. Check permission.");
+			} catch (Log4JConfigNotFoundException e) {
+				System.out
+				.println("It is not posible read log4j configuration. Check permission.");
 			} catch (ConfigException e) {
 				System.out
-						.println("Is not posible read configuration. Check config.xml :"
+						.println("It is not posible read configuration. Check config.xml :"
 								+ e);
 			} catch (WarcException e) {
 				System.out.println(e);

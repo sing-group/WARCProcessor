@@ -112,27 +112,27 @@ public class WarcGeneratorGUI extends Observable {
 	private CustomMenuItem mntmSaveCG;
 	private CustomMenuItem mnSpanish;
 	private CustomMenuItem mnEnglish;
-	
+
 	private IAppLogic logic;
 
 	private LocaleChangeHandler localeChangeHandler;
-	
+
 	/**
 	 * Create the application.
 	 */
-	public WarcGeneratorGUI(GUIConfig guiConfig,
-			IAppLogic logic) {
+	public WarcGeneratorGUI(GUIConfig guiConfig, IAppLogic logic) {
 		this.logic = logic;
 		this.guiConfig = guiConfig;
 		initialize();
-		
+
 		// Set default local
-		/*Locale newLocale = new Locale("en_GB");
-		Locale.setDefault(newLocale);*/
-		
-		//guiConfig.
-		//Session.add(Constants.LOCALE_SELECTED, newLocale.toString());
-		
+		/*
+		 * Locale newLocale = new Locale("en_GB"); Locale.setDefault(newLocale);
+		 */
+
+		// guiConfig.
+		// Session.add(Constants.LOCALE_SELECTED, newLocale.toString());
+
 	}
 
 	public void updateUI() {
@@ -141,7 +141,7 @@ public class WarcGeneratorGUI extends Observable {
 				Locale.getDefault()));
 
 		// Update UI properties
-		UIManager.put("OptionPane.noButtonText", 
+		UIManager.put("OptionPane.noButtonText",
 				Messages.getString("OptionPane.noButtonText.text"));
 		UIManager.put("OptionPane.okButtonText",
 				Messages.getString("OptionPane.okButtonText.text"));
@@ -203,10 +203,10 @@ public class WarcGeneratorGUI extends Observable {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		// Handle changes in the locale
 		localeChangeHandler = new LocaleChangeHandler();
-		
+
 		frmWarcgenerator = new JFrame();
 		loadPanels();
 
@@ -353,11 +353,10 @@ public class WarcGeneratorGUI extends Observable {
 		mnSpanish.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Locale newLocale = new Locale("es_ES");
-				ChangeLanguageAction action =
-						new ChangeLanguageAction(newLocale,
-						mnSpanish,
-						logic, WarcGeneratorGUI.this);
+				Locale newLocale = new Locale(Constants.SPANISH_LOCALE,
+						Constants.SPAIN_COUNTRY_LOCALE);
+				ChangeLanguageAction action = new ChangeLanguageAction(
+						newLocale, mnSpanish, logic, WarcGeneratorGUI.this);
 				action.actionPerformed(e);
 			}
 		});
@@ -371,11 +370,10 @@ public class WarcGeneratorGUI extends Observable {
 		mnEnglish.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Locale newLocale = new Locale("en_GB");
-				ChangeLanguageAction action =
-						new ChangeLanguageAction(newLocale,
-						mnEnglish,
-						logic, WarcGeneratorGUI.this);
+				Locale newLocale = new Locale(Constants.ENGLISH_LOCALE,
+						Constants.ENGLAND_COUNTRY_LOCALE);
+				ChangeLanguageAction action = new ChangeLanguageAction(
+						newLocale, mnEnglish, logic, WarcGeneratorGUI.this);
 				action.actionPerformed(e);
 			}
 		});
@@ -707,9 +705,10 @@ public class WarcGeneratorGUI extends Observable {
 	public void addLocaleChangeListener(LocaleChangeListener l) {
 		localeChangeHandler.addLocaleChangeListener(l);
 	}
-	
+
 	public void setLanguage(String language) {
-		if (language.toLowerCase().equals(Constants.SPANISH_LOCALE.toLowerCase())) {
+		if (language.toLowerCase().equals(
+				Constants.SPANISH_LOCALE.toLowerCase())) {
 			mnSpanish.doClick();
 		} else {
 			mnEnglish.doClick();
