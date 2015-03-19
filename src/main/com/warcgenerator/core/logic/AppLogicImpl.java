@@ -337,6 +337,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			throw new LogicException(ex);
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			throw new LogicException(ex);
 		} finally {
 			// Close all output datasources
 			for (DataSource ds : outputDS.values()) {

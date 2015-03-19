@@ -708,7 +708,7 @@ public class WarcGeneratorGUI extends Observable {
 
 	public void setLanguage(String language) {
 		if (language.toLowerCase().equals(
-				Constants.SPANISH_LOCALE.toLowerCase())) {
+				Constants.SPANISH_COMPLETE_LOCALE.toLowerCase())) {
 			mnSpanish.doClick();
 		} else {
 			mnEnglish.doClick();

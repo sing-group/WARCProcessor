@@ -41,14 +41,18 @@ public class ChangeLanguageAction extends AbstractAction {
 		menuItem.setIcon(new ImageIcon(WarcGeneratorGUI.class
 				.getResource("/com/warcgenerator/gui/resources/img/OK.png")));
 		Locale.setDefault(newLocale);
-		Session.add(Constants.LANGUAGE_MENUITEM_SELECTED_SESSION_KEY, menuItem);		
-		
+		Session.add(Constants.LANGUAGE_MENUITEM_SELECTED_SESSION_KEY, menuItem);
+
 		// Persist language data in gui config file
-		GUIConfig guiConfig = (GUIConfig)
-				Session.get(Constants.GUI_CONFIG_SESSION_KEY);
-		guiConfig.setLanguage(newLocale.toString());
+		GUIConfig guiConfig = (GUIConfig) Session
+				.get(Constants.GUI_CONFIG_SESSION_KEY);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(newLocale.getLanguage()).append("-")
+				.append(newLocale.getCountry());
+		guiConfig.setLanguage(sb.toString());
 		GUIConfigHelper.persistConfig(guiConfig);
-		
+
 		view.updateUI();
 	}
 

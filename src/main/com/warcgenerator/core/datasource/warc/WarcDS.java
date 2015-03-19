@@ -45,7 +45,7 @@ public class WarcDS extends DataSource implements IDataSource {
 	@SuppressWarnings("unused")
 	private OutputWarcConfig config;
 	private WARCWriter writer;
-	//private WARCReader reader;
+	// private WARCReader reader;
 	private Iterator<ArchiveRecord> archIt;
 	private File warc;
 
@@ -178,18 +178,20 @@ public class WarcDS extends DataSource implements IDataSource {
 				warcRecord = WarcRecord.readNextWarcRecord(dis);
 				if (warcRecord == null)
 					return null;
-				
-				for (Entry<String,String> entries:warcRecord.getHeaderMetadata()) {
-					System.out.println("clave: " + entries.getKey() + ", value: " + entries.getValue());
+
+				for (Entry<String, String> entries : warcRecord
+						.getHeaderMetadata()) {
+					System.out.println("clave: " + entries.getKey()
+							+ ", value: " + entries.getValue());
 				}
-				
-				System.out.println("mi param uri: " + this
-						.getDataSourceConfig().getCustomParams()
-						.get(URL_TAG).getValue());
-				
+
+				System.out.println("mi param uri: "
+						+ this.getDataSourceConfig().getCustomParams()
+								.get(URL_TAG).getValue());
+
 				url = warcRecord.getHeaderMetadataItem(this
-						.getDataSourceConfig().getCustomParams()
-						.get(URL_TAG).getValue());
+						.getDataSourceConfig().getCustomParams().get(URL_TAG)
+						.getValue());
 			} while (url == null);
 
 			// The header file contains information such as the type of record,
@@ -199,7 +201,7 @@ public class WarcDS extends DataSource implements IDataSource {
 
 			dataBean = new DataBean();
 			dataBean.setUrl(url);
-			
+
 			dataBean.setData(warcRecord.getContent());
 
 			boolean isSpam = false;
@@ -221,29 +223,34 @@ public class WarcDS extends DataSource implements IDataSource {
 	public void write(DataBean bean) throws DSException {
 		// Write a warcinfo record with description about how this WARC
 		// was made.
-		try {
-			InputStream is = null;
-			if (bean.getData() instanceof String) {
-				is = new ByteArrayInputStream(
-						((String)bean.getData())
-								.getBytes(Constants.outputEnconding));
-			} else {
-				is = new ByteArrayInputStream(
-						(byte[]) bean.getData());
+		if (bean.getData() != null) {
+			try {
+				InputStream is = null;
+				if (bean.getData() instanceof String) {
+					is = new ByteArrayInputStream(
+							((String) bean.getData())
+									.getBytes(Constants.outputEnconding));
+				} else {
+					is = new ByteArrayInputStream((byte[]) bean.getData());
+				}
+
+				ANVLRecord headers = new ANVLRecord(1);
+				// headers.addLabelValue("mietiqueta", "127.0.0.1");
+				writer.writeResourceRecord(bean.getUrl(),
+						ArchiveUtils.get14DigitDate(),
+						Constants.outputContentType, headers, is,
+						is.available());
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new WriteException(e);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			
-			ANVLRecord headers = new ANVLRecord(1);
-			// headers.addLabelValue("mietiqueta", "127.0.0.1");
-			writer.writeResourceRecord(bean.getUrl(),
-					ArchiveUtils.get14DigitDate(), Constants.outputContentType,
-					headers, is, is.available());
-			is.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new WriteException(e);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			logger.info("There is not content to write. Check internet connection.");
 		}
+
 	}
 
 	public void close() throws DSException {

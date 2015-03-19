@@ -48,7 +48,7 @@ public class InitConfigDialog extends CustomJDialog {
 	private Action searchInitConfigAction;
 	private Map<String, RecentFileCBItem> recentFiles;
 
-	private JButton okButton;
+	private CustomButton okButton;
 
 	public void addFirstConfigFile(File configFile) {
 		if (comboBoxModel.getSize() > 0
@@ -199,7 +199,9 @@ public class InitConfigDialog extends CustomJDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				okButton = new JButton("OK");
+				okButton = new CustomButton();
+				okButton.setName("InitConfigDialog.okButton.text");
+				view.addLocaleChangeListener(okButton);
 				okButton.setEnabled(false);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -217,7 +219,10 @@ public class InitConfigDialog extends CustomJDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				CustomButton cancelButton = new CustomButton();
+				cancelButton.setName("InitConfigDialog.cancelButton.text");
+				view.addLocaleChangeListener(cancelButton);
+				
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						InitConfigDialog.this.dispose();
