@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.warcgenerator.core.logic.IAppLogic;
@@ -79,7 +80,7 @@ public class InitConfigDialog extends CustomJDialog {
 	 */
 	public InitConfigDialog(final IAppLogic logic, final WarcGeneratorGUI view) {
 		super(view.getMainFrame(), true);
-
+		
 		searchInitConfigAction = new SearchInitConfigAction(logic, view, this);
 		recentFiles = new LinkedHashMap<String, RecentFileCBItem>();
 

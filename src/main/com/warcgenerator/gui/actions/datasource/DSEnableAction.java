@@ -53,7 +53,9 @@ public class DSEnableAction extends AbstractAction {
 										+ ": "
 										+ dsConfig.getName()
 										+ Messages
-												.getString("DSEnableAction.datasource.disabled.text"));
+												.getString("DSEnableAction.datasource.disabled.text"),
+												Messages.getString("GeneralDialog.info.title.text"),
+												JOptionPane.INFORMATION_MESSAGE);
 				logic.addDataSourceConfig(dsConfig);
 			} else {
 				detailPanel.getChckbxEnableDS().setSelected(true);
@@ -71,7 +73,9 @@ public class DSEnableAction extends AbstractAction {
 									+ ": "
 									+ dsConfig.getName()
 									+ Messages
-											.getString("DSEnableAction.datasource.enabled.text"));
+											.getString("DSEnableAction.datasource.enabled.text"),
+											Messages.getString("GeneralDialog.info.title.text"),
+											JOptionPane.INFORMATION_MESSAGE);
 			logic.addDataSourceConfig(dsConfig);
 		}
 

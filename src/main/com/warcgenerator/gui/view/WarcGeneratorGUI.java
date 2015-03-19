@@ -124,15 +124,6 @@ public class WarcGeneratorGUI extends Observable {
 		this.logic = logic;
 		this.guiConfig = guiConfig;
 		initialize();
-
-		// Set default local
-		/*
-		 * Locale newLocale = new Locale("en_GB"); Locale.setDefault(newLocale);
-		 */
-
-		// guiConfig.
-		// Session.add(Constants.LOCALE_SELECTED, newLocale.toString());
-
 	}
 
 	public void updateUI() {
