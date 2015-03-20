@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 
 import com.warcgenerator.gui.actions.generate.CancelGenerateCorpusAction;
 import com.warcgenerator.gui.actions.generate.GCGenerateAction;
+import com.warcgenerator.gui.components.CustomButton;
 import com.warcgenerator.gui.components.CustomCheckBox;
 import com.warcgenerator.gui.components.CustomJDialog;
 import com.warcgenerator.gui.components.CustomLabel;
@@ -26,10 +27,10 @@ import com.warcgenerator.gui.view.WarcGeneratorGUI;
 @SuppressWarnings("serial")
 public class GeneratingCorpusDialog extends CustomJDialog {
 	private JProgressBar progressBar;
-	private JLabel stateLbl;
+	private CustomLabel stateLbl;
 	private WarcGeneratorGUI view;
 	private Action cancelGenerateCorpusAction;
-	private JButton cancelBtn;
+	private CustomButton cancelBtn;
 	private CustomCheckBox openOutputFolderCBox;
 
 	public GeneratingCorpusDialog(WarcGeneratorGUI view,
@@ -84,7 +85,9 @@ public class GeneratingCorpusDialog extends CustomJDialog {
 		gbc_lblNewLabel.gridy = 1;
 		getContentPane().add(lblNewLabel, gbc_lblNewLabel);
 
-		stateLbl = new JLabel("Cargando...");
+		stateLbl = new CustomLabel();
+		stateLbl.setName("GeneratingCorpusDialog.stateLbl.loading.text");
+		view.addLocaleChangeListener(stateLbl);
 		GridBagConstraints gbc_stateLbl = new GridBagConstraints();
 		gbc_stateLbl.anchor = GridBagConstraints.WEST;
 		gbc_stateLbl.insets = new Insets(0, 0, 5, 5);
@@ -132,7 +135,9 @@ public class GeneratingCorpusDialog extends CustomJDialog {
 		gbc_horizontalStrut_3.gridy = 6;
 		getContentPane().add(horizontalStrut_3, gbc_horizontalStrut_3);
 
-		cancelBtn = new JButton("Cancelar");
+		cancelBtn = new CustomButton();
+		cancelBtn.setName("GeneratingCorpusDialog.cancelBtn.text");
+		view.addLocaleChangeListener(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cancelGenerateCorpusAction.actionPerformed(e);

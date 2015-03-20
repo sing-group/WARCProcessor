@@ -581,8 +581,9 @@ public class WarcGeneratorGUI extends Observable {
 		List<RecentFileCBItem> recentFiles = guiConfig
 				.getRecentConfigFilesReversed();
 		if (recentFiles.size() == 0) {
-			JMenuItem recentConfig = new JMenuItem(
-					Messages.getString("WarcGeneratorGUI.tree.recentConfig.text"));
+			CustomMenuItem recentConfig = new CustomMenuItem();
+			recentConfig.setName("WarcGeneratorGUI.tree.recentConfig.text");
+			addLocaleChangeListener(recentConfig);
 			recentConfig.setEnabled(false);
 			recentFilesMI.add(recentConfig);
 		} else {

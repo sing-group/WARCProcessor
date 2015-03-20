@@ -208,7 +208,7 @@ public class GeneralConfigPanel extends CustomJPanel {
 		gbc_numSitesTField.gridx = 1;
 		gbc_numSitesTField.gridy = 1;
 		panel_2.add(numSitesTField, gbc_numSitesTField);
-		numSitesTField.setToolTipText(Messages.getString("GeneralConfigPanel.numSitesTField.toolTipText")); //$NON-NLS-1$
+		//numSitesTField.setToolTipText(Messages.getString("GeneralConfigPanel.numSitesTField.toolTipText")); //$NON-NLS-1$
 		numSitesTField.setInputVerifier(new NaturalNumberValidator(view.getMainFrame(), numSitesTField, "Numero mayor que 0"));
 		numSitesTField.setColumns(10);
 		

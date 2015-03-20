@@ -61,7 +61,8 @@ public class DSRemoveAction extends AbstractAction implements Observer {
 					&& ((LogicCallback) logicCallback).getParams()[0]
 							.equals(config.getId())) {
 				JOptionPane.showMessageDialog(view.getMainFrame(),
-						"DS Eliminado: " + config.getName(), 
+						Messages.getString("DSRemoveAction.remove.text")
+								+ config.getName(),
 						Messages.getString("GeneralDialog.info.title.text"),
 						JOptionPane.INFORMATION_MESSAGE);
 				view.removeDS(config.getId());
