@@ -61,7 +61,9 @@ public class DSAsisstantStep3FinishAction extends AbstractAction implements
 					JOptionPane
 							.showMessageDialog(
 									view.getMainFrame(),
-									Messages.getString("DSAssistantStep3FinishAction.dscreated.text"));
+									Messages.getString("DSAssistantStep3FinishAction.dscreated.text"),
+									Messages.getString("GeneralDialog.info.title.text"),
+									JOptionPane.INFORMATION_MESSAGE);
 					panel.commit();
 
 					Integer id = (Integer) ((LogicCallback) logicCallack)

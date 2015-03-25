@@ -21,7 +21,7 @@ public class PropertiesJTable extends JTable {
 		// this.setRowHeight(21);
 
 		this.setModel(new DefaultTableModel(new Object[0][0], new String[] {
-				"Nombre", "Valor" }) {
+				"Name", "Value" }) {
 			boolean[] columnEditables = new boolean[] { false, true };
 
 			public boolean isCellEditable(int row, int column) {

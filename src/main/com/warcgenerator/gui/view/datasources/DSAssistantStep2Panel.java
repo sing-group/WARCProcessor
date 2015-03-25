@@ -18,7 +18,6 @@ import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -34,6 +33,7 @@ import com.warcgenerator.gui.actions.datasource.DSAsisstantCancelAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2BackAction;
 import com.warcgenerator.gui.actions.datasource.DSAsisstantStep2ContinueAction;
 import com.warcgenerator.gui.components.CustomButton;
+import com.warcgenerator.gui.components.CustomCheckBox;
 import com.warcgenerator.gui.components.CustomJPanel;
 import com.warcgenerator.gui.components.CustomLabel;
 import com.warcgenerator.gui.components.PropertiesJTable;
@@ -53,8 +53,8 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 	}
 
 	private JFormattedTextField quantityMaxElemsTField;
-	private JCheckBox spamEnabledCBox;
-	private JCheckBox maxElementsEnabledCBox;
+	private CustomCheckBox spamEnabledCBox;
+	private CustomCheckBox maxElementsEnabledCBox;
 	private JRadioButton spamRButtom;
 	private JRadioButton hamRButtom;
 
@@ -170,8 +170,9 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_lblNewLabel_1.gridy = 1;
 		panel_2.add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-		spamEnabledCBox = new JCheckBox(
-				Messages.getString("DSAssistantStep2Panel.spamEnabledCBox.text"));
+		spamEnabledCBox = new CustomCheckBox();
+		spamEnabledCBox.setName("DSAssistantStep2Panel.spamEnabledCBox.text");
+		view.addLocaleChangeListener(spamEnabledCBox);
 		GridBagConstraints gbc_spamEnabledCBox = new GridBagConstraints();
 		gbc_spamEnabledCBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spamEnabledCBox.insets = new Insets(0, 0, 5, 5);
@@ -224,8 +225,10 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		gbc_lblNewLabel_2.gridx = 1;
 		gbc_lblNewLabel_2.gridy = 2;
 		panel_2.add(lblNewLabel_2, gbc_lblNewLabel_2);
-		maxElementsEnabledCBox = new JCheckBox(
-				Messages.getString("DSAssistantStep2Panel.maxElementsEnabledCBox.text"));
+		maxElementsEnabledCBox = new CustomCheckBox();
+		maxElementsEnabledCBox.setName(
+				"DSAssistantStep2Panel.maxElementsEnabledCBox.text");
+		view.addLocaleChangeListener(maxElementsEnabledCBox);
 		GridBagConstraints gbc_maxElementsEnabledCBox = new GridBagConstraints();
 		gbc_maxElementsEnabledCBox.anchor = GridBagConstraints.WEST;
 		gbc_maxElementsEnabledCBox.insets = new Insets(0, 0, 5, 5);
@@ -364,7 +367,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		return spamEnabledCBox;
 	}
 
-	public void setSpamEnabledCBox(JCheckBox spamEnabledCBox) {
+	public void setSpamEnabledCBox(CustomCheckBox spamEnabledCBox) {
 		this.spamEnabledCBox = spamEnabledCBox;
 	}
 
@@ -372,7 +375,7 @@ public class DSAssistantStep2Panel extends CustomJPanel {
 		return maxElementsEnabledCBox;
 	}
 
-	public void setMaxElementsEnabledCBox(JCheckBox maxElementsEnabledCBox) {
+	public void setMaxElementsEnabledCBox(CustomCheckBox maxElementsEnabledCBox) {
 		this.maxElementsEnabledCBox = maxElementsEnabledCBox;
 	}
 

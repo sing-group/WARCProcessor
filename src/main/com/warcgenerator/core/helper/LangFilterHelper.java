@@ -16,12 +16,22 @@ import com.warcgenerator.core.plugin.webcrawler.WebCrawlerHandler;
 public class LangFilterHelper {
 	private static Logger logger = Logger.getLogger
             (WebCrawlerHandler.class);
-	public static boolean checkLanguageAllowed(String html,
+	public static boolean checkLanguageAllowed(Object html,
 			List<Country> languagesFilter) throws Exception {
 		boolean allowed = true;
-
+		String data = null;
+		
+		// Homogenize data format to string
+		if (html != null) {
+			if (html instanceof String) {
+				data = (String)html;
+			} else if (html instanceof byte[]){
+				data = new String((byte[])html);
+			}
+		}
+		
 		if (languagesFilter.size() > 0) {
-			String text = Jsoup.parse(html).text();
+			String text = Jsoup.parse(data).text();
 			String lang = TrigramLanguageGuesser.detectLanguage(text);
 			logger.info("Lang detected: " + lang);
 			Country c = new Country();
@@ -29,8 +39,6 @@ public class LangFilterHelper {
 			Locale l = new Locale(lang);
 			c.setName(l.getDisplayLanguage());
 			allowed = languagesFilter.contains(c);
-		} else {
-			logger.info("Language filter didn't specified");
 		}
 		
 		return allowed;
