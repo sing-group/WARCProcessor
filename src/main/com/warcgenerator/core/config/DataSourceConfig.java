@@ -21,7 +21,8 @@ import com.warcgenerator.core.exception.logic.LogicException;
 public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public static final boolean IS_SPAM = true;
 	public static final boolean IS_HAM = false;
-	public static int nextId = 1;
+	public static final int ID_INIT_VALUE = 1;
+	public static int nextId = ID_INIT_VALUE;
 
 	private Integer id;
 	private String name = "";
@@ -204,6 +205,10 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	 */
 	public static int getNextId() {
 		return nextId++;
+	}
+	
+	public static void resetId() {
+		nextId = ID_INIT_VALUE;
 	}
 
 	public String getType() {

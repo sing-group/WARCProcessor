@@ -1,0 +1,14 @@
+@relation weather
+
+@attribute outlook {sunny, overcast, rainy}
+@attribute temperature real
+@attribute humidity real
+@attribute windy {TRUE, FALSE}
+@attribute play {yes, no}
+@attribute LABEL string
+@attribute URL string
+
+@data
+
+sunny,85,85,FALSE,no,ham,URL_http://esei.uvigo.es
+sunny,80,90,TRUE,no,spam,URL_http://faitic.uvigo.es/index.php/es/servicio

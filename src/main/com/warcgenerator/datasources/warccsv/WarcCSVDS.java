@@ -30,15 +30,21 @@ import com.warcgenerator.datasources.warccsv.util.ConnectionUtil;
 public class WarcCSVDS extends DataSource implements IDataSource {
 	public static final String DS_TYPE = "WarcCSVDS";
 
-	private static final String URL_TAG = "WarcURLTag";
+	public static final String URL_TAG = "WarcURLTag";
+	public static final String SPAM_COL = "SpamAttribute";
+	public static final String URL_COL = "URLAttribute";
+	public static final String FIELD_SEPARATOR = "FieldSeparator";
+	public static final String SPAM_COL_SPAM_VALUE = "SpamValue";
+	public static final String FILE_CSV = "FileCSV";
+	public static final String HEADER_ROW_PRESENT = "HeaderRowPresent";
+	public static final String REGEXP_URL_TAG = "RegExpURLAttribute";
 
-	private static final String SPAM_COL = "SpamAttribute";
-	private static final String URL_COL = "URLAttribute";
-	private static final String FIELD_SEPARATOR = "FieldSeparator";
-	private static final String SPAM_COL_SPAM_VALUE = "SpamValue";
-	private static final String FILE_CSV = "FileCSV";
-	private static final String REGEXP_URL_TAG = "RegExpURLAttribute";
-
+	private String paramList[] = {
+			URL_TAG, SPAM_COL, URL_COL, FIELD_SEPARATOR,
+			SPAM_COL_SPAM_VALUE, FILE_CSV, HEADER_ROW_PRESENT,
+			REGEXP_URL_TAG
+	};
+	
 	private static final String DB_TMP_DIR = "derbyDB";
 	
 	private static Logger logger = Logger.getLogger(WarcCSVDS.class);
@@ -55,6 +61,7 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 	 */
 	public WarcCSVDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);
+		validate(paramList);
 
 		domainSpam = new LinkedHashMap<String, Boolean>();
 		initCSV(domainSpam);

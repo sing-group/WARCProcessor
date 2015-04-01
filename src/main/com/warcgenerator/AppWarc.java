@@ -13,6 +13,7 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.exception.WarcException;
 import com.warcgenerator.core.exception.config.Log4JConfigNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
+import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.core.logic.AppLogicImpl;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
@@ -35,7 +36,7 @@ public class AppWarc {
 
 	private AppWarc() {
 		// Check if exist Log4j configuration file
-		if (!Files.isReadable(FileSystems.getDefault().getPath(CUSTOM_GUI_CONFIG_XML_FULLPATH))) {
+		if (!FileHelper.checkIfExists(CUSTOM_GUI_CONFIG_XML_FULLPATH)) {
 			try {
 				FileUtils.readFullyToFile(
 						this.getClass().getResourceAsStream(

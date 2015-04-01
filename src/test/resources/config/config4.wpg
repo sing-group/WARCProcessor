@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+	<numSites downloadAgain="false" onlyActiveSites="false">100</numSites>
+	<ratio isPercentage="true">
+		<percentageSpam>50</percentageSpam>
+		<quantitySpam>0</quantitySpam>
+	</ratio>
+	<corpusDirPath>.\out</corpusDirPath>
+	<spamDirName>_spam_</spamDirName>
+	<hamDirName>_ham_</hamDirName>
+	<domainsLabeledFileName>domains.labelled</domainsLabeledFileName>
+	<domainsNotFoundFileName>domains.notFound</domainsNotFoundFileName>
+	<flushOutputDir>true</flushOutputDir>
+	<maxDepthOfCrawling>0</maxDepthOfCrawling>
+	<numCrawlers>1</numCrawlers>
+	<webCrawlerDirTmpStorePath>.</webCrawlerDirTmpStorePath>
+	<followRedirect>false</followRedirect>
+	<dataSources>
+		<dataSource enabled="true" isSpam="true" name="BlackListFileDS" type="FileDS" useRecursiveFolders="true">
+			<customParams/>
+			<languages/>
+			<srcDirPath>src\test\resources\in\file</srcDirPath>
+			<handler>com.warcgenerator.datasources.file.handler.FileDSHandler</handler>
+		</dataSource>
+	</dataSources>
+</configuration>

@@ -5,6 +5,8 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -18,6 +20,14 @@ public class FileHelper {
 	private static Logger logger = Logger.getLogger
             (FileHelper.class);
 	
+	/**
+	 * Check if a file is readable
+	 * @param path
+	 * @return True if it is readable
+	 */
+	public static boolean checkIfExists(String path) {
+		return Files.isReadable(FileSystems.getDefault().getPath(path));
+	}
 	
 	/**
 	 * Create directories from an input array

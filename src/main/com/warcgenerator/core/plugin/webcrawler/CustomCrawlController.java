@@ -17,10 +17,9 @@ public class CustomCrawlController extends CrawlController {
 		super(config, pageFetcher, robotstxtServer);
 	}
 	
-	//@Override
-	/*protected void sleep(int segundos) {
+	/*protected static void sleep(int segundos) {
 		try {
-			Thread.sleep(Math.round(segundos) * 1000);
+			Thread.sleep(Math.round(segundos) * 10);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

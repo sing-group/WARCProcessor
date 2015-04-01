@@ -17,4 +17,7 @@ public class DSException extends WarcException {
 		super(e);
 	}
 	
+	public DSException(String message) {
+		super(message);
+	}
 }

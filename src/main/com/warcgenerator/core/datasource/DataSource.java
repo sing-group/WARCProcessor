@@ -1,6 +1,7 @@
 package com.warcgenerator.core.datasource;
 
 import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.core.exception.datasource.MissingParamsException;
 
 public abstract class DataSource implements IDataSource {
 	private DataSourceConfig dataSourceConfig;
@@ -25,5 +26,17 @@ public abstract class DataSource implements IDataSource {
 	 */
 	public void setOutputFilePath(String filePath) {
 		this.getDataSourceConfig().setFilePath(filePath);
+	}
+	
+	/**
+	 * Check if exist all mandatory params
+	 */
+	public void validate(String[] paramsList)
+			throws MissingParamsException {
+		for (String param : paramsList) {
+			if (!this.getDataSourceConfig().getCustomParams().containsKey(param)) {
+				throw new MissingParamsException(param);
+			}
+		}
 	}
 }

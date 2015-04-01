@@ -24,6 +24,7 @@ import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.datasource.generic.GenericDS;
 import com.warcgenerator.core.exception.config.LoadDataSourceException;
 import com.warcgenerator.core.exception.logic.ConfigFilePathIsNullException;
+import com.warcgenerator.core.exception.logic.DataSourceNotFoundException;
 import com.warcgenerator.core.exception.logic.LogicException;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
@@ -57,23 +58,15 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		XMLConfigHelper.getDataSources(Constants.dataSourcesTypesXML,
 				dataSourcesTypes);
 
+		// Reset DataSourceConfig ID value
+		DataSourceConfig.resetId();
+		
 		// Create a output corpus with config
 		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
 			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
 		} else {
 			throw new OutCorpusCfgNotFoundException();
 		}
-
-		/*
-		 * // Corpus Path dirs String dirs[] = {
-		 * outputCorpusConfig.getOutputDir(), outputCorpusConfig.getSpamDir(),
-		 * outputCorpusConfig.getHamDir() };
-		 * 
-		 * // Delete directories if (config.getFlushOutputDir() != null &&
-		 * config.getFlushOutputDir()) { FileHelper.removeDirsIfExist(dirs); }
-		 * 
-		 * FileHelper.createDirs(dirs);
-		 */
 	}
 
 	/**
@@ -188,16 +181,15 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		return dataSourceConfigsList;
 	}
 
-	public DataSourceConfig getDataSourceConfig(String name) {
+	public DataSourceConfig getDataSourceById(Integer id)
+			throws DataSourceNotFoundException {
 		DataSourceConfig dsConfigCopy = new DataSourceConfig();
-		DataSourceConfig dsConfig = config.getDataSourceConfigs().get(name);
+		DataSourceConfig dsConfig = config.getDataSourceConfigs().get(id);
+		if (dsConfig == null) {
+			throw new DataSourceNotFoundException();
+		}
 		DataSourceConfig.copy(dsConfigCopy, dsConfig);
 		return dsConfigCopy;
-	}
-
-	public DataSourceConfig getDataSourceById(Integer id) {
-		// ConfigHelper.getDSHandler(dsConfig, config);
-		return config.getDataSourceConfigs().get(id);
 	}
 
 	/**
@@ -213,10 +205,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			dsConfig.setId(DataSourceConfig.getNextId());
 			callback_message = DATASOURCE_CREATED_CALLBACK;
 		}
-		
+
 		// Expand changes to all children
 		expandChanges(dsConfig);
-		
+
 		// ConfigHelper.getDSHandler(dsConfig, config);
 		config.getDataSourceConfigs().put(dsConfig.getId(), dsConfig);
 		// Notify observers
@@ -224,15 +216,15 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		notifyObservers(new LogicCallback(callback_message,
 				new Object[] { dsConfig.getId() }));
 	}
-	
+
 	/**
 	 * Expand changes to all children
+	 * 
 	 * @param dsConfigParent
 	 */
 	private void expandChanges(DataSourceConfig dsConfigParent) {
-		for(DataSourceConfig specificDsConfig:dsConfigParent.getChildren()) {
-			ConfigHelper.copyProperties(specificDsConfig, 
-					dsConfigParent);
+		for (DataSourceConfig specificDsConfig : dsConfigParent.getChildren()) {
+			ConfigHelper.copyProperties(specificDsConfig, dsConfigParent);
 			expandChanges(specificDsConfig);
 		}
 	}
@@ -356,8 +348,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			List<Country> listSelectedCountries) {
 		List<Country> listCountries = null;
 		try {
-			listCountries = LangFilterHelper.
-					listNotSelectedLanguages(listSelectedCountries);
+			listCountries = LangFilterHelper
+					.listNotSelectedLanguages(listSelectedCountries);
 		} catch (IOException e) {
 			throw new LogicException(e);
 		}

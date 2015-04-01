@@ -25,13 +25,18 @@ import com.warcgenerator.core.exception.datasource.OpenException;
  * @author Miguel Callon
  */
 public class CSVDS extends DataSource implements IDataSource {
-	private static final String SPAM_COL = "SpamAttribute";
-	private static final String URL_COL = "URLAttribute";
-	private static final String FIELD_SEPARATOR = "FieldSeparator";
-	private static final String SPAM_COL_SPAM_VALUE = "SpamValue";
-	private static final String HEADER_ROW_PRESENT = "HeaderRowPresent";
-	private static final String REGEXP_URL_TAG = "RegExpURLAttribute";
+	public static final String SPAM_COL = "SpamAttribute";
+	public static final String URL_COL = "URLAttribute";
+	public static final String FIELD_SEPARATOR = "FieldSeparator";
+	public static final String SPAM_COL_SPAM_VALUE = "SpamValue";
+	public static final String HEADER_ROW_PRESENT = "HeaderRowPresent";
+	public static final String REGEXP_URL_TAG = "RegExpURLAttribute";
 
+	private String paramList[] = {
+			SPAM_COL, URL_COL, FIELD_SEPARATOR, SPAM_COL_SPAM_VALUE,
+			HEADER_ROW_PRESENT, REGEXP_URL_TAG
+	};
+	
 	private CSVLoader loader;
 	private Instances data;
 
@@ -47,6 +52,7 @@ public class CSVDS extends DataSource implements IDataSource {
 	 */
 	public CSVDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);
+		validate(paramList);
 
 		try {
 			logger.info("Opening CSV File: "
@@ -133,10 +139,10 @@ public class CSVDS extends DataSource implements IDataSource {
 	}
 
 	public void write(DataBean bean) throws DSException {
-		// It's not necesary to implement it at the moment
+		// It's not necessary to implement it at the moment
 	}
 
 	public void close() throws DSException {
-		// It's not necesary to implement it at the moment
+		// It's not necessary to implement it at the moment
 	}
 }

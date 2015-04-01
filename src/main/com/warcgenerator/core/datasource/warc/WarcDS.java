@@ -39,8 +39,8 @@ import com.warcgenerator.core.exception.datasource.WriteException;
 
 public class WarcDS extends DataSource implements IDataSource {
 	public static final String DS_TYPE = "WarcDS";
-	private static final String URL_TAG = "WarcURLTag";
-	private static final String REGEXP_URL_TAG = "RegExpURLAttribute";
+	public static final String URL_TAG = "WarcURLTag";
+	public static final String REGEXP_URL_TAG = "RegExpURLAttribute";
 
 	@SuppressWarnings("unused")
 	private OutputWarcConfig config;

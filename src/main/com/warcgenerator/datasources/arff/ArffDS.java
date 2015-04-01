@@ -22,10 +22,13 @@ import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 
 public class ArffDS extends DataSource implements IDataSource {
-	private static final String LABEL_TAG = "SpamAttribute";
-	private static final String URL_TAG = "URLAttribute";
-	private static final String SPAM_COL_SPAM_VALUE = "SpamValue";
-	private static final String REGEXP_URL_TAG = "RegExpURLAttribute";
+	public static final String LABEL_TAG = "SpamAttribute";
+	public static final String URL_TAG = "URLAttribute";
+	public static final String SPAM_COL_SPAM_VALUE = "SpamValue";
+	public static final String REGEXP_URL_TAG = "RegExpURLAttribute";
+
+	private String paramsList[] = { LABEL_TAG, URL_TAG, SPAM_COL_SPAM_VALUE,
+			REGEXP_URL_TAG };
 
 	private ArffReader arff;
 	private Instances data;
@@ -41,6 +44,7 @@ public class ArffDS extends DataSource implements IDataSource {
 	 */
 	public ArffDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);
+		validate(paramsList);
 
 		try {
 			logger.info("Opening Arff file: "
@@ -123,5 +127,4 @@ public class ArffDS extends DataSource implements IDataSource {
 			throw new CloseException(e);
 		}
 	}
-
 }
