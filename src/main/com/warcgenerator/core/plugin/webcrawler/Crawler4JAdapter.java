@@ -159,7 +159,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	}
 
 	public void stop() {
-		System.out.println("Haciendo un stop");
 		controller.shutdown();
 	}
 
@@ -241,7 +240,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	   *         otherwise false is returned.
 	   */
 	@Override
-	public boolean shouldVisit(WebURL url) {
+	public boolean shouldVisit(Page origin, WebURL url) {
 		String href = url.getURL().toLowerCase();
 
 		// Avoid that the crawler go out from the source domains.
@@ -292,7 +291,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 
 			String text = htmlParseData.getText();
 			String html = htmlParseData.getHtml();
-			List<WebURL> links = htmlParseData.getOutgoingUrls();
+			Set<WebURL> links = htmlParseData.getOutgoingUrls();
 
 			parseData.setHtml(html);
 			parseData.setText(text);

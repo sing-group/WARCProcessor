@@ -131,6 +131,7 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 		if (warcDSCurrent != null) {
 			while ((dataBean = warcDSCurrent.read()) == null
 					&& warcDSsIt.hasNext()) {
+				warcDSCurrent.close();
 				warcDSCurrent = warcDSsIt.next();
 			}
 		}
@@ -155,100 +156,8 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 	}
 
 	public void close() throws DSException {
-		logger.info("Removing db temporary folder...");
-
 		for (WarcDS warcDS : warcDSs) {
 			warcDS.close();
 		}
-
-		/*
-		 * File f = new File(DB_TMP_DIR); if (f.exists()) { f.delete();
-		 * logger.info("Removed..."); } else {
-		 * logger.info("Can't remove db temporary folder."); }
-		 */
-	}
-
-	public static void main(String args[]) {
-		// String connectionString = "jdbc:derby:derbyDB;create=true";
-		String connectionString = "jdbc:derby:derbyDB;create=true";
-
-		/*
-		 * try {
-		 * Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-		 * 
-		 * Connection connection =
-		 * ConnectionUtil.getConnection(connectionString);
-		 * 
-		 * DBDAO dbDAO = new DBDAO(connection); DBManager manager = new
-		 * DBManager(dbDAO);
-		 */
-
-		/*
-		 * URLInfo urlInfo = new URLInfo(); urlInfo.setDomain("www.url.com");
-		 * urlInfo.setUrl("http://www.info.com?p=52");
-		 * urlInfo.setFilePath("c:/cosa");
-		 * 
-		 * manager.put(urlInfo);
-		 */
-
-		/*
-		 * List<URLInfo> urls = manager.get("www.url.com"); for (URLInfo url:
-		 * urls) { System.out.println(url); }
-		 */
-
-		DataSourceConfig dsConfig = new DataSourceConfig();
-
-		CustomParamConfig customParam = new CustomParamConfig();
-
-		customParam.setType(URL_TAG);
-		customParam.setName(URL_TAG);
-		customParam.setValue("WARC-Target-URI");
-		dsConfig.getCustomParams().put(URL_TAG, customParam);
-
-		customParam = new CustomParamConfig();
-
-		customParam.setType(FIELD_SEPARATOR);
-		customParam.setName(FIELD_SEPARATOR);
-		customParam.setValue(",");
-		customParam.setDefaultValue(",");
-
-		dsConfig.getCustomParams().put(FIELD_SEPARATOR, customParam);
-
-		customParam = new CustomParamConfig();
-		customParam.setType(URL_COL);
-		customParam.setName(URL_COL);
-		customParam.setValue("0");
-		customParam.setDefaultValue("0");
-
-		dsConfig.getCustomParams().put(URL_COL, customParam);
-
-		customParam = new CustomParamConfig();
-		customParam.setType(SPAM_COL);
-		customParam.setName(SPAM_COL);
-		customParam.setValue("1");
-		customParam.setDefaultValue("1");
-
-		dsConfig.getCustomParams().put(SPAM_COL, customParam);
-
-		customParam = new CustomParamConfig();
-		customParam.setType(SPAM_COL_SPAM_VALUE);
-		customParam.setName(SPAM_COL_SPAM_VALUE);
-		customParam.setValue("1");
-		customParam.setDefaultValue("1");
-
-		dsConfig.getCustomParams().put(SPAM_COL_SPAM_VALUE, customParam);
-
-		// dsConfig.setFilePath("C:/Users/Administrador/git/proyecto/in/0013wb-88.warc");
-		// dsConfig.setFilePath("C:/Users/Administrador/Documents/ClueWeb09_English_1/en0000/00.warc/00.warc");
-		// dsConfig.setFilePath("C:/Users/Administrador/Documents/ClueWeb09_English_1/en0000/00.warc.gz");
-		// dsConfig.setFilePath("C:/Users/Administrador/Documents/prueba_corpus/en0000/0013wb-88.warc");
-		dsConfig.setFilePath("C:/Users/Administrador/Documents/prueba_corpus/en0000");
-
-		WarcCSVDS plugin = new WarcCSVDS(dsConfig);
-
-		DataBean dataBean = null;
-		do {
-			dataBean = plugin.read();
-		} while (dataBean != null);
 	}
 }

@@ -3,6 +3,8 @@ package com.warcgenerator.core.helper;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -50,9 +52,15 @@ public class ConfigHelper {
 		for (DataSourceConfig ds : config.getDataSourceConfigs().values()) {
 			// Check if datasource is enabled
 			if (ds.getEnabled()) {
+				initDS(ds);
 				getDSHandler(ds, config, dataSourcesTypes);
 			}
 		}
+	}
+	
+	// Initialize DS
+	private static void initDS(DataSourceConfig ds) {
+		ds.setChildren(new ArrayList<DataSourceConfig>());
 	}
 
 	public static void getDSHandler(DataSourceConfig ds, AppConfig config,
