@@ -1,9 +1,7 @@
 package com.warcgenerator.datasources.warccsv;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,10 +20,6 @@ import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.exception.datasource.OpenException;
 import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.datasources.csv.CSVDS;
-import com.warcgenerator.datasources.warccsv.bean.URLInfo;
-import com.warcgenerator.datasources.warccsv.dao.DBDAO;
-import com.warcgenerator.datasources.warccsv.manager.DBManager;
-import com.warcgenerator.datasources.warccsv.util.ConnectionUtil;
 
 public class WarcCSVDS extends DataSource implements IDataSource {
 	public static final String DS_TYPE = "WarcCSVDS";
@@ -39,19 +33,15 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 	public static final String HEADER_ROW_PRESENT = "HeaderRowPresent";
 	public static final String REGEXP_URL_TAG = "RegExpURLAttribute";
 
-	private String paramList[] = {
-			URL_TAG, SPAM_COL, URL_COL, FIELD_SEPARATOR,
-			SPAM_COL_SPAM_VALUE, FILE_CSV, HEADER_ROW_PRESENT,
-			REGEXP_URL_TAG
-	};
-	
-	private static final String DB_TMP_DIR = "derbyDB";
-	
+	private String paramList[] = { URL_TAG, SPAM_COL, URL_COL, FIELD_SEPARATOR,
+			SPAM_COL_SPAM_VALUE, FILE_CSV, HEADER_ROW_PRESENT, REGEXP_URL_TAG };
+
 	private static Logger logger = Logger.getLogger(WarcCSVDS.class);
 
 	private Map<String, Boolean> domainSpam;
-
-	private Iterator<URLInfo> iterator;
+	List<WarcDS> warcDSs;
+	private Iterator<WarcDS> warcDSsIt;
+	private WarcDS warcDSCurrent;
 
 	/**
 	 * Open a Arff datasource in read mode
@@ -64,105 +54,47 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 		validate(paramList);
 
 		domainSpam = new LinkedHashMap<String, Boolean>();
+		warcDSs = new ArrayList<WarcDS>();
 		initCSV(domainSpam);
+		buildIndex(warcDSs, dsConfig.getFilePath());
+		warcDSsIt = warcDSs.iterator();
+		
+		if (warcDSsIt.hasNext()) {
+			warcDSCurrent = warcDSsIt.next();
+		}
 
 		for (String url : domainSpam.keySet()) {
 			logger.info("CSV index: " + url + ", isSpam: "
 					+ domainSpam.get(url));
 		}
-
-		String connectionString = "jdbc:derby:derbyDB;create=true";
-
-		try {
-			Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-
-			Connection connection = ConnectionUtil
-					.getConnection(connectionString);
-
-			DBDAO dbDAO = new DBDAO(connection);
-			DBManager manager = new DBManager(dbDAO);
-
-			buildIndex(manager, dsConfig.getFilePath());
-
-			List<URLInfo> list = manager.list();
-			iterator = list.iterator();
-
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
-	private void buildIndex(DBManager manager, String dir) {
-		fileDir(manager, new File(dir));
+	private void buildIndex(List<WarcDS> warcDSs, String dir) {
+		fileDir(warcDSs, new File(dir));
 	}
 
-	public void fileDir(DBManager manager, File file) {
+	public void fileDir(List<WarcDS> warcDSs, File file) {
 		if (file.isDirectory()) {
 			for (File fileTmp : file.listFiles()) {
-				fileDir(manager, fileTmp);
+				fileDir(warcDSs, fileTmp);
 			}
 		} else {
-			fileIndex(manager, file);
+			fileIndex(warcDSs, file);
 		}
 	}
 
-	public void fileIndex(DBManager manager, File warcFile) {
+	public void fileIndex(List<WarcDS> warcDSs, File warcFile) {
 		WarcDS warc = null;
 		if (WARCReaderFactory.isWARCSuffix(warcFile.getName())) {
-			try {
-				logger.info("Idexing file: " + warcFile.getAbsolutePath());
-				DataSourceConfig dsConfig = new DataSourceConfig();
-				dsConfig.setFilePath(warcFile.getAbsolutePath());
-				// spam field is not used here
-				dsConfig.setSpam(DataSourceConfig.IS_HAM);
-				dsConfig.setCustomParams(this.getDataSourceConfig()
-						.getCustomParams());
-				warc = new WarcDS(dsConfig);
-
-				buildDomains(manager, warc, warcFile);
-			} catch (IOException ex) {
-				throw new OpenException(ex);
-			} finally {
-				if (warc != null) {
-					warc.close();
-				}
-			}
+			logger.info("Idexing file: " + warcFile.getAbsolutePath());
+			DataSourceConfig dsConfig = new DataSourceConfig();
+			dsConfig.setFilePath(warcFile.getAbsolutePath());
+			// spam field is not used here
+			dsConfig.setSpam(DataSourceConfig.IS_HAM);
+			dsConfig.setCustomParams(this.getDataSourceConfig()
+					.getCustomParams());
+			warcDSs.add(new WarcDS(dsConfig));
 		}
-	}
-
-	private void buildDomains(DBManager manager, WarcDS warcDS, File warcFile)
-			throws IOException {
-		DataBean dataBean = null;
-		while ((dataBean = warcDS.read()) != null) {
-			URLInfo urlInfo = new URLInfo();
-			urlInfo.setDomain(FileHelper.getDomainNameFromURL(dataBean.getUrl()));
-			urlInfo.setUrl(dataBean.getUrl());
-			urlInfo.setFilePath(warcFile.getAbsolutePath());
-			// Check if spam
-			Boolean spam = domainSpam.get(urlInfo.getDomain());
-			if (spam != null) {
-				urlInfo.setSpam(spam);
-			} else {
-				// TODO Parametrize
-				logger.info("Can not determine if the domain: "
-						+ urlInfo.getDomain() + ", is spam. Set spam false.");
-			}
-			write(manager, urlInfo);
-		}
-	}
-
-	private void write(DBManager manager, URLInfo urlInfo) throws IOException {
-		manager.put(urlInfo);
 	}
 
 	/**
@@ -174,14 +106,13 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 		CSVDS csvDS = null;
 		try {
 			DataSourceConfig dsConfig = new DataSourceConfig();
-			dsConfig.setFilePath(this
-					.getDataSourceConfig().getCustomParams()
+			dsConfig.setFilePath(this.getDataSourceConfig().getCustomParams()
 					.get(FILE_CSV).getValue());
 			// spam field is not used here
 			dsConfig.setCustomParams(this.getDataSourceConfig()
 					.getCustomParams());
 			csvDS = new CSVDS(dsConfig);
-			
+
 			DataBean dataBean;
 			while ((dataBean = csvDS.read()) != null) {
 				domainSpam.put(dataBean.getUrl(), dataBean.isSpam());
@@ -195,26 +126,25 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 
 	public DataBean read() throws DSException {
 		DataBean dataBean = null;
-		if (iterator.hasNext()) {
-			URLInfo urlInfo = iterator.next();
-			String warcFilePath = urlInfo.getFilePath();
-		
-			DataSourceConfig dsConfig = new DataSourceConfig();
-			dsConfig.setFilePath(warcFilePath);
-			// spam field is not used here
-			dsConfig.setSpam(DataSourceConfig.IS_HAM);
-			dsConfig.setCustomParams(this.getDataSourceConfig()
-					.getCustomParams());
-			
-			WarcDS warcDS = null;
-			try {
-				warcDS = new WarcDS(dsConfig);
-				while ((dataBean = warcDS.read()) != null &&
-					!dataBean.getUrl().equals(urlInfo.getUrl()));
-				dataBean.setSpam(urlInfo.getSpam());
-			} finally {
-				if (warcDS != null)
-					warcDS.close();
+
+		// Read from a warcDS
+		if (warcDSCurrent != null) {
+			while ((dataBean = warcDSCurrent.read()) == null
+					&& warcDSsIt.hasNext()) {
+				warcDSCurrent = warcDSsIt.next();
+			}
+		}
+
+		if (dataBean != null) {
+			// Check if spam
+			Boolean spam = domainSpam.get(FileHelper.getDomainNameFromURL(dataBean
+					.getUrl()));
+			if (spam != null) {
+				dataBean.setSpam(spam);
+			} else {
+				// TODO Parametrize
+				logger.info("Can not determine if the domain: " + dataBean.getUrl()
+						+ ", is spam. Set spam false.");
 			}
 		}
 		return dataBean;
@@ -226,13 +156,16 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 
 	public void close() throws DSException {
 		logger.info("Removing db temporary folder...");
-		File f = new File(DB_TMP_DIR);
-		if (f.exists()) {
-			f.delete();
-			logger.info("Removed...");
-		} else {
-			logger.info("Can't remove db temporary folder.");
+
+		for (WarcDS warcDS : warcDSs) {
+			warcDS.close();
 		}
+
+		/*
+		 * File f = new File(DB_TMP_DIR); if (f.exists()) { f.delete();
+		 * logger.info("Removed..."); } else {
+		 * logger.info("Can't remove db temporary folder."); }
+		 */
 	}
 
 	public static void main(String args[]) {

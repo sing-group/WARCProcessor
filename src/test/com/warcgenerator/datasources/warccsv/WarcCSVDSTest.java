@@ -59,9 +59,22 @@ public class WarcCSVDSTest {
 		dsConfig.setCustomParams(customParams);
 		WarcCSVDS arffDS = new WarcCSVDS(dsConfig);
 		DataBean bean = arffDS.read();
-		String url = bean.getUrl();
 		
-		assertEquals("http://esei.uvigo.es", url);
+		assertEquals("http://esei.uvigo.es", bean.getUrl());
+		assertEquals(false, bean.isSpam());
+		
+		byte[] content = (byte[])bean.getData();
+		assertEquals("Hola mundo esei.uvigo.es!!!", new String(content));
+		
+		while ((bean = arffDS.read()) != null &&
+				!bean.getUrl().equals("http://www.yonkis.com/deadpool-no-sera-apta-para-menores/")) {
+		}	
+		
+		assertEquals("http://www.yonkis.com/deadpool-no-sera-apta-para-menores/", bean.getUrl());
+		assertEquals(true, bean.isSpam());
+		
+		content = (byte[])bean.getData();
+		assertEquals("Hola mundo www.yonkis.com!!!", new String(content));
 		
 		arffDS.close();
 	}
