@@ -16,5 +16,5 @@ import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 public interface IDSHandler {
 	public DataSourceConfig getDSConfig();
 	public void toHandle(Map<String, DataBean> urlsSpam,
-			Map<String, DataBean> urlsHam, GenerateCorpusState auditor);
+			Map<String, DataBean> urlsHam, int maxURLsSpam, GenerateCorpusState auditor);
 }

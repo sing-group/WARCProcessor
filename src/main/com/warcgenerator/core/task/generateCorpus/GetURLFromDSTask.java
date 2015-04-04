@@ -40,17 +40,8 @@ public class GetURLFromDSTask extends Task implements ITask {
 		Map<String, DataBean> urlsHamTmp = new LinkedHashMap<String, DataBean>();
 
 		generateCorpusState.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
-		// Get all DSHandlers for each DS
-		// First the ham
-		for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
-			// Only get enabled DS
-			if (dsConfig.getEnabled()) {
-				getUrls(dsConfig, urlsSpamTmp, urlsHamTmp);
-			}
-		}
-
+		
 		int numSitesSpam = 0;
-		int numSitesHam = 0;
 		if (config.getRatioIsPercentage()) {
 			numSitesSpam = (int) Math.round(config.getNumSites()
 					* (config.getRatioPercentageSpam() / (double) 100));
@@ -58,25 +49,25 @@ public class GetURLFromDSTask extends Task implements ITask {
 			numSitesSpam = config.getRatioQuantitySpam();
 
 		}
-		numSitesHam = config.getNumSites() - numSitesSpam;
 
 		Set<String> domainsSpam = new HashSet<String>();
 		Set<String> domainsHam = new HashSet<String>();
 
+		// Get all DSHandlers for each DS
+		// First the ham
+		for (DataSourceConfig dsConfig : config.getDataSourceConfigs().values()) {
+			// Only get enabled DS
+			if (dsConfig.getEnabled()) {
+				getUrls(dsConfig, urlsSpamTmp, urlsHamTmp, numSitesSpam);
+			}
+		}
+		
 		// Get sites from urlsSpam, urlsHam
-		int numSites = 0;
-		for (Iterator<String> it = urlsSpamTmp.keySet().iterator(); it
-				.hasNext() && numSites < numSitesSpam;) {
-			String url = it.next();
-			numSites++;
+		for (String url:urlsSpamTmp.keySet()) {
 			domainsSpam.add(FileHelper.getURLWithoutParams(url));
 		}
 
-		numSites = 0;
-		for (Iterator<String> it = urlsHamTmp.keySet().iterator(); it.hasNext()
-				&& numSites < numSitesHam;) {
-			String url = it.next();
-			numSites++;
+		for (String url:urlsHamTmp.keySet()) {
 			domainsHam.add(FileHelper.getURLWithoutParams(url));
 		}
 
@@ -103,14 +94,14 @@ public class GetURLFromDSTask extends Task implements ITask {
 	}
 
 	private void getUrls(DataSourceConfig dsConfig,
-			Map<String, DataBean> urlsSpam, Map<String, DataBean> urlsHam) {
+			Map<String, DataBean> urlsSpam, Map<String, DataBean> urlsHam, int numSitesSpam) {
 		if (dsConfig.getHandler() != null) {
-			dsConfig.getHandler().toHandle(urlsSpam, urlsHam,
+			dsConfig.getHandler().toHandle(urlsSpam, urlsHam, numSitesSpam,
 					generateCorpusState);
 		}
 
 		for (DataSourceConfig dsChild : dsConfig.getChildren()) {
-			getUrls(dsChild, urlsSpam, urlsHam);
+			getUrls(dsChild, urlsSpam, urlsHam, numSitesSpam);
 		}
 	}
 }

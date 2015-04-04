@@ -52,18 +52,19 @@ public abstract class DSHandler implements IDSHandler {
 	
 	public abstract void handle(DataBean data);
 	
+	@Override
 	public void toHandle(Map<String, DataBean> urlsSpam,
-			Map<String, DataBean> urlsHam, GenerateCorpusState auditor) {
+			Map<String, DataBean> urlsHam, int maxURLsSpam, GenerateCorpusState auditor) {
 		DataBean data = null;
 		boolean stop = false;
 		Integer maxElements = dsConfig.getMaxElements();
+		int maxURLsHam = config.getNumSites() - maxURLsSpam;
 		
 		// Read a block from datasource
 		while ((data = ds.read()) != null
 				&& auditor.getNumUrlReadedFromDS() != config.getNumSites()
 				&& !stop) {
 			auditor.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
-			auditor.incUrlReadedFromDS();
 			auditor.setCurrentUrlReadedFromDS(data.getUrl());
 			
 			// Check if there is a limit
@@ -83,10 +84,12 @@ public abstract class DSHandler implements IDSHandler {
 			// Method to implement
 			handle(data);
 			
-			if (data.isSpam()) {
+			if (data.isSpam() && auditor.getNumUrlSpamReadedFromDS() != maxURLsSpam) {
 				addToUrls(urlsSpam, data);
-			} else {
+				auditor.incUrlSpamReadedFromDS();
+			} else if (!data.isSpam() && auditor.getNumUrlHamReadedFromDS() != maxURLsHam) {
 				addToUrls(urlsHam, data);
+				auditor.incUrlHamReadedFromDS();
 			}
 		}
 	}

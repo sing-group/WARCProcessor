@@ -9,7 +9,8 @@ public class GenerateCorpusState extends Observable {
 	private String currentUrlCrawled;
 	private String message;
 	private String currentUrlReadedFromDS;
-	private int numUrlReadedFromDS;
+	private int numUrlSpamReadedFromDS;
+	private int numUrlHamReadedFromDS;
 
 	public GenerateCorpusState() {
 	}
@@ -28,8 +29,12 @@ public class GenerateCorpusState extends Observable {
 		setWebsVisited(getWebsVisited() + 1);
 	}
 	
-	public void incUrlReadedFromDS() {
-		setNumUrlReadedFromDS(getNumUrlReadedFromDS() + 1);
+	public void incUrlSpamReadedFromDS() {
+		setNumUrlSpamReadedFromDS(getNumUrlSpamReadedFromDS() + 1);
+	}
+	
+	public void incUrlHamReadedFromDS() {
+		setNumUrlHamReadedFromDS(getNumUrlHamReadedFromDS() + 1);
 	}
 
 	public int getWebsVisited() {
@@ -73,10 +78,22 @@ public class GenerateCorpusState extends Observable {
 	}
 	
 	public int getNumUrlReadedFromDS() {
-		return numUrlReadedFromDS;
+		return numUrlSpamReadedFromDS + numUrlHamReadedFromDS;
 	}
 
-	public void setNumUrlReadedFromDS(int numUrlReadedFromDS) {
-		this.numUrlReadedFromDS = numUrlReadedFromDS;
+	public int getNumUrlSpamReadedFromDS() {
+		return numUrlSpamReadedFromDS;
+	}
+
+	public void setNumUrlSpamReadedFromDS(int numUrlSpamReadedFromDS) {
+		this.numUrlSpamReadedFromDS = numUrlSpamReadedFromDS;
+	}
+
+	public int getNumUrlHamReadedFromDS() {
+		return numUrlHamReadedFromDS;
+	}
+
+	public void setNumUrlHamReadedFromDS(int numUrlHamReadedFromDS) {
+		this.numUrlHamReadedFromDS = numUrlHamReadedFromDS;
 	}
 }
