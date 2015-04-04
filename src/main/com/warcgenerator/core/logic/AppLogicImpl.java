@@ -12,6 +12,7 @@ import java.util.Observer;
 import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
@@ -51,6 +52,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private Map<String, DataSourceConfig> dataSourcesTypes;
 	private ExecutionTaskBatch executorTasks;
 
+	private static Logger logger = Logger
+			.getLogger(AppLogicImpl.class);
+	
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
 
@@ -349,6 +353,19 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			} while (!executorTasks.isTerminate() &&
 					!stop);
 
+			// Show the finish overcome
+			if (!executorTasks.isTerminate() &&
+					generateCorpusState.getNumDomainsCorrectlyLabeled() < config
+					.getNumSites()) {
+				logger.info("The ration spam/ham could not be completed."
+						+ "There is not enough data in input datasources.");
+			} else if (!executorTasks.isTerminate()) {
+				logger.info("The ratio spam/ham was succesfully completed.");
+				logger.info("Sites: " + generateCorpusState.getNumDomainsCorrectlyLabeled() + 
+						" - Spam: " + generateCorpusState.getNumUrlSpamCorrectlyLabeled() +
+						", Ham: " + generateCorpusState.getNumUrlHamCorrectlyLabeled());
+			}
+			
 		} catch (LoadDataSourceException ex) {
 			throw new LogicException(ex);
 		} catch (Exception ex) {

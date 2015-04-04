@@ -69,8 +69,18 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 		try {
 			get();
 
-			JOptionPane.showMessageDialog(view.getMainFrame(), Messages
-					.getString("GenerateCorpusTask.corpusgenerated.text"),
+			StringBuilder sb = new StringBuilder();
+			sb.append(Messages
+					.getString("GenerateCorpusTask.corpusgenerated.text"));
+			sb.append("\n\n");
+			sb.append("Output Corpus Info. (URLs):\n");
+			sb.append("- Total: ")
+					.append(gcState.getNumDomainsCorrectlyLabeled()).append("\n");
+			sb.append("- SPAM/HAM: ").append(
+					gcState.getNumUrlSpamCorrectlyLabeled()).append("/").append(
+					gcState.getNumUrlHamCorrectlyLabeled());
+			
+			JOptionPane.showMessageDialog(view.getMainFrame(), sb.toString(),
 					Messages.getString("GeneralDialog.info.title.text"),
 					JOptionPane.INFORMATION_MESSAGE);
 			logger.info("Task completed");
@@ -130,7 +140,8 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 				gcd.getStateLbl()
 						.setText(
 								Messages.getString("GenerateCorpusTask.progress4.urls.text"));
-				progress += inc;
+				if ((progress + inc) <= 100)
+					progress += inc;
 				break;
 			case ENDING:
 				gcd.getStateLbl()
