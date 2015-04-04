@@ -19,6 +19,7 @@ import com.warcgenerator.core.helper.LangFilterHelper;
 import com.warcgenerator.core.helper.OutputHelper;
 import com.warcgenerator.core.task.ITask;
 import com.warcgenerator.core.task.Task;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 public class CheckActiveSitesConfigTask extends Task implements ITask {
 	private AppConfig config;
@@ -27,6 +28,7 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 	private Map<String, DataSource> outputDS;
 	private OutputCorpusConfig outputCorpusConfig;
 	private IDataSource domainsLabeledDS;
+	private GenerateCorpusState generateCorpusState;
 
 	private static Logger logger = Logger
 			.getLogger(CheckActiveSitesConfigTask.class);
@@ -34,13 +36,14 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 	public CheckActiveSitesConfigTask(AppConfig config, Map<String, DataBean> urls,
 			Set<String> urlsInactives, Map<String, DataSource> outputDS,
 			OutputCorpusConfig outputCorpusConfig,
-			IDataSource domainsLabeledDS) {
+			IDataSource domainsLabeledDS, GenerateCorpusState generateCorpusState) {
 		this.config = config;
 		this.urls = urls;
 		this.urlsInactives = urlsInactives;
 		this.outputDS = outputDS;
 		this.outputCorpusConfig = outputCorpusConfig;
 		this.domainsLabeledDS = domainsLabeledDS;
+		this.generateCorpusState = generateCorpusState;
 	}
 
 	public void execute() {
@@ -83,6 +86,7 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 							warcDS.write(data);
 							OutputHelper.writeLabeled(domainsLabeledDS, data.getUrl(),
 									data.isSpam());
+							generateCorpusState.incDomainsCorrectlyLabeled(data.isSpam());
 						} else {
 								// TODO Write in some output file instead of the log
 								logger.info("URL Filtered. Available:");

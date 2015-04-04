@@ -11,6 +11,8 @@ public class GenerateCorpusState extends Observable {
 	private String currentUrlReadedFromDS;
 	private int numUrlSpamReadedFromDS;
 	private int numUrlHamReadedFromDS;
+	private int numUrlSpamCorrectlyLabeled;
+	private int numUrlHamCorrectlyLabeled;
 
 	public GenerateCorpusState() {
 	}
@@ -27,6 +29,18 @@ public class GenerateCorpusState extends Observable {
 	
 	public void incWebsVisited() {
 		setWebsVisited(getWebsVisited() + 1);
+	}
+	
+	public void incDomainsCorrectlyLabeled(boolean isSpam) {
+		if (isSpam) {
+			setNumUrlSpamCorrectlyLabeled(getNumUrlSpamCorrectlyLabeled() + 1);
+		} else {
+			setNumUrlHamCorrectlyLabeled(getNumUrlHamCorrectlyLabeled() + 1);
+		}
+	}
+	
+	public int getNumDomainsCorrectlyLabeled() {
+		return getNumUrlSpamCorrectlyLabeled() + getNumUrlHamCorrectlyLabeled();
 	}
 	
 	public void incUrlSpamReadedFromDS() {
@@ -95,5 +109,21 @@ public class GenerateCorpusState extends Observable {
 
 	public void setNumUrlHamReadedFromDS(int numUrlHamReadedFromDS) {
 		this.numUrlHamReadedFromDS = numUrlHamReadedFromDS;
+	}
+
+	public int getNumUrlSpamCorrectlyLabeled() {
+		return numUrlSpamCorrectlyLabeled;
+	}
+
+	public void setNumUrlSpamCorrectlyLabeled(int numUrlSpamCorrectlyLabeled) {
+		this.numUrlSpamCorrectlyLabeled = numUrlSpamCorrectlyLabeled;
+	}
+
+	public int getNumUrlHamCorrectlyLabeled() {
+		return numUrlHamCorrectlyLabeled;
+	}
+
+	public void setNumUrlHamCorrectlyLabeled(int numUrlHamCorrectlyLabeled) {
+		this.numUrlHamCorrectlyLabeled = numUrlHamCorrectlyLabeled;
 	}
 }

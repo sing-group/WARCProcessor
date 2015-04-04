@@ -19,7 +19,7 @@
 		<dataSource enabled="true" isSpam="false" name="Test DS" type="FileDS" useRecursiveFolders="true">
 			<customParams/>
 			<languages/>
-			<srcDirPath>src/test/resources/datasources/file</srcDirPath>
+			<srcDirPath>src/test/resources/in/file</srcDirPath>
 			<handler>com.warcgenerator.datasources.file.handler.FileDSHandler</handler>
 		</dataSource>
 	</dataSources>

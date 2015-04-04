@@ -33,7 +33,7 @@ public class AppLogicTest extends AbstractTestCase {
 	private final String DS_TEST_TYPE = "FileDS";
 	private final String DS_TEST_CLASS_NAME = "com.warcgenerator.datasources.file.FileDS";
 	private final boolean DS_IS_ENABLED = true;
-	private final String DS_FILE_PATH = "src/test/resources/datasources/file";
+	private final String DS_FILE_PATH = "src/test/resources/in/file";
 
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule(8089);

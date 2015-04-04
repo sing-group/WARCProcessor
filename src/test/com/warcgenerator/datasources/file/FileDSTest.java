@@ -29,7 +29,7 @@ public class FileDSTest {
 		DataBean bean = warcDS.read();
 		String url = bean.getUrl();
 		
-		assertEquals("http://www.esei.uvigo.es/", url);
+		assertEquals("http://www.uvigo.es/", url);
 		
 		warcDS.close();
 	}

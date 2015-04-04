@@ -52,7 +52,7 @@ public class CSVDSTest {
 		DataBean bean = csvDS.read();
 		String url = bean.getUrl();
 		
-		assertEquals("http://www.1001reisen.eu", url);
+		assertEquals("http://sing.ei.uvigo.es/kunagi/login.html", url);
 		
 		csvDS.close();
 	}

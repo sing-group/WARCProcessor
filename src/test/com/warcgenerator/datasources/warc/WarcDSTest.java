@@ -37,7 +37,7 @@ public class WarcDSTest {
 		DataBean bean = warcDS.read();
 		String url = bean.getUrl();
 		
-		assertEquals("http://esei.uvigo.es", url);
+		assertEquals("https://www.ugr.es/", url);
 		
 		warcDS.close();
 	}

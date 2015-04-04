@@ -60,7 +60,7 @@ public class WarcCSVDSTest {
 		WarcCSVDS arffDS = new WarcCSVDS(dsConfig);
 		DataBean bean = arffDS.read();
 		
-		assertEquals("http://esei.uvigo.es", bean.getUrl());
+		assertEquals("http://www.ucm.es", bean.getUrl());
 		assertEquals(false, bean.isSpam());
 		
 		byte[] content = (byte[])bean.getData();

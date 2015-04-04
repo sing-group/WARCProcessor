@@ -22,7 +22,7 @@ WARC-Date: 2012-02-12T08:28:02Z
 WARC-TREC-ID: clueweb12-0013wb-88-00000
 WARC-IP-Address: 97.74.46.128
 WARC-Payload-Digest: sha1:2LXCCLVQ42HRZW3YNSU56XUQJ2UO4EDQ
-WARC-Target-URI: http://esei.uvigo.es
+WARC-Target-URI: http://www.ucm.es
 WARC-Record-ID: <urn:uuid:ed8ee5f6-9455-48c9-8f93-a7726ae4b89a>
 Content-Type: application/http; msgtype=response
 Content-Length: 27

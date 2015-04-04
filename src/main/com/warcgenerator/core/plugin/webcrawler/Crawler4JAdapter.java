@@ -210,7 +210,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 								webCrawlerBean.isSpam(),
 								webCrawlerBean.getDomainsNotFoundDS(),
 								webCrawlerBean.getDomainsLabeledDS(), warcDS,
-								urls, urlsActive, urlsNotActive);
+								urls, urlsActive, urlsNotActive, generateCorpusState);
 
 						handlers.put(FileHelper.getDomainNameFromURL(parseData
 								.getUrl()), handler);
@@ -240,7 +240,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	   *         otherwise false is returned.
 	   */
 	@Override
-	public boolean shouldVisit(Page origin, WebURL url) {
+	public boolean shouldVisit(Page referringPage, WebURL url) {
 		String href = url.getURL().toLowerCase();
 
 		// Avoid that the crawler go out from the source domains.

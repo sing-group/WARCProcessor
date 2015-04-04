@@ -60,7 +60,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 		// Reset DataSourceConfig ID value
 		DataSourceConfig.resetId();
-		
+
 		// Create a output corpus with config
 		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
 			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
@@ -251,14 +251,12 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	public void generateCorpus(GenerateCorpusState generateCorpusState)
 			throws LogicException {
-		executorTasks = new ExecutionTaskBatch();
-
 		// Init data structures
-		Map<String, DataBean> urlsSpam = new LinkedHashMap<String, DataBean>();
-		Map<String, DataBean> urlsHam = new LinkedHashMap<String, DataBean>();
+		Map<String, DataBean> urlsSpam;
+		Map<String, DataBean> urlsHam;
 		Map<String, DataSource> outputDS = new LinkedHashMap<String, DataSource>();
-		Set<String> urlsActive = new HashSet<String>();
-		Set<String> urlsNotActive = new HashSet<String>();
+		Set<String> urlsActive;
+		Set<String> urlsNotActive;
 
 		IDataSource labeledDS = null;
 		IDataSource notFoundDS = null;
@@ -291,39 +289,65 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			 * descargar de nuevo Coger del fichero
 			 */
 
-			// Init Task
-			Task t1 = new GetURLFromDSTask(config, generateCorpusState,
-					urlsSpam, urlsHam);
+			boolean stop = false;
+			do {
+				urlsSpam = new LinkedHashMap<String, DataBean>();
+				urlsHam = new LinkedHashMap<String, DataBean>();
+				urlsActive = new HashSet<String>();
+				urlsNotActive = new HashSet<String>();
 
-			// ////////// READING SPAM
-			Task t2 = new ReadURLsTask(config, outputCorpusConfig,
-					generateCorpusState, outputDS, labeledDS, notFoundDS,
-					urlsSpam, true, urlsActive, urlsNotActive);
+				// Init Task
+				Task t1 = new GetURLFromDSTask(config, generateCorpusState,
+						urlsSpam, urlsHam);
 
-			// ////////// READING HAM
-			Task t3 = new ReadURLsTask(config, outputCorpusConfig,
-					generateCorpusState, outputDS, labeledDS, notFoundDS,
-					urlsHam, false, urlsActive, urlsNotActive);
+				// ////////// READING SPAM
+				Task t2 = new ReadURLsTask(config, outputCorpusConfig,
+						generateCorpusState, outputDS, labeledDS, notFoundDS,
+						urlsSpam, true, urlsActive, urlsNotActive);
 
-			// Read url that contains html
-			Task t4 = new CheckActiveSitesConfigTask(config, urlsSpam,
-					urlsNotActive, outputDS, outputCorpusConfig, labeledDS);
+				// ////////// READING HAM
+				Task t3 = new ReadURLsTask(config, outputCorpusConfig,
+						generateCorpusState, outputDS, labeledDS, notFoundDS,
+						urlsHam, false, urlsActive, urlsNotActive);
 
-			Task t5 = new CheckActiveSitesConfigTask(config, urlsHam,
-					urlsNotActive, outputDS, outputCorpusConfig, labeledDS);
+				// Read url that contains html
+				Task t4 = new CheckActiveSitesConfigTask(config, urlsSpam,
+						urlsNotActive, outputDS, outputCorpusConfig, labeledDS,
+						generateCorpusState);
 
-			executorTasks.addTask(t1);
-			executorTasks.addTask(t2);
-			executorTasks.addTask(t3);
-			executorTasks.addTask(t4);
-			executorTasks.addTask(t5);
+				Task t5 = new CheckActiveSitesConfigTask(config, urlsHam,
+						urlsNotActive, outputDS, outputCorpusConfig, labeledDS,
+						generateCorpusState);
 
-			executorTasks.execution();
+				
+				executorTasks = new ExecutionTaskBatch();
+				executorTasks.addTask(t1);
+				executorTasks.addTask(t2);
+				executorTasks.addTask(t3);
+				executorTasks.addTask(t4);
+				executorTasks.addTask(t5);
 
-			if (executorTasks.isTerminate()) {
-				generateCorpusState
-						.setState(GenerateCorpusStates.PROCESS_CANCELLED);
-			}
+				executorTasks.execution();
+
+				// Test if the process managed the outcome configurated
+
+				if (executorTasks.isTerminate()) {
+					generateCorpusState
+							.setState(GenerateCorpusStates.PROCESS_CANCELLED);
+				}
+				
+				// Update generate corpus state
+				generateCorpusState.setNumUrlSpamReadedFromDS(
+						generateCorpusState.getNumUrlSpamCorrectlyLabeled());
+				generateCorpusState.setNumUrlHamReadedFromDS(
+						generateCorpusState.getNumUrlHamCorrectlyLabeled());
+				
+				// DataSources are exausted
+				if ((urlsSpam.isEmpty() && urlsHam.isEmpty())
+						|| generateCorpusState.getNumDomainsCorrectlyLabeled() >= config
+						.getNumSites()) stop = true;
+			} while (!executorTasks.isTerminate() &&
+					!stop);
 
 		} catch (LoadDataSourceException ex) {
 			throw new LogicException(ex);

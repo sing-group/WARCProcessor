@@ -15,6 +15,7 @@ import com.warcgenerator.core.exception.datasource.DSException;
 import com.warcgenerator.core.helper.FileHelper;
 import com.warcgenerator.core.helper.LangFilterHelper;
 import com.warcgenerator.core.helper.OutputHelper;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
 public class WebCrawlerHandler implements IWebCrawlerHandler {
 	private AppConfig config;
@@ -25,6 +26,7 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 	private Map<String, DataBean> urls;
 	private Set<String> urlsActive;
 	private Set<String> urlsNotActive;
+	private GenerateCorpusState generateCorpusState;
 
 	private static Logger logger = Logger.getLogger
             (WebCrawlerHandler.class);
@@ -32,7 +34,7 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 	public WebCrawlerHandler(AppConfig config, boolean isSpam,
 			IDataSource domainsNotFoundDS, IDataSource domainsLabeledDS,
 			IDataSource warcDS, Map<String, DataBean> urls,
-			Set<String> urlsActive, Set<String> urlsNotActive) {
+			Set<String> urlsActive, Set<String> urlsNotActive, GenerateCorpusState generateCorpusState) {
 		this.config = config;
 		this.isSpam = isSpam;
 		this.warcDS = warcDS;
@@ -41,6 +43,7 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 		this.urls = urls;
 		this.urlsActive = urlsActive;
 		this.urlsNotActive = urlsNotActive;
+		this.generateCorpusState = generateCorpusState;
 	}
 
 	public void handle(HtmlParseData htmlParseData) {
@@ -82,6 +85,7 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 						warcDS.write(bean);
 						OutputHelper.writeLabeled(domainsLabeledDS, htmlParseData.getUrl(),
 								this.isSpam);
+						generateCorpusState.incDomainsCorrectlyLabeled(this.isSpam);
 					} else {
 						logger.info("URL: " + bean.getUrl() + " doesn't have data.");
 					}
