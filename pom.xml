@@ -3,16 +3,23 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>WarcProject</groupId>
 	<artifactId>WarcProject</artifactId>
-	<version>4.1.0_beta-SNAPSHOT</version>
+	<version>4.2.1_beta-SNAPSHOT</version>
 	<properties>
 		<install-dir>${project.build.directory}</install-dir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.version>4.12</junit.version>
+		
+		
+		<!-- INSTALLER PROPERTIES -->
+		<staging.dir>${project.build.directory}/staging</staging.dir>
+        <izpack-standalone.version>4.3.5</izpack-standalone.version>
+		<!-- END INSTALLER PROPERTIES -->
 	</properties>
+
 
 	<build>
 		<sourceDirectory>src/main</sourceDirectory>
-		<plugins>
+			<plugins>	
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -53,6 +60,116 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<!-- CREATE JAVADOC -->
+			 <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-javadoc-plugin</artifactId>
+		        <version>2.10.3</version>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>javadoc</goal>
+		            </goals>
+		            <phase>prepare-package</phase>
+		           </execution>
+		        </executions>
+		      </plugin>
+			
+			<!-- CREATE INSTALLER -->
+			
+			<!--  copy other checked resource into staging area, expected by install.xml -->
+	        <plugin>
+	          <artifactId>maven-antrun-plugin</artifactId>
+	          <version>1.8</version>
+	          <executions>
+	            <execution>
+	              <id>create-staging-area</id>
+	              <phase>package</phase>
+	              <goals>
+	                <goal>run</goal>
+	              </goals>
+	              <configuration>
+	                <tasks>
+	                  <!-- <echo>Hello, maven</echo> -->
+	                  <delete dir="${staging.dir}"/>
+	                  <mkdir dir="${staging.dir}"/>
+	                  <copy todir="${staging.dir}" verbose="true" overwrite="true">
+	                    <fileset dir="${basedir}/src/izpack" />
+	                  </copy>
+	                  <!-- Copy javadoc -->
+	                  <copy todir="${staging.dir}/doc/javadoc" verbose="true">
+	                  	<fileset dir="${project.build.directory}/site/apidocs" />
+	                  </copy>
+	                  <!-- Copy sources -->
+	                  <copy todir="${staging.dir}/src" verbose="true">
+	                  	<fileset dir="src/main" />
+	                  </copy>
+	                  <!-- Copy samples -->
+	                  <copy todir="${staging.dir}/samples" verbose="true">
+	                  	<fileset file="src/test/resources/config/config_sample.wpg" />
+	                  </copy>
+	                  <copy todir="${staging.dir}/samples/in" verbose="true">
+	                  	<fileset dir="src/test/resources/in" />
+	                  </copy>
+	                  <!-- Copy binarie -->
+	                  <copy todir="${staging.dir}/bin" verbose="true">
+	                  	<fileset file="${project.build.directory}/${project.build.finalName}.jar" />
+	                  </copy>
+	                </tasks>
+	              </configuration>
+	            </execution>
+	          </executions>
+	        </plugin>
+			
+			 <!--  prepare dependencies so that izpack jar tag to pickup at compile time -->
+	        <plugin>
+	          <groupId>org.apache.maven.plugins</groupId>
+	          <artifactId>maven-dependency-plugin</artifactId>
+	          <version>2.0</version>
+	          <executions>
+	            <execution>
+	              <id>standard-installer</id>
+	              <phase>prepare-package</phase>
+	              <goals>
+	                <goal>copy-dependencies</goal>
+	              </goals>
+	              <configuration>
+	                <stripVersion>true</stripVersion>
+	                <excludeGroupIds>org.codehaus.izpack</excludeGroupIds>
+	                <outputDirectory>${staging.dir}/dependency</outputDirectory>
+	              </configuration>
+	            </execution>
+	          </executions>
+	        </plugin>
+	
+	        <plugin>
+	          <groupId>org.codehaus.izpack</groupId>
+	          <artifactId>izpack-maven-plugin</artifactId>
+	          <version>1.0-alpha-5</version>
+	          <dependencies>
+	            <dependency>
+	              <groupId>org.codehaus.izpack</groupId>
+	              <artifactId>izpack-standalone-compiler</artifactId>
+	              <version>${izpack-standalone.version}</version>
+	            </dependency>
+	          </dependencies>
+	          <configuration>
+	            <izpackBasedir>${staging.dir}</izpackBasedir>
+	            <customPanelDirectory>${staging.dir}</customPanelDirectory>
+	          </configuration>
+	          <executions>
+	            <execution>
+	              <id>standard-installer</id>
+	              <phase>package</phase>
+	              <goals>
+	                <goal>izpack</goal>
+	              </goals>
+	            </execution>
+	          </executions>
+	        </plugin>
+			
+			<!-- END CREATE INSTALLER -->
 		</plugins>
 	</build>
 	<repositories>
@@ -80,6 +197,11 @@
 		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+		    <groupId>org.codehaus.izpack</groupId>
+		    <artifactId>izpack-standalone-compiler</artifactId>
+		    <version>4.3.5</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
@@ -117,11 +239,11 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.8.1</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<artifactId>je</artifactId>
 			<groupId>com.sleepycat</groupId>
 			<version>4.0.92</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>gnu.getopt</groupId>
 			<artifactId>java-getopt</artifactId>

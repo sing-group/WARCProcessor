@@ -77,6 +77,8 @@ public class InitConfigDialog extends CustomJDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param logic IAppLogic
+	 * @param view WarcGeneratorGUI
 	 */
 	public InitConfigDialog(final IAppLogic logic, final WarcGeneratorGUI view) {
 		super(view.getMainFrame(), true);

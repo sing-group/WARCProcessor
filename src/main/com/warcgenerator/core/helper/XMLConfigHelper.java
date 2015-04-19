@@ -49,6 +49,12 @@ import com.warcgenerator.core.exception.config.ValidateXMLSchemaException;
 public class XMLConfigHelper {
 	private static Logger logger = Logger.getLogger(XMLConfigHelper.class);
 
+	/**
+	 * Validate a XML with a schema file path given.
+	 * @param document Document to validate
+	 * @param schemaFilePath Path to schema
+	 * @throws ValidateXMLSchemaException If error validating
+	 */
 	private static void validateSchema(Document document, String schemaFilePath)
 			throws ValidateXMLSchemaException {
 		// create a SchemaFactory capable of understanding WXS schemas
@@ -76,6 +82,11 @@ public class XMLConfigHelper {
 		}
 	}
 
+	/**
+	 * Get AppConfig from XML
+	 * @param path Path to xml
+	 * @param config AppConfig to get
+	 */
 	public static void getAppConfigFromXml(String path, AppConfig config) {
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
@@ -249,8 +260,8 @@ public class XMLConfigHelper {
 	/**
 	 * Get information about of datasources available
 	 * 
-	 * @param path
-	 * @param config
+	 * @param path AppConfig file path
+	 * @param dataSourcesTypes Map with DS read
 	 */
 	public static void getDataSources(String path,
 			Map<String, DataSourceConfig> dataSourcesTypes)
@@ -346,8 +357,8 @@ public class XMLConfigHelper {
 	/**
 	 * Return a XML with config
 	 * 
-	 * @param config
-	 * @return
+	 * @param path AppConfig XML file path.
+	 * @param config AppConfig to save
 	 */
 	public static void saveXMLFromAppConfig(String path, AppConfig config) {
 		if (!FileHelper.checkIfExists(path)) {
@@ -573,10 +584,10 @@ public class XMLConfigHelper {
 	/**
 	 * Get value from an attribute of a field
 	 * 
-	 * @param doc
-	 * @param field
-	 * @param attrName
-	 * @return
+	 * @param doc Document
+	 * @param field Field name
+	 * @param attrName Attribute name
+	 * @return String with the attribute value 
 	 */
 	public static String getAttributeFromElement(Document doc, String field,
 			String attrName) {

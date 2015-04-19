@@ -33,10 +33,8 @@ public class LoadAppConfigAction extends AbstractAction implements Observer {
 	/**
 	 * Default constructor
 	 * 
-	 * @param logic
-	 *            @type of IAppLogic
-	 * @param view
-	 *            @type of WarcGeneratorGUI
+	 * @param logic IAppLogic
+	 * @param view WarcGeneratorGUI
 	 */
 	public LoadAppConfigAction(IAppLogic logic, WarcGeneratorGUI view) {
 		this.view = view;

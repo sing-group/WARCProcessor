@@ -123,8 +123,8 @@ public class XMLGUIConfigHelper {
 	/**
 	 * Return a XML with config
 	 * 
-	 * @param config
-	 * @return
+	 * @param path Path for saving de config
+	 * @param config GUIConfig
 	 */
 	public static void saveXMLFromGUIConfig(String path, 
 			GUIConfig config) {
@@ -199,10 +199,10 @@ public class XMLGUIConfigHelper {
 	/**
 	 * Get value from an attribute of a field
 	 * 
-	 * @param doc
-	 * @param field
-	 * @param attrName
-	 * @return
+	 * @param doc Document
+	 * @param field Field name
+	 * @param attrName Attribute name
+	 * @return String with the attribute value 
 	 */
 	public static String getAttributeFromElement(Document doc, String field,
 			String attrName) {

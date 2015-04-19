@@ -47,6 +47,10 @@ public class DSDetailPanel extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * @param logic IAppLogic
+	 * @param view WarcGeneratorGUI
+	 * @param config DataSourceConfig
+	 * @param parentAssistant JPanel
 	 */
 	public DSDetailPanel(IAppLogic logic, WarcGeneratorGUI view,
 			DataSourceConfig config, JPanel parentAssistant) {

@@ -43,6 +43,8 @@ import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 /**
  * Business logic layer
  * 
+ * <p>This class contains the implementation the WARCProcessor API</p>
+ * 
  * @author Miguel Callon
  * 
  */
@@ -55,6 +57,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private static Logger logger = Logger
 			.getLogger(AppLogicImpl.class);
 	
+	/**
+	 * Business logic implementation
+	 * @param config AppConfig
+	 * @throws LogicException If error
+	 */
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
 
@@ -91,6 +98,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Save configuration in a file
+	 * @param path Path for saving the config
 	 */
 	public void saveAsAppConfig(String path) {
 		ConfigHelper.persistConfig(path, config);
@@ -102,11 +110,16 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Return Filepath of the current Config file.
+	 * @return String with path for saving the config
 	 */
 	public String getConfigFilePath() {
 		return ConfigHelper.getConfigFilePath();
 	}
 
+	/**
+	 * Load AppConfig from config file path.
+	 * @param path Config file path
+	 */
 	public void loadAppConfig(String path) {
 		ConfigHelper.configure(path, config);
 		config.init();
@@ -116,6 +129,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		notifyObservers(new LogicCallback(APP_CONFIG_LOADED_CALLBACK));
 	}
 
+	/**
+	 * Start a new empty AppConfig.
+	 */
 	public void loadNewAppConfig() {
 		config = new AppConfig();
 		config.init();
@@ -124,6 +140,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		ConfigHelper.setConfigFilePath(null);
 	}
 
+	/**
+	 * Update current AppConfig with a new AppConfig given.
+	 * @param appConfig AppConfig
+	 * @throws LogicException If it is unable to update AppConfig
+	 */
 	public void updateAppConfig(AppConfig appConfig) throws LogicException {
 		appConfig.validate();
 		try {
@@ -139,6 +160,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		notifyObservers(new LogicCallback(APP_CONFIG_UPDATED_CALLBACK));
 	}
 
+	/**
+	 * Get current AppConfig.
+	 * @throws LogicException If it is unable to get current AppConfig.
+	 */
 	public AppConfig getAppConfig() throws LogicException {
 		AppConfig appConfigCopy = new AppConfig();
 		try {
@@ -151,6 +176,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		return appConfigCopy;
 	}
 
+	/**
+	 * List all types of available DataSources 
+	 * @return list of {@link DataSourceConfig}
+	 */
 	public List<DataSourceConfig> getDataSourceTypesList()
 			throws LogicException {
 		List<DataSourceConfig> dataSourceTypesList = new ArrayList<DataSourceConfig>();
@@ -165,6 +194,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		return dataSourceTypesList;
 	}
 
+	/**
+	 * Get DataSourceConfig by a type given.
+	 * @param type Type of {@link DataSourceConfig}
+	 * @return {@link DataSourceConfig}
+	 */
 	public DataSourceConfig getDataSourceType(String type) {
 		DataSourceConfig dsConfigCopy = new DataSourceConfig();
 		DataSourceConfig dsConfig = dataSourcesTypes.get(type);
@@ -172,6 +206,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		return dsConfigCopy;
 	}
 
+	/**
+	 * List all {@link DataSourceConfig} configured in {@link AppConfig}.
+	 * @return list of {@link DataSourceConfig}
+	 */
 	public List<DataSourceConfig> getDataSourceConfigList() {
 		List<DataSourceConfig> dataSourceConfigsList = new ArrayList<DataSourceConfig>();
 
@@ -185,6 +223,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		return dataSourceConfigsList;
 	}
 
+	/**
+	 * Get a DataSourceConfig by an id given.
+	 * @param id {@link DataSourceConfig} identifier
+	 * @throws DataSourceNotFoundException If unable to get DataSourceConfig 
+	 */
 	public DataSourceConfig getDataSourceById(Integer id)
 			throws DataSourceNotFoundException {
 		DataSourceConfig dsConfigCopy = new DataSourceConfig();
@@ -199,8 +242,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	/**
 	 * Add a new DataSource
 	 * 
-	 * @param dsConfig
-	 * @throws LoadDataSourceException
+	 * @param dsConfig of {@link DataSourceConfig}
+	 * @throws LoadDataSourceException If unable to add DataSourceConfig
 	 */
 	public void addDataSourceConfig(DataSourceConfig dsConfig)
 			throws LoadDataSourceException {
@@ -224,7 +267,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	/**
 	 * Expand changes to all children
 	 * 
-	 * @param dsConfigParent
+	 * @param dsConfigParent of {@link DataSourceConfig}
 	 */
 	private void expandChanges(DataSourceConfig dsConfigParent) {
 		for (DataSourceConfig specificDsConfig : dsConfigParent.getChildren()) {
@@ -236,7 +279,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	/**
 	 * Remove a DataSource
 	 * 
-	 * @param name
+	 * @param id {@link DataSourceConfig} identifier
 	 */
 	public void removeDataSourceConfig(Integer id) {
 		config.getDataSourceConfigs().remove(id);
@@ -253,6 +296,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		stopWebCrawling();
 	}
 
+	/**
+	 * Generate corpus process.
+	 * @param generateCorpusState of {@link GenerateCorpusState} 
+	 * @exception LogicException If any error happen
+	 */
 	public void generateCorpus(GenerateCorpusState generateCorpusState)
 			throws LogicException {
 		// Init data structures
@@ -385,6 +433,13 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		}
 	}
 
+	/**
+	 * List languages that has not already been selected
+	 * in the languages given
+	 * @param listSelectedCountries List of {@link Country}
+	 * @return list of {@link Country}
+	 */
+	@Override
 	public List<Country> listNotSelectedLanguages(
 			List<Country> listSelectedCountries) {
 		List<Country> listCountries = null;
@@ -397,6 +452,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		return listCountries;
 	}
 
+	/**
+	 * List all available languages
+	 * @return list of {@link Country}
+	 */
 	@Override
 	public List<Country> listAvailableLanguagesFilter() {
 		List<Country> availableLangList = new ArrayList<Country>();
@@ -420,14 +479,20 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		return availableLangList;
 	}
 
+	/**
+	 * Stop the process of web crawling
+	 */
 	private void stopWebCrawling() {
 		if (executorTasks != null)
 			executorTasks.terminate();
 	}
 
+	/**
+	 * Add an Observer object
+	 * @param obj {@link Observer}
+	 */
 	public void addObserver(Observer obj) {
 		deleteObserver(obj);
 		super.addObserver(obj);
 	}
-
 }

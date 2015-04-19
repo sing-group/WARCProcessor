@@ -47,8 +47,8 @@ public class CSVDS extends DataSource implements IDataSource {
 	/**
 	 * Open a Arff datasource in read mode
 	 * 
-	 * @param path
-	 * @throws DSException
+	 * @param dsConfig DataSourceConfig
+	 * @throws DSException If error
 	 */
 	public CSVDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);

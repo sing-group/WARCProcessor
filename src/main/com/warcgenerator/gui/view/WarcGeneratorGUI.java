@@ -119,6 +119,8 @@ public class WarcGeneratorGUI extends Observable {
 
 	/**
 	 * Create the application.
+	 * @param guiConfig GUI Configuration
+	 * @param logic Business logic
 	 */
 	public WarcGeneratorGUI(GUIConfig guiConfig, IAppLogic logic) {
 		this.logic = logic;

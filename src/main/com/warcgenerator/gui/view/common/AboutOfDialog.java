@@ -29,6 +29,10 @@ public class AboutOfDialog extends CustomJDialog {
 	private WarcGeneratorGUI view;
 	private JButton okBtn;
 
+	/**
+	 * General info dialog about application
+	 * @param view WarcGeneratorGUI
+	 */
 	public AboutOfDialog(WarcGeneratorGUI view) {
 		super(view.getMainFrame(), true);
 		// this.setUndecorated(true);

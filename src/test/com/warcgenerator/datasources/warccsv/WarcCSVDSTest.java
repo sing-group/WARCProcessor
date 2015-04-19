@@ -5,14 +5,15 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.datasource.warc.WarcDS;
-import com.warcgenerator.datasources.csv.CSVDS;
 
+@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
 public class WarcCSVDSTest {
 	
 	@Test

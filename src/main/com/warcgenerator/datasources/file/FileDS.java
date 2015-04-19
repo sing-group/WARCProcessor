@@ -24,8 +24,8 @@ public class FileDS extends DataSource implements IDataSource {
 	
 	/**
 	 * Main constructor to instance a FileDS class
-	 * @param dsConfig @type of DataSourceConfig
-	 * @throws DSException
+	 * @param dsConfig DataSourceConfig
+	 * @throws DSException If error
 	 */
 	public FileDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);

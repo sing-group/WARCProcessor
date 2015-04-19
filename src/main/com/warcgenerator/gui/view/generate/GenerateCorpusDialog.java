@@ -47,6 +47,8 @@ public class GenerateCorpusDialog extends CustomJDialog implements
 
 	/**
 	 * Create the panel.
+	 * @param logic Business Logic
+	 * @param view WarcGeneratorGUI reference
 	 */
 	public GenerateCorpusDialog(IAppLogic logic, WarcGeneratorGUI view) {
 		super(view.getMainFrame(), true);

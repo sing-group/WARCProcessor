@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!-- 
+    To compile it :
+    - go in the bin directory where you installed IzPack
+    - call "compile ../sample/install.xml -b ../sample"
+-->
+
+<installation version="1.0">
+
+    <!-- 
+        The info section.
+    -->
+    <info>
+        <appname>WARCProcessor</appname>
+        <appversion>4.2.1_beta</appversion>
+        <authors>
+        	<author name="Miguel Callón" email="miguel.callon.alvarez@gmail.com"/>
+			<author name="PhD. José R. Méndez" email=""/>
+			<author name="PhD. Florentino Fdez-Riverola" email=""/>
+			<author name="PhD. Rosalía Laza" email=""/>
+      		<author name="PhD. Reyes Pavón" email=""/>
+            <author name="Jorge Fdez-Glez" email=""/>
+            <author name="David Ruano-Ordás" email=""/>
+        </authors>
+        <url>http://sing.ei.uvigo.es/warcprocessor</url>
+    </info>
+
+    <!-- 
+        The gui preferences indication.
+        Sets the installer window to 640x480. It will not be able to change the size.
+    -->
+    <guiprefs width="640" height="480" resizable="yes"/>
+
+    <!-- 
+        The locale section.
+        Asks here to include the English and Spanish langpacks.
+    -->
+    <locale>
+        <langpack iso3="eng"/>
+        <!-- <langpack iso3="spa"/> -->
+    </locale>
+
+    <!-- 
+        The resources section.
+        The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
+    -->
+    <resources>
+        <res id="LicencePanel.licence" src="Licence.txt"/>
+        <res id="InfoPanel.info" src="Readme.txt"/>
+    </resources>
+
+    <!-- 
+        The panels section.
+        We indicate here which panels we want to use. The order will be respected.
+    -->
+    <panels>
+        <!-- <panel classname="HelloPanel"/> -->
+        <panel classname="InfoPanel"/>
+        <panel classname="LicencePanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="PacksPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+
+    <!-- 
+        The packs section.
+        We specify here our packs.
+    -->
+    <packs>
+        <pack name="WarcProcessor Tool" required="yes">
+            <description>WarcProcessor executable jar file</description>
+            <file src="bin" targetdir="$INSTALL_PATH"/>
+            <file src="Licence.txt" targetdir="$INSTALL_PATH"/>
+            <file src="Readme.txt" targetdir="$INSTALL_PATH"/>
+        </pack>
+        <pack name="Docs" required="no">
+            <description>The documentation</description>
+            <file src="doc" targetdir="$INSTALL_PATH"/>
+            <!-- Reccursive adding -->
+        </pack>
+        <pack name="Sources" required="no">
+            <description>The sources</description>
+            <file src="src" targetdir="$INSTALL_PATH"/>
+        </pack>
+        <pack name="Samples" required="no">
+            <description>Sample files</description>
+            <file src="samples" targetdir="$INSTALL_PATH"/>
+        </pack>
+    </packs>
+
+</installation>

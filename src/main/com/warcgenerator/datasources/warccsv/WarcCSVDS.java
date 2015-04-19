@@ -10,7 +10,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.archive.io.warc.WARCReaderFactory;
 
-import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.DataSource;
 import com.warcgenerator.core.datasource.IDataSource;
@@ -46,8 +45,8 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 	/**
 	 * Open a Arff datasource in read mode
 	 * 
-	 * @param path
-	 * @throws DSException
+	 * @param dsConfig DataSourceConfig
+	 * @throws DSException If error
 	 */
 	public WarcCSVDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);

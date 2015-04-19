@@ -16,15 +16,22 @@ import com.warcgenerator.core.exception.datasource.WriteException;
 import com.warcgenerator.gui.actions.common.StartGUIAction;
 
 /**
- * AppWarcGenerator
+ * WARCGenerator is a tool for generating test corpus.<br> 
+ * Main class of the program.
+ * 
+ * <p>It can be run by using a GUI or Command line.</p> 
+ * 
+ * <p>In order to get a better experience, it is highly recommended that
+ * take a look into the documentation before using the tool.</p>
  * 
  * @author Miguel Callon
+ * @see <a href="http://sing.ei.uvigo.es/warcprocessor" target="_blank" >WARCProcessor-WebSite</a>
  */
 public class AppWarcGenerator {
 	/**
 	 * Main method
 	 * 
-	 * @param args
+	 * @param args Arguments
 	 */
 	public static void main(String args[]) {
 		List<LongOpt> options = new ArrayList<LongOpt>();

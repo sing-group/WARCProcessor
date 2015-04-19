@@ -3,8 +3,13 @@ package com.warcgenerator.core.logic;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.Collection;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,7 +25,9 @@ import com.warcgenerator.core.exception.logic.ConfigFilePathIsNullException;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.gui.util.FileUtil;
 
+//@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
 public class AppLogicTest extends AbstractTestCase {
 	private IAppLogic logic;
 
@@ -101,16 +108,25 @@ public class AppLogicTest extends AbstractTestCase {
 		logic.saveAppConfig();
 	}
 	
+	/**
+	 * Test if a file is saving 
+	 * @throws IOException
+	 */
 	@Test
-	public void testSaveAsAppConfig() {
+	public void testSaveAsAppConfig() throws IOException {
 		AppConfig config = new AppConfig();
 		ConfigHelper.configure(CONFIG_FILE1, config);
 		config.init();
 		
-		logic = new AppLogicImpl(config);
-		logic.saveAsAppConfig("src/test/resources/tmp/config/config_tmp.wpg");
+		String path = "target/test/resources/tmp/config";
 		
-		logic.loadAppConfig("src/test/resources/tmp/config/config_tmp.wpg");
+		FileUtils.deleteDirectory(new File(path));
+		Files.createDirectories(FileSystems.getDefault().getPath(path));
+		
+		logic = new AppLogicImpl(config);
+		logic.saveAsAppConfig(path + "/config_tmp.wpg");
+		
+		logic.loadAppConfig(path + "/config_tmp.wpg");
 		assertEquals(logic.getDataSourceConfigList().size(), 9);
 	}
 	
@@ -258,6 +274,9 @@ public class AppLogicTest extends AbstractTestCase {
 				GenerateCorpusState();
 		logic = new AppLogicImpl(config);
 		logic.generateCorpus(generateCorpusState);
+		
+		assertEquals(5, generateCorpusState.getNumUrlHamCorrectlyLabeled());
+		assertEquals(5, generateCorpusState.getNumUrlSpamCorrectlyLabeled());
 	}
 	
 	/*

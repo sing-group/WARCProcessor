@@ -31,6 +31,9 @@ public class DSAssistantCreatePanel extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * @param logic IAppLogic
+	 * @param view WarcGeneratorGUI
+	 * @param parentAssistant JPanel
 	 */
 	public DSAssistantCreatePanel(IAppLogic logic, WarcGeneratorGUI view,
 			JPanel parentAssistant) {

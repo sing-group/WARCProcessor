@@ -54,6 +54,8 @@ public class OutputConfigPanel extends CustomJPanel {
 
 	/**
 	 * Create the panel.
+	 * @param logic Business Logic
+	 * @param view WarcGeneratorGUI
 	 */
 	public OutputConfigPanel(final IAppLogic logic, final WarcGeneratorGUI view) {
 		super();

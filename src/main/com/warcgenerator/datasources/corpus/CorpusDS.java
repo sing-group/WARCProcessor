@@ -29,8 +29,8 @@ public class CorpusDS extends DataSource implements IDataSource {
 	/**
 	 * Open a Warc datasource in read mode
 	 * 
-	 * @param path
-	 * @throws DSException
+	 * @param dsConfig DataSourceConfig
+	 * @throws DSException If error
 	 */
 	public CorpusDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);

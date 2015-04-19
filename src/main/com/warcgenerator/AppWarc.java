@@ -2,8 +2,6 @@ package com.warcgenerator;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -20,7 +18,7 @@ import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.gui.common.Constants;
 
 /**
- * AppWarc is an application used to generate Webspam Corpus.
+ * Start and handle a new instance of WARCProcessor 
  * 
  * @author Miguel Callon
  */
@@ -51,7 +49,7 @@ public class AppWarc {
 	/**
 	 * Singleton
 	 * 
-	 * @return
+	 * @return singleton of {@link AppWarc}
 	 */
 	public static AppWarc getInstance() {
 		if (singleton == null) {
@@ -60,18 +58,16 @@ public class AppWarc {
 		return singleton;
 	}
 
+	/**
+	 * Load a basic default configuration
+	 */
 	public void init() {
 		// Configure Log4j.xml
 		DOMConfigurator.configure(CUSTOM_GUI_CONFIG_XML_FULLPATH);
-
-		// Properties properties = ConfigHelper.loadParams(pathConfig);
 		logger.info("Loading default configuration...");
 		config = new AppConfig();
 
 		// Using XML config instead of properties
-		/*
-		 * ConfigHelper.configure(Constants.defaultConfigXML, config);
-		 */
 		config.init();
 
 		logger.info("-- AppConfig --\n" + config);
@@ -80,7 +76,7 @@ public class AppWarc {
 	}
 
 	/**
-	 * Load configurations
+	 * Load a configuration from a configuration file path given
 	 * 
 	 * @param pathConfig
 	 *            path to Xml properties config
@@ -102,10 +98,8 @@ public class AppWarc {
 	}
 
 	/**
-	 * Execute logic
-	 * 
-	 * @param pathConfig
-	 *            path XML configuration file
+	 * Execute generate corpus process
+	 * @throws WarcException If it is unable to generate corpus 
 	 */
 	public void execute() throws WarcException {
 		// Start
@@ -115,8 +109,8 @@ public class AppWarc {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Get AppLogic
+	 * @return logic of {@link IAppLogic}
 	 */
 	public IAppLogic getAppLogic() {
 		return logic;

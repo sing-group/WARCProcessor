@@ -66,6 +66,8 @@ public class GeneralConfigPanel extends CustomJPanel {
 
 	/**
 	 * Create the panel.
+	 * @param logic IAppLogic
+	 * @param view WarcGeneratorGUI
 	 */
 	public GeneralConfigPanel(final IAppLogic logic, final WarcGeneratorGUI view) {
 		super();

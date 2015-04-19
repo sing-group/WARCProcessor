@@ -22,7 +22,7 @@ public abstract class DataSource implements IDataSource {
 	
 	/**
 	 * Used to set the output file path
-	 * @param filePath
+	 * @param filePath Path to output file
 	 */
 	public void setOutputFilePath(String filePath) {
 		this.getDataSourceConfig().setFilePath(filePath);
@@ -30,6 +30,7 @@ public abstract class DataSource implements IDataSource {
 	
 	/**
 	 * Check if exist all mandatory params
+	 * @param paramsList DataSource params
 	 */
 	public void validate(String[] paramsList)
 			throws MissingParamsException {

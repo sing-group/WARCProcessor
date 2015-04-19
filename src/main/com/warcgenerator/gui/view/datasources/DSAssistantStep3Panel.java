@@ -48,6 +48,9 @@ public class DSAssistantStep3Panel extends CustomJPanel {
 
 	/**
 	 * Create the panel.
+	 * @param logic Business Logic
+	 * @param view WarcGeneratorGUI reference
+	 * @param parentAssistant JPanel
 	 */
 	public DSAssistantStep3Panel(IAppLogic logic, WarcGeneratorGUI view,
 			JPanel parentAssistant) {

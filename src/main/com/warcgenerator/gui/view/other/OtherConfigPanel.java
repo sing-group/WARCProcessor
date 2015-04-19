@@ -55,6 +55,8 @@ public class OtherConfigPanel extends CustomJPanel {
 
 	/**
 	 * Create the panel.
+	 * @param logic Business Logic
+	 * @param view WarcGeneratorGUI reference
 	 */
 	public OtherConfigPanel(final IAppLogic logic, final WarcGeneratorGUI view) {
 		super();

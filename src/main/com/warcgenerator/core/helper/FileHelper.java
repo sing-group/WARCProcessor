@@ -22,11 +22,11 @@ public class FileHelper {
 	
 	/**
 	 * Check if a file is readable
-	 * @param path
+	 * @param path Path to file
 	 * @return True if it is readable
 	 */
 	public static boolean checkIfExists(String path) {
-		return Files.isReadable(FileSystems.getDefault().getPath(path));
+		return Files.isReadable(FileSystems.getDefault().getPath(path).getParent());
 	}
 	
 	/**
@@ -59,6 +59,11 @@ public class FileHelper {
 		}
 	}
 	
+	/**
+	 * Parse url to get only its domain
+	 * @param url URL
+	 * @return url without params
+	 */
 	public static String getURLWithoutParams(String url) {
 		String domain = url;
 		URL myUrl = null;
@@ -78,20 +83,10 @@ public class FileHelper {
 	
 	/**
 	 * Get the DomainName from a URL
-	 * @param url
-	 * @return
+	 * @param url URL
+	 * @return domainName The domain name from the URL
 	 */
 	public static String getDomainNameFromURL(String url) {
-		/*String domain = "";
-		URL myUrl = null;
-		try {
-			myUrl = new URL(url);
-			domain = myUrl.getHost();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-
 		String privateDomain = "";
 		try {
 			privateDomain =
@@ -111,7 +106,8 @@ public class FileHelper {
 	
 	/**
 	 * Used to avoid problems like "http://domain.es" and "http://domain.es/"
-	 * @return
+	 * @param url URL
+	 * @return url normalized
 	 */
 	public static String normalizeURL(String url) {
 		// Normalize
@@ -131,6 +127,8 @@ public class FileHelper {
 	
 	/**
 	 * Create fileName from URL
+	 * @param url URL
+	 * @return name of file
 	 */
 	public static String getFileNameFromURL(String url) {
 		String fileName = url;
@@ -154,7 +152,11 @@ public class FileHelper {
 		.append(Constants.outputCorpusFileExtension);
 		return sb.toString();
 	}
-	
+
+	/** 
+	 * Get basic FileFilter
+	 * @return filter of FileFilter
+	 */
 	public static FileFilter getGeneralFileFilter() {
 		if (generalFileFilter == null) {
 			generalFileFilter = new FileFilter() {
@@ -165,11 +167,5 @@ public class FileHelper {
 		}
 		
 		return generalFileFilter;
-		
-		/*return new FileFilter() {
-		    @Override
-		    public boolean accept(File file) {
-		        return !file.isHidden();
-		    }};*/
 	}
 }

@@ -2,6 +2,12 @@ package com.warcgenerator.core.task.generateCorpus.state;
 
 import java.util.Observable;
 
+/**
+ * GenerateCorpusState observer which is in charge of watching all
+ * states of generating an output corpus.
+ * 
+ * @author Miguel Callon
+ */
 public class GenerateCorpusState extends Observable {
 	private int websVisited;
 	private int websToVisitTotal;

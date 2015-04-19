@@ -8,7 +8,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +16,7 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -33,6 +33,7 @@ import com.warcgenerator.core.datasource.generic.GenericDS;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
+@Ignore("This test is only for performance test")
 public class WebCrawlerTest extends AbstractTestCase {
 	private final String CONFIG_FILE1 = "src/test/resources/config/config1.wpg";
 

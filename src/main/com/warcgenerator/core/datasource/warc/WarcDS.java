@@ -56,21 +56,13 @@ public class WarcDS extends DataSource implements IDataSource {
 	/**
 	 * Open a Warc datasource in read mode
 	 * 
-	 * @param path
-	 * @throws DSException
+	 * @param dsConfig DataSourceConfig
+	 * @throws DSException If error
 	 */
 	public WarcDS(DataSourceConfig dsConfig) throws DSException {
 		super(dsConfig);
 		try {
 			logger.info("Openning file: " + dsConfig.getFilePath());
-
-			/*
-			 * WARCReader readerHeader = WARCReaderFactory.get(new
-			 * File(dsConfig.getFilePath()), 0); ArchiveRecord ar =
-			 * readerHeader.iterator().next(); int size = ar.available();
-			 * readerHeader.close();
-			 */
-
 			if (dsConfig.getFilePath().toLowerCase().endsWith(".gz")) {
 				dis = new DataInputStream(new GZIPInputStream(
 						new FileInputStream(dsConfig.getFilePath())));
@@ -78,17 +70,6 @@ public class WarcDS extends DataSource implements IDataSource {
 				dis = new DataInputStream(new FileInputStream(
 						dsConfig.getFilePath()));
 			}
-
-			// Bueno! reader = WARCReaderFactory.get(new
-			// File(dsConfig.getFilePath()), 0);
-			// reader = WARCReaderFactory.get("", new
-			// FileInputStream(dsConfig.getFilePath()), true);
-
-			// reader.setStrict(true);
-			// reader.setDigest(true);
-			// boolean isValid = reader.isValid();
-
-			// archIt = reader.iterator();
 		} catch (IOException e) {
 			throw new OpenException(e);
 		}
@@ -97,8 +78,8 @@ public class WarcDS extends DataSource implements IDataSource {
 	/**
 	 * Open a Warc datasource in write mode
 	 * 
-	 * @param config
-	 * @throws DSException
+	 * @param config OutputWarcConfig
+	 * @throws DSException If error
 	 */
 	public WarcDS(OutputWarcConfig config) throws DSException {
 		this.config = config;
@@ -164,7 +145,6 @@ public class WarcDS extends DataSource implements IDataSource {
 			public RecordIDGenerator getRecordIDGenerator() {
 				return new UUIDGenerator();
 			}
-
 		};
 	}
 
@@ -193,11 +173,6 @@ public class WarcDS extends DataSource implements IDataSource {
 						.getDataSourceConfig().getCustomParams().get(URL_TAG)
 						.getValue());
 			} while (url == null);
-
-			// The header file contains information such as the type of record,
-			// size, creation time, and URL
-			System.out.println("Header: " + warcRecord.getHeaderString());
-			System.out.println("URL: " + url);
 
 			dataBean = new DataBean();
 			dataBean.setUrl(url);
@@ -235,7 +210,6 @@ public class WarcDS extends DataSource implements IDataSource {
 				}
 
 				ANVLRecord headers = new ANVLRecord(1);
-				// headers.addLabelValue("mietiqueta", "127.0.0.1");
 				writer.writeResourceRecord(bean.getUrl(),
 						ArchiveUtils.get14DigitDate(),
 						Constants.outputContentType, headers, is,

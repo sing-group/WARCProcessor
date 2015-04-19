@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.warcgenerator.core.config.CustomParamConfig;
@@ -17,6 +18,7 @@ import com.warcgenerator.datasources.arff.ArffDS;
 import com.warcgenerator.datasources.csv.CSVDS;
 import com.warcgenerator.datasources.file.FileDS;
 
+@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
 public class DSPerformanceTest {
 	private ArffDS arffDS;
 	private CSVDS csvDS;

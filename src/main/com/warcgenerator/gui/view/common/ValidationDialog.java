@@ -35,6 +35,7 @@ public class ValidationDialog extends CustomJDialog {
 
 	/**
 	 * Launch the application.
+	 * @param args Arguments
 	 */
 	public static void main(String[] args) {
 		try {
@@ -55,6 +56,7 @@ public class ValidationDialog extends CustomJDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param view WarcGeneratorGUI
 	 */
 	private ValidationDialog(WarcGeneratorGUI view) {
 		super(view.getMainFrame(), true);
