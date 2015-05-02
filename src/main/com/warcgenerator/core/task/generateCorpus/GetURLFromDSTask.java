@@ -40,6 +40,8 @@ public class GetURLFromDSTask extends Task implements ITask {
 		Map<String, DataBean> urlsHamTmp = new LinkedHashMap<String, DataBean>();
 
 		generateCorpusState.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
+		System.out.println("patata");
+		System.out.println("cambiando estado!!");
 		
 		int numSitesSpam = 0;
 		if (config.getRatioIsPercentage()) {
@@ -89,7 +91,6 @@ public class GetURLFromDSTask extends Task implements ITask {
 	}
 
 	public void rollback() {
-		// Rollback
 		logger.info("Rollback");
 	}
 

@@ -2,9 +2,11 @@ package com.warcgenerator.core.task.generateCorpus.state;
 
 import java.util.Observable;
 
+import com.warcgenerator.core.exception.logic.InvalidStateTransitionException;
+
 /**
- * GenerateCorpusState observer which is in charge of watching all
- * states of generating an output corpus.
+ * GenerateCorpusState observer which is in charge of watching all states of
+ * generating an output corpus.
  * 
  * @author Miguel Callon
  */
@@ -19,24 +21,80 @@ public class GenerateCorpusState extends Observable {
 	private int numUrlHamReadedFromDS;
 	private int numUrlSpamCorrectlyLabeled;
 	private int numUrlHamCorrectlyLabeled;
-
-	public GenerateCorpusState() {
-	}
 	
-	public void setState(GenerateCorpusStates currentState) {
-		this.currentState = currentState;
+	public GenerateCorpusState() {
+		setState(GenerateCorpusStates.INIT);
+	}
+
+	private boolean isValidTransition(GenerateCorpusStates source,
+			GenerateCorpusStates dest) {
+		if (source == null &&
+				dest.equals(GenerateCorpusStates.INIT))
+			return true;
+		if (source.equals(GenerateCorpusStates.INIT)
+				&& dest.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS))
+			return true;
+		if (source.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS)
+				&& dest.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS))
+			return true;
+		if (source.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS)
+				&& dest.equals(GenerateCorpusStates.READING_URLS))
+			return true;
+		if (source.equals(GenerateCorpusStates.READING_URLS)
+				&& dest.equals(GenerateCorpusStates.CRAWLING_URLS))
+			return true;
+		if (source.equals(GenerateCorpusStates.CRAWLING_URLS)
+				&& dest.equals(GenerateCorpusStates.CRAWLING_URLS))
+			return true;
+		if (source.equals(GenerateCorpusStates.CRAWLING_URLS)
+				&& dest.equals(GenerateCorpusStates.READING_URLS))
+			return true;
+		if (source.equals(GenerateCorpusStates.CRAWLING_URLS)
+				&& dest.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS))
+			return true;
+		if (source.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS)
+				&& dest.equals(GenerateCorpusStates.ENDING))
+			return true;
+		if (source.equals(GenerateCorpusStates.CRAWLING_URLS)
+				&& dest.equals(GenerateCorpusStates.ENDING))
+			return true;
+		if (source.equals(GenerateCorpusStates.CRAWLING_URLS)
+				&& dest.equals(GenerateCorpusStates.CANCELLING_PROCESS))
+			return true;
+		if (source.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS)
+				&& dest.equals(GenerateCorpusStates.PROCESS_CANCELLED))
+			return true;
+		if (source.equals(GenerateCorpusStates.READING_URLS)
+				&& dest.equals(GenerateCorpusStates.PROCESS_CANCELLED))
+			return true;
+		if (source.equals(GenerateCorpusStates.CANCELLING_PROCESS)
+				&& dest.equals(GenerateCorpusStates.PROCESS_CANCELLED))
+			return true;
+		if (source.equals(GenerateCorpusStates.PROCESS_CANCELLED)
+				&& dest.equals(GenerateCorpusStates.PROCESS_CANCELLED))
+			return true;
+		
+		return false;
+
+	}
+
+	public synchronized void setState(GenerateCorpusStates newState) {
+		if (!isValidTransition(currentState, newState))
+			throw new InvalidStateTransitionException("Invalid: "
+					+ currentState + " to " + newState);
+		this.currentState = newState;
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	public GenerateCorpusStates getState() {
 		return currentState;
 	}
-	
+
 	public void incWebsVisited() {
 		setWebsVisited(getWebsVisited() + 1);
 	}
-	
+
 	public void incDomainsCorrectlyLabeled(boolean isSpam) {
 		if (isSpam) {
 			setNumUrlSpamCorrectlyLabeled(getNumUrlSpamCorrectlyLabeled() + 1);
@@ -44,15 +102,15 @@ public class GenerateCorpusState extends Observable {
 			setNumUrlHamCorrectlyLabeled(getNumUrlHamCorrectlyLabeled() + 1);
 		}
 	}
-	
+
 	public int getNumDomainsCorrectlyLabeled() {
 		return getNumUrlSpamCorrectlyLabeled() + getNumUrlHamCorrectlyLabeled();
 	}
-	
+
 	public void incUrlSpamReadedFromDS() {
 		setNumUrlSpamReadedFromDS(getNumUrlSpamReadedFromDS() + 1);
 	}
-	
+
 	public void incUrlHamReadedFromDS() {
 		setNumUrlHamReadedFromDS(getNumUrlHamReadedFromDS() + 1);
 	}
@@ -96,7 +154,7 @@ public class GenerateCorpusState extends Observable {
 	public void setCurrentUrlReadedFromDS(String currentUrlReadedFromDS) {
 		this.currentUrlReadedFromDS = currentUrlReadedFromDS;
 	}
-	
+
 	public int getNumUrlReadedFromDS() {
 		return numUrlSpamReadedFromDS + numUrlHamReadedFromDS;
 	}

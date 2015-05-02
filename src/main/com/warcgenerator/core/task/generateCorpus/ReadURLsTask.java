@@ -102,19 +102,14 @@ public class ReadURLsTask extends Task implements ITask {
 			// There is a bug in crawler4j that consist in lock
 			// of frontier temp folder.
 			webCrawler.close();
-			
-			System.out.println("webCrawler1 es " + webCrawler);
 		}
 		
 		logger.info("Task completed");
 	}
 	
 	public void rollback() {
-		logger.info("Rollback");
-		terminate = false;
+		terminate = true;
 		
-		//webCrawler.stop();
-		//System.out.println("webCrawler2 es " + webCrawler);
 		if (webCrawler != null)
 			webCrawler.stop();
 	}

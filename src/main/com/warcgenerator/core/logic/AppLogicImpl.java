@@ -330,6 +330,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 * Stop the generation of corpus
 	 */
 	public void stopGenerateCorpus() {
+		// Check if can be stoped		
 		stopWebCrawling();
 	}
 
@@ -448,6 +449,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 							.getNumSites()) {
 				logger.info("The ration spam/ham could not be completed."
 						+ "There is not enough data in input datasources.");
+				generateCorpusState.setState(GenerateCorpusStates.ENDING);
 			} else if (!executorTasks.isTerminate()) {
 				logger.info("The ratio spam/ham was succesfully completed.");
 				logger.info("Sites: "
@@ -456,8 +458,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 						+ generateCorpusState.getNumUrlSpamCorrectlyLabeled()
 						+ ", Ham: "
 						+ generateCorpusState.getNumUrlHamCorrectlyLabeled());
+				generateCorpusState.setState(GenerateCorpusStates.ENDING);
+			} else if (executorTasks.isTerminate()) {
+				generateCorpusState.setState(GenerateCorpusStates.PROCESS_CANCELLED);
 			}
-
 		} catch (LoadDataSourceException ex) {
 			throw new LogicException(ex);
 		} catch (Exception ex) {
@@ -468,8 +472,6 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			for (DataSource ds : outputDS.values()) {
 				ds.close();
 			}
-			generateCorpusState.setState(GenerateCorpusStates.ENDING);
-
 			if (labeledDS != null)
 				labeledDS.close();
 			if (notFoundDS != null)

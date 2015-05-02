@@ -159,7 +159,13 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	}
 
 	public void stop() {
-		controller.shutdown();
+		generateCorpusState.setState(
+				GenerateCorpusStates.CANCELLING_PROCESS);
+			controller.shutdown();
+			
+			//controller
+				//controller.notify();
+			
 	}
 
 	@SuppressWarnings("unchecked")
@@ -170,53 +176,58 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		 */
 		controller.start(Crawler4JAdapter.class, numberOfCrawlers);
 
-		List<Object> crawlersLocalData = controller.getCrawlersLocalData();
-		for (Object localData : crawlersLocalData) {
-			if (localData instanceof Collection<?>) {
-				for (com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData : (Collection<com.warcgenerator.core.plugin.webcrawler.HtmlParseData>) localData) {
-					IWebCrawlerHandler handler = handlers.get(FileHelper
-							.getDomainNameFromURL(parseData.getUrl()));
-
-					DataSource warcDS = outputDS.get(FileHelper
-							.getDomainNameFromURL(parseData.getUrl()));
-
-					if (warcDS == null) {
-						StringBuilder warcFileName = new StringBuilder();
-
-						StringBuilder outputWarcPath = new StringBuilder();
-						if (webCrawlerBean.isSpam()) {
-							outputWarcPath.append(webCrawlerBean
-									.getOutputCorpusConfig().getSpamDir());
-						} else {
-							outputWarcPath.append(webCrawlerBean
-									.getOutputCorpusConfig().getHamDir());
+		controller.waitUntilFinish();
+		
+		if (!controller.isShuttingDown()) {
+			System.out.println("parseando!!!");
+			List<Object> crawlersLocalData = controller.getCrawlersLocalData();
+			for (Object localData : crawlersLocalData) {
+				if (localData instanceof Collection<?>) {
+					for (com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData : (Collection<com.warcgenerator.core.plugin.webcrawler.HtmlParseData>) localData) {
+						IWebCrawlerHandler handler = handlers.get(FileHelper
+								.getDomainNameFromURL(parseData.getUrl()));
+	
+						DataSource warcDS = outputDS.get(FileHelper
+								.getDomainNameFromURL(parseData.getUrl()));
+	
+						if (warcDS == null) {
+							StringBuilder warcFileName = new StringBuilder();
+	
+							StringBuilder outputWarcPath = new StringBuilder();
+							if (webCrawlerBean.isSpam()) {
+								outputWarcPath.append(webCrawlerBean
+										.getOutputCorpusConfig().getSpamDir());
+							} else {
+								outputWarcPath.append(webCrawlerBean
+										.getOutputCorpusConfig().getHamDir());
+							}
+							outputWarcPath.append(File.separator);
+	
+							warcFileName.append(outputWarcPath.toString())
+									.append(FileHelper.getOutputFileName(parseData
+											.getUrl()));
+	
+							warcDS = new WarcDS(new OutputWarcConfig(
+									webCrawlerBean.isSpam(),
+									warcFileName.toString()));
+	
+							outputDS.put(FileHelper.getDomainNameFromURL(parseData
+									.getUrl()), warcDS);
 						}
-						outputWarcPath.append(File.separator);
-
-						warcFileName.append(outputWarcPath.toString())
-								.append(FileHelper.getOutputFileName(parseData
-										.getUrl()));
-
-						warcDS = new WarcDS(new OutputWarcConfig(
-								webCrawlerBean.isSpam(),
-								warcFileName.toString()));
-
-						outputDS.put(FileHelper.getDomainNameFromURL(parseData
-								.getUrl()), warcDS);
+	
+						if (handler == null) {
+							handler = new WebCrawlerHandler(appConfig,
+									webCrawlerBean.isSpam(),
+									webCrawlerBean.getDomainsNotFoundDS(),
+									webCrawlerBean.getDomainsLabeledDS(), warcDS,
+									urls, urlsActive, urlsNotActive, generateCorpusState);
+	
+							handlers.put(FileHelper.getDomainNameFromURL(parseData
+									.getUrl()), handler);
+						}
+	
+						handler.handle(parseData);
 					}
-
-					if (handler == null) {
-						handler = new WebCrawlerHandler(appConfig,
-								webCrawlerBean.isSpam(),
-								webCrawlerBean.getDomainsNotFoundDS(),
-								webCrawlerBean.getDomainsLabeledDS(), warcDS,
-								urls, urlsActive, urlsNotActive, generateCorpusState);
-
-						handlers.put(FileHelper.getDomainNameFromURL(parseData
-								.getUrl()), handler);
-					}
-
-					handler.handle(parseData);
 				}
 			}
 		}

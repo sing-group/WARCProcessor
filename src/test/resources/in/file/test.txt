@@ -1,4 +1,2 @@
-http://www.uvigo.es/
-http://www.uvigo.es/uvigo_gl/conocenos/
-http://www.uvigo.es/uvigo_gl/conocenos/como_chegar/
-http://vicou.uvigo.es/
+http://localhost:8089/test1
+http://localhost:8089/test2

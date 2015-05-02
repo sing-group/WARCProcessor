@@ -26,10 +26,11 @@ public class CustomCrawlController extends CrawlController {
 		}
 	}*/
 	
-	public void shutdown() {
-		//this.frontier.finish();		
-		this.getPageFetcher().shutDown();
-		super.shutdown();
-	}
+		// Send the shutdown request and then wait for finishing
+	//public void shutdown() {
+		//super.finished = true;
+		//super.shutdown();
+	    //super.waitUntilFinish();
+	//}
 	
 }

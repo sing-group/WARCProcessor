@@ -15,4 +15,8 @@ public class LogicException extends WarcException {
 	public LogicException(Throwable e) {
 		super(e);
 	}
+	
+	public LogicException(String message) {
+		super(message);
+	}
 }

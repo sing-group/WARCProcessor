@@ -20,6 +20,7 @@ import com.warcgenerator.core.helper.OutputHelper;
 import com.warcgenerator.core.task.ITask;
 import com.warcgenerator.core.task.Task;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
 public class CheckActiveSitesConfigTask extends Task implements ITask {
 	private AppConfig config;

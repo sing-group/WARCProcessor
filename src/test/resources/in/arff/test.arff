@@ -10,5 +10,5 @@
 
 @data
 
-sunny,85,85,FALSE,no,ham,URL_http://esei.uvigo.es
-sunny,80,90,TRUE,no,spam,URL_http://faitic.uvigo.es/index.php/es/servicio
+sunny,85,85,FALSE,no,ham,URL_http://localhost:8089/test1
+sunny,80,90,TRUE,no,spam,URL_http://localhost:8089/test2

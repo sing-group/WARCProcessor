@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
-import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 import com.warcgenerator.gui.util.FileUtil;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
@@ -47,11 +46,10 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 	@Override
 	public Void doInBackground() {
 		setProgress(0);
-
 		logic.generateCorpus(gcState);
 
-		// Initialize progress property.
-
+		System.out.println("generateCorpusFinish!!!");
+		
 		/*
 		 * while (progress < 100) { // Sleep for up to one second. try {
 		 * //Thread.sleep(random.nextInt(1000)); } catch (InterruptedException
@@ -66,6 +64,8 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 	 */
 	@Override
 	public void done() {
+		System.out.println("DONE!!!!");
+
 		try {
 			get();
 
@@ -75,11 +75,12 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			sb.append("\n\n");
 			sb.append("Output Corpus Info. (URLs):\n");
 			sb.append("- Total: ")
-					.append(gcState.getNumDomainsCorrectlyLabeled()).append("\n");
-			sb.append("- SPAM/HAM: ").append(
-					gcState.getNumUrlSpamCorrectlyLabeled()).append("/").append(
-					gcState.getNumUrlHamCorrectlyLabeled());
-			
+					.append(gcState.getNumDomainsCorrectlyLabeled())
+					.append("\n");
+			sb.append("- SPAM/HAM: ")
+					.append(gcState.getNumUrlSpamCorrectlyLabeled())
+					.append("/").append(gcState.getNumUrlHamCorrectlyLabeled());
+
 			JOptionPane.showMessageDialog(view.getMainFrame(), sb.toString(),
 					Messages.getString("GeneralDialog.info.title.text"),
 					JOptionPane.INFORMATION_MESSAGE);
@@ -100,8 +101,9 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 		} catch (InterruptedException e) {
 			logger.info("Task interrupted");
 		} catch (CancellationException e) {
+			System.out.println("cancellationexception!!!");
 			logic.stopGenerateCorpus();
-			gcState.setState(GenerateCorpusStates.CANCELlING_PROCESS);
+			System.out.println("parado!!");
 		}
 	}
 
@@ -113,6 +115,7 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			int NUM_PHASES = 5;
 			int inc = Math.round(100 / NUM_PHASES - 1);
 			int progress = getProgress();
+			
 			switch (gcState.getState()) {
 			case GETTING_URLS_FROM_DS:
 				// gcd.getStateLbl().setText("Obteniendo urls de los datasources");
@@ -149,17 +152,21 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 								Messages.getString("GenerateCorpusTask.progress5.urls.text"));
 				progress = 100;
 				break;
-			case CANCELlING_PROCESS:
+				
+			case CANCELLING_PROCESS:
 				gcd.getStateLbl()
-						.setText(
-								Messages.getString("GenerateCorpusTask.progress6.urls.text"));
+				.setText(
+						Messages.getString("GenerateCorpusTask.progress6.urls.text"));
 				break;
+				
 			case PROCESS_CANCELLED:
 				gcd.getStateLbl()
 						.setText(
 								Messages.getString("GenerateCorpusTask.progress7.urls.text"));
+				progress = 0;
 				break;
 			}
+
 			setProgress(progress);
 			publish();
 		}

@@ -7,21 +7,21 @@ package com.warcgenerator.core.exception.config;
  * @author Miguel Callon
  *
  */
-public class PathNotFoundSaveAppConfigException extends ConfigException {
+public class PathNotFoundAppConfigException extends ConfigException {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public PathNotFoundSaveAppConfigException() {
+	public PathNotFoundAppConfigException() {
 		super();
 	}
 	
-	public PathNotFoundSaveAppConfigException(Throwable e) {
+	public PathNotFoundAppConfigException(Throwable e) {
 		super(e);
 	}
 	
-	public PathNotFoundSaveAppConfigException(String message) {
+	public PathNotFoundAppConfigException(String message) {
 		super(message);
 	}
 }

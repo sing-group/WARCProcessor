@@ -37,7 +37,7 @@ import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.exception.config.ConfigException;
-import com.warcgenerator.core.exception.config.PathNotFoundSaveAppConfigException;
+import com.warcgenerator.core.exception.config.PathNotFoundAppConfigException;
 import com.warcgenerator.core.exception.config.ValidateXMLSchemaException;
 
 /**
@@ -88,6 +88,10 @@ public class XMLConfigHelper {
 	 * @param config AppConfig to get
 	 */
 	public static void getAppConfigFromXml(String path, AppConfig config) {
+		if (!FileHelper.checkIfExists(path)) {
+			throw new PathNotFoundAppConfigException();
+		}
+		
 		try {
 			DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 					.newInstance();
@@ -362,7 +366,7 @@ public class XMLConfigHelper {
 	 */
 	public static void saveXMLFromAppConfig(String path, AppConfig config) {
 		if (!FileHelper.checkIfExists(path)) {
-			throw new PathNotFoundSaveAppConfigException();
+			throw new PathNotFoundAppConfigException();
 		}
 		
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory
