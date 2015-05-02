@@ -34,10 +34,10 @@ public interface IAppLogic {
 	AppConfig getAppConfig();
 	Collection<DataSourceConfig> getDataSourceTypesList();
 	DataSourceConfig getDataSourceType(String type);
-	DataSourceConfig getDataSourceById(Integer id);
+	DataSourceConfig getDataSourceById(int id);
 	Collection<DataSourceConfig> getDataSourceConfigList();
 	void addDataSourceConfig(DataSourceConfig dsConfig);
-	void removeDataSourceConfig(Integer id);
+	void removeDataSourceConfig(int id);
 	void stopGenerateCorpus();
 	void generateCorpus(GenerateCorpusState generateCorpusState);
 	void addObserver(Observer obs);

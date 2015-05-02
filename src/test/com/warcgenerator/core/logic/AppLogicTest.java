@@ -2,6 +2,7 @@ package com.warcgenerator.core.logic;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,17 +16,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.warcgenerator.AbstractTestCase;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.exception.config.PathNotFoundSaveAppConfigException;
+import com.warcgenerator.core.exception.logic.AddDataSourceException;
 import com.warcgenerator.core.exception.logic.ConfigFilePathIsNullException;
+import com.warcgenerator.core.exception.logic.DataSourceNotFoundException;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
-import com.warcgenerator.gui.util.FileUtil;
 
 //@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
 public class AppLogicTest extends AbstractTestCase {
@@ -39,9 +42,13 @@ public class AppLogicTest extends AbstractTestCase {
 	private final String DS_TEST_NAME = "Test DS";
 	private final String DS_TEST_TYPE = "FileDS";
 	private final String DS_TEST_CLASS_NAME = "com.warcgenerator.datasources.file.FileDS";
+	private final String DS_TEST_HANDLER_NAME = "com.warcgenerator.datasources.file.handler.FileDSHandler";
 	private final boolean DS_IS_ENABLED = true;
 	private final String DS_FILE_PATH = "src/test/resources/in/file";
 
+	@Rule
+	public ExpectedException exception = ExpectedException.none();
+	
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule(8089);
 
@@ -66,6 +73,8 @@ public class AppLogicTest extends AbstractTestCase {
 
 	@Test(expected = OutCorpusCfgNotFoundException.class)
 	public void testCheckCorpusCfgNotFound() {
+		//exception.expectCause(is(OutCorpusCfgNotFoundException.class));
+		
 		// Check if there is an empty configuration in memory
 		AppConfig config = new AppConfig();
 
@@ -89,6 +98,8 @@ public class AppLogicTest extends AbstractTestCase {
 	// Check if a configuration file is setted
 	@Test(expected = ConfigFilePathIsNullException.class)
 	public void testConfigFilePathSetted() {
+		//exception.expectCause(is(ConfigFilePathIsNullException.class));
+		
 		ConfigHelper.setConfigFilePath(null);
 		AppConfig config = new AppConfig();
 		config.init();
@@ -97,6 +108,16 @@ public class AppLogicTest extends AbstractTestCase {
 		logic.saveAppConfig();
 	}
 
+	// Check if a configuration file is setted
+	@Test
+	public void testSaveAppConfigEmptySaveFile() {
+		AppConfig config = new AppConfig();
+		config.init();
+
+		logic = new AppLogicImpl(config);
+		logic.saveAppConfig();
+	}
+	
 	// Check if a configuration file is setted
 	@Test
 	public void testSaveAppConfig() {
@@ -198,7 +219,27 @@ public class AppLogicTest extends AbstractTestCase {
 		
 		assertEquals(dsConfig.getName(), "WarcDS");
 	}
-	 	
+
+	
+	// Add wrong DataSourceConfig
+	@Test(expected = AddDataSourceException.class)
+	public void testAddDataSourceConfigWithoutName() {
+		AppConfig config = new AppConfig();
+		ConfigHelper.configure(CONFIG_FILE2, config);
+		config.init();
+
+		logic = new AppLogicImpl(config);
+		DataSourceConfig dsConfig = new DataSourceConfig();
+		dsConfig.setType(DS_TEST_TYPE);
+		dsConfig.setDsClassName(DS_TEST_CLASS_NAME);
+		dsConfig.setHandlerClassName(DS_TEST_HANDLER_NAME);
+		dsConfig.setEnabled(DS_IS_ENABLED);
+		dsConfig.setFilePath(DS_FILE_PATH);
+		logic.addDataSourceConfig(dsConfig);
+		
+		dsConfig = logic.getDataSourceById(1);
+	}
+	
 	// AddDataSourceConfig
 	@Test
 	public void testAddDataSourceConfig() {
@@ -209,7 +250,9 @@ public class AppLogicTest extends AbstractTestCase {
 		logic = new AppLogicImpl(config);
 		DataSourceConfig dsConfig = new DataSourceConfig();
 		dsConfig.setName(DS_TEST_NAME);
+		dsConfig.setType(DS_TEST_TYPE);
 		dsConfig.setDsClassName(DS_TEST_CLASS_NAME);
+		dsConfig.setHandlerClassName(DS_TEST_HANDLER_NAME);
 		dsConfig.setEnabled(DS_IS_ENABLED);
 		dsConfig.setFilePath(DS_FILE_PATH);
 		logic.addDataSourceConfig(dsConfig);
@@ -217,7 +260,9 @@ public class AppLogicTest extends AbstractTestCase {
 		dsConfig = logic.getDataSourceById(1);
 		
 		assertEquals(dsConfig.getName(), DS_TEST_NAME);
+		assertEquals(dsConfig.getType(), DS_TEST_TYPE);
 		assertEquals(dsConfig.getDsClassName(), DS_TEST_CLASS_NAME);
+		assertEquals(dsConfig.getHandlerClassName(), DS_TEST_HANDLER_NAME);
 		assertEquals(dsConfig.getEnabled(), DS_IS_ENABLED);
 		assertEquals(dsConfig.getFilePath(), DS_FILE_PATH);
 	}
@@ -246,6 +291,24 @@ public class AppLogicTest extends AbstractTestCase {
 				logic.getDataSourceConfigList();
 		
 		assertEquals(9, dataSourceConfigList.size());
+	}
+	
+	/**
+	 * Test if the DataSource to be removed does not exist
+	 */
+	@Test(expected = DataSourceNotFoundException.class)
+	public void testRemoveDataSourceConfigNotExist() {
+		AppConfig config = new AppConfig();
+		ConfigHelper.configure(CONFIG_FILE1, config);
+		config.init();
+		
+		logic = new AppLogicImpl(config);
+		logic.removeDataSourceConfig(10);
+		
+		Collection<DataSourceConfig> dataSourceConfigList = 
+				logic.getDataSourceConfigList();
+		
+		assertEquals(8, dataSourceConfigList.size());
 	}
 	
 	@Test

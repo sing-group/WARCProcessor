@@ -23,7 +23,9 @@ import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.datasource.generic.GenericDS;
+import com.warcgenerator.core.exception.config.DSConfigException;
 import com.warcgenerator.core.exception.config.LoadDataSourceException;
+import com.warcgenerator.core.exception.logic.AddDataSourceException;
 import com.warcgenerator.core.exception.logic.ConfigFilePathIsNullException;
 import com.warcgenerator.core.exception.logic.DataSourceNotFoundException;
 import com.warcgenerator.core.exception.logic.LogicException;
@@ -43,7 +45,9 @@ import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 /**
  * Business logic layer
  * 
- * <p>This class contains the implementation the WARCProcessor API</p>
+ * <p>
+ * This class contains the implementation the WARCProcessor API
+ * </p>
  * 
  * @author Miguel Callon
  * 
@@ -54,13 +58,15 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private Map<String, DataSourceConfig> dataSourcesTypes;
 	private ExecutionTaskBatch executorTasks;
 
-	private static Logger logger = Logger
-			.getLogger(AppLogicImpl.class);
-	
+	private static Logger logger = Logger.getLogger(AppLogicImpl.class);
+
 	/**
 	 * Business logic implementation
-	 * @param config AppConfig
-	 * @throws LogicException If error
+	 * 
+	 * @param config
+	 *            AppConfig
+	 * @throws LogicException
+	 *             If error
 	 */
 	public AppLogicImpl(AppConfig config) throws LogicException {
 		this.config = config;
@@ -85,6 +91,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	 */
 	public void saveAppConfig() {
 		String configFilePath = ConfigHelper.getConfigFilePath();
+
 		if (configFilePath != null) {
 			ConfigHelper.persistConfig(configFilePath, config);
 
@@ -98,7 +105,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Save configuration in a file
-	 * @param path Path for saving the config
+	 * 
+	 * @param path
+	 *            Path for saving the config
 	 */
 	public void saveAsAppConfig(String path) {
 		ConfigHelper.persistConfig(path, config);
@@ -110,6 +119,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Return Filepath of the current Config file.
+	 * 
 	 * @return String with path for saving the config
 	 */
 	public String getConfigFilePath() {
@@ -118,7 +128,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Load AppConfig from config file path.
-	 * @param path Config file path
+	 * 
+	 * @param path
+	 *            Config file path
 	 */
 	public void loadAppConfig(String path) {
 		ConfigHelper.configure(path, config);
@@ -142,8 +154,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Update current AppConfig with a new AppConfig given.
-	 * @param appConfig AppConfig
-	 * @throws LogicException If it is unable to update AppConfig
+	 * 
+	 * @param appConfig
+	 *            AppConfig
+	 * @throws LogicException
+	 *             If it is unable to update AppConfig
 	 */
 	public void updateAppConfig(AppConfig appConfig) throws LogicException {
 		appConfig.validate();
@@ -162,7 +177,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Get current AppConfig.
-	 * @throws LogicException If it is unable to get current AppConfig.
+	 * 
+	 * @throws LogicException
+	 *             If it is unable to get current AppConfig.
 	 */
 	public AppConfig getAppConfig() throws LogicException {
 		AppConfig appConfigCopy = new AppConfig();
@@ -177,7 +194,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	}
 
 	/**
-	 * List all types of available DataSources 
+	 * List all types of available DataSources
+	 * 
 	 * @return list of {@link DataSourceConfig}
 	 */
 	public List<DataSourceConfig> getDataSourceTypesList()
@@ -196,7 +214,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Get DataSourceConfig by a type given.
-	 * @param type Type of {@link DataSourceConfig}
+	 * 
+	 * @param type
+	 *            Type of {@link DataSourceConfig}
 	 * @return {@link DataSourceConfig}
 	 */
 	public DataSourceConfig getDataSourceType(String type) {
@@ -208,6 +228,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * List all {@link DataSourceConfig} configured in {@link AppConfig}.
+	 * 
 	 * @return list of {@link DataSourceConfig}
 	 */
 	public List<DataSourceConfig> getDataSourceConfigList() {
@@ -225,10 +246,13 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Get a DataSourceConfig by an id given.
-	 * @param id {@link DataSourceConfig} identifier
-	 * @throws DataSourceNotFoundException If unable to get DataSourceConfig 
+	 * 
+	 * @param id
+	 *            {@link DataSourceConfig} identifier
+	 * @throws DataSourceNotFoundException
+	 *             If unable to get DataSourceConfig
 	 */
-	public DataSourceConfig getDataSourceById(Integer id)
+	public DataSourceConfig getDataSourceById(int id)
 			throws DataSourceNotFoundException {
 		DataSourceConfig dsConfigCopy = new DataSourceConfig();
 		DataSourceConfig dsConfig = config.getDataSourceConfigs().get(id);
@@ -242,11 +266,20 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	/**
 	 * Add a new DataSource
 	 * 
-	 * @param dsConfig of {@link DataSourceConfig}
-	 * @throws LoadDataSourceException If unable to add DataSourceConfig
+	 * @param dsConfig
+	 *            of {@link DataSourceConfig}
+	 * @throws AddDataSourceException
+	 *             If unable to add DataSourceConfig
 	 */
 	public void addDataSourceConfig(DataSourceConfig dsConfig)
-			throws LoadDataSourceException {
+			throws AddDataSourceException {
+		// Test if the new DataSourceConfig is ok before add to
+		try {
+			dsConfig.validate();
+		} catch (DSConfigException ex) {
+			throw new AddDataSourceException(ex);
+		}
+
 		String callback_message = DATASOURCE_UPDATED_CALLBACK;
 		if (dsConfig.getId() == null) {
 			dsConfig.setId(DataSourceConfig.getNextId());
@@ -256,7 +289,6 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		// Expand changes to all children
 		expandChanges(dsConfig);
 
-		// ConfigHelper.getDSHandler(dsConfig, config);
 		config.getDataSourceConfigs().put(dsConfig.getId(), dsConfig);
 		// Notify observers
 		setChanged();
@@ -267,7 +299,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	/**
 	 * Expand changes to all children
 	 * 
-	 * @param dsConfigParent of {@link DataSourceConfig}
+	 * @param dsConfigParent
+	 *            of {@link DataSourceConfig}
 	 */
 	private void expandChanges(DataSourceConfig dsConfigParent) {
 		for (DataSourceConfig specificDsConfig : dsConfigParent.getChildren()) {
@@ -279,9 +312,13 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	/**
 	 * Remove a DataSource
 	 * 
-	 * @param id {@link DataSourceConfig} identifier
+	 * @param id
+	 *            {@link DataSourceConfig} identifier
 	 */
-	public void removeDataSourceConfig(Integer id) {
+	public void removeDataSourceConfig(int id) {
+		if (!config.getDataSourceConfigs().containsKey(id)) {
+			throw new DataSourceNotFoundException();
+		}
 		config.getDataSourceConfigs().remove(id);
 		// Notify observers
 		setChanged();
@@ -298,8 +335,11 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Generate corpus process.
-	 * @param generateCorpusState of {@link GenerateCorpusState} 
-	 * @exception LogicException If any error happen
+	 * 
+	 * @param generateCorpusState
+	 *            of {@link GenerateCorpusState}
+	 * @exception LogicException
+	 *                If any error happen
 	 */
 	public void generateCorpus(GenerateCorpusState generateCorpusState)
 			throws LogicException {
@@ -371,7 +411,6 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 						urlsNotActive, outputDS, outputCorpusConfig, labeledDS,
 						generateCorpusState);
 
-				
 				executorTasks = new ExecutionTaskBatch();
 				executorTasks.addTask(t1);
 				executorTasks.addTask(t2);
@@ -387,33 +426,38 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 					generateCorpusState
 							.setState(GenerateCorpusStates.PROCESS_CANCELLED);
 				}
-				
+
 				// Update generate corpus state
-				generateCorpusState.setNumUrlSpamReadedFromDS(
-						generateCorpusState.getNumUrlSpamCorrectlyLabeled());
-				generateCorpusState.setNumUrlHamReadedFromDS(
-						generateCorpusState.getNumUrlHamCorrectlyLabeled());
-				
+				generateCorpusState
+						.setNumUrlSpamReadedFromDS(generateCorpusState
+								.getNumUrlSpamCorrectlyLabeled());
+				generateCorpusState
+						.setNumUrlHamReadedFromDS(generateCorpusState
+								.getNumUrlHamCorrectlyLabeled());
+
 				// DataSources are exausted
 				if ((urlsSpam.isEmpty() && urlsHam.isEmpty())
 						|| generateCorpusState.getNumDomainsCorrectlyLabeled() >= config
-						.getNumSites()) stop = true;
-			} while (!executorTasks.isTerminate() &&
-					!stop);
+								.getNumSites())
+					stop = true;
+			} while (!executorTasks.isTerminate() && !stop);
 
 			// Show the finish overcome
-			if (!executorTasks.isTerminate() &&
-					generateCorpusState.getNumDomainsCorrectlyLabeled() < config
-					.getNumSites()) {
+			if (!executorTasks.isTerminate()
+					&& generateCorpusState.getNumDomainsCorrectlyLabeled() < config
+							.getNumSites()) {
 				logger.info("The ration spam/ham could not be completed."
 						+ "There is not enough data in input datasources.");
 			} else if (!executorTasks.isTerminate()) {
 				logger.info("The ratio spam/ham was succesfully completed.");
-				logger.info("Sites: " + generateCorpusState.getNumDomainsCorrectlyLabeled() + 
-						" - Spam: " + generateCorpusState.getNumUrlSpamCorrectlyLabeled() +
-						", Ham: " + generateCorpusState.getNumUrlHamCorrectlyLabeled());
+				logger.info("Sites: "
+						+ generateCorpusState.getNumDomainsCorrectlyLabeled()
+						+ " - Spam: "
+						+ generateCorpusState.getNumUrlSpamCorrectlyLabeled()
+						+ ", Ham: "
+						+ generateCorpusState.getNumUrlHamCorrectlyLabeled());
 			}
-			
+
 		} catch (LoadDataSourceException ex) {
 			throw new LogicException(ex);
 		} catch (Exception ex) {
@@ -434,9 +478,10 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	}
 
 	/**
-	 * List languages that has not already been selected
-	 * in the languages given
-	 * @param listSelectedCountries List of {@link Country}
+	 * List languages that has not already been selected in the languages given
+	 * 
+	 * @param listSelectedCountries
+	 *            List of {@link Country}
 	 * @return list of {@link Country}
 	 */
 	@Override
@@ -454,6 +499,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * List all available languages
+	 * 
 	 * @return list of {@link Country}
 	 */
 	@Override
@@ -489,7 +535,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 	/**
 	 * Add an Observer object
-	 * @param obj {@link Observer}
+	 * 
+	 * @param obj
+	 *            {@link Observer}
 	 */
 	public void addObserver(Observer obj) {
 		deleteObserver(obj);

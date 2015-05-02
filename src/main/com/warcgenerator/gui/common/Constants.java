@@ -2,7 +2,7 @@ package com.warcgenerator.gui.common;
 
 public interface Constants {
 	String APP_NAME = "WARC Processor";
-	String APP_VERSION = "4.2 Beta";
+	String APP_VERSION = "4.2.1 Beta";
 	
 	String LANGUAGE_MENUITEM_SELECTED_SESSION_KEY =
 			"language_menuitem_selected_session_key";

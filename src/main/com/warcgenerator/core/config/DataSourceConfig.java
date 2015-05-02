@@ -10,6 +10,7 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.datasource.common.handler.IDSHandler;
+import com.warcgenerator.core.exception.config.DSConfigException;
 import com.warcgenerator.core.exception.logic.LogicException;
 
 /**
@@ -34,7 +35,7 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	private List<Country> countryList;
 	// Max number of elements to get from datasource
 	private Integer maxElements;
-	private Boolean enabled = true;
+	private boolean enabled = true;
 	private Map<String, CustomParamConfig> customParams;
 	private Boolean useRecursiveFolders = true;
 
@@ -240,7 +241,29 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 	public void setUseRecursiveFolders(Boolean useRecursiveFolders) {
 		this.useRecursiveFolders = useRecursiveFolders;
 	}
-
+	
+	public boolean validate() throws DSConfigException {
+		if (name == null || name.isEmpty()) {
+			throw new DSConfigException("Name can not be empty");
+		} 
+		if (type == null || type.isEmpty()) {
+			throw new DSConfigException("Type can not be empty");
+		} 
+		if (filePath == null ||
+				filePath.isEmpty()) {
+			throw new DSConfigException("File path can not be empty");
+		}
+		if (dsClassName == null
+				|| dsClassName.isEmpty()) {
+			throw new DSConfigException("DSClassName path can not be empty");
+		}
+		if (handlerClassName == null
+				|| handlerClassName.isEmpty()) {
+			throw new DSConfigException("HandlerClassName path can not be empty");
+		}
+		return true;
+	}
+	
 	public static void copy(DataSourceConfig dest, DataSourceConfig src) {
 		Map<String, CustomParamConfig> customParamsConfigCopy = 
 				new LinkedHashMap<String, CustomParamConfig>();

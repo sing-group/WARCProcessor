@@ -33,7 +33,6 @@ import com.warcgenerator.core.datasource.generic.GenericDS;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
-@Ignore("This test is only for performance test")
 public class WebCrawlerTest extends AbstractTestCase {
 	private final String CONFIG_FILE1 = "src/test/resources/config/config1.wpg";
 
@@ -90,7 +89,7 @@ public class WebCrawlerTest extends AbstractTestCase {
 
 	}
 
-	// @Test
+	@Test
 	public void testStart() {
 		stubFor(get(urlMatching("/test1"))
 				.willReturn(
@@ -106,6 +105,7 @@ public class WebCrawlerTest extends AbstractTestCase {
 	}
 
 	@Test
+	@Ignore("This test is only for performance test")
 	public void testStartLoop() {
 		int numTries = 37;
 		int numURL = 0;

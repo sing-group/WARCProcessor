@@ -13,6 +13,11 @@ community, provides transparent deployment of new versions and can be
 executed on any computer without the need of downloading and installing
 additional packages.
 
+Last updates
+============
+
+
+
 Licensing
 =========
 
