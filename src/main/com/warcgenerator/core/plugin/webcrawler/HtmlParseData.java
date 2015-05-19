@@ -6,6 +6,7 @@ public class HtmlParseData {
 	private String url;
 	private Integer httpStatus;
 	private String httpStatusDescription;
+	private String parentUrl;
 	
 	public Integer getHttpStatus() {
 		return httpStatus;
@@ -36,5 +37,11 @@ public class HtmlParseData {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getParentUrl() {
+		return parentUrl;
+	}
+	public void setParentUrl(String parentUrl) {
+		this.parentUrl = parentUrl;
 	}
 }

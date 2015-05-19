@@ -45,8 +45,6 @@ public class WarcDS extends DataSource implements IDataSource {
 	@SuppressWarnings("unused")
 	private OutputWarcConfig config;
 	private WARCWriter writer;
-	// private WARCReader reader;
-	private Iterator<ArchiveRecord> archIt;
 	private File warc;
 
 	private DataInputStream dis;
@@ -161,11 +159,11 @@ public class WarcDS extends DataSource implements IDataSource {
 
 				for (Entry<String, String> entries : warcRecord
 						.getHeaderMetadata()) {
-					System.out.println("clave: " + entries.getKey()
+					logger.debug("key: " + entries.getKey()
 							+ ", value: " + entries.getValue());
 				}
 
-				System.out.println("mi param uri: "
+				logger.debug("URI_tag_param: "
 						+ this.getDataSourceConfig().getCustomParams()
 								.get(URL_TAG).getValue());
 

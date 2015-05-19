@@ -47,8 +47,6 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 	public Void doInBackground() {
 		setProgress(0);
 		logic.generateCorpus(gcState);
-
-		System.out.println("generateCorpusFinish!!!");
 		
 		/*
 		 * while (progress < 100) { // Sleep for up to one second. try {
@@ -64,8 +62,6 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 	 */
 	@Override
 	public void done() {
-		System.out.println("DONE!!!!");
-
 		try {
 			get();
 
@@ -101,9 +97,7 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 		} catch (InterruptedException e) {
 			logger.info("Task interrupted");
 		} catch (CancellationException e) {
-			System.out.println("cancellationexception!!!");
 			logic.stopGenerateCorpus();
-			System.out.println("parado!!");
 		}
 	}
 
@@ -146,7 +140,7 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 				if ((progress + inc) <= 100)
 					progress += inc;
 				break;
-			case ENDING:
+			case END:
 				gcd.getStateLbl()
 						.setText(
 								Messages.getString("GenerateCorpusTask.progress5.urls.text"));

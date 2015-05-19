@@ -425,6 +425,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 				if (executorTasks.isTerminate()) {
 					generateCorpusState
+						.setState(GenerateCorpusStates.CANCELLING_PROCESS);
+					generateCorpusState
 							.setState(GenerateCorpusStates.PROCESS_CANCELLED);
 				}
 
@@ -449,7 +451,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 							.getNumSites()) {
 				logger.info("The ration spam/ham could not be completed."
 						+ "There is not enough data in input datasources.");
-				generateCorpusState.setState(GenerateCorpusStates.ENDING);
+				generateCorpusState.setState(GenerateCorpusStates.END);
 			} else if (!executorTasks.isTerminate()) {
 				logger.info("The ratio spam/ham was succesfully completed.");
 				logger.info("Sites: "
@@ -458,7 +460,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 						+ generateCorpusState.getNumUrlSpamCorrectlyLabeled()
 						+ ", Ham: "
 						+ generateCorpusState.getNumUrlHamCorrectlyLabeled());
-				generateCorpusState.setState(GenerateCorpusStates.ENDING);
+				generateCorpusState.setState(GenerateCorpusStates.END);
 			} else if (executorTasks.isTerminate()) {
 				generateCorpusState.setState(GenerateCorpusStates.PROCESS_CANCELLED);
 			}

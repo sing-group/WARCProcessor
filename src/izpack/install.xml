@@ -13,7 +13,7 @@
     -->
     <info>
         <appname>WARCProcessor</appname>
-        <appversion>4.2.1_beta</appversion>
+        <appversion>4.2.2_beta</appversion>
         <authors>
         	<author name="Miguel Callón" email="miguel.callon.alvarez@gmail.com"/>
 			<author name="PhD. José R. Méndez" email=""/>
@@ -69,8 +69,8 @@
         We specify here our packs.
     -->
     <packs>
-        <pack name="WarcProcessor Tool" required="yes">
-            <description>WarcProcessor executable jar file</description>
+        <pack name="WARCProcessor Tool" required="yes">
+            <description>WARCProcessor executable jar file</description>
             <file src="bin" targetdir="$INSTALL_PATH"/>
             <file src="Licence.txt" targetdir="$INSTALL_PATH"/>
             <file src="Readme.txt" targetdir="$INSTALL_PATH"/>

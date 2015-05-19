@@ -41,7 +41,13 @@ public class GenerateCorpusState extends Observable {
 				&& dest.equals(GenerateCorpusStates.READING_URLS))
 			return true;
 		if (source.equals(GenerateCorpusStates.READING_URLS)
+				&& dest.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS))
+			return true;
+		if (source.equals(GenerateCorpusStates.READING_URLS)
 				&& dest.equals(GenerateCorpusStates.CRAWLING_URLS))
+			return true;
+		if (source.equals(GenerateCorpusStates.READING_URLS)
+				&& dest.equals(GenerateCorpusStates.READING_URLS))
 			return true;
 		if (source.equals(GenerateCorpusStates.CRAWLING_URLS)
 				&& dest.equals(GenerateCorpusStates.CRAWLING_URLS))
@@ -53,19 +59,22 @@ public class GenerateCorpusState extends Observable {
 				&& dest.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS))
 			return true;
 		if (source.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS)
-				&& dest.equals(GenerateCorpusStates.ENDING))
+				&& dest.equals(GenerateCorpusStates.END))
 			return true;
 		if (source.equals(GenerateCorpusStates.CRAWLING_URLS)
-				&& dest.equals(GenerateCorpusStates.ENDING))
+				&& dest.equals(GenerateCorpusStates.END))
 			return true;
 		if (source.equals(GenerateCorpusStates.CRAWLING_URLS)
 				&& dest.equals(GenerateCorpusStates.CANCELLING_PROCESS))
 			return true;
 		if (source.equals(GenerateCorpusStates.GETTING_URLS_FROM_DS)
-				&& dest.equals(GenerateCorpusStates.PROCESS_CANCELLED))
+				&& dest.equals(GenerateCorpusStates.CANCELLING_PROCESS))
 			return true;
 		if (source.equals(GenerateCorpusStates.READING_URLS)
-				&& dest.equals(GenerateCorpusStates.PROCESS_CANCELLED))
+				&& dest.equals(GenerateCorpusStates.CANCELLING_PROCESS))
+			return true;
+		if (source.equals(GenerateCorpusStates.CANCELLING_PROCESS)
+				&& dest.equals(GenerateCorpusStates.CANCELLING_PROCESS))
 			return true;
 		if (source.equals(GenerateCorpusStates.CANCELLING_PROCESS)
 				&& dest.equals(GenerateCorpusStates.PROCESS_CANCELLED))

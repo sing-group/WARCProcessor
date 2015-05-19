@@ -1,7 +1,6 @@
 package com.warcgenerator.core.task.generateCorpus;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -12,6 +11,7 @@ import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.helper.ReadURLHelper;
 import com.warcgenerator.core.task.ITask;
 import com.warcgenerator.core.task.Task;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
@@ -40,17 +40,8 @@ public class GetURLFromDSTask extends Task implements ITask {
 		Map<String, DataBean> urlsHamTmp = new LinkedHashMap<String, DataBean>();
 
 		generateCorpusState.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
-		System.out.println("patata");
-		System.out.println("cambiando estado!!");
-		
-		int numSitesSpam = 0;
-		if (config.getRatioIsPercentage()) {
-			numSitesSpam = (int) Math.round(config.getNumSites()
-					* (config.getRatioPercentageSpam() / (double) 100));
-		} else {
-			numSitesSpam = config.getRatioQuantitySpam();
 
-		}
+		int numSitesSpam = ReadURLHelper.getMaxSitesSpam(config);
 
 		Set<String> domainsSpam = new HashSet<String>();
 		Set<String> domainsHam = new HashSet<String>();

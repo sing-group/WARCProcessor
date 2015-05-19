@@ -55,52 +55,54 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 			for (String url:urls.keySet()) {
 				if (urlsInactives.contains(url)) {
 					DataBean data = urls.get(url);
-					try {
-						if (LangFilterHelper.checkLanguageAllowed(data.getData(),
-								data.getDsConfig().getCountryList())) {
-
-							DataSource warcDS = outputDS.get(FileHelper
-									.getDomainNameFromURL(url));
-
-							if (warcDS == null) {
-								StringBuilder warcFileName = new StringBuilder();
-
-								StringBuilder outputWarcPath = new StringBuilder();
-								if (data.isSpam()) {
-									outputWarcPath.append(outputCorpusConfig.getSpamDir());
-								} else {
-									outputWarcPath.append(outputCorpusConfig.getHamDir());
+					if (data.getData() != null) {
+						try {
+							if (LangFilterHelper.checkLanguageAllowed(data.getData(),
+									data.getDsConfig().getCountryList())) {
+	
+								DataSource warcDS = outputDS.get(FileHelper
+										.getDomainNameFromURL(url));
+	
+								if (warcDS == null) {
+									StringBuilder warcFileName = new StringBuilder();
+	
+									StringBuilder outputWarcPath = new StringBuilder();
+									if (data.isSpam()) {
+										outputWarcPath.append(outputCorpusConfig.getSpamDir());
+									} else {
+										outputWarcPath.append(outputCorpusConfig.getHamDir());
+									}
+									outputWarcPath.append(File.separator);
+									
+	
+									warcFileName.append(outputWarcPath.toString()).append(
+											FileHelper.getOutputFileName(url));
+	
+									warcDS = new WarcDS(new OutputWarcConfig(true,
+											warcFileName.toString()));
+	
+									outputDS.put(
+											FileHelper.getDomainNameFromURL(data.getUrl()),
+											warcDS);
 								}
-								outputWarcPath.append(File.separator);
+								warcDS.write(data);
+								OutputHelper.writeLabeled(domainsLabeledDS, data.getUrl(),
+										data.isSpam());
+								generateCorpusState.incDomainsCorrectlyLabeled(data.isSpam());
+							} else {
+									// TODO Write in some output file instead of the log
+									logger.info("URL Filtered. Available:");
+									StringBuffer sb = new StringBuffer();
+									for(Country country:data.getDsConfig().getCountryList()) {
+										sb.append(country.getName()).append(" ");
+									}
+									logger.info(sb.toString());
 								
-
-								warcFileName.append(outputWarcPath.toString()).append(
-										FileHelper.getOutputFileName(url));
-
-								warcDS = new WarcDS(new OutputWarcConfig(true,
-										warcFileName.toString()));
-
-								outputDS.put(
-										FileHelper.getDomainNameFromURL(data.getUrl()),
-										warcDS);
 							}
-							warcDS.write(data);
-							OutputHelper.writeLabeled(domainsLabeledDS, data.getUrl(),
-									data.isSpam());
-							generateCorpusState.incDomainsCorrectlyLabeled(data.isSpam());
-						} else {
-								// TODO Write in some output file instead of the log
-								logger.info("URL Filtered. Available:");
-								StringBuffer sb = new StringBuffer();
-								for(Country country:data.getDsConfig().getCountryList()) {
-									sb.append(country.getName()).append(" ");
-								}
-								logger.info(sb.toString());
-							
+						} catch (Exception e) {
+							logger.info("Could not check language text");
+							e.printStackTrace();
 						}
-					} catch (Exception e) {
-						logger.info("Could not check language text");
-						e.printStackTrace();
 					}
 				}
 			}

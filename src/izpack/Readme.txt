@@ -16,7 +16,29 @@ additional packages.
 Last updates
 ============
 
+4.2.2_beta
+  - Minor bugs
+  - Added acceptance test
 
+4.2.1_beta
+  - Added a Setup Installer.
+  - Bug fix. Bug storing the configuration file through GUI.
+ 
+4.2_beta
+  - Add a brief information at the end of the generation process
+    through the GUI to sum it up the SPAM/RATIO included in
+    the output corpus.
+  - Bug fix. Output corpus data is different when the application is
+             run several times.
+  - Bug fix. If the program detects the desired SPAM/HAM ratio has
+    not been successfully fulfilled, it try to do it again by getting
+    new URLs from DataSources.
+  - Bug fix. WarcCSVDS has been optimizated. 
+
+4.1_beta
+  - Added I18n support (English and Spanish).
+  - Moved log4j to config folder, to make debug easier.
+  - Bug fix. Minor corrections in WarcCSVDS and others.
 
 Licensing
 =========

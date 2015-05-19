@@ -3,7 +3,10 @@ package com.warcgenerator.core.helper;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -14,40 +17,48 @@ import org.apache.log4j.Logger;
 import com.google.common.net.InternetDomainName;
 import com.warcgenerator.core.config.Constants;
 
+import edu.uci.ics.crawler4j.url.URLCanonicalizer;
+
 public class FileHelper {
-	private static FileFilter generalFileFilter; 
-	
-	private static Logger logger = Logger.getLogger
-            (FileHelper.class);
-	
+	private static FileFilter generalFileFilter;
+
+	private static Logger logger = Logger.getLogger(FileHelper.class);
+
 	/**
 	 * Check if a file is readable
-	 * @param path Path to file
+	 * 
+	 * @param path
+	 *            Path to file
 	 * @return True if it is readable
 	 */
 	public static boolean checkIfExists(String path) {
-		return Files.isReadable(FileSystems.getDefault().getPath(path).getParent());
+		return Files.isReadable(FileSystems.getDefault().getPath(path)
+				.getParent());
 	}
-	
+
 	/**
 	 * Create directories from an input array
-	 * @param dirs to create
+	 * 
+	 * @param dirs
+	 *            to create
 	 */
 	public static void createDirs(String[] dirs) {
-		for (String dir:dirs) {
+		for (String dir : dirs) {
 			if (dir != null) {
 				File f = new File(dir);
 				f.mkdirs();
 			}
 		}
 	}
-	
+
 	/**
 	 * Remove dirs from an input array
-	 * @param dirs to remove
+	 * 
+	 * @param dirs
+	 *            to remove
 	 */
 	public static void removeDirsIfExist(String[] dirs) {
-		for (String dir:dirs) {
+		for (String dir : dirs) {
 			File f = new File(dir);
 			logger.info("Deleting dir: " + dir);
 			try {
@@ -58,21 +69,22 @@ public class FileHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * Parse url to get only its domain
-	 * @param url URL
+	 * 
+	 * @param url
+	 *            URL
 	 * @return url without params
 	 */
 	public static String getURLWithoutParams(String url) {
 		String domain = url;
 		URL myUrl = null;
 		try {
-			myUrl = new URL(url); 
+			myUrl = new URL(url);
 			// Remove http://domain.com/ <- this last '/'
 			if (myUrl.getFile().length() > 1) {
-				domain = domain.substring(0,
-						domain.indexOf(myUrl.getFile()));
+				domain = domain.substring(0, domain.indexOf(myUrl.getFile()));
 			}
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -80,17 +92,19 @@ public class FileHelper {
 		}
 		return domain;
 	}
-	
+
 	/**
 	 * Get the DomainName from a URL
-	 * @param url URL
+	 * 
+	 * @param url
+	 *            URL
 	 * @return domainName The domain name from the URL
 	 */
 	public static String getDomainNameFromURL(String url) {
 		String privateDomain = "";
 		try {
-			privateDomain =
-				InternetDomainName.from(url).topPrivateDomain().name();
+			privateDomain = InternetDomainName.from(url).topPrivateDomain()
+					.name();
 		} catch (IllegalArgumentException ex) {
 			String urlTmp = url.replaceAll("http://", "");
 			urlTmp = urlTmp.replaceAll("https://", "");
@@ -98,36 +112,42 @@ public class FileHelper {
 			if (urlTmp.indexOf("/") != -1) {
 				urlTmp = urlTmp.substring(0, urlTmp.indexOf("/"));
 			}
-			
-			privateDomain = urlTmp; 
+
+			privateDomain = urlTmp;
 		}
 		return privateDomain;
 	}
-	
+
 	/**
 	 * Used to avoid problems like "http://domain.es" and "http://domain.es/"
-	 * @param url URL
+	 * 
+	 * @param url
+	 *            URL
 	 * @return url normalized
+	 * @throws UnsupportedEncodingException
 	 */
-	public static String normalizeURL(String url) {
+	public static String normalizeURL(String urlStr) {
 		// Normalize
-		if (url.endsWith("/"))
-			url = url.substring(0, url.length() - 1);
-		
-		return url;
-		/*URL urlNormalized = null;
-		try {
-			urlNormalized = new URL(url);
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return urlNormalized.toString();*/ 
+		if (urlStr.endsWith("/"))
+			urlStr = urlStr.substring(0, urlStr.length() - 1);
+
+		// Parse character
+		urlStr = URLCanonicalizer.getCanonicalURL(urlStr);
+
+		/*
+		 * try { URL urlTmp = new URL(url); } catch
+		 * (UnsupportedEncodingException e) {
+		 * logger.warn("Encoder UTF-8 not supported to: " + url); }
+		 */
+
+		return urlStr;
 	}
-	
+
 	/**
 	 * Create fileName from URL
-	 * @param url URL
+	 * 
+	 * @param url
+	 *            URL
 	 * @return name of file
 	 */
 	public static String getFileNameFromURL(String url) {
@@ -138,34 +158,38 @@ public class FileHelper {
 		fileName = fileName.replace(".", "_");
 		return fileName;
 	}
-	
+
 	/**
-	 * Get a file output name from a url domain 
-	 * @param url Domain
+	 * Get a file output name from a url domain
+	 * 
+	 * @param url
+	 *            Domain
 	 * @return filename with url domain and output file extension
 	 */
 	public static String getOutputFileName(String url) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(FileHelper.getFileNameFromURL(
-				FileHelper.getDomainNameFromURL(url)))
-		.append(".")
-		.append(Constants.outputCorpusFileExtension);
+		sb.append(
+				FileHelper.getFileNameFromURL(FileHelper
+						.getDomainNameFromURL(url))).append(".")
+				.append(Constants.outputCorpusFileExtension);
 		return sb.toString();
 	}
 
-	/** 
+	/**
 	 * Get basic FileFilter
+	 * 
 	 * @return filter of FileFilter
 	 */
 	public static FileFilter getGeneralFileFilter() {
 		if (generalFileFilter == null) {
 			generalFileFilter = new FileFilter() {
-			    @Override
-			    public boolean accept(File file) {
-			        return !file.isHidden();
-			    }};
+				@Override
+				public boolean accept(File file) {
+					return !file.isHidden();
+				}
+			};
 		}
-		
+
 		return generalFileFilter;
 	}
 }

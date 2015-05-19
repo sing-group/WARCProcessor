@@ -22,6 +22,7 @@ import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.datasource.warc.WarcDS;
 import com.warcgenerator.core.exception.plugin.PluginException;
 import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.helper.ReadURLHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
@@ -108,7 +109,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		/*CustomPageFetcher pageFetcher = new CustomPageFetcher(generateCorpusState,
 				config);*/
 		CustomPageFetcher pageFetcher = new CustomPageFetcher(generateCorpusState,
-				config);
+				config, appConfig, urls);
 		
 		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
 		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig,
@@ -161,11 +162,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	public void stop() {
 		generateCorpusState.setState(
 				GenerateCorpusStates.CANCELLING_PROCESS);
-			controller.shutdown();
-			
-			//controller
-				//controller.notify();
-			
+		controller.shutdown();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -179,7 +176,6 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		controller.waitUntilFinish();
 		
 		if (!controller.isShuttingDown()) {
-			System.out.println("parseando!!!");
 			List<Object> crawlersLocalData = controller.getCrawlersLocalData();
 			for (Object localData : crawlersLocalData) {
 				if (localData instanceof Collection<?>) {
@@ -189,7 +185,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	
 						DataSource warcDS = outputDS.get(FileHelper
 								.getDomainNameFromURL(parseData.getUrl()));
-	
+						
 						if (warcDS == null) {
 							StringBuilder warcFileName = new StringBuilder();
 	
@@ -220,8 +216,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 									webCrawlerBean.isSpam(),
 									webCrawlerBean.getDomainsNotFoundDS(),
 									webCrawlerBean.getDomainsLabeledDS(), warcDS,
+									
 									urls, urlsActive, urlsNotActive, generateCorpusState);
-	
 							handlers.put(FileHelper.getDomainNameFromURL(parseData
 									.getUrl()), handler);
 						}
@@ -236,6 +232,20 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	public Object getMyLocalData() {
 		return parseDataMap.values();
 	}
+	
+	
+	/**
+     * This function is called before processing of the page's URL
+     * It can be overridden by subclasses for tweaking of the url before processing it.
+     * For example, http://abc.com/def?a=123 - http://abc.com/def
+     *
+     * @param curURL current URL which can be tweaked before processing
+     * @return tweaked WebURL
+     */
+    protected WebURL handleUrlBeforeProcess(WebURL curURL) {
+      getParseData(curURL.getURL());
+      return curURL;
+    }
 
 	/**
 	   * Classes that extends WebCrawler should overwrite this function to tell the
@@ -274,9 +284,11 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 			String statusDescription) {
 		com.warcgenerator.core.plugin.webcrawler.HtmlParseData parseData = getParseData(webUrl
 				.getURL());
+		
+		CustomPageFetcher customPFetcher = ((CustomPageFetcher) this.myController
+				.getPageFetcher());
 
-		GenerateCorpusState generateCorpusState = ((CustomPageFetcher) this.myController
-				.getPageFetcher()).getGenerateCorpusState();
+		GenerateCorpusState generateCorpusState = customPFetcher.getGenerateCorpusState();
 		generateCorpusState.incWebsVisited();
 		generateCorpusState.setCurrentUrlCrawled(webUrl.getURL());
 		generateCorpusState.setState(GenerateCorpusStates.CRAWLING_URLS);
@@ -284,6 +296,33 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		parseData.setUrl(webUrl.getURL());
 		parseData.setHttpStatus(statusCode);
 		parseData.setHttpStatusDescription(statusDescription);
+
+		// If this url is a child from other URL
+		// use the parent dsConfig
+		Map<String, DataBean> urls =  customPFetcher.getUrls();
+		String parentURL = webUrl.getParentUrl();
+		if (parentURL != null) {
+			DataBean parentDataBean = urls.get(parentURL);
+			
+			if (parentDataBean != null) {
+				DataBean dataBean = new DataBean();
+				dataBean.setUrl(webUrl.getURL());
+				dataBean.setDsConfig(parentDataBean.getDsConfig());
+				dataBean.setSpam(parentDataBean.isSpam());
+				
+				
+				AppConfig appConfig = customPFetcher.getAppConfig();
+				
+				int maxURLs = 0;
+				if (dataBean.isSpam()) {
+					maxURLs = ReadURLHelper.getMaxSitesSpam(appConfig);
+				} else {
+					maxURLs = ReadURLHelper.getMaxSitesHam(appConfig);
+				}
+				
+				ReadURLHelper.addUrl(urls, dataBean, generateCorpusState, maxURLs);
+			}
+		}
 	}
 
 	/**
@@ -299,7 +338,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 
 		if (page.getParseData() instanceof HtmlParseData) {
 			HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
-
+			
 			String text = htmlParseData.getText();
 			String html = htmlParseData.getHtml();
 			Set<WebURL> links = htmlParseData.getOutgoingUrls();
@@ -319,6 +358,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 				.get(url);
 		if (parseData == null) {
 			parseData = new com.warcgenerator.core.plugin.webcrawler.HtmlParseData();
+			parseData.setUrl(url);
 			parseDataMap.put(url, parseData);
 		}
 		return parseData;

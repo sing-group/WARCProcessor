@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
@@ -31,6 +33,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.warcgenerator.AbstractTestCase;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
+import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.exception.config.ConfigException;
 import com.warcgenerator.core.exception.config.PathNotFoundAppConfigException;
 import com.warcgenerator.core.exception.logic.AddDataSourceException;
@@ -40,6 +43,7 @@ import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
 import com.warcgenerator.core.helper.ConfigHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
+import com.warcgenerator.gui.util.FileUtil;
 
 //@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
 public class AppLogicTest extends AbstractTestCase {
@@ -479,6 +483,52 @@ public class AppLogicTest extends AbstractTestCase {
 		assertEquals(8, dataSourceConfigList.size());
 	}
 	
+	// HU03 - Create output files
+	@Test
+	public void testCheckOutputFiles() {
+		int numURL = 5;
+		int start = 0;
+		
+		String outDir = "target/test/out";
+		String spamDir = "target/test/out/_spam_";
+		String hamDir = "target/test/out/_spam_";
+		String domainsLabelled = "target/test/out/domains.labelled";
+		String domainsNotFound = "target/test/out/domains.notFound";
+		
+		try {
+			FileUtils.deleteDirectory(new File(outDir));
+		} catch (IOException ex) {
+			System.out.println("Can not delete directories");
+		}
+		
+		AppConfig config = new AppConfig();
+		ConfigHelper.configure(CONFIG_FILE4, config);
+		config.init();
+		
+		for (int i = start; i < numURL + start; i++) {
+			stubFor(get(urlMatching("/test" + i))
+					.willReturn(
+							aResponse()
+									.withBody(
+											"<html><body>Hello world!!</body></html>")));
+		}
+
+		GenerateCorpusState generateCorpusState = new 
+				GenerateCorpusState();
+		logic = new AppLogicImpl(config);
+		logic.generateCorpus(generateCorpusState);
+		
+		File fileSpam = new File(spamDir);
+		File fileHam = new File(hamDir);
+		File fileDomainsLabelled = new File(domainsLabelled);
+		File fileDomainsNotFound = new File(domainsNotFound);
+		assertEquals(true, fileSpam.exists());
+		assertEquals(true, fileHam.exists());
+		assertEquals(true, fileDomainsLabelled.exists());
+		assertEquals(true, fileDomainsNotFound.exists());
+	}
+	
+	
 	// Generate corpus test
 	@Test
 	public void testGenerateCorpus() {
@@ -568,9 +618,46 @@ public class AppLogicTest extends AbstractTestCase {
 		}
 	}	
 	
-	/*
-	 * addObserver(Observer obs); void deleteObserver(Observer obs);
-	 * List<Country> listAvailableLanguagesFilter(); List<Country>
-	 * listNotSelectedLanguages( List<Country> listSelectedCountries);
+	/**
+	 * Check if it list all available languages for the filter
 	 */
+	@Test
+	public void testListAvailableLanguagesFilter() {
+		AppConfig config = new AppConfig();
+		ConfigHelper.configure(CONFIG_FILE1, config);
+		config.init();
+		
+		logic = new AppLogicImpl(config);
+		List<Country> contryListNotSelected =
+				logic.listAvailableLanguagesFilter();
+		
+		assertEquals(28, contryListNotSelected.size());
+	}
+	
+	/**
+	 * Check if it returns all of not selected languages
+	 */
+	@Test
+	public void testListNotSelectedLanguages() {
+		AppConfig config = new AppConfig();
+		ConfigHelper.configure(CONFIG_FILE1, config);
+		config.init();
+		
+		logic = new AppLogicImpl(config);
+		List<Country> contryListNotSelected =
+				logic.listAvailableLanguagesFilter();
+		assertEquals(28, contryListNotSelected.size());
+		
+		List<Country> countriesSelected = new ArrayList<Country>();
+		List<Country> countriesNotSelected
+			= logic.listNotSelectedLanguages(countriesSelected);
+		assertEquals(28, countriesNotSelected.size());
+		
+		countriesSelected = new ArrayList<Country>();
+		countriesSelected.add(contryListNotSelected.get(0));
+		countriesNotSelected
+			= logic.listNotSelectedLanguages(countriesSelected);
+		assertEquals(27, countriesNotSelected.size());
+		
+	}
 }

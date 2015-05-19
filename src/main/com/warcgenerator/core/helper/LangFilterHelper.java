@@ -30,7 +30,7 @@ public class LangFilterHelper {
 			}
 		}
 		
-		if (languagesFilter.size() > 0) {
+		if (data != null && languagesFilter.size() > 0) {
 			String text = Jsoup.parse(data).text();
 			String lang = TrigramLanguageGuesser.detectLanguage(text);
 			logger.info("Lang detected: " + lang);

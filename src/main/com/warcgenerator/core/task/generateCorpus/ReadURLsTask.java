@@ -75,8 +75,6 @@ public class ReadURLsTask extends Task implements ITask {
 			webCrawlerConfig.setNumberOfCrawlers(config.getNumCrawlers());
 			webCrawlerConfig.setFollowRedirect(config.getFollowRedirect());
 			
-			System.out.println("Inicializar webCrawler....");
-			
 			webCrawler = new Crawler4JAdapter(
 					config,
 					generateCorpusState,
@@ -87,8 +85,6 @@ public class ReadURLsTask extends Task implements ITask {
 					urlsActive,
 					urlsNotActive);
 		
-			System.out.println("Inicializado....");
-
 			Iterator<String> urlList = webCrawlerConfig.getUrls().iterator();
 			while (urlList.hasNext() && !terminate) {
 				String url = urlList.next();

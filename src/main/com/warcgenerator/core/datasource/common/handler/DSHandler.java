@@ -10,9 +10,8 @@ import com.warcgenerator.core.config.OutputCorpusConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
 import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.common.bean.DataBean;
-import com.warcgenerator.core.datasource.warc.WarcDS;
 import com.warcgenerator.core.exception.logic.OutCorpusCfgNotFoundException;
-import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.helper.ReadURLHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
@@ -58,7 +57,7 @@ public abstract class DSHandler implements IDSHandler {
 		DataBean data = null;
 		boolean stop = false;
 		Integer maxElements = dsConfig.getMaxElements();
-		int maxURLsHam = config.getNumSites() - maxURLsSpam;
+		int maxURLsHam = ReadURLHelper.getMaxSitesHam(config);
 		
 		// Read a block from datasource
 		while ((data = ds.read()) != null
@@ -84,28 +83,10 @@ public abstract class DSHandler implements IDSHandler {
 			// Method to implement
 			handle(data);
 			
-			if (data.isSpam() && auditor.getNumUrlSpamReadedFromDS() != maxURLsSpam) {
-				addToUrls(urlsSpam, data);
-				auditor.incUrlSpamReadedFromDS();
-			} else if (!data.isSpam() && auditor.getNumUrlHamReadedFromDS() != maxURLsHam) {
-				addToUrls(urlsHam, data);
-				auditor.incUrlHamReadedFromDS();
-			}
-		}
-	}
-	
-	private void addToUrls(Map<String, DataBean> urls, 
-			DataBean data) {
-		// check if this url already exists in the list
-		String url = FileHelper.normalizeURL(data.getUrl());
-		DataBean aux = urls.get(url);
-		if (aux == null) {
-			// If is a new url only add it
-			urls.put(url, data);
-		} else {
-			// If the url is not from warc type, add it
-			if (!aux.getTypeDS().equals(WarcDS.DS_TYPE)) {
-				urls.put(url, data);
+			if (data.isSpam()) {
+				ReadURLHelper.addUrl(urlsSpam, data, auditor, maxURLsSpam);
+			} else {
+				ReadURLHelper.addUrl(urlsHam, data, auditor, maxURLsHam);
 			}
 		}
 	}

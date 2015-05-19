@@ -253,14 +253,6 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 				filePath.isEmpty()) {
 			throw new DSConfigException("File path can not be empty");
 		}
-		if (dsClassName == null
-				|| dsClassName.isEmpty()) {
-			throw new DSConfigException("DSClassName path can not be empty");
-		}
-		if (handlerClassName == null
-				|| handlerClassName.isEmpty()) {
-			throw new DSConfigException("HandlerClassName path can not be empty");
-		}
 		return true;
 	}
 	
