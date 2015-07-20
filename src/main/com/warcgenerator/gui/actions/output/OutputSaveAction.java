@@ -40,6 +40,7 @@ public class OutputSaveAction
 		
 		appConfig.getOutputConfig().setOutputDir(
 				panel.getOutputDirTField().getText());
+		appConfig.setCorpusDirPath(panel.getOutputDirTField().getText());
 		appConfig.setSpamDirName(panel.getSpamDirTField().getText());
 		appConfig.setHamDirName(panel.getHamDirTField().getText());
 		appConfig.setFlushOutputDir(panel.getChckbxEliminarLaSalida().isSelected());
@@ -49,7 +50,6 @@ public class OutputSaveAction
 				logic.updateAppConfig(appConfig);
 			} catch (LogicException ex) {
 				ex.printStackTrace();
-				
 			}
 		}
 	}
