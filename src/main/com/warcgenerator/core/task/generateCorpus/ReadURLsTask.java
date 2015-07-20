@@ -88,7 +88,8 @@ public class ReadURLsTask extends Task implements ITask {
 			Iterator<String> urlList = webCrawlerConfig.getUrls().iterator();
 			while (urlList.hasNext() && !terminate) {
 				String url = urlList.next();
-				webCrawler.addSeed(url);
+				logger.info("add seed: " + url);
+				if (url != null) webCrawler.addSeed(url);
 			}
 			
 			// Start crawler

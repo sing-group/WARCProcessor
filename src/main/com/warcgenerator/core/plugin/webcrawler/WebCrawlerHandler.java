@@ -223,7 +223,6 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 	private void addInactiveSites(HtmlParseData htmlParseData,
 			DataBean bean) {
 		urlsNotActive.add(htmlParseData.getUrl());
-		
 		if (!checkExistPreviousWarcBean(bean)) {
 			OutputHelper.writeNotFound(domainsNotFoundDS,
 					htmlParseData.getUrl(), htmlParseData.getHttpStatus(),

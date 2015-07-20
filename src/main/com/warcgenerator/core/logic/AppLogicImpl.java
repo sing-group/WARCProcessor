@@ -78,12 +78,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		// Reset DataSourceConfig ID value
 		DataSourceConfig.resetId();
 
-		// Create a output corpus with config
-		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
-			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
-		} else {
-			throw new OutCorpusCfgNotFoundException();
-		}
+		// Set init outputCorpusConfig
+		resetOutputCorpusConfig();
 	}
 
 	/**
@@ -164,6 +160,9 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 		appConfig.validate();
 		try {
 			BeanUtils.copyProperties(config, appConfig);
+			// Reset outputCorpusConfig to the new values
+			config.resetOutputConfig();
+			resetOutputCorpusConfig();
 		} catch (IllegalAccessException e) {
 			throw new LogicException(e);
 		} catch (InvocationTargetException e) {
@@ -537,6 +536,19 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 			executorTasks.terminate();
 	}
 
+	/**
+	 * Used for reseting outputCorpusConfig if their values
+	 * are updated
+	 */
+	private void resetOutputCorpusConfig() {
+		// Create a output corpus with config
+		if (config.getOutputConfig() instanceof OutputCorpusConfig) {
+			outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
+		} else {
+			throw new OutCorpusCfgNotFoundException();
+		}
+	}
+	
 	/**
 	 * Add an Observer object
 	 * 

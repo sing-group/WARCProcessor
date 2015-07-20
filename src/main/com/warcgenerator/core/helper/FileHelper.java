@@ -121,10 +121,8 @@ public class FileHelper {
 	/**
 	 * Used to avoid problems like "http://domain.es" and "http://domain.es/"
 	 * 
-	 * @param url
-	 *            URL
-	 * @return url normalized
-	 * @throws UnsupportedEncodingException
+	 * @param urlStr URL
+	 * @return urlStr normalized
 	 */
 	public static String normalizeURL(String urlStr) {
 		// Normalize

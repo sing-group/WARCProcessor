@@ -215,7 +215,6 @@ public class AppLogicTest extends AbstractTestCase {
 		assertEquals(false, (new File(path)).exists());
 		String filePath = path + "/config_tmp.wpg";
 		
-		
 		logic = new AppLogicImpl(config);
 		logic.loadAppConfig(filePath);
 	}

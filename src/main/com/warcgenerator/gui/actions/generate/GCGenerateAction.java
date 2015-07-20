@@ -51,7 +51,7 @@ public class GCGenerateAction extends AbstractAction {
 									Messages.getString("GeneralDialog.info.title.text"),
 									JOptionPane.INFORMATION_MESSAGE);
 						}
-						gcd.dispose();
+						//gcd.dispose();
 					}
 				}
 			}

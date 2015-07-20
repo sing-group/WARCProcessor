@@ -98,6 +98,8 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			logger.info("Task interrupted");
 		} catch (CancellationException e) {
 			logic.stopGenerateCorpus();
+		} finally {
+			gcd.dispose();
 		}
 	}
 

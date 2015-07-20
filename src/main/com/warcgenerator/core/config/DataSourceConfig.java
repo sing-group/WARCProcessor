@@ -45,6 +45,9 @@ public class DataSourceConfig implements Comparable<DataSourceConfig> {
 
 	private IDSHandler handler;
 
+	/**
+	 * Default constructor
+	 */
 	public DataSourceConfig() {
 		this.customParams = new LinkedHashMap<String, CustomParamConfig>();
 		this.children = new ArrayList<DataSourceConfig>();

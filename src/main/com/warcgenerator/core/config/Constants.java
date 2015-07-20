@@ -1,5 +1,10 @@
 package com.warcgenerator.core.config;
 
+/**
+ * Store default values to appConfig parameters
+ * @author Miguel Callon
+ *
+ */
 public interface Constants {
 	String outputCorpusFileExtension = "warc";
 	String outputEnconding = "UTF-8";
@@ -9,7 +14,6 @@ public interface Constants {
 	String dataSourcesTypesXML= "/config/datasources.xml";
 	
 	public interface AppConfigConstants {
-		// Default values
 		String CORPUS_DIR_PATH_DEFAULT = ".\\out";
 		String SPAM_DIR_NAME_DEFAULT = "_spam_";
 		String HAM_DIR_NAME_DEFAULT = "_ham_";

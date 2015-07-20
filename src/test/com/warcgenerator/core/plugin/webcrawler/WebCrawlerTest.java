@@ -4,6 +4,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,10 +32,12 @@ import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.datasource.generic.GenericDS;
 import com.warcgenerator.core.helper.ConfigHelper;
+import com.warcgenerator.core.logic.AppLogicImpl;
+import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
-@Ignore("This is only for performance test")
+//@Ignore("This is only for performance test")
 public class WebCrawlerTest extends AbstractTestCase {
 	private final String CONFIG_FILE1 = "src/test/resources/config/config1.wpg";
 
@@ -53,14 +56,13 @@ public class WebCrawlerTest extends AbstractTestCase {
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule(8089);
 
-	@Before
+	//@Before
 	public void before() {
 		AppConfig config = new AppConfig();
 		ConfigHelper.configure(CONFIG_FILE1, config);
 		config.init();
 
-		webCrawlerConfig = new WebCrawlerConfig(
-				config.getWebCrawlerCfgTemplate());
+		webCrawlerConfig = new WebCrawlerConfig(config.getWebCrawlerCfgTemplate());
 
 		webCrawlerConfig.setMaxDepthOfCrawling(1);
 		webCrawlerConfig.setStorePath("src/test/resources/tmp");
@@ -70,20 +72,17 @@ public class WebCrawlerTest extends AbstractTestCase {
 		generateCorpusState = new GenerateCorpusState();
 		generateCorpusState.setState(GenerateCorpusStates.GETTING_URLS_FROM_DS);
 		generateCorpusState.setState(GenerateCorpusStates.READING_URLS);
-		
+
 		outputCorpusConfig = (OutputCorpusConfig) config.getOutputConfig();
 		outputCorpusConfig.setOutputDir("src/test/resources/tmp/out");
 		outputCorpusConfig.setHamDir("src/test/resources/tmp/out/_ham_");
 		outputCorpusConfig.setSpamDir("src/test/resources/tmp/out/_spam_");
 
 		// Generate wars
-		labeledDS = new GenericDS(new DataSourceConfig(
-				"src/test/resources/tmp/out/domains.labelled"));
-		notFoundDS = new GenericDS(new DataSourceConfig(
-				"src/test/resources/tmp/out/domains.notFound"));
+		labeledDS = new GenericDS(new DataSourceConfig("src/test/resources/tmp/out/domains.labelled"));
+		notFoundDS = new GenericDS(new DataSourceConfig("src/test/resources/tmp/out/domains.notFound"));
 
-		webCrawlerBean = new WebCrawlerBean(labeledDS, notFoundDS, false,
-				outputCorpusConfig);
+		webCrawlerBean = new WebCrawlerBean(labeledDS, notFoundDS, false, outputCorpusConfig);
 
 		outputDS = new HashMap<String, DataSource>();
 		urlsWebCrawler = new HashMap<String, DataBean>();
@@ -94,14 +93,11 @@ public class WebCrawlerTest extends AbstractTestCase {
 	}
 
 	@Test
+	@Ignore("This test is only for performance test")
 	public void testStart() {
-		stubFor(get(urlMatching("/test1"))
-				.willReturn(
-						aResponse().withBody(
-								"<html><body>Hello world!!</body></html>")));
+		stubFor(get(urlMatching("/test1")).willReturn(aResponse().withBody("<html><body>Hello world!!</body></html>")));
 
-		IWebCrawler webCrawler = new Crawler4JAdapter(config,
-				generateCorpusState, webCrawlerConfig, webCrawlerBean,
+		IWebCrawler webCrawler = new Crawler4JAdapter(config, generateCorpusState, webCrawlerConfig, webCrawlerBean,
 				outputDS, urlsWebCrawler, urlsActive, urlsNotActive);
 
 		webCrawler.addSeed("http://localhost:8089/test1");
@@ -109,7 +105,7 @@ public class WebCrawlerTest extends AbstractTestCase {
 	}
 
 	@Test
-	//@Ignore("This test is only for performance test")
+	@Ignore("This test is only for performance test")
 	public void testStartLoop() {
 		int numTries = 37;
 		int numURL = 0;
@@ -117,40 +113,42 @@ public class WebCrawlerTest extends AbstractTestCase {
 		int start = 0;
 
 		webCrawlerConfig.setNumberOfCrawlers(1);
-		
+
 		try {
 			FileUtils.forceDelete(new File("src/test/resources/tmp/data.csv"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		try (PrintWriter writer = new PrintWriter(new File(
-				"src/test/resources/tmp/data.csv"))) {
+
+		try (PrintWriter writer = new PrintWriter(new File("src/test/resources/tmp/data.csv"))) {
 
 			for (int z = 0; z < numTries; z++) {
 				double tMean = 0;
 
-				if (z < 10) { numURL++; }
-				if (z >= 10 && z < 19) { numURL+=10; }
-				if (z >= 19 && z < 28) { numURL+=100; }
-				if (z >= 28) { numURL+=1000; }
-				
+				if (z < 10) {
+					numURL++;
+				}
+				if (z >= 10 && z < 19) {
+					numURL += 10;
+				}
+				if (z >= 19 && z < 28) {
+					numURL += 100;
+				}
+				if (z >= 28) {
+					numURL += 1000;
+				}
+
 				for (int j = 0; j < numMeasures; j++) {
 					long t1 = System.currentTimeMillis();
 
 					for (int i = start; i < numURL + start; i++) {
 						stubFor(get(urlMatching("/test" + i))
-								.willReturn(
-										aResponse()
-												.withBody(
-														"<html><body>Hello world!!</body></html>")));
+								.willReturn(aResponse().withBody("<html><body>Hello world!!</body></html>")));
 					}
 
-					IWebCrawler webCrawler = new Crawler4JAdapter(config,
-							generateCorpusState, webCrawlerConfig,
-							webCrawlerBean, outputDS, urlsWebCrawler,
-							urlsActive, urlsNotActive);
+					IWebCrawler webCrawler = new Crawler4JAdapter(config, generateCorpusState, webCrawlerConfig,
+							webCrawlerBean, outputDS, urlsWebCrawler, urlsActive, urlsNotActive);
 
 					for (int i = start; i < numURL + start; i++) {
 						webCrawler.addSeed("http://localhost:8089/test" + i);
@@ -172,12 +170,11 @@ public class WebCrawlerTest extends AbstractTestCase {
 				// NumUrls | t0 | t1 | t2 | tmean
 				StringBuilder sb = new StringBuilder();
 				sb.append(numURL).append(",").append(tMean);
-				
-				//System.out.println(sb.toString());
+
+				// System.out.println(sb.toString());
 				writer.write(sb.toString());
 				writer.println();
 				writer.flush();
-				
 
 				// Write down results
 				// File file = new File("times");
@@ -192,9 +189,9 @@ public class WebCrawlerTest extends AbstractTestCase {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
-	//@Ignore("This test is only for performance test")
+	@Ignore("This test is only for performance test")
 	public void testStartLoop2Crawlers() {
 		int numTries = 37;
 		int numURL = 0;
@@ -202,40 +199,42 @@ public class WebCrawlerTest extends AbstractTestCase {
 		int start = 0;
 
 		webCrawlerConfig.setNumberOfCrawlers(2);
-		
+
 		try {
 			FileUtils.forceDelete(new File("src/test/resources/tmp/data_2crawlers.csv"));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
-		try (PrintWriter writer = new PrintWriter(new File(
-				"src/test/resources/tmp/data_2crawlers.csv"))) {
+
+		try (PrintWriter writer = new PrintWriter(new File("src/test/resources/tmp/data_2crawlers.csv"))) {
 
 			for (int z = 0; z < numTries; z++) {
 				double tMean = 0;
 
-				if (z < 10) { numURL++; }
-				if (z >= 10 && z < 19) { numURL+=10; }
-				if (z >= 19 && z < 28) { numURL+=100; }
-				if (z >= 28) { numURL+=1000; }
-				
+				if (z < 10) {
+					numURL++;
+				}
+				if (z >= 10 && z < 19) {
+					numURL += 10;
+				}
+				if (z >= 19 && z < 28) {
+					numURL += 100;
+				}
+				if (z >= 28) {
+					numURL += 1000;
+				}
+
 				for (int j = 0; j < numMeasures; j++) {
 					long t1 = System.currentTimeMillis();
 
 					for (int i = start; i < numURL + start; i++) {
 						stubFor(get(urlMatching("/test" + i))
-								.willReturn(
-										aResponse()
-												.withBody(
-														"<html><body>Hello world!!</body></html>")));
+								.willReturn(aResponse().withBody("<html><body>Hello world!!</body></html>")));
 					}
 
-					IWebCrawler webCrawler = new Crawler4JAdapter(config,
-							generateCorpusState, webCrawlerConfig,
-							webCrawlerBean, outputDS, urlsWebCrawler,
-							urlsActive, urlsNotActive);
+					IWebCrawler webCrawler = new Crawler4JAdapter(config, generateCorpusState, webCrawlerConfig,
+							webCrawlerBean, outputDS, urlsWebCrawler, urlsActive, urlsNotActive);
 
 					for (int i = start; i < numURL + start; i++) {
 						webCrawler.addSeed("http://localhost:8089/test" + i);
@@ -257,12 +256,11 @@ public class WebCrawlerTest extends AbstractTestCase {
 				// NumUrls | t0 | t1 | t2 | tmean
 				StringBuilder sb = new StringBuilder();
 				sb.append(numURL).append(",").append(tMean);
-				
-				//System.out.println(sb.toString());
+
+				// System.out.println(sb.toString());
 				writer.write(sb.toString());
 				writer.println();
 				writer.flush();
-				
 
 				// Write down results
 				// File file = new File("times");
@@ -276,6 +274,77 @@ public class WebCrawlerTest extends AbstractTestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	// Generate corpus test
+	@Test
+	public void testGenerateCorpus2() {
+		int numURL = 100;
+		int numMeasures = 1;
+		int start = 90;
+		
+		System.out.println("test!!");
+		
+		String CONFIG_FILE4 = "src/test/resources/config/config6_WARC.wpg";
+
+		AppConfig config = new AppConfig();
+		ConfigHelper.configure(CONFIG_FILE4, config);
+		config.init();
+		
+		for (int i = start; i < 20000 + start; i++) {
+			stubFor(get(urlMatching("/test" + i))
+					.willReturn(aResponse().withBody("<html><body>Hello world!!</body></html>")));
+		}
+
+		try {
+			FileUtils.forceDelete(new File("src/test/resources/tmp/full_test.csv"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try (PrintWriter writer = new PrintWriter(new File("src/test/resources/tmp/full_test.csv"))) {
+			for (int i = start; i < numURL + start; i+=10) {
+				double tMean = 0;
+				config.setRatioPercentageSpam(i);
+				config.setRatioIsPercentage(true);
+				for (int j = 0; j < numMeasures; j++) {
+					long t1 = System.currentTimeMillis();
+				
+					System.out.println("config is:" + config);
+				
+					GenerateCorpusState generateCorpusState = new GenerateCorpusState();
+					IAppLogic logic = new AppLogicImpl(config);
+					logic.generateCorpus(generateCorpusState);
+					
+					long t2 = System.currentTimeMillis();
+					
+					long tDiff = t2 - t1;
+					System.out.println("tDiff: " + tDiff);
+					
+					tMean += tDiff; // (double) (tDiff / ((double)numMeasures));
+			
+					System.out.println("tMean: " + tMean);
+
+					// NumUrls | t0 | t1 | t2 | tmean
+					StringBuilder sb = new StringBuilder();
+					sb.append(i).append(",").append(tMean);
+
+					writer.write(sb.toString());
+					writer.println();
+					writer.flush();
+					
+					break;
+				}
+				break;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		assertEquals(2, generateCorpusState.getNumUrlHamCorrectlyLabeled());
+		assertEquals(2, generateCorpusState.getNumUrlSpamCorrectlyLabeled());
 	}
 
 	/*

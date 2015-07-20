@@ -17,20 +17,24 @@ public class OutputHelper {
 	}
 	
 	public static void writeNotFound(IDataSource domainsNotFoundDS,
-			String url, int httpStatus, 
+			String url, Integer httpStatus, 
 			String httpHttpStatusDescription) {
 		StringBuilder sb = new StringBuilder();
-		if (httpStatus == HttpStatus.SC_NOT_FOUND) {
-             sb.append("Broken link: ")
-             	.append(url);
-	     } else {
-	    	 sb.append("Non success status for link: ")
-	    	 	.append(url)
-	    	 	.append(", status code: ")
-	    	 	.append(httpStatus)
-	    	 	.append(", description: ")
-	    	 	.append(httpHttpStatusDescription);
-	     }
+		if (httpStatus == null) {
+			sb.append("Unable to connect to: ").append(url);
+		} else  {
+			if (httpStatus == HttpStatus.SC_NOT_FOUND) {
+	             sb.append("Broken link: ")
+	             	.append(url);
+		     } else {
+		    	 sb.append("Non success status for link: ")
+		    	 	.append(url)
+		    	 	.append(", status code: ")
+		    	 	.append(httpStatus)
+		    	 	.append(", description: ")
+		    	 	.append(httpHttpStatusDescription);
+		     }
+		}
 		DataBean data = new DataBean(sb.toString());
 		domainsNotFoundDS.write(data);
 	}

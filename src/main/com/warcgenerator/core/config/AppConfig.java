@@ -10,7 +10,7 @@ import com.warcgenerator.core.util.Validator;
 /**
  * General configuration.
  * 
- * This class must be builded from a XML properties file.
+ * This class must be built from a XML properties file.
  * 
  * @author Miguel Callon
  */
@@ -35,10 +35,16 @@ public class AppConfig {
 	private Integer ratioPercentageSpam;
 	private Integer ratioQuantitySpam;
 
+	/**
+	 * Default constructor
+	 */
 	public AppConfig() {
 		setDataSourceConfigs(new LinkedHashMap<Integer, DataSourceConfig>());
 	}
 
+	/**
+	 * Set current appConfig to default values
+	 */
 	public void init() {
 		corpusDirPath = Validator.isNullOrEmpty(corpusDirPath)?
 				Constants.AppConfigConstants.CORPUS_DIR_PATH_DEFAULT:corpusDirPath;
@@ -85,15 +91,7 @@ public class AppConfig {
 					ratioQuantitySpam;
 		
 		// Configure filepaths
-		String pathCorpus = corpusDirPath;
-		String pathSpam = pathCorpus + File.separator + spamDirName;
-		String pathHam = pathCorpus + File.separator + hamDirName;
-		String pathDomainsLabelled = pathCorpus + File.separator
-				+ domainsLabeledFileName;
-		String pathDomainsNotFound = pathCorpus + File.separator
-				+ domainsNotFoundFileName;
-		outputConfig = new OutputCorpusConfig(pathCorpus, pathSpam, pathHam,
-				pathDomainsLabelled, pathDomainsNotFound);
+		resetOutputConfig();
 
 		// Web crawler template config
 		webCrawlerCfgTemplate = new WebCrawlerConfig();
@@ -126,6 +124,22 @@ public class AppConfig {
 		
 		webCrawlerCfgTemplate.setMaxDepthOfCrawling(maxDepthOfCrawlingToInt);
 		webCrawlerCfgTemplate.setStorePath(webCrawlerTmpStorePath);
+	}
+	
+	/** 
+	 * Create a new OutputConfig with current parameters of appConfig
+	 */
+	public void resetOutputConfig() {
+		// Configure filepaths
+		String pathCorpus = this.corpusDirPath;
+		String pathSpam = pathCorpus + File.separator + this.spamDirName;
+		String pathHam = pathCorpus + File.separator + this.hamDirName;
+		String pathDomainsLabelled = pathCorpus + File.separator
+				+ this.domainsLabeledFileName;
+		String pathDomainsNotFound = pathCorpus + File.separator
+						+ this.domainsNotFoundFileName;
+		setOutputConfig(new OutputCorpusConfig(pathCorpus, pathSpam, pathHam,
+						pathDomainsLabelled, pathDomainsNotFound));
 	}
 
 	public OutputConfig getOutputConfig() {
@@ -308,6 +322,11 @@ public class AppConfig {
 		return sb.toString();
 	}
 	
+	/**
+	 * Validate appConfig constraints
+	 * This method must be invoked before store the current appConfig 
+	 * @return true if current appConfig is valid
+	 */
 	public boolean validate() {
 		// Check if ratioQuantity is bigger than numSites
 		if (!ratioIsPercentage && numSites < ratioQuantitySpam) {

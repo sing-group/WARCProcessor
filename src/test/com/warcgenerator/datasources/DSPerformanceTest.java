@@ -18,7 +18,7 @@ import com.warcgenerator.datasources.arff.ArffDS;
 import com.warcgenerator.datasources.csv.CSVDS;
 import com.warcgenerator.datasources.file.FileDS;
 
-@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
+//@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
 public class DSPerformanceTest {
 	private ArffDS arffDS;
 	private CSVDS csvDS;
@@ -28,7 +28,7 @@ public class DSPerformanceTest {
 	private String TEST_CSV_FILE = "src/test/resources/tmp/in_test/test_file.csv";
 	private String TEST_ARFF_FILE = "src/test/resources/tmp/in_test/test_file.arff";
 	private String TEST_TXT_FILE = "src/test/resources/tmp/in_test/test_file.txt";
-	private String TEST_WARC_FILE = "src/test/resources/tmp/in_test/test_file.warc";
+	private String TEST_WARC_FILE = "src/test/resources/tmp/in_test/warc_spam/test_file.warc";
 	
 	private final int NUM_URLS = 10000;
 	
@@ -36,22 +36,22 @@ public class DSPerformanceTest {
 	
 	@Before
 	public void before() {
-		initCSVDS();
-		initArffDS();
-		initFileDS();
+//		initCSVDS();
+//		initArffDS();
+//		initFileDS();
 		initWarcDS();
 		
 		dataSources = new HashMap<String, IDataSource>();
-		dataSources.put("CSV", csvDS);
-		dataSources.put("Arff", arffDS);
-		dataSources.put("TXT", fileDS);
+//		dataSources.put("CSV", csvDS);
+//		dataSources.put("Arff", arffDS);
+//		dataSources.put("TXT", fileDS);
 		dataSources.put("WARC", warcDS);
 	}
 
 	@Test
 	public void testPerformance() {
 		int numTries = 37;
-		int numURL = 0;
+		int numURL = 10000;
 		int numMeasures = 3;
 		int start = 0;
 
@@ -68,18 +68,18 @@ public class DSPerformanceTest {
 			for (int z = 0; z < numTries; z++) {
 				double tMean = 0;
 
-				if (z < 10) {
-					numURL++;
-				}
-				if (z >= 10 && z < 19) {
-					numURL += 10;
-				}
-				if (z >= 19 && z < 28) {
-					numURL += 100;
-				}
-				if (z >= 28) {
-					numURL += 1000;
-				}
+//				if (z < 10) {
+//					numURL++;
+//				}
+//				if (z >= 10 && z < 19) {
+//					numURL += 10;
+//				}
+//				if (z >= 19 && z < 28) {
+//					numURL += 100;
+//				}
+//				if (z >= 28) {
+//					numURL += 1000;
+//				}
 
 				// NumUrls | t0 | t1 | t2 | tmean
 				sb = new StringBuilder();
@@ -124,10 +124,10 @@ public class DSPerformanceTest {
 			sb.append("WARC/1.0\nWARC-Type: warcinfo\nWARC-Date: 2012-02-12T08:23:23Z\nWARC-Filename: 0013wb-88.warc.gz\nWARC-Number-of-Documents: 967\nWARC-File-Length: 29902030\nWARC-Data-Type: web crawl\nWARC-Record-ID: <urn:uuid:1b361052-a7d0-48e7-a1f9-b7d5c235b893>\nContent-Type: application/warc-fields\nContent-Length: 283\n\nsoftware: Heritrix/3.1.1-SNAPSHOT-20120210.102032 http://crawler.archive.org\nformat: WARC File Format 1.0\nconformsTo: http://bibnum.bnf.fr/WARC/WARC_ISO_28500_version1_latestdraft.pdf\nisPartOf: ClueWeb12\ndescription:  The Lemur Project's ClueWeb12 dataset (http://lemurproject.org/\n\n\n");
 			testWriter.print(sb.toString());
 			
-			for (int i = 0; i < NUM_URLS; i++) {
+			for (int i = 10000; i < 10000 + NUM_URLS; i++) {
 				sb = new StringBuilder();
-				sb.append("WARC/1.0\nWARC-Type: response\nWARC-Date: 2012-02-12T08:28:02Z\nWARC-TREC-ID: clueweb12-0013wb-88-00000\nWARC-IP-Address: 97.74.46.128\nWARC-Payload-Digest: sha1:2LXCCLVQ42HRZW3YNSU56XUQJ2UO4EDQ\nWARC-Target-URI: http://esei.uvigo.es\nWARC-Record-ID: <urn:uuid:ed8ee5f6-9455-48c9-8f93-a7726ae4b89a>\nContent-Type: application/http; msgtype=response\nContent-Length: 44706\n\n");
-				sb.append("HTTP/1.1 200 OK\nDate: Sun, 12 Feb 2012 08:28:03 GMT\nServer: Apache\nAccept-Ranges: bytes\nContent-Length: 44545\nConnection: close\nContent-Type: text/html\n\n");
+				sb.append("WARC/1.0\nWARC-Type: response\nWARC-Date: 2012-02-12T08:28:02Z\nWARC-TREC-ID: clueweb12-0013wb-88-00000\nWARC-IP-Address: 97.74.46.128\nWARC-Payload-Digest: sha1:2LXCCLVQ42HRZW3YNSU56XUQJ2UO4EDQ\nWARC-Target-URI: http://localhost:8089/test" + i + "\nWARC-Record-ID: <urn:uuid:ed8ee5f6-9455-48c9-8f93-a7726ae4b89a>\nContent-Type: application/http; msgtype=response\nContent-Length: 165\n\n");
+				sb.append("HTTP/1.1 200 OK\nDate: Sun, 12 Feb 2012 08:28:03 GMT\nServer: Apache\nAccept-Ranges: bytes\nContent-Length: 12\nConnection: close\nContent-Type: text/html\n\n");
 				sb.append("Hola mundo!!\n\n");
 				
 				testWriter.println(sb.toString());

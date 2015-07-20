@@ -21,7 +21,7 @@ import com.warcgenerator.gui.view.common.InitConfigDialog;
  * In java AbstractAction implements CommandPattern
  * http://www.javapractices.com/topic/TopicAction.do?Id=159
  * 
- * @author amparop
+ * @author Miguel Callon
  *
  */
 @SuppressWarnings("serial")

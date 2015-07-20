@@ -8,7 +8,7 @@ import com.warcgenerator.core.datasource.common.handler.IDSHandler;
 
 /**
  * Handle the read about a specific Arff Datasource read operation
- * @author amparop
+ * @author Miguel Callon
  *
  */
 public class ArffDSHandler extends DSHandler implements IDSHandler {	
