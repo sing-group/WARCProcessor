@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
@@ -119,24 +116,22 @@ public class FileHelper {
 	}
 
 	/**
-	 * Used to avoid problems like "http://domain.es" and "http://domain.es/"
+	 * Used to avoid problems like "http://domain.es", "http://domain.es/" and "domain.es"
 	 * 
 	 * @param urlStr URL
 	 * @return urlStr normalized
 	 */
 	public static String normalizeURL(String urlStr) {
+		sun.net.URLCanonicalizer urlCanonicalizer = new sun.net.URLCanonicalizer();
+
 		// Normalize
 		if (urlStr.endsWith("/"))
 			urlStr = urlStr.substring(0, urlStr.length() - 1);
 
-		// Parse character
-		urlStr = URLCanonicalizer.getCanonicalURL(urlStr);
-
-		/*
-		 * try { URL urlTmp = new URL(url); } catch
-		 * (UnsupportedEncodingException e) {
-		 * logger.warn("Encoder UTF-8 not supported to: " + url); }
-		 */
+		// Given a possibly abbreviated URL (missing a protocol name, typically),
+		// this method's job is to transform that URL into a canonical form,
+		// by including a protocol name and additional syntax, if necessary.
+		urlStr = urlCanonicalizer.canonicalize(urlStr);
 
 		return urlStr;
 	}
