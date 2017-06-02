@@ -1,14 +1,13 @@
 package com.warcgenerator.core.plugin.webcrawler;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 import java.util.regex.Pattern;
 
+import com.warcgenerator.core.helper.OutputHelper;
 import org.apache.log4j.Logger;
 
 import com.sleepycat.je.DatabaseConfig;
@@ -174,7 +173,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		controller.start(Crawler4JAdapter.class, numberOfCrawlers);
 
 		controller.waitUntilFinish();
-		
+
 		if (!controller.isShuttingDown()) {
 			List<Object> crawlersLocalData = controller.getCrawlersLocalData();
 			for (Object localData : crawlersLocalData) {
@@ -190,12 +189,22 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 							StringBuilder warcFileName = new StringBuilder();
 	
 							StringBuilder outputWarcPath = new StringBuilder();
-							if (webCrawlerBean.isSpam()) {
-								outputWarcPath.append(webCrawlerBean
-										.getOutputCorpusConfig().getSpamDir());
-							} else {
-								outputWarcPath.append(webCrawlerBean
-										.getOutputCorpusConfig().getHamDir());
+							try {
+								if (webCrawlerBean.isSpam()) {
+									outputWarcPath.append(webCrawlerBean
+											.getOutputCorpusConfig().getSpamDir());
+									PrintStream spamWriter = new PrintStream(new BufferedOutputStream(new FileOutputStream(new File("_spam_.txt"))));
+									spamWriter.println(parseData.getUrl());
+									spamWriter.close();
+								} else {
+									outputWarcPath.append(webCrawlerBean
+											.getOutputCorpusConfig().getHamDir());
+									PrintStream hamWriter = new PrintStream(new BufferedOutputStream(new FileOutputStream(new File("_ham_.txt"))));
+									hamWriter.println(parseData.getUrl());
+									hamWriter.close();
+								}
+							} catch(IOException e) {
+								logger.error(e.getMessage());
 							}
 							outputWarcPath.append(File.separator);
 	

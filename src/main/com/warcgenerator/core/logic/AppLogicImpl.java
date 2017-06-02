@@ -352,6 +352,8 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 
 		IDataSource labeledDS = null;
 		IDataSource notFoundDS = null;
+		IDataSource spamDS = null;
+		IDataSource hamDS = null;
 
 		try {
 			// Corpus Path dirs
@@ -437,7 +439,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 						.setNumUrlHamReadedFromDS(generateCorpusState
 								.getNumUrlHamCorrectlyLabeled());
 
-				// DataSources are exausted
+				// DataSources are exhausted
 				if ((urlsSpam.isEmpty() && urlsHam.isEmpty())
 						|| generateCorpusState.getNumDomainsCorrectlyLabeled() >= config
 								.getNumSites())
