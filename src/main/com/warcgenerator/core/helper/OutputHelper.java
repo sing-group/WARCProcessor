@@ -6,6 +6,18 @@ import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.common.bean.DataBean;
 
 public class OutputHelper {
+
+	/**
+	 * Write the Spam and Ham corpus
+	 * @param domainsLabeledDS
+	 * @param url URL to write in the corpus
+	 */
+	public static void writeSpamHam(IDataSource domainsLabeledDS,
+									String url) {
+		DataBean data = new DataBean(url);
+		domainsLabeledDS.write(data);
+	}
+
 	public static void writeLabeled(IDataSource domainsLabeledDS,
 			String url, boolean isSpam) {
 		StringBuffer sb = new StringBuffer();

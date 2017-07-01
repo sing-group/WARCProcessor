@@ -182,11 +182,9 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 							OutputHelper.writeLabeled(domainsLabeledDS, htmlParseData.getUrl(),
 									this.isSpam);
 							if (isSpam)
-								OutputHelper.writeLabeled(domainsSpamDS, htmlParseData.getUrl(),
-										this.isSpam);
+								OutputHelper.writeSpamHam(domainsSpamDS, htmlParseData.getUrl());
 							else
-								OutputHelper.writeLabeled(domainsHamDS, htmlParseData.getUrl(),
-										this.isSpam);
+								OutputHelper.writeSpamHam(domainsHamDS, htmlParseData.getUrl());
 							generateCorpusState.incDomainsCorrectlyLabeled(this.isSpam);
 						} else {
 							logger.info("URL: " + bean.getUrl() + " doesn't have data.");
