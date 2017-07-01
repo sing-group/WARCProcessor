@@ -214,6 +214,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 						if (handler == null) {
 							handler = new WebCrawlerHandler(appConfig,
 									webCrawlerBean.isSpam(),
+									webCrawlerBean.getDomainsSpamDS(),
+									webCrawlerBean.getDomainsHamDS(),
 									webCrawlerBean.getDomainsNotFoundDS(),
 									webCrawlerBean.getDomainsLabeledDS(), warcDS,
 									
