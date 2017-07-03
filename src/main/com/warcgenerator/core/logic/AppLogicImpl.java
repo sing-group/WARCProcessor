@@ -36,6 +36,7 @@ import com.warcgenerator.core.helper.LangFilterHelper;
 import com.warcgenerator.core.helper.XMLConfigHelper;
 import com.warcgenerator.core.task.ExecutionTaskBatch;
 import com.warcgenerator.core.task.Task;
+import com.warcgenerator.core.task.generateCorpus.BalanceCorpusTask;
 import com.warcgenerator.core.task.generateCorpus.CheckActiveSitesConfigTask;
 import com.warcgenerator.core.task.generateCorpus.GetURLFromDSTask;
 import com.warcgenerator.core.task.generateCorpus.ReadURLsTask;
@@ -417,12 +418,17 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 						urlsNotActive, outputDS, outputCorpusConfig, labeledDS,
 						generateCorpusState);
 
+				// Balance corpus
+				Task t6 = new BalanceCorpusTask(spamDS, hamDS,
+                        config.getRatioPercentageSpam());
+
 				executorTasks = new ExecutionTaskBatch();
 				executorTasks.addTask(t1);
 				executorTasks.addTask(t2);
 				executorTasks.addTask(t3);
 				executorTasks.addTask(t4);
 				executorTasks.addTask(t5);
+				executorTasks.addTask(t6);
 
 				executorTasks.execution();
 
