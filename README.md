@@ -106,7 +106,7 @@ java-getopt-1.0.13.jar
 
 ## License
 
-See LICENSE.md
+See LICENSE
 
 ## Authors
 * Miguel Cayon Álvarez
