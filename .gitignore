@@ -4,3 +4,9 @@
 /.settings/
 /config/
 /derbyDB/
+
+dependency-reduced-pom.xml
+
+.factorypath
+
+.classpath
