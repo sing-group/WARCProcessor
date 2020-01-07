@@ -4,7 +4,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
@@ -33,7 +34,7 @@ public class ReadURLsTask extends Task implements ITask {
 	private boolean isSpam;
 	private boolean terminate;
 	
-	private static Logger logger = Logger.getLogger
+	private static Logger logger = LogManager.getLogger
             (ReadURLsTask.class);
 	
 	public ReadURLsTask(AppConfig config,

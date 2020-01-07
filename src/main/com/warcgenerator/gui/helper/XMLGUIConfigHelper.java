@@ -20,7 +20,10 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -40,7 +43,7 @@ import com.warcgenerator.gui.exception.config.ValidateXMLSchemaException;
  * 
  */
 public class XMLGUIConfigHelper {
-	private static Logger logger = Logger.getLogger(XMLGUIConfigHelper.class);
+	private static Logger logger = LogManager.getLogger(XMLGUIConfigHelper.class);
 
 	private static void validateSchema(Document document, String schemaFilePath)
 			throws ValidateXMLSchemaException {

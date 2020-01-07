@@ -12,7 +12,8 @@ import java.util.Observer;
 import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.Constants;
@@ -59,7 +60,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	private Map<String, DataSourceConfig> dataSourcesTypes;
 	private ExecutionTaskBatch executorTasks;
 
-	private static Logger logger = Logger.getLogger(AppLogicImpl.class);
+	private static Logger logger = LogManager.getLogger(AppLogicImpl.class);
 
 	/**
 	 * Business logic implementation

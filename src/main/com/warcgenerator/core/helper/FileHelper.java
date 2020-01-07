@@ -9,7 +9,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.google.common.net.InternetDomainName;
 import com.warcgenerator.core.config.Constants;
@@ -19,7 +20,7 @@ import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 public class FileHelper {
 	private static FileFilter generalFileFilter;
 
-	private static Logger logger = Logger.getLogger(FileHelper.class);
+	private static Logger logger = LogManager.getLogger(FileHelper.class);
 
 	/**
 	 * Check if a file is readable

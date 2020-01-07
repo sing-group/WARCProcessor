@@ -9,7 +9,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.logic.IAppLogic;
@@ -29,7 +30,7 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 	private boolean error;
 	private String errorMessage;
 
-	private static Logger logger = Logger.getLogger(GenerateCorpusTask.class);
+	private static Logger logger = LogManager.getLogger(GenerateCorpusTask.class);
 
 	public GenerateCorpusTask(IAppLogic logic, WarcGeneratorGUI view,
 			GeneratingCorpusDialog gcd) {

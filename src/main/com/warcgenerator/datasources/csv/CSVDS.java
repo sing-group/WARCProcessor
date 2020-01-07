@@ -5,7 +5,8 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import weka.core.Attribute;
 import weka.core.Instance;
@@ -42,7 +43,7 @@ public class CSVDS extends DataSource implements IDataSource {
 
 	private Iterator<Instance> readIterator;
 
-	private static Logger logger = Logger.getLogger(CSVDS.class);
+	private static Logger logger = LogManager.getLogger(CSVDS.class);
 
 	/**
 	 * Open a Arff datasource in read mode

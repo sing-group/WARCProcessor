@@ -22,7 +22,9 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -47,7 +49,7 @@ import com.warcgenerator.core.exception.config.ValidateXMLSchemaException;
  * 
  */
 public class XMLConfigHelper {
-	private static Logger logger = Logger.getLogger(XMLConfigHelper.class);
+	private static Logger logger = LogManager.getLogger(XMLConfigHelper.class);
 
 	/**
 	 * Validate a XML with a schema file path given.

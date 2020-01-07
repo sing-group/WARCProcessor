@@ -4,7 +4,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.datasource.IDataSource;
@@ -30,7 +31,7 @@ public class WebCrawlerHandler implements IWebCrawlerHandler {
 	private Set<String> urlsNotActive;
 	private GenerateCorpusState generateCorpusState;
 
-	private static Logger logger = Logger.getLogger
+	private static Logger logger = LogManager.getLogger
             (WebCrawlerHandler.class);
 	
 	public WebCrawlerHandler(AppConfig config, boolean isSpam,

@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.Environment;
@@ -48,7 +49,7 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 	private Set<String> urlsActive;
 	private Set<String> urlsNotActive;
 
-	private static Logger logger = Logger.getLogger(Crawler4JAdapter.class);
+	private static Logger logger = LogManager.getLogger(Crawler4JAdapter.class);
 
 	// Currently it doesn't use any filter
 	private final static Pattern FILTERS = Pattern

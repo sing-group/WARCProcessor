@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.OutputCorpusConfig;
@@ -31,8 +32,7 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 	private IDataSource domainsLabeledDS;
 	private GenerateCorpusState generateCorpusState;
 
-	private static Logger logger = Logger
-			.getLogger(CheckActiveSitesConfigTask.class);
+	private static Logger logger = LogManager.getLogger(CheckActiveSitesConfigTask.class);
 
 	public CheckActiveSitesConfigTask(AppConfig config, Map<String, DataBean> urls,
 			Set<String> urlsInactives, Map<String, DataSource> outputDS,

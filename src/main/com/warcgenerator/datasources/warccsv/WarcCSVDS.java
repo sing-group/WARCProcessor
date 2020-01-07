@@ -7,7 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.archive.io.warc.WARCReaderFactory;
 
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -35,7 +36,7 @@ public class WarcCSVDS extends DataSource implements IDataSource {
 	private String paramList[] = { URL_TAG, SPAM_COL, URL_COL, FIELD_SEPARATOR,
 			SPAM_COL_SPAM_VALUE, FILE_CSV, HEADER_ROW_PRESENT, REGEXP_URL_TAG };
 
-	private static Logger logger = Logger.getLogger(WarcCSVDS.class);
+	private static Logger logger = LogManager.getLogger(WarcCSVDS.class);
 
 	private Map<String, Boolean> domainSpam;
 	List<WarcDS> warcDSs;

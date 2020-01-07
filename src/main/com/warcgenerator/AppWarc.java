@@ -3,8 +3,10 @@ package com.warcgenerator;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import org.archive.util.FileUtils;
 
 import com.warcgenerator.core.config.AppConfig;
@@ -27,7 +29,7 @@ public class AppWarc {
 	private AppConfig config = null;
 	private IAppLogic logic = null;
 
-	private static Logger logger = Logger.getLogger(AppWarc.class);
+	private static Logger logger = LogManager.getLogger(AppWarc.class);
 
 	public static final String CUSTOM_GUI_CONFIG_XML_FULLPATH = Constants.DEFAULT_DIR_CUSTOM_GUI_CONFIG_XML
 			+ Constants.LOG4J_CONFIG_XML;

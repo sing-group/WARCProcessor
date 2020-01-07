@@ -2,7 +2,8 @@ package com.warcgenerator.datasources.corpus;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.config.OutputWarcConfig;
@@ -24,7 +25,7 @@ public class CorpusDS extends DataSource implements IDataSource {
 	private CorpusFileBean corpus;
 	private IDataSource currentDS;
 
-	private static Logger logger = Logger.getLogger(CorpusDS.class);
+	private static Logger logger = LogManager.getLogger(CorpusDS.class);
 
 	/**
 	 * Open a Warc datasource in read mode

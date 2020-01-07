@@ -8,7 +8,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.logic.IAppLogic;
@@ -18,7 +19,7 @@ import com.warcgenerator.gui.components.CustomTreeNodeType;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
 
 public class MenuHelper {
-	private static Logger logger = Logger.getLogger(MenuHelper.class);
+	private static Logger logger = LogManager.getLogger(MenuHelper.class);
 
 	public static void loadDS(DefaultMutableTreeNode treeNode,
 			WarcGeneratorGUI view, IAppLogic logic) {

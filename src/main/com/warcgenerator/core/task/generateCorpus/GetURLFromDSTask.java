@@ -5,7 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -22,8 +23,7 @@ public class GetURLFromDSTask extends Task implements ITask {
 	private AppConfig config;
 	private Map<String, DataBean> urlsSpam, urlsHam;
 
-	private static Logger logger = Logger
-			.getLogger(CheckActiveSitesConfigTask.class);
+	private static Logger logger = LogManager.getLogger(CheckActiveSitesConfigTask.class);
 
 	public GetURLFromDSTask(AppConfig config,
 			GenerateCorpusState generateCorpusState,

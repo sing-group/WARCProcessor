@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import weka.core.Attribute;
 import weka.core.Instance;
@@ -34,7 +35,7 @@ public class ArffDS extends DataSource implements IDataSource {
 	private Instances data;
 	private BufferedReader reader;
 
-	private static Logger logger = Logger.getLogger(ArffDS.class);
+	private static Logger logger = LogManager.getLogger(ArffDS.class);
 
 	/**
 	 * Open a Arff datasource in read mode

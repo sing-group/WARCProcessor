@@ -15,7 +15,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import org.archive.io.ArchiveRecord;
 import org.archive.io.arc.ARCConstants;
 import org.archive.io.warc.WARCWriter;
@@ -49,7 +51,7 @@ public class WarcDS extends DataSource implements IDataSource {
 
 	private DataInputStream dis;
 
-	private static Logger logger = Logger.getLogger(WarcDS.class);
+	private static Logger logger = LogManager.getLogger(WarcDS.class);
 
 	/**
 	 * Open a Warc datasource in read mode

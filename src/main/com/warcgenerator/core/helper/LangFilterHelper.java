@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.jar.JarInputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import org.apache.lucene.misc.TrigramLanguageGuesser;
 import org.jsoup.Jsoup;
 
@@ -14,7 +16,7 @@ import com.warcgenerator.core.datasource.common.bean.Country;
 import com.warcgenerator.core.plugin.webcrawler.WebCrawlerHandler;
 
 public class LangFilterHelper {
-	private static Logger logger = Logger.getLogger
+	private static Logger logger = LogManager.getLogger
             (WebCrawlerHandler.class);
 	public static boolean checkLanguageAllowed(Object html,
 			List<Country> languagesFilter) throws Exception {

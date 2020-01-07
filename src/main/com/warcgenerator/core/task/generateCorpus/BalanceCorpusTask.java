@@ -6,7 +6,8 @@ import com.warcgenerator.core.task.Task;
 
 import java.io.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Balance the corpus URLs based on the configuration files
@@ -19,7 +20,7 @@ public class BalanceCorpusTask extends Task implements ITask{
     private int linesSpam = 0;
     private int linesHam = 0;
 
-    private static Logger logger = Logger.getLogger(BalanceCorpusTask.class);
+    private static Logger logger = LogManager.getLogger(BalanceCorpusTask.class);
 
     public BalanceCorpusTask(IDataSource spamDS, IDataSource hamDS, int percentageSpam) {
         this.spamDS = spamDS;

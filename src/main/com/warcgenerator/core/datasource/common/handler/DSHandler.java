@@ -2,7 +2,8 @@ package com.warcgenerator.core.datasource.common.handler;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
@@ -29,7 +30,7 @@ public abstract class DSHandler implements IDSHandler {
 	protected OutputCorpusConfig outputCorpusConfig;
 	protected AppConfig config;
 	
-	private static Logger logger = Logger.getLogger(DSHandler.class);
+	private static Logger logger = LogManager.getLogger(DSHandler.class);
 
 	public DSHandler(IDataSource ds, AppConfig config) {
 		this.ds = ds;
