@@ -102,7 +102,8 @@ public class FileHelper {
 		String privateDomain = "";
 		try {
 			privateDomain = InternetDomainName.from(url).topPrivateDomain()
-					.name();
+					//.name();
+					.toString();
 		} catch (IllegalArgumentException ex) {
 			String urlTmp = url.replaceAll("http://", "");
 			urlTmp = urlTmp.replaceAll("https://", "");
