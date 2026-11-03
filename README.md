@@ -1,11 +1,38 @@
 # WARCProcessor
 
+## Requirements
+
+* Java 21 or later
+* Maven 3.9 or later, to build from source
+
+## Build
+
+```
+mvn clean package
+```
+
+This creates the executable jar `target/WARCProcessor-<version>.jar`. The tests
+take a few minutes; add `-DskipTests` to skip them.
+
 ## Usage
-java -jar WarcProject-4.X.X-X.jar [--help] [--nogui] [--config <path>]
+java -jar WARCProcessor-4.X.X-X.jar [--help] [--nogui] [--config <path>]
 
 * --help: Show the startup options
 * --nogui: Executes WARCProcessor without gui
 * --config <path>: Starts WARCProcessor using the specified configuration file
+
+Logging is configured in `./config/log4j2.xml`, created on the first run. Any
+`./config/log4j.xml` from an earlier version is ignored.
+
+### Example
+
+`src/test/resources/config/config_in_sample.wpg` reads the sample URL lists in
+`in/` and writes the corpus to `target/sample-out`. Run it from the project
+directory. It crawls the listed websites, so it needs internet access:
+
+```
+java -jar target/WARCProcessor-<version>.jar --nogui --config src/test/resources/config/config_in_sample.wpg
+```
 
 ## Updates
 
@@ -53,55 +80,44 @@ Thanks for the work.
 
 ## Dependencies
 ```
-# WarcProject dependencies
-commons-beanutils-1.9.2.jar
-commons-validator-1.4.0.jar
+# Crawler: crawler4j fork, which brings Tika 3, HttpClient 5 and Berkeley DB JE 18.3
+# https://github.com/rzo1/crawler4j
+de.hs-heilbronn.mi:crawler4j-core:5.1.4
+de.hs-heilbronn.mi:crawler4j-frontier-sleepycat:5.1.4
+org.apache.httpcomponents.client5:httpclient5:5.6.5
+org.apache.httpcomponents.core5:httpcore5:5.4.4
+org.apache.httpcomponents.core5:httpcore5-h2:5.4.4
 
-# crawler4j dependencies
-httpcore-4.2.2.jar
-commons-logging-1.1.1.jar
-httpclient-4.2.3.jar
-commons-codec-1.6.jar
-je-4.0.92.jar
-tika-parsers-1.0.jar
-boilerpipe-1.1.0.jar
-tagsoup-1.2.1.jar
-metadata-extractor-2.4.0-beta-1.jar
-asm-3.1.jar
-geronimo-stax-api_1.0_spec-1.0.1.jar
-commons-compress-1.3.jar
-apache-mime4j-dom-0.7.jar
-apache-mime4j-core-0.7.jar
-tika-core-1.0.jar
-log4j-1.2.14.jar
+# WARC reader and writer
+org.netpreserve.commons:webarchive-commons:3.0.5
 
-# heritrix dependencies
-# http://sourceforge.net/projects/archive-crawler/files/heritrix3
-heritrix-commons-3.1.0.jar
-fastutil-5.0.7.jar
-commons-io-1.4.jar
+# ARFF and CSV datasources
+nz.ac.waikato.cms.weka:weka-dev:3.9.7
 
-# Kryo dependencies
-# https://code.google.com/p/kryo/
-# Used to serialization for Warc reader
-kryo-1.04-all.jar
+# Text extraction from html
+org.jsoup:jsoup:1.24.1
 
-# Weka dependencies
-# http://weka.wikispaces.com/
-weka.jar
+# Language filter (in lib/)
+lucene:language_guesser:1.1
 
-# Lucene dependencies
-luceneTrigramsLanguageGuesser.jar
+# Command line options
+gnu.getopt:java-getopt:1.0.13
 
-# Jsoup dependencies
-# http://jsoup.org/
-# Used to extract text from html
-jsoup-1.8.1.jar
+# Logging
+org.apache.logging.log4j:log4j-api:2.26.1
+org.apache.logging.log4j:log4j-core:2.26.1
+org.apache.logging.log4j:log4j-slf4j2-impl:2.26.1
 
-# GetOpt dependencies
-# www.urbanophile.com/arenn/hacking/download.html
-# Used to get options from command line
-java-getopt-1.0.13.jar
+# Utilities
+com.google.guava:guava:33.8.0-jre
+commons-beanutils:commons-beanutils:1.11.0
+commons-io:commons-io:2.22.0
+commons-validator:commons-validator:1.11.0
+org.apache.commons:commons-lang3:3.20.0
+
+# Tests
+junit:junit:4.13.2
+org.wiremock:wiremock-standalone:3.13.2
 ```
 
 ## License
