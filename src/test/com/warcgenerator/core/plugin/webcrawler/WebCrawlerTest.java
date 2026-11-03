@@ -82,7 +82,9 @@ public class WebCrawlerTest extends AbstractTestCase {
 		labeledDS = new GenericDS(new DataSourceConfig("src/test/resources/tmp/out/domains.labelled"));
 		notFoundDS = new GenericDS(new DataSourceConfig("src/test/resources/tmp/out/domains.notFound"));
 
-		webCrawlerBean = new WebCrawlerBean(labeledDS, notFoundDS, false, outputCorpusConfig);
+		IDataSource spamDS = new GenericDS(new DataSourceConfig("src/test/resources/tmp/out/_spam_.txt"));
+		IDataSource hamDS = new GenericDS(new DataSourceConfig("src/test/resources/tmp/out/_ham_.txt"));
+		webCrawlerBean = new WebCrawlerBean(spamDS, hamDS, labeledDS, notFoundDS, false, outputCorpusConfig);
 
 		outputDS = new HashMap<String, DataSource>();
 		urlsWebCrawler = new HashMap<String, DataBean>();
@@ -278,6 +280,7 @@ public class WebCrawlerTest extends AbstractTestCase {
 
 	// Generate corpus test
 	@Test
+	@Ignore("Performance test; needs config6_WARC.wpg, which is not in the repository")
 	public void testGenerateCorpus2() {
 		int numURL = 100;
 		int numMeasures = 1;

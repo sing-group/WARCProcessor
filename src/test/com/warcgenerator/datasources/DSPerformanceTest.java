@@ -18,7 +18,7 @@ import com.warcgenerator.datasources.arff.ArffDS;
 import com.warcgenerator.datasources.csv.CSVDS;
 import com.warcgenerator.datasources.file.FileDS;
 
-//@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
+@Ignore("Performance test; needs fixtures in tmp/in_test, which are not in the repository")
 public class DSPerformanceTest {
 	private ArffDS arffDS;
 	private CSVDS csvDS;

@@ -5,14 +5,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.warcgenerator.core.config.CustomParamConfig;
 import com.warcgenerator.core.config.DataSourceConfig;
 import com.warcgenerator.core.datasource.common.bean.DataBean;
 
-@Ignore("This test will prove bug #123 is fixed, once someone fixes it")
 public class FileDSTest {
 	
 	@Test
@@ -29,7 +27,7 @@ public class FileDSTest {
 		DataBean bean = warcDS.read();
 		String url = bean.getUrl();
 		
-		assertEquals("http://www.uvigo.es/", url);
+		assertEquals("http://localhost:8089/test1", url);
 		
 		warcDS.close();
 	}

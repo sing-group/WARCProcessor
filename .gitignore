@@ -10,3 +10,5 @@ dependency-reduced-pom.xml
 .factorypath
 
 .classpath
+/frontier/
+/warcgenerator.log
