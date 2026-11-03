@@ -30,8 +30,6 @@ public class DSourcesAction extends AbstractAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {		
-		if (logic.getDataSourceConfigList().size() == 0) {
-			dsCreateAction.actionPerformed(e);
-		}
+		dsCreateAction.actionPerformed(e);
 	}
 }
