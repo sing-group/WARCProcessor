@@ -577,6 +577,10 @@ public class AppLogicTest extends AbstractTestCase {
 		
 		assertEquals(2, generateCorpusState.getNumUrlHamCorrectlyLabeled());
 		assertEquals(2, generateCorpusState.getNumUrlSpamCorrectlyLabeled());
+		
+		// A domain with both labels has one WARC in each folder
+		assertEquals(true, new File("target/test/out/_spam_/localhost_8089.warc").exists());
+		assertEquals(true, new File("target/test/out/_ham_/localhost_8089.warc").exists());
 	}
 	
 	// Generate corpus test

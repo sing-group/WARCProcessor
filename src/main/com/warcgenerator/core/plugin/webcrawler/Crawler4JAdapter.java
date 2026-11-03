@@ -25,6 +25,7 @@ import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.datasource.warc.WarcDS;
 import com.warcgenerator.core.exception.plugin.PluginException;
 import com.warcgenerator.core.helper.FileHelper;
+import com.warcgenerator.core.helper.OutputHelper;
 import com.warcgenerator.core.helper.ReadURLHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
@@ -204,8 +205,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 						IWebCrawlerHandler handler = handlers.get(FileHelper
 								.getDomainNameFromURL(parseData.getUrl()));
 	
-						DataSource warcDS = outputDS.get(FileHelper
-								.getDomainNameFromURL(parseData.getUrl()));
+						DataSource warcDS = outputDS.get(OutputHelper.getOutputDSKey(
+								parseData.getUrl(), webCrawlerBean.isSpam()));
 						
 						if (warcDS == null) {
 							StringBuilder warcFileName = new StringBuilder();
@@ -228,8 +229,8 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 									webCrawlerBean.isSpam(),
 									warcFileName.toString()));
 	
-							outputDS.put(FileHelper.getDomainNameFromURL(parseData
-									.getUrl()), warcDS);
+							outputDS.put(OutputHelper.getOutputDSKey(
+									parseData.getUrl(), webCrawlerBean.isSpam()), warcDS);
 						}
 	
 						if (handler == null) {

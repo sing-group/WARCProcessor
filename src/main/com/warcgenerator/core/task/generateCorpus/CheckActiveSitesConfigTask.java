@@ -60,8 +60,8 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 							if (LangFilterHelper.checkLanguageAllowed(data.getData(),
 									data.getDsConfig().getCountryList())) {
 	
-								DataSource warcDS = outputDS.get(FileHelper
-										.getDomainNameFromURL(url));
+								DataSource warcDS = outputDS.get(OutputHelper.getOutputDSKey(
+										data.getUrl(), data.isSpam()));
 	
 								if (warcDS == null) {
 									StringBuilder warcFileName = new StringBuilder();
@@ -82,7 +82,7 @@ public class CheckActiveSitesConfigTask extends Task implements ITask {
 											warcFileName.toString()));
 	
 									outputDS.put(
-											FileHelper.getDomainNameFromURL(data.getUrl()),
+											OutputHelper.getOutputDSKey(data.getUrl(), data.isSpam()),
 											warcDS);
 								}
 								warcDS.write(data);

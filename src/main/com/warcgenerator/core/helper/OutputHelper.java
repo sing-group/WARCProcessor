@@ -28,6 +28,18 @@ public class OutputHelper {
 		domainsLabeledDS.write(data);
 	}
 	
+	/**
+	 * Key of the output WARC of a URL. There is one per domain and label, as
+	 * spam and ham go to different folders.
+	 * 
+	 * @param url URL to write in the corpus
+	 * @param isSpam Label of the URL
+	 * @return Key of the output datasource
+	 */
+	public static String getOutputDSKey(String url, boolean isSpam) {
+		return FileHelper.getDomainNameFromURL(url) + (isSpam ? "#spam" : "#ham");
+	}
+
 	public static void writeNotFound(IDataSource domainsNotFoundDS,
 			String url, Integer httpStatus, 
 			String httpHttpStatusDescription) {
