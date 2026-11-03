@@ -1,11 +1,13 @@
 package com.warcgenerator.core.plugin.webcrawler;
 
+import java.security.GeneralSecurityException;
 import java.util.Map;
 
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.datasource.common.bean.DataBean;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 
+import crawlercommons.filters.basic.BasicURLNormalizer;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 
@@ -15,8 +17,9 @@ public class CustomPageFetcher extends PageFetcher {
 	private AppConfig appConfig;
 	
 	public CustomPageFetcher(GenerateCorpusState generateCorpusState, 
-			CrawlConfig config, AppConfig appConfig, Map<String, DataBean> urls) {
-		super(config);
+			CrawlConfig config, BasicURLNormalizer normalizer, AppConfig appConfig,
+			Map<String, DataBean> urls) throws GeneralSecurityException {
+		super(config, normalizer);
 		this.setAppConfig(appConfig);
 		this.generateCorpusState =
 				generateCorpusState;

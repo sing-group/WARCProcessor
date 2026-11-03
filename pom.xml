@@ -9,6 +9,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.version>4.13.1</junit.version>
 		<log4j.version>2.26.1</log4j.version>
+		<crawler4j.version>5.1.4</crawler4j.version>
 		
 	</properties>
 
@@ -89,25 +90,9 @@
 	</repositories>
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>10.10.1.1</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
 			<groupId>nz.ac.waikato.cms.weka</groupId>
 			<artifactId>weka-dev</artifactId>
 			<version>3.7.11</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ccil.cowan.tagsoup</groupId>
-			<artifactId>tagsoup</artifactId>
-			<version>1.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.drewnoakes</groupId>
-			<artifactId>metadata-extractor</artifactId>
-			<version>2.4.0-beta-1</version>
 		</dependency>
 		<!-- Language guesser using trigrams -->
 		<dependency>
@@ -116,30 +101,14 @@
 			<version>1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.googlecode</groupId>
-			<artifactId>kryo</artifactId>
-			<version>1.04</version>
-		</dependency>
-		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.8.1</version>
 		</dependency>
-		<!-- <dependency>
-			<artifactId>je</artifactId>
-			<groupId>com.sleepycat</groupId>
-			<version>4.0.92</version>
-		</dependency> -->
 		<dependency>
 			<groupId>gnu.getopt</groupId>
 			<artifactId>java-getopt</artifactId>
 			<version>1.0.13</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<!--  version>4.2.3</version>-->
-			<version>4.3.6</version>
 		</dependency>
 		<!-- WARC reader/writer, formerly part of heritrix-commons -->
 		<dependency>
@@ -162,41 +131,22 @@
 			<artifactId>guava</artifactId>
 			<version>24.1.1-jre</version>
 		</dependency>
+		<!-- Maintained crawler4j fork; keeps the edu.uci.ics.crawler4j packages -->
 		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-stax-api_1.0_spec</artifactId>
-			<version>1.0.1</version>
+			<groupId>de.hs-heilbronn.mi</groupId>
+			<artifactId>crawler4j-core</artifactId>
+			<version>${crawler4j.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>fastutil</groupId>
-			<artifactId>fastutil</artifactId>
-			<version>5.0.7</version>
-		</dependency>
-		<dependency>
-			<groupId>edu.uci.ics</groupId>
-			<artifactId>crawler4j</artifactId>
-			<version>4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sleepycat</groupId>
-			<artifactId>je</artifactId>
-			<version>5.0.73</version>
+			<groupId>de.hs-heilbronn.mi</groupId>
+			<artifactId>crawler4j-frontier-sleepycat</artifactId>
+			<version>${crawler4j.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.tika</groupId>
-			<artifactId>tika-parsers</artifactId>
-			<version>1.5</version>
-		</dependency>
 		<dependency>
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
 			<version>1.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -209,34 +159,9 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>3.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-compress</artifactId>
-			<version>1.19</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.6</version>
-		</dependency>
-		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.9.4</version>
-		</dependency>
-		<dependency>
-			<groupId>de.l3s.boilerpipe</groupId>
-			<artifactId>boilerpipe</artifactId>
-			<version>1.1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm-all</artifactId>
-			<version>3.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -250,21 +175,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.apache.james</groupId>
-			<artifactId>apache-mime4j-dom</artifactId>
-			<version>0.7.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.james</groupId>
-			<artifactId>apache-mime4j-core</artifactId>
-			<version>0.7.2</version>
-		</dependency>
 
 		<!-- Test Scope -->
 		<dependency>
@@ -278,6 +193,7 @@
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock</artifactId>
 			<version>1.54</version>
+			<scope>test</scope>
 
 			<!-- Include everything below here if you have dependency conflicts -->
 			<classifier>standalone</classifier>

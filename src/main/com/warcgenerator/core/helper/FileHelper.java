@@ -15,7 +15,6 @@ import org.apache.logging.log4j.LogManager;
 import com.google.common.net.InternetDomainName;
 import com.warcgenerator.core.config.Constants;
 
-import edu.uci.ics.crawler4j.url.URLCanonicalizer;
 
 public class FileHelper {
 	private static FileFilter generalFileFilter;

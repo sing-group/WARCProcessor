@@ -1,6 +1,6 @@
 package com.warcgenerator.core.helper;
 
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 
 import com.warcgenerator.core.datasource.IDataSource;
 import com.warcgenerator.core.datasource.common.bean.DataBean;

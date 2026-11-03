@@ -3,7 +3,7 @@ package com.warcgenerator.core.plugin.webcrawler;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.http.HttpStatus;
+import org.apache.hc.core5.http.HttpStatus;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 

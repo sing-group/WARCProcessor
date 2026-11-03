@@ -27,9 +27,12 @@ import com.warcgenerator.core.helper.ReadURLHelper;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusStates;
 
+import crawlercommons.filters.basic.BasicURLNormalizer;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
+import edu.uci.ics.crawler4j.frontier.FrontierConfiguration;
+import edu.uci.ics.crawler4j.frontier.SleepycatFrontierConfiguration;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
@@ -107,18 +110,21 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		/*
 		 * Instantiate the controller for this crawl.
 		 */
-		/*CustomPageFetcher pageFetcher = new CustomPageFetcher(generateCorpusState,
-				config);*/
-		CustomPageFetcher pageFetcher = new CustomPageFetcher(generateCorpusState,
-				config, appConfig, urls);
-		
-		RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
-		RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig,
-				pageFetcher);
-
 		try {
-			controller = new CustomCrawlController(config, pageFetcher,
-					robotstxtServer);
+			BasicURLNormalizer normalizer = BasicURLNormalizer.newBuilder()
+					.idnNormalization(BasicURLNormalizer.IdnNormalization.NONE)
+					.build();
+			CustomPageFetcher pageFetcher = new CustomPageFetcher(generateCorpusState,
+					config, normalizer, appConfig, urls);
+
+			FrontierConfiguration frontierConfiguration = new SleepycatFrontierConfiguration(config);
+
+			RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+			RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig,
+					pageFetcher, frontierConfiguration.getWebURLFactory());
+
+			controller = new CustomCrawlController(config, normalizer, pageFetcher,
+					robotstxtServer, frontierConfiguration);
 		} catch (Exception e) {
 			throw new PluginException(e);
 		}
@@ -130,7 +136,12 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		 * URLs that are fetched and then the crawler starts following links
 		 * which are found in these pages
 		 */
-		controller.addSeed(url);
+		try {
+			controller.addSeed(url);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			logger.error("Interrupted while adding seed: " + url, e);
+		}
 	}
 
 	public void close() {
