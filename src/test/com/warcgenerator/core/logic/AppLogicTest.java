@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
+import java.nio.charset.StandardCharsets;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -527,6 +528,29 @@ public class AppLogicTest extends AbstractTestCase {
 		assertEquals(true, fileDomainsNotFound.exists());
 	}
 	
+	
+	// The corpus has to be written where the loaded configuration says
+	@Test
+	public void testGenerateCorpusUsesOutputDirOfLoadedConfig() throws Exception {
+		File dir = Files.createTempDirectory("warcprocessor").toFile();
+		File configFile = new File(dir, "config.wpg");
+		File outputDir = new File(dir, "corpus");
+		String xml = new String(Files.readAllBytes(new File(CONFIG_FILE4).toPath()), StandardCharsets.UTF_8)
+				.replaceAll("<corpusDirPath>[^<]*", "<corpusDirPath>" + outputDir.getPath())
+				.replaceAll("(?s)<dataSources>.*</dataSources>", "<dataSources/>");
+		Files.write(configFile.toPath(), xml.getBytes(StandardCharsets.UTF_8));
+		
+		AppConfig initialConfig = new AppConfig();
+		initialConfig.setCorpusDirPath("target/test/initial-out");
+		initialConfig.init();
+		logic = new AppLogicImpl(initialConfig);
+		
+		logic.loadAppConfig(configFile.getPath());
+		logic.generateCorpus(new GenerateCorpusState());
+		
+		assertEquals(true, outputDir.exists());
+		FileUtils.deleteDirectory(dir);
+	}
 	
 	// Generate corpus test
 	@Test

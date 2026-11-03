@@ -9,16 +9,13 @@ import com.warcgenerator.gui.exception.util.UtilException;
 
 public class FileUtil {
 	public static void openInDefaultExplorer(String path) throws UtilException {
-		File file = new File (path);
-		Desktop desktop = Desktop.getDesktop();
-		if (desktop != null) {
-			try {
-				desktop.open(file);
-			} catch (IOException e) {
-				throw new UtilException(e);
-			}
-		} else {
+		if (!Desktop.isDesktopSupported()) {
 			throw new DestopNotFoundException();
+		}
+		try {
+			Desktop.getDesktop().open(new File(path));
+		} catch (IOException | IllegalArgumentException | UnsupportedOperationException e) {
+			throw new UtilException(e);
 		}
 	}
 }

@@ -133,6 +133,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public void loadAppConfig(String path) {
 		ConfigHelper.configure(path, config);
 		config.init();
+		resetOutputCorpusConfig();
 
 		// Notify observers
 		setChanged();
@@ -145,6 +146,7 @@ public class AppLogicImpl extends AppLogic implements IAppLogic {
 	public void loadNewAppConfig() {
 		config = new AppConfig();
 		config.init();
+		resetOutputCorpusConfig();
 
 		// The filePath of this configuracion is not set yet.
 		ConfigHelper.setConfigFilePath(null);

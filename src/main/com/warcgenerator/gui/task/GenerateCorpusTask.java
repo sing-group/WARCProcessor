@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import com.warcgenerator.core.config.AppConfig;
 import com.warcgenerator.core.logic.IAppLogic;
 import com.warcgenerator.core.task.generateCorpus.state.GenerateCorpusState;
+import com.warcgenerator.gui.exception.util.UtilException;
 import com.warcgenerator.gui.util.FileUtil;
 import com.warcgenerator.gui.util.Messages;
 import com.warcgenerator.gui.view.WarcGeneratorGUI;
@@ -86,8 +87,16 @@ public class GenerateCorpusTask extends SwingWorker<Void, Integer> implements
 			if (gcd.getOpenOutputFolderCBox().isSelected()) {
 				// Open the output dir
 				AppConfig config = logic.getAppConfig();
-				FileUtil.openInDefaultExplorer(config.getOutputConfig()
-						.getOutputDir());
+				try {
+					FileUtil.openInDefaultExplorer(config.getOutputConfig()
+							.getOutputDir());
+				} catch (UtilException e) {
+					logger.error("Unable to open the output folder", e);
+					JOptionPane.showMessageDialog(view.getMainFrame(),
+							Messages.getString("OpenOutputFolder.message1.text")
+									+ config.getOutputConfig().getOutputDir() + "\"",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		} catch (ExecutionException e) {
 			String msg = String.format("Unexpected problem: %s", e.getCause()

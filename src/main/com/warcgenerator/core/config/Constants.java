@@ -14,7 +14,7 @@ public interface Constants {
 	String dataSourcesTypesXML= "/config/datasources.xml";
 	
 	public interface AppConfigConstants {
-		String CORPUS_DIR_PATH_DEFAULT = ".\\out";
+		String CORPUS_DIR_PATH_DEFAULT = "./out";
 		String SPAM_DIR_NAME_DEFAULT = "_spam_";
 		String HAM_DIR_NAME_DEFAULT = "_ham_";
 		String DOMAINS_LABELED_FILE_NAME_DEFAULT = "domains.labelled";
