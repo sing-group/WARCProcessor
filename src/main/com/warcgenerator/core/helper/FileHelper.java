@@ -124,8 +124,6 @@ public class FileHelper {
 	 * @return urlStr normalized
 	 */
 	public static String normalizeURL(String urlStr) {
-		sun.net.URLCanonicalizer urlCanonicalizer = new sun.net.URLCanonicalizer();
-
 		// Normalize
 		if (urlStr.endsWith("/"))
 			urlStr = urlStr.substring(0, urlStr.length() - 1);
@@ -133,9 +131,28 @@ public class FileHelper {
 		// Given a possibly abbreviated URL (missing a protocol name, typically),
 		// this method's job is to transform that URL into a canonical form,
 		// by including a protocol name and additional syntax, if necessary.
-		urlStr = urlCanonicalizer.canonicalize(urlStr);
+		urlStr = canonicalize(urlStr);
 
 		return urlStr;
+	}
+
+	/**
+	 * Same rules as the sun.net.URLCanonicalizer JDK internal class, which is
+	 * not accessible since Java 9
+	 */
+	private static String canonicalize(String url) {
+		if (url.startsWith("ftp.")) {
+			return "ftp://" + url;
+		} else if (url.startsWith("gopher.")) {
+			return "gopher://" + url;
+		} else if (url.startsWith("/")) {
+			return "file:" + url;
+		} else if (url.matches("[A-Za-z-]+:.*")) {
+			return url;
+		} else if (url.matches("[A-Za-z0-9-]*")) {
+			return "http://www." + url + ".com";
+		}
+		return "http://" + url;
 	}
 
 	/**

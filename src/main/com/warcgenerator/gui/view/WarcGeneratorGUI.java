@@ -182,7 +182,7 @@ public class WarcGeneratorGUI extends Observable {
 	private void initialize() {
 		try {
 			UIManager
-					.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+					.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (UnsupportedLookAndFeelException ex) {
 			System.err
 					.println("Nimbus L&F does not support. Default L&F will be used.");

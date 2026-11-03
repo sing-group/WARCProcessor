@@ -18,8 +18,9 @@ import java.util.zip.GZIPInputStream;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import org.archive.io.ArchiveRecord;
-import org.archive.io.arc.ARCConstants;
+import org.archive.format.arc.ARCConstants;
+import org.archive.format.warc.WARCConstants.WARCRecordType;
+import org.archive.io.warc.WARCRecordInfo;
 import org.archive.io.warc.WARCWriter;
 import org.archive.io.warc.WARCWriterPoolSettings;
 import org.archive.uid.RecordIDGenerator;
@@ -209,11 +210,17 @@ public class WarcDS extends DataSource implements IDataSource {
 					is = new ByteArrayInputStream((byte[]) bean.getData());
 				}
 
-				ANVLRecord headers = new ANVLRecord(1);
-				writer.writeResourceRecord(bean.getUrl(),
-						ArchiveUtils.get14DigitDate(),
-						Constants.outputContentType, headers, is,
-						is.available());
+				WARCRecordInfo recordInfo = new WARCRecordInfo();
+				recordInfo.setType(WARCRecordType.resource);
+				recordInfo.setUrl(bean.getUrl());
+				recordInfo.setCreate14DigitDate(ArchiveUtils.get14DigitDate());
+				recordInfo.setMimetype(Constants.outputContentType);
+				recordInfo.setRecordId(new UUIDGenerator().getRecordID());
+				recordInfo.setExtraHeaders(new ANVLRecord());
+				recordInfo.setContentStream(is);
+				recordInfo.setContentLength(is.available());
+				recordInfo.setEnforceLength(true);
+				writer.writeRecord(recordInfo);
 				is.close();
 			} catch (IOException e) {
 				e.printStackTrace();
