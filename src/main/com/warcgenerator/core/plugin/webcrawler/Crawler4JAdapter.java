@@ -1,6 +1,8 @@
 package com.warcgenerator.core.plugin.webcrawler;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -110,11 +112,14 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 		/*
 		 * Instantiate the controller for this crawl.
 		 */
+		CustomPageFetcher pageFetcher = null;
 		try {
+			Files.createDirectories(Paths.get(configWC.getStorePath()));
+
 			BasicURLNormalizer normalizer = BasicURLNormalizer.newBuilder()
 					.idnNormalization(BasicURLNormalizer.IdnNormalization.NONE)
 					.build();
-			CustomPageFetcher pageFetcher = new CustomPageFetcher(generateCorpusState,
+			pageFetcher = new CustomPageFetcher(generateCorpusState,
 					config, normalizer, appConfig, urls);
 
 			FrontierConfiguration frontierConfiguration = new SleepycatFrontierConfiguration(config);
@@ -126,6 +131,10 @@ public class Crawler4JAdapter extends WebCrawler implements IWebCrawler {
 			controller = new CustomCrawlController(config, normalizer, pageFetcher,
 					robotstxtServer, frontierConfiguration);
 		} catch (Exception e) {
+			// Its connection monitor thread would keep the JVM alive
+			if (pageFetcher != null) {
+				pageFetcher.shutDown();
+			}
 			throw new PluginException(e);
 		}
 	}
