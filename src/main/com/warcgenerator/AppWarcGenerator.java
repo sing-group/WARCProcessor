@@ -28,6 +28,8 @@ import com.warcgenerator.gui.actions.common.StartGUIAction;
  * @see <a href="http://sing.ei.uvigo.es/warcprocessor" target="_blank" >WARCProcessor-WebSite</a>
  */
 public class AppWarcGenerator {
+	private static final int EXIT_FAILURE = 1;
+
 	/**
 	 * Main method
 	 * 
@@ -40,7 +42,11 @@ public class AppWarcGenerator {
 		options.add(new LongOpt("config", LongOpt.REQUIRED_ARGUMENT, null, 'c'));
 
 		CommandConfig config = handleOpt(args, options);
+		if (config.isInvalidOption()) {
+			System.exit(EXIT_FAILURE);
+		}
 		if (!config.isShowHelp()) {
+			int exitCode = 0;
 			final AppWarc app = AppWarc.getInstance();
 
 			try {
@@ -69,21 +75,35 @@ public class AppWarcGenerator {
 			} catch (OpenException e) {
 				System.out
 						.println("It is not posible open data source. Check config.xml");
+				exitCode = EXIT_FAILURE;
 			} catch (ReadException e) {
 				System.out
 						.println("It is not posible read from data source. Check permission.");
+				exitCode = EXIT_FAILURE;
 			} catch (WriteException e) {
 				System.out
 						.println("It is not posible write in data source. Check permission.");
+				exitCode = EXIT_FAILURE;
 			} catch (Log4JConfigNotFoundException e) {
 				System.out
 				.println("It is not posible read log4j configuration. Check permission.");
+				exitCode = EXIT_FAILURE;
 			} catch (ConfigException e) {
 				System.out
 						.println("It is not posible read configuration. Check config.xml :"
 								+ e);
+				exitCode = EXIT_FAILURE;
 			} catch (WarcException e) {
 				System.out.println(e);
+				exitCode = EXIT_FAILURE;
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+				exitCode = EXIT_FAILURE;
+			}
+
+			// Threads left by a failed run must not keep the JVM alive
+			if (exitCode != 0) {
+				System.exit(exitCode);
 			}
 		}
 	}
@@ -119,12 +139,15 @@ public class AppWarcGenerator {
 			case ':':
 				System.out.println("Falta algumento para la opción: "
 						+ (char) g.getOptopt());
+				config.setInvalidOption(true);
 				config.setShowHelp(true);
 				break;
 			case '?':
+				config.setInvalidOption(true);
 				config.setShowHelp(true);
 				break;
 			default:
+				config.setInvalidOption(true);
 				config.setShowHelp(true);
 				break;
 			}
@@ -141,6 +164,15 @@ class CommandConfig {
 	private boolean useGUI = true;
 	private String configIni = "";
 	private boolean showHelp = false;
+	private boolean invalidOption = false;
+
+	public boolean isInvalidOption() {
+		return invalidOption;
+	}
+
+	public void setInvalidOption(boolean invalidOption) {
+		this.invalidOption = invalidOption;
+	}
 
 	public boolean isUseGUI() {
 		return useGUI;
