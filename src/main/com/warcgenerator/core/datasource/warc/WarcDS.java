@@ -44,7 +44,6 @@ public class WarcDS extends DataSource implements IDataSource {
 	public static final String DS_TYPE = "WarcDS";
 	public static final String URL_TAG = "WarcURLTag";
 	public static final String REGEXP_URL_TAG = "RegExpURLAttribute";
-	public static final String COMMENT_TAG = "WARC-Comment";
 
 	@SuppressWarnings("unused")
 	private OutputWarcConfig config;
@@ -216,13 +215,10 @@ public class WarcDS extends DataSource implements IDataSource {
 				recordInfo.setUrl(bean.getUrl());
 				// Despite its name, this setter holds the WARC-Date value, which
 				// has to be ISO 8601
-				String warcDate = ArchiveUtils.getLog14Date();
-				recordInfo.setCreate14DigitDate(warcDate);
+				recordInfo.setCreate14DigitDate(ArchiveUtils.getLog14Date());
 				recordInfo.setMimetype(Constants.outputContentType);
 				recordInfo.setRecordId(new UUIDGenerator().getRecordID());
 				recordInfo.setExtraHeaders(new ANVLRecord());
-				// The WARC format has no comments; this is an extension field
-				recordInfo.addExtraHeader(COMMENT_TAG, "WARC-Date=" + warcDate);
 				recordInfo.setContentStream(is);
 				recordInfo.setContentLength(is.available());
 				recordInfo.setEnforceLength(true);

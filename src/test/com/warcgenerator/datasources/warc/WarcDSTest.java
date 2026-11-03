@@ -69,8 +69,6 @@ public class WarcDSTest {
 		String content = new String(Files.readAllBytes(warc.toPath()), StandardCharsets.UTF_8);
 		assertTrue(content, Pattern.compile("^WARC-Date: " + iso8601 + "$", Pattern.MULTILINE)
 				.matcher(content).find());
-		assertTrue(content, Pattern.compile("^WARC-Comment: WARC-Date=" + iso8601 + "$", Pattern.MULTILINE)
-				.matcher(content).find());
 		
 		// The record has to be readable by an independent WARC parser
 		try (ArchiveReader reader = WARCReaderFactory.get(warc)) {
