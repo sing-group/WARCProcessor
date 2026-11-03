@@ -11,8 +11,8 @@ public interface Constants {
 	String DEFAULT_GUI_CONFIG_XML= "/config/gui-config-default.xml";
 	String DEFAULT_DIR_CUSTOM_GUI_CONFIG_XML = "./config/";
 	String CUSTOM_GUI_CONFIG_XML = "gui-config.xml";
-	String DEFAULT_LOG4J_CONFIG_XML = "/config/log4j-default.xml";
-	String LOG4J_CONFIG_XML = "log4j.xml";
+	String DEFAULT_LOG4J_CONFIG_XML = "/config/log4j2-default.xml";
+	String LOG4J_CONFIG_XML = "log4j2.xml";
 	String CONFIG_SCHEMA_FILE_PATH = "/config/schema/gui-config.xsd";
 	String FORM_MODIFIED_SESSION_KEY = "form_modified_session_key";
 	Integer NUM_MAX_RECENT_CONFIG_FILES = 4;

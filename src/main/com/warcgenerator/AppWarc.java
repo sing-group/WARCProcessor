@@ -3,9 +3,9 @@ package com.warcgenerator;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.config.Configurator;
 
 import org.archive.util.FileUtils;
 
@@ -35,7 +35,7 @@ public class AppWarc {
 			+ Constants.LOG4J_CONFIG_XML;
 
 	private AppWarc() {
-		// Check if exist Log4j configuration file
+		// Check if exist Log4j2 configuration file
 		if (!FileHelper.checkIfExists(CUSTOM_GUI_CONFIG_XML_FULLPATH)) {
 			try {
 				FileUtils.readFullyToFile(
@@ -64,8 +64,8 @@ public class AppWarc {
 	 * Load a basic default configuration
 	 */
 	public void init() {
-		// Configure Log4j.xml
-		DOMConfigurator.configure(CUSTOM_GUI_CONFIG_XML_FULLPATH);
+		// Configure log4j2.xml
+		Configurator.reconfigure(new File(CUSTOM_GUI_CONFIG_XML_FULLPATH).toURI());
 		logger.info("Loading default configuration...");
 		config = new AppConfig();
 
@@ -84,8 +84,8 @@ public class AppWarc {
 	 *            path to Xml properties config
 	 */
 	public void init(String pathConfig) throws WarcException {
-		// Configure Log4j.xml
-		DOMConfigurator.configure(CUSTOM_GUI_CONFIG_XML_FULLPATH);
+		// Configure log4j2.xml
+		Configurator.reconfigure(new File(CUSTOM_GUI_CONFIG_XML_FULLPATH).toURI());
 
 		// Properties properties = ConfigHelper.loadParams(pathConfig);
 		logger.info("Loading configuration...");

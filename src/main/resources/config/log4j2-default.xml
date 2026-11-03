@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+   <Appenders>
+      <Console name="consoleAppender" target="SYSTEM_OUT">
+         <PatternLayout pattern="%d %-5p [%c{1}] %m%n" />
+      </Console>
+      <File name="fileAppender" fileName="warcgenerator.log">
+         <PatternLayout pattern="%d %-5p [%c{1}] %m%n" />
+      </File>
+   </Appenders>
+   <Loggers>
+      <Root level="INFO">
+         <AppenderRef ref="consoleAppender" />
+         <AppenderRef ref="fileAppender" />
+      </Root>
+   </Loggers>
+</Configuration>
