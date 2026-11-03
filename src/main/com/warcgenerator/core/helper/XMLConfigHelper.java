@@ -64,7 +64,7 @@ public class XMLConfigHelper {
 				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		// load a WXS schema, represented by a Schema instance
-		try (InputStream is = factory.getClass().getResourceAsStream(
+		try (InputStream is = XMLConfigHelper.class.getResourceAsStream(
 				schemaFilePath)) {
 			Source schemaFile = new StreamSource(is);
 			Schema schema;
@@ -278,7 +278,7 @@ public class XMLConfigHelper {
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
 			Document doc = null;
-			try (InputStream is = docBuilder.getClass().getResourceAsStream(
+			try (InputStream is = XMLConfigHelper.class.getResourceAsStream(
 					path)) {
 				doc = docBuilder.parse(is);
 			}
@@ -367,7 +367,7 @@ public class XMLConfigHelper {
 	 * @param config AppConfig to save
 	 */
 	public static void saveXMLFromAppConfig(String path, AppConfig config) {
-		if (!FileHelper.checkIfExists(path)) {
+		if (!FileHelper.checkIfParentExists(path)) {
 			throw new PathNotFoundAppConfigException();
 		}
 		

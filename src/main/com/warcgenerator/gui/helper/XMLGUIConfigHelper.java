@@ -52,7 +52,7 @@ public class XMLGUIConfigHelper {
 				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		// load a WXS schema, represented by a Schema instance
-		InputStream is = factory.getClass().getResourceAsStream(schemaFilePath);
+		InputStream is = XMLGUIConfigHelper.class.getResourceAsStream(schemaFilePath);
 		Source schemaFile = new StreamSource(is);
 		Schema schema;
 		try {

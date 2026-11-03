@@ -29,8 +29,19 @@ public class FileHelper {
 	 * @return True if it is readable
 	 */
 	public static boolean checkIfExists(String path) {
+		return Files.isReadable(FileSystems.getDefault().getPath(path));
+	}
+
+	/**
+	 * Check if the directory that contains a file is readable
+	 * 
+	 * @param path
+	 *            Path to file, which may not exist yet
+	 * @return True if its directory is readable
+	 */
+	public static boolean checkIfParentExists(String path) {
 		return Files.isReadable(FileSystems.getDefault().getPath(path)
-				.getParent());
+				.toAbsolutePath().getParent());
 	}
 
 	/**

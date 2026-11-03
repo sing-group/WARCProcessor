@@ -27,7 +27,7 @@ public class GUIConfigHelper {
 		InputStream is = null;
 		File f = new File(CUSTOM_GUI_CONFIG_XML_FULLPATH);
 		if (!f.exists()) {
-			is = f.getClass().getResourceAsStream(Constants.DEFAULT_GUI_CONFIG_XML);
+			is = GUIConfigHelper.class.getResourceAsStream(Constants.DEFAULT_GUI_CONFIG_XML);
 		} else {
 			try {
 				is = new FileInputStream(f);
